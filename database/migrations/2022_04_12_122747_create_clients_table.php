@@ -18,7 +18,9 @@ return new class extends Migration
 			$table->string('name')->comment('Наименование клиента');
 			$table->string('inn')->comment('ИНН');
 			$table->string('ogrn')->comment('ОГРН / ОГРНИП');
-			$table->string('address')->comment('Фактический адерс клиента');
+			$table->string('address')->comment('Фактический адрес клиента');
+			$table->string('phone')->comment('Телефон для связи')->nullable();
+			$table->string('email')->comment('Электронная почта');
             $table->timestamps();
         });
     }

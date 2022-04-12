@@ -19,6 +19,12 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	// Пользователи
 	Route::resource('/users', 'UserController');
 	Route::get('/users.data', 'UserController@getData')->name('users.index.data');
+	// Клиенты
+	Route::resource('/clients', 'ClientController');
+	Route::get('/clients.data', 'ClientController@getData')->name('clients.index.data');
+	Route::get('/clients.select/{client}', 'ClientController@select')->name('clients.select');
+
+
 	// Работодатели
 	Route::resource('/employers', 'EmployerController');
 	Route::get('/employers.data', 'EmployerController@getData')->name('employers.index.data');

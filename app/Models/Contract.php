@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contract extends Model
 {
-	use HasFactory;
+	use HasFactory, HasTitle;
 
 	public const ACTIVE = 'Активный';
 	public const INACTIVE = 'Неактивный';
@@ -27,6 +27,11 @@ class Contract extends Model
 		'status',
 		'client_id'
 	];
+
+	public function getTitle(): string
+	{
+		return $this->name;
+	}
 
 	// Геттеры Laravel
 	protected function start(): Attribute

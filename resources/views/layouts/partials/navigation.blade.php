@@ -6,6 +6,8 @@
 
 		$menu = [
             ['title' => 'Главная', 'icon' => 'fa fa-home', 'route' => 'dashboard', 'pattern' => 'dashboard'],
+            ['title' => 'Клиенты', 'heading' => true],
+            ['title' => 'Клиенты и контракты', 'icon' => 'fas fa-building', 'route' => 'clients.index', 'pattern' => 'clients.*'],
             ['title' => 'Стажировки', 'heading' => true],
 			['title' => 'История стажировок', 'icon' => 'fas fa-history', 'route' => 'history.index', 'pattern' => 'history.*'],
 			['title' => 'Лица', 'heading' => true],
