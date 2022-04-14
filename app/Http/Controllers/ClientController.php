@@ -76,7 +76,7 @@ class ClientController extends Controller
 		session()->forget('context');
 		session()->put('context', ['client' => $client]);
 
-		//return redirect()->route('e2s.start_internship.step2', ['sid' => session()->getId()]);
+		return redirect()->route('contracts.index', ['sid' => session()->getId()]);
 	}
 
 	/**

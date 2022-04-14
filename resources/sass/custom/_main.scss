@@ -34,3 +34,19 @@
 .no-link {
 	cursor: default;
 }
+
+.statistics tr {
+	padding-bottom: 10px;
+}
+
+td {
+	word-break: break-all;
+}
+
+td.key {
+	padding-right: 10px;
+}
+
+td.value {
+	font-weight: bold;
+}

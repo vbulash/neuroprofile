@@ -23,6 +23,11 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::resource('/clients', 'ClientController');
 	Route::get('/clients.data', 'ClientController@getData')->name('clients.index.data');
 	Route::get('/clients.select/{client}', 'ClientController@select')->name('clients.select');
+	// Контракты
+	Route::resource('/contracts', 'ContractController');
+	Route::get('/conntracts.data', 'ContractController@getData')->name('contracts.index.data');
+	Route::get('/contracts.select/{contract}', 'ContractController@select')->name('contracts.select');
+	Route::get('/contracts.info', 'ContractController@info')->name('contracts.info');
 
 
 	// Работодатели

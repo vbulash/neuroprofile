@@ -7,6 +7,7 @@
 		$steps = [
 			['title' => 'Клиент', 'active' => true, 'context' => 'client', 'link' => route('clients.index', ['sid' => session()->getId()])],
 			['title' => 'Контракты', 'active' => false, 'context' => 'contract'],
+			['title' => 'Информация о контракте', 'active' => false, 'context' => 'info'],
 		];
 	@endphp
 @endsection
