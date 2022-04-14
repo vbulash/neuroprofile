@@ -6,13 +6,10 @@
 
 		$menu = [
             ['title' => 'Главная', 'icon' => 'fa fa-home', 'route' => 'dashboard', 'pattern' => 'dashboard'],
+
             ['title' => 'Клиенты', 'heading' => true],
             ['title' => 'Клиенты и контракты', 'icon' => 'fas fa-building', 'route' => 'clients.index', 'pattern' => ['clients.*', 'contracts.*']],
-            ['title' => 'Стажировки', 'heading' => true],
-			['title' => 'История стажировок', 'icon' => 'fas fa-history', 'route' => 'history.index', 'pattern' => 'history.*'],
-			['title' => 'Лица', 'heading' => true],
-			['title' => 'Работодатели', 'icon' => 'fa fa-business-time', 'route' => 'employers.index', 'pattern' => 'employers.*'],
-			['title' => 'Практиканты', 'icon' => 'fa fa-gear', 'route' => 'students.index', 'pattern' => 'students.*'],
+
 			['title' => 'Настройки', 'heading' => true],
 			['title' => 'Пользователи', 'icon' => 'fa fa-user-alt', 'route' => 'users.index', 'pattern' => 'users.*'],
 			['title' => 'Laravel Telescope', 'icon' => 'fa fa-gears', 'route' => 'telescope', 'pattern' => 'telescope'],

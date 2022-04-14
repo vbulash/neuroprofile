@@ -101,7 +101,7 @@ class ContractController extends Controller
 		unset($context['contract']);
 		session()->put('context', $context);
 
-		$count = $context['client']->contracts->count();
+		$count = $context['client']->contracts()->count();
 		return view('contracts.index', compact('count'));
 	}
 

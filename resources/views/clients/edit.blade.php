@@ -86,10 +86,10 @@
 						   href="{{ route('clients.index', ['sid' => session()->getId()]) }}"
 						   role="button">Закрыть</a>
 					@else
-					<button type="submit" class="btn btn-primary">Сохранить</button>
-					<a class="btn btn-secondary pl-3"
-					   href="{{ route('clients.index', ['sid' => session()->getId()]) }}"
-					   role="button">Закрыть</a>
+						<button type="submit" class="btn btn-primary">Сохранить</button>
+						<a class="btn btn-secondary pl-3"
+						   href="{{ route('clients.index', ['sid' => session()->getId()]) }}"
+						   role="button">Закрыть</a>
 					@endif
 				</div>
 			</div>

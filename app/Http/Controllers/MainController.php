@@ -17,6 +17,8 @@ class MainController extends Controller
 	 */
 	public function index()
 	{
-		return view('main');
+		return view('empty');
+		// TODO Убрать заглушку, сделать нормальный dashboard
+//		return view('main');
 	}
 }

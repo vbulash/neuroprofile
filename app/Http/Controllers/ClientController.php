@@ -29,7 +29,7 @@ class ClientController extends Controller
 
 		return Datatables::of($clients)
 			->addColumn('contracts', function($client) {
-				$count = $client->contracts->count();
+				$count = $client->contracts()->count();
 				switch ($count) {
 					case 0:
 					case null:
