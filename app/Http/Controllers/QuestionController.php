@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\ToastEvent;
 use App\Http\Requests\StoreQuestionRequest;
+use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\Contract;
 use App\Models\License;
 use App\Models\Question;
@@ -14,6 +15,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Exception;
@@ -141,34 +143,44 @@ SQL,
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+     * @return Application|Factory|View
+	 */
     public function show($id)
     {
-        //
+        return $this->edit($id, true);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+	 * @param	bool $show
+     * @return Application|Factory|View
+	 */
+    public function edit(int $id, bool $show = false)
     {
-        //
+		$question = Question::findOrFail($id);
+        return view('questions.edit', compact('question', 'show'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param UpdateQuestionRequest $request
+	 * @param int $id
+	 * @return RedirectResponse
+	 */
+    public function update(UpdateQuestionRequest $request, $id)
     {
-        //
+		$context = session('context');
+		$set = $context['set'];
+
+		$question = Question::findOrFail($id);
+		$number = $request->sort_no;
+		$question->update($request->all());
+
+		session()->put('success', "Вопрос № {$number} из набора вопросов '{$set->name}' обновлён");
+		return redirect()->route('questions.index', ['sid' => session()->getId()]);
     }
 
 	private function reorder(array $ids): void
@@ -234,7 +246,7 @@ SQL,
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
