@@ -28,6 +28,15 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/conntracts.data', 'ContractController@getData')->name('contracts.index.data');
 	Route::get('/contracts.select/{contract}', 'ContractController@select')->name('contracts.select');
 	Route::get('/contracts.info', 'ContractController@info')->name('contracts.info');
+	// Наборы вопросов
+	Route::resource('/sets', 'SetController');
+	Route::get('/sets.data', 'SetController@getData')->name('sets.index.data');
+	Route::get('/sets.select/{set}', 'SetController@select')->name('sets.select');
+	// Вопросы
+	Route::resource('/questions', 'QuestionController');
+	Route::get('/questions.data', 'QuestionController@getData')->name('questions.index.data');
+	Route::post('/questions.up', 'QuestionsController@up')->name('questions.up');
+	Route::post('/questions.down', 'QuestionsController@down')->name('questions.down');
 });
 
 require __DIR__.'/auth.php';

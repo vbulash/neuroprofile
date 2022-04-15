@@ -10,6 +10,9 @@
             ['title' => 'Клиенты', 'heading' => true],
             ['title' => 'Клиенты и контракты', 'icon' => 'fas fa-building', 'route' => 'clients.index', 'pattern' => ['clients.*', 'contracts.*']],
 
+			['title' => 'Конструктор тестов', 'heading' => true],
+			['title' => 'Вопросы', 'icon' => 'fas fa-question-circle', 'route' => 'sets.index', 'pattern' => ['sets.*', 'questions.*']],
+
 			['title' => 'Настройки', 'heading' => true],
 			['title' => 'Пользователи', 'icon' => 'fa fa-user-alt', 'route' => 'users.index', 'pattern' => 'users.*'],
 			['title' => 'Laravel Telescope', 'icon' => 'fa fa-gears', 'route' => 'telescope', 'pattern' => 'telescope'],

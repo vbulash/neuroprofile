@@ -1,40 +1,36 @@
 @extends('layouts.wizard')
 
-@section('service')Работа с клиентами и контрактами@endsection
+@section('service')Работа с вопросами тестирования@endsection
 
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index', ['sid' => session()->getId()])],
-			['title' => 'Контракт', 'active' => true, 'context' => 'contract'],
-			['title' => 'Информация о контракте', 'active' => false, 'context' => 'info'],
+			['title' => 'Набор вопросов', 'active' => true, 'context' => 'set'],
+			['title' => 'Вопросы', 'active' => false, 'context' => 'question'],
 		];
 	@endphp
 @endsection
 
 @section('interior')
 	<div class="block-header block-header-default">
-		<a href="{{ route('contracts.create', ['sid' => $sid]) }}" class="btn btn-primary mb-3">Добавить контракт</a>
+		<a href="{{ route('sets.create', ['sid' => $sid]) }}" class="btn btn-primary mb-3">Добавить набор вопросов</a>
 	</div>
 	<div class="block-content p-4">
 		@if ($count)
 			<div class="table-responsive">
-				<table class="table table-bordered table-hover text-nowrap" id="contracts_table"
-					   style="width: 100%;">
+				<table class="table table-bordered table-hover text-nowrap" id="sets_table" style="width: 100%;">
 					<thead>
 					<tr>
-						<th>Номер контракта</th>
-						<th>Дата начала</th>
-						<th>Дата завершения</th>
-						<th>Количество лицензий</th>
-						<th>Статус</th>
+						<th style="width: 30px">#</th>
+						<th>Наименование</th>
+						<th>Количество вопросов</th>
 						<th>Действия</th>
 					</tr>
 					</thead>
 				</table>
 			</div>
 		@else
-			<p>Контрактов пока нет...</p>
+			<p>Наборов вопросов пока нет...</p>
 		@endif
 	</div>
 @endsection
@@ -50,7 +46,7 @@
 			document.getElementById('confirm-yes').addEventListener('click', (event) => {
 				$.ajax({
 					method: 'DELETE',
-					url: "{{ route('contracts.destroy', ['contract' => '0']) }}",
+					url: "{{ route('sets.destroy', ['set' => '0']) }}",
 					data: {
 						id: event.target.dataset.id,
 					},
@@ -63,27 +59,25 @@
 
 			function clickDelete(id, name) {
 				document.getElementById('confirm-title').innerText = "Подтвердите удаление";
-				document.getElementById('confirm-body').innerHTML = "Удалить контракт № " + name + " ?";
+				document.getElementById('confirm-body').innerHTML = "Удалить набор вопросов &laquo;" + name + "&raquo; ?";
 				document.getElementById('confirm-yes').dataset.id = id;
 				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
 				confirmDialog.show();
 			}
 
 			$(function () {
-				window.datatable = $('#contracts_table').DataTable({
+				window.datatable = $('#sets_table').DataTable({
 					language: {
 						"url": "{{ asset('lang/ru/datatables.json') }}"
 					},
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('contracts.index.data') !!}',
+					ajax: '{!! route('sets.index.data') !!}',
 					responsive: true,
 					columns: [
-						{data: 'number', name: 'number', responsivePriority: 1},
-						{data: 'start', name: 'start', responsivePriority: 2},
-						{data: 'end', name: 'end', responsivePriority: 2},
-						{data: 'license_count', name: 'license_count', responsivePriority: 4},
-						{data: 'status', name: 'status', responsivePriority: 3},
+						{data: 'id', name: 'id', responsivePriority: 1},
+						{data: 'name', name: 'name', responsivePriority: 1},
+						{data: 'questions', name: 'questions', responsivePriority: 2, sortable: false},
 						{
 							data: 'action',
 							name: 'action',

@@ -6,7 +6,7 @@
 	@php
 		$steps = [
 			['title' => 'Клиент', 'active' => true, 'context' => 'client'],
-			['title' => 'Контракты', 'active' => false, 'context' => 'contract'],
+			['title' => 'Контракт', 'active' => false, 'context' => 'contract'],
 			['title' => 'Информация о контракте', 'active' => false, 'context' => 'info'],
 		];
 	@endphp
