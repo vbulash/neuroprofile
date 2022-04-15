@@ -30,7 +30,7 @@ class SetController extends Controller
 
 		return Datatables::of($sets)
 			->editColumn('questions', function($set) {
-				$count = $set->questions()->count();
+				$count = $set->questions->count();
 				switch ($count) {
 					case 0:
 					case null:

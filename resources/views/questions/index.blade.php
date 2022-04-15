@@ -98,16 +98,18 @@
 					language: {
 						"url": "{{ asset('lang/ru/datatables.json') }}"
 					},
+					ordering: false,
+					order: [[1, 'asc']],
 					processing: true,
 					serverSide: true,
 					ajax: '{!! route('questions.index.data') !!}',
 					responsive: true,
 					columns: [
 						{data: 'sort_no', name: 'sort_no', responsivePriority: 1},
-						{data: 'preview', name: 'preview', responsivePriority: 3, sortable: false},
+						{data: 'preview', name: 'preview', responsivePriority: 3},
 						{data: 'learning', name: 'learning', responsivePriority: 2},
 						{data: 'timeout', name: 'timeout', responsivePriority: 2},
-						{data: 'key', name: 'key', responsivePriority: 3, sortable: false},
+						{data: 'key', name: 'key', responsivePriority: 3},
 						{
 							data: 'action',
 							name: 'action',

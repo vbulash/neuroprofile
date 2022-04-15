@@ -35,8 +35,8 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	// Вопросы
 	Route::resource('/questions', 'QuestionController');
 	Route::get('/questions.data', 'QuestionController@getData')->name('questions.index.data');
-	Route::post('/questions.up', 'QuestionsController@up')->name('questions.up');
-	Route::post('/questions.down', 'QuestionsController@down')->name('questions.down');
+	Route::post('/questions.up', 'QuestionController@up')->name('questions.up');
+	Route::post('/questions.down', 'QuestionController@down')->name('questions.down');
 });
 
 require __DIR__.'/auth.php';

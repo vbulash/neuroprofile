@@ -29,13 +29,19 @@ class QuestionController extends Controller
 	public function getData(): JsonResponse
 	{
 		$context = session('context');
-		$questions = $context['set']->questions();
-		$count = $questions->count();
+		$set = $context['set'];
+		$questions = DB::select(<<< SQL
+SELECT questions.* FROM questions, sets
+WHERE sets.id = questions.set_id AND sets.id = :id
+ORDER BY sort_no
+SQL,
+			['id' => $set->getKey()]);
 
-		$first = $last = null;
+		$count = count($questions);
+		$first = $last = 0;
 		if($count > 1) {
-			$first = $questions->first()->getKey();
-			$last = $questions->last()->getKey();
+			$first = $questions[0]->id;
+			$last = $questions[$count - 1]->id;
 		}
 
 		return Datatables::of($questions)
@@ -43,8 +49,8 @@ class QuestionController extends Controller
 			->editColumn('learning', fn($question) => $question->learning ? 'Учебный' : 'Реальный')
 			->editColumn('key', fn($question) => $question->value1 . '|' . $question->value2)
 			->addColumn('action', function ($question) use($first, $last, $count) {
-				$editRoute = route('questions.edit', ['question' => $question->getKey(), 'sid' => session()->getId()]);
-				$showRoute = route('questions.show', ['question' => $question->getKey(), 'sid' => session()->getId()]);
+				$editRoute = route('questions.edit', ['question' => $question->id, 'sid' => session()->getId()]);
+				$showRoute = route('questions.show', ['question' => $question->id, 'sid' => session()->getId()]);
 				$actions = '';
 
 				$actions .=
@@ -59,21 +65,21 @@ class QuestionController extends Controller
 					"</a>\n";
 				$actions .=
 					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$question->getKey()}, '{$question->sort_no}')\">\n" .
+					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$question->id}, '{$question->sort_no}')\">\n" .
 					"<i class=\"fas fa-trash-alt\"></i>\n" .
 					"</a>\n";
 
 				if($count > 1) {
-					if ($question->getKey() != $first)
+					if ($question->id != $first)
 						$actions .=
-							"<a href=\"javascript:void(0)\" class=\"btn btn-info btn-sm float-left mr-1\" " .
-							"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выше\" onclick=\"clickUp({$question->getKey()})\">\n" .
+							"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+							"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выше\" onclick=\"clickUp({$question->id})\">\n" .
 							"<i class=\"fas fa-arrow-up\"></i>\n" .
 							"</a>\n";
-					if ($question->getKey() != $last)
+					if ($question->id != $last)
 						$actions .=
-							"<a href=\"javascript:void(0)\" class=\"btn btn-info btn-sm float-left mr-1\" " .
-							"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ниже\" onclick=\"clickDown({$question->getKey()})\">\n" .
+							"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+							"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ниже\" onclick=\"clickDown({$question->id})\">\n" .
 							"<i class=\"fas fa-arrow-down\"></i>\n" .
 							"</a>\n";
 				}
@@ -94,7 +100,7 @@ class QuestionController extends Controller
 		unset($context['question']);
 		session()->put('context', $context);
 
-        $count = $context['set']->questions()->count();
+        $count = $context['set']->questions->count();
 		return view('questions.index', compact('count'));
     }
 
@@ -122,7 +128,7 @@ class QuestionController extends Controller
 		$set = $context['set'];
 
 		$data = $request->all();
-		$data['sort_no'] = $set->questions()->count() + 1;
+		$data['sort_no'] = $set->questions->count() + 1;
 
 		$question = Question::create($data);
 		$question->save();
@@ -165,37 +171,34 @@ class QuestionController extends Controller
         //
     }
 
+	private function reorder(array $ids): void
+	{
+		DB::transaction(function () use ($ids) {
+			$counter = 0;
+			foreach ($ids as $id) {
+				$counter++;
+				$question = Question::findOrFail($id);
+				if($question->sort_no != $counter)
+					$question->update(['sort_no' => $counter]);
+			}
+		});
+	}
+
 	private function move(int $id, bool $up)
 	{
 		$question = Question::findOrFail($id);
-
-		$set = $question->set;
-		$questions = $set->questions()
+		$questions = $question->set->questions
 			->sortBy('sort_no')
-			->pluck('sort_no', 'id')
+			->pluck('id')
 			->toArray();
 
-		$indexes = array_keys($questions);
-
-		$currentPos = array_search($question->getKey(), $indexes);
-		$currentID = $question->getKey();
-		$currentOrder = $question->sort_no;
-		$current = Question::findOrFail($currentID);
-
+		$currentPos = array_search($question->getKey(), $questions);
 		$targetPos = ($up ? $currentPos - 1 : $currentPos + 1);
-		$targetID = $indexes[$targetPos];
-		$targetOrder = $questions[$targetID];
-		$target = Question::findOrFail($targetID);
+		$buffer = $questions[$targetPos];
+		$questions[$targetPos] = $questions[$currentPos];
+		$questions[$currentPos] = $buffer;
 
-		// Обмен sort_no в 2 записях в рамках транзакции
-		DB::transaction(function () use ($current, $target, $currentOrder, $targetOrder) {
-			$current->update([
-				'sort_no' => $targetOrder
-			]);
-			$target->update([
-				'sort_no' => $currentOrder
-			]);
-		});
+		$this->reorder($questions);
 	}
 
 	/**
@@ -207,9 +210,8 @@ class QuestionController extends Controller
 	 */
 	public function up(Request $request)
 	{
-		$id = $request->id;
-		$this->move($id, true);
-		event(new ToastEvent('success', '', 'Вопрос перемещен ближе к началу списка'));
+		$this->move($request->id, true);
+		//event(new ToastEvent('success', '', 'Вопрос перемещен ближе к началу списка'));
 
 		return true;
 	}
@@ -223,9 +225,8 @@ class QuestionController extends Controller
 	 */
 	public function down(Request $request)
 	{
-		$id = $request->id;
-		$this->move($id, false);
-		event(new ToastEvent('success', '', 'Вопрос перемещен ближе к концу списка'));
+		$this->move($request->id, false);
+		//event(new ToastEvent('success', '', 'Вопрос перемещен ближе к концу списка'));
 
 		return true;
 	}
