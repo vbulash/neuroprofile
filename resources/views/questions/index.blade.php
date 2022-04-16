@@ -104,6 +104,7 @@
 					serverSide: true,
 					ajax: '{!! route('questions.index.data') !!}',
 					responsive: true,
+					pageLength: 100,
 					columns: [
 						{data: 'sort_no', name: 'sort_no', responsivePriority: 1},
 						{data: 'preview', name: 'preview', responsivePriority: 3},

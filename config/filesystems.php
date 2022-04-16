@@ -42,6 +42,13 @@ return [
             'visibility' => 'public',
         ],
 
+		// Диск для хранения закачек (картинок)
+		'disk' => [
+			'driver' => 'local',
+			'root' => base_path() . '/public/uploads',
+			'glideURL' => '/glide',
+		],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

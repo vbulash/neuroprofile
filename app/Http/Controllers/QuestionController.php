@@ -242,14 +242,26 @@ SQL,
 
 		return true;
 	}
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param Request $request
+	 * @param int $question
+	 * @return bool
+	 */
+	public function destroy(Request $request, int $question)
+	{
+		if ($question == 0) {
+			$id = $request->id;
+		} else $id = $question;
+
+		$question = Question::findOrFail($id);
+		$number = $question->number;
+		$name = $question->set->name;
+		$question->delete();
+
+		event(new ToastEvent('success', '', "Вопрос № {$number} из набора вопросов '{$name}' удалён"));
+		return true;
+	}
 }

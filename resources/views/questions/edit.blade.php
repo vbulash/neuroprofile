@@ -42,8 +42,6 @@
 					], 'value' => ($question->learning ? 1 : 0)],
 					['name' => 'timeout', 'title' => 'Таймаут прохождения вопроса, секунд', 'required' => true, 'type' => 'number', 'value' => $question->timeout],
 					//
-					['name' => 'value1', 'title' => 'Заглушка ключа 1', 'required' => true, 'type' => 'text', 'value' => $question->value1],
-					['name' => 'value2', 'title' => 'Заглушка ключа 2', 'required' => true, 'type' => 'text', 'value' => $question->value2],
 					['name' => 'image1', 'type' => 'hidden', 'value' => 'x'],
 					['name' => 'image2', 'type' => 'hidden', 'value' => 'x'],
 					//
@@ -51,17 +49,17 @@
 			@endphp
 
 			@foreach($fields as $field)
-				<div class="row mb-4">
-					@switch($field['type'])
-						@case('hidden')
-						@break
+				@switch($field['type'])
+					@case('hidden')
+					@break
 
-						@default
+					@default
+					<div class="row mb-4">
 						<label class="col-sm-3 col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
 							@if($field['required'] || !$show)
 								<span class="required">*</span>
 							@endif</label>
-						@break
+					@break
 					@endswitch
 
 					@switch($field['type'])
@@ -80,11 +78,11 @@
 
 						@case('textarea')
 						<div class="col-sm-5">
-							<textarea class="form-control" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
-									  cols="30"
-									  rows="5"
-									  @if($show) disabled @endif
-							>{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}</textarea>
+						<textarea class="form-control" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
+								  cols="30"
+								  rows="5"
+								  @if($show) disabled @endif
+						>{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}</textarea>
 						</div>
 						@break
 
@@ -105,8 +103,41 @@
 							   name="{{ $field['name'] }}" value="{{ $field['value'] }}">
 						@break
 					@endswitch
-				</div>
+					@switch($field['type'])
+						@case('hidden')
+						@break
+
+						@default
+						</div>
+						@break
+					@endswitch
 			@endforeach
+
+			@php
+				$fields = [
+					//
+					['name' => 'value1', 'title' => 'Заглушка ключа 1', 'required' => true, 'type' => 'text', 'value' => $question->value1],
+					['name' => 'value2', 'title' => 'Заглушка ключа 2', 'required' => true, 'type' => 'text', 'value' => $question->value2],
+					//
+				];
+			@endphp
+
+			<div class="row mb-4">
+				@foreach($fields as $field)
+					<div class="col-sm-6">
+						<label class="col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
+							@if($field['required'] || !$show)
+								<span class="required">*</span>
+							@endif
+						</label>
+						<input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
+							   name="{{ $field['name'] }}"
+							   value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
+							   @if($show) disabled @endif
+						>
+					</div>
+				@endforeach
+			</div>
 		</div>
 
 		<div class="block-content block-content-full block-content-sm bg-body-light fs-sm">
