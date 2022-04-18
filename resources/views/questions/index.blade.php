@@ -1,11 +1,13 @@
 @extends('layouts.wizard')
 
-@section('service')Работа с вопросами тестирования@endsection
+@section('service')
+	Работа с вопросами тестирования
+@endsection
 
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Набор вопросов', 'active' => false, 'context' => 'set'],
+			['title' => 'Набор вопросов', 'active' => false, 'context' => 'set', 'link' => route('sets.index', ['sid' => session()->getId()])],
 			['title' => 'Вопросы', 'active' => true, 'context' => 'question'],
 		];
 	@endphp
@@ -107,7 +109,19 @@
 					pageLength: 100,
 					columns: [
 						{data: 'sort_no', name: 'sort_no', responsivePriority: 1},
-						{data: 'preview', name: 'preview', responsivePriority: 3},
+						{
+							data: 'preview', name: 'preview', responsivePriority: 3, render: (data) => {
+								if (data) {
+									let thumbs = JSON.parse(data.replace(/&quot;/g, '"'));
+									let preview = '';
+									thumbs.forEach((thumb) => {
+										preview = preview +
+											"<img src=\"" + thumb + "\" alt=\"\" class=\"thumb-row\">\n";
+									});
+									return preview;
+								} else return '';
+							}
+						},
 						{data: 'learning', name: 'learning', responsivePriority: 2},
 						{data: 'timeout', name: 'timeout', responsivePriority: 2},
 						{data: 'key', name: 'key', responsivePriority: 3},

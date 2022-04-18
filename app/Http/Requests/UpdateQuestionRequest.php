@@ -29,8 +29,8 @@ class UpdateQuestionRequest extends FormRequest
 				'required',
 				'numeric'
 			],
-			'image1' => 'required',
-			'image2' => 'required',
+			'image1' => 'image',
+			'image2' => 'image',
 			'value1' => 'required',
 			'value2' => 'required'
         ];

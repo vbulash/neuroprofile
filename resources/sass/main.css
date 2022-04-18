@@ -31814,4 +31814,19 @@ td.value {
   font-weight: bold;
 }
 
+.image-preview {
+  height: 200px;
+}
+
+.thumb-row {
+  max-width: 40px;
+  max-height: 40px;
+  margin-right: 1em;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
 /*# sourceMappingURL=main.css.map */

@@ -29,8 +29,14 @@ class StoreQuestionRequest extends FormRequest
 				'required',
 				'numeric'
 			],
-			'image1' => 'required',
-			'image2' => 'required',
+			'image1' => [
+				'required',
+				'image'
+			],
+			'image2' => [
+				'required',
+				'image'
+			],
 			'value1' => 'required',
 			'value2' => 'required'
         ];

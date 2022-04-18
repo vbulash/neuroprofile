@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
 			// TODO Включить наполнение полномочий
 			//PermissionSeeder::class,
 			UserSeeder::class,
+			FileLinkSeeder::class,
+			QuestionSeeder::class
 		]);
     }
 }

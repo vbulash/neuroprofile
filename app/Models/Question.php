@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class Question extends Model
 {
@@ -20,6 +22,14 @@ class Question extends Model
 		'set_id'
 	];
 
+	public static array $values = [
+		'A+', 'A-',
+		'B+', 'B-',
+		'C+', 'C-',
+		'D+', 'D-',
+		'E+', 'E-'
+	];
+
 	public function getTitle(): string
 	{
 		return $this->sort_no;
@@ -28,5 +38,17 @@ class Question extends Model
 	public function set()
 	{
 		return $this->belongsTo(Set::class);
+	}
+
+	public static function uploadImage(Request $request, string $imageField, string $image = null)
+	{
+		if($request->hasFile($imageField)) {
+			if($image)
+				if(FileLink::unlink($image))
+					Storage::delete($image);
+			$folder = date('Y-m-d');
+			return $request->file($imageField)->store("images/{$folder}");
+		}
+		return null;
 	}
 }

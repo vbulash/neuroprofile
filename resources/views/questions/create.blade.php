@@ -34,9 +34,6 @@
 					]],
 					['name' => 'timeout', 'title' => 'Таймаут прохождения вопроса, секунд', 'required' => true, 'type' => 'number', 'value' => 0],
 					//
-					['name' => 'image1', 'type' => 'hidden', 'value' => 'x'],
-					['name' => 'image2', 'type' => 'hidden', 'value' => 'x'],
-					//
 					['name' => 'set_id', 'type' => 'hidden', 'value' => $set->getKey()],
 				];
 			@endphp
@@ -49,7 +46,7 @@
 					@default
 					<div class="row mb-4">
 						<label class="col-sm-3 col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
-							@if($field['required'])
+							@if($field['required'] || !$show)
 								<span class="required">*</span>
 							@endif</label>
 						@break
@@ -63,23 +60,29 @@
 							<div class="col-sm-5">
 								<input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
 									   name="{{ $field['name'] }}"
-									   value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}">
+									   value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
+									   @if($show) disabled @endif
+								>
 							</div>
 							@break
 
 							@case('textarea')
 							<div class="col-sm-5">
-							<textarea class="form-control" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
-									  cols="30" rows="5">{{ old($field['name']) }}</textarea>
+						<textarea class="form-control" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
+								  cols="30"
+								  rows="5"
+								  @if($show) disabled @endif
+						>{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}</textarea>
 							</div>
 							@break
 
 							@case('select')
-							<div>
+							<div class="col-sm-5">
 								<select class="form-control select2" name="{{ $field['name'] }}"
-										id="{{ $field['name'] }}">
+										id="{{ $field['name'] }}" @if($show) disabled @endif>
 									@foreach($field['options'] as $key => $value)
-										<option value="{{ $key }}">{{ $value }}</option>
+										<option value="{{ $key }}"
+												@if($field['value'] == $key) selected @endif>{{ $value }}</option>
 									@endforeach
 								</select>
 							</div>
@@ -95,14 +98,6 @@
 							@break
 
 							@default
-							@break
-						@endswitch
-
-						@switch($field['type'])
-							@case('hidden')
-							@break
-
-							@default
 					</div>
 					@break
 				@endswitch
@@ -110,9 +105,12 @@
 
 			@php
 				$fields = [
+                    //
+					['name' => 'image1', 'title' => 'Левая картинка вопроса', 'type' => 'image', 'required' => true],
+					['name' => 'image2', 'title' => 'Правая картинка вопроса', 'type' => 'image', 'required' => true],
 					//
-					['name' => 'value1', 'title' => 'Заглушка ключа 1', 'required' => true, 'type' => 'text'],
-					['name' => 'value2', 'title' => 'Заглушка ключа 2', 'required' => true, 'type' => 'text'],
+					['name' => 'value1', 'title' => 'Ключ левой картинки', 'required' => true, 'type' => 'select', 'options' => \App\Models\Question::$values],
+					['name' => 'value2', 'title' => 'Ключ правой картинки', 'required' => true, 'type' => 'select', 'options' => \App\Models\Question::$values],
 					//
 				];
 			@endphp
@@ -125,10 +123,43 @@
 								<span class="required">*</span>
 							@endif
 						</label>
-						<input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
-							   name="{{ $field['name'] }}"
-							   value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
-						>
+						@switch($field['type'])
+							@case('text')
+							<input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
+								   name="{{ $field['name'] }}"
+								   value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
+								   @if($show) disabled @endif
+							>
+							@break;
+
+							@case('select')
+							<select class="form-control select2" name="{{ $field['name'] }}"
+									id="{{ $field['name'] }}" @if($show) disabled @endif>
+								@foreach($field['options'] as $key)
+									<option value="{{ $key }}"
+											@if($field['value'] == $key) selected @endif>{{ $key }}</option>
+								@endforeach
+							</select>
+							@break
+
+							@case('image')
+							<div class="row items-push mb-4">
+								<input type="file" class="form-control" id="{{ $field['name'] }}"
+									   name="{{ $field['name'] }}"
+									   onchange="readImage(this)"
+									   @if($show) disabled @endif
+								>
+							</div>
+							<div class="row mb-4" id="panel_{{ $field['name'] }}">
+								<div class="col-sm-9">
+									<img id="preview_{{ $field['name'] }}"
+										 src="/uploads/{{ $field['value'] }}"
+										 alt=""
+										 class="image-preview">
+								</div>
+							</div>
+							@break
+						@endswitch
 					</div>
 				@endforeach
 			</div>
@@ -147,3 +178,24 @@
 		</div>
 	</form>
 @endsection
+
+@push('js_after')
+	<script>
+		function readImage(input) {
+			if (input.files && input.files[0]) {
+				window.preview = 'preview_' + input.id;
+
+				let reader = new FileReader();
+				reader.onload = function (event) {
+					document.getElementById(window.preview).setAttribute('src', event.target.result);
+				};
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+
+
+		document.addEventListener("DOMContentLoaded", () => {
+			//
+		}, false);
+	</script>
+@endpush

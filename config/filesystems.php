@@ -42,11 +42,10 @@ return [
             'visibility' => 'public',
         ],
 
-		// Диск для хранения закачек (картинок)
-		'disk' => [
+		'uploads' => [
 			'driver' => 'local',
-			'root' => base_path() . '/public/uploads',
-			'glideURL' => '/glide',
+			'root'   => public_path('uploads'),
+			'url'    => env('APP_URL') . '/uploads',
 		],
 
         's3' => [

@@ -6,6 +6,7 @@ use App\Events\ToastEvent;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\Contract;
+use App\Models\FileLink;
 use App\Models\License;
 use App\Models\Question;
 use App\Models\Set;
@@ -47,7 +48,14 @@ SQL,
 		}
 
 		return Datatables::of($questions)
-			->editColumn('preview', fn($question) => 'Не реализовано')
+			->editColumn('preview', function ($question) {
+				$data = [];
+				foreach (['image1', 'image2'] as $field) {
+					$path = $question->{$field};
+					if ($path) $data[] = '/uploads/' . $path;
+				}
+				return ($data ? json_encode($data) : '');
+			})
 			->editColumn('learning', fn($question) => $question->learning ? 'Учебный' : 'Реальный')
 			->editColumn('key', fn($question) => $question->value1 . '|' . $question->value2)
 			->addColumn('action', function ($question) use($first, $last, $count) {
@@ -132,6 +140,12 @@ SQL,
 		$data = $request->all();
 		$data['sort_no'] = $set->questions->count() + 1;
 
+		foreach	(['image1', 'image2'] as $field) {
+			$mediaPath = Question::uploadImage($request, $field);
+			if ($mediaPath) FileLink::link($mediaPath);
+			$data[$field] = $mediaPath;
+		}
+
 		$question = Question::create($data);
 		$question->save();
 
@@ -176,8 +190,18 @@ SQL,
 		$set = $context['set'];
 
 		$question = Question::findOrFail($id);
+		$data = $request->all();
+
+		foreach	(['image1', 'image2'] as $field) {
+			if(!$request->has($field)) continue;
+
+			$mediaPath = Question::uploadImage($request, $field, $question->getAttribute($field));
+			if ($mediaPath) FileLink::link($mediaPath);
+			$data[$field] = $mediaPath;
+		}
+
 		$number = $request->sort_no;
-		$question->update($request->all());
+		$question->update($data);
 
 		session()->put('success', "Вопрос № {$number} из набора вопросов '{$set->name}' обновлён");
 		return redirect()->route('questions.index', ['sid' => session()->getId()]);
