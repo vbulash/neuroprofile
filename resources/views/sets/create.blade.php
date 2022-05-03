@@ -1,4 +1,4 @@
-@extends('layouts.wizard')
+@extends('layouts.detail')
 
 @section('service')Работа с вопросами тестирования@endsection
 
@@ -15,70 +15,26 @@
 	@endphp
 @endsection
 
-@section('interior')
-	<form role="form" class="p-5" method="post"
-		  id="set-create" name="set-create"
-		  action="{{ route('sets.store', ['sid' => session()->getId()]) }}"
-		  autocomplete="off" enctype="multipart/form-data">
-		@csrf
-		<div class="block-header block-header-default">
-			<h3 class="block-title fw-semibold">
-				Создание набора вопросов<br/>
-				<small><span class="required">*</span> - поля, обязательные для заполнения</small>
-			</h3>
-		</div>
-		<div class="block-content p-4">
-			@php
-				$fields = [
-					['name' => 'name', 'title' => 'Наименование набора вопросов', 'required' => true, 'type' => 'text'],
-					['name' => 'code', 'title' => 'PHP-код вычисления кода нейропрофиля', 'required' => true, 'type' => 'editor'],
-				];
-			@endphp
+@section('interior.header')
+	Новый набор вопросов
+@endsection
 
-			@foreach($fields as $field)
-				<div class="row mb-4">
-					<label class="col-sm-3 col-form-label" for="{{ $field['name'] }}">
-						{{ $field['title'] }} @if($field['required']) <span class="required">*</span> @endif
-					</label>
-					@switch($field['type'])
+@section('form.params')
+	id="{{ form(\App\Models\Set::class, $mode, 'id') }}" name="{{ form(\App\Models\Set::class, $mode, 'name') }}"
+	action="{{ form(\App\Models\Set::class, $mode, 'action') }}"
+@endsection
 
-						@case('text')
-						@case('email')
-						@case('number')
-						<div class="col-sm-5">
-							<input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
-								   name="{{ $field['name'] }}" value="{{ old($field['name']) }}">
-						</div>
-						@break
+@section('form.fields')
+	@php
+		$fields = [
+			['name' => 'name', 'title' => 'Наименование набора вопросов', 'required' => true, 'type' => 'text'],
+			['name' => 'code', 'title' => 'PHP-код вычисления кода нейропрофиля', 'required' => true, 'type' => 'editor'],
+		];
+	@endphp
+@endsection
 
-						@case('editor')
-						<input type="hidden" name="{{ $field['name'] }}" id="{{ $field['name'] }}">
-						<div class="col-sm-9">
-							<div class="row">
-								<div class="document-editor__toolbar"></div>
-							</div>
-							<div class="row row-editor">
-								<div class="editor"></div>
-							</div>
-						</div>
-						@break;
-					@endswitch
-				</div>
-			@endforeach
-		</div>
-
-		<div class="block-content block-content-full block-content-sm bg-body-light fs-sm">
-			<div class="row">
-				<div class="col-sm-3 col-form-label">&nbsp;</div>
-				<div class="col-sm-5">
-					<button type="submit" class="btn btn-primary">Сохранить</button>
-					<a class="btn btn-secondary pl-3"
-					   href="{{ route('sets.index', ['sid' => session()->getId()]) }}"
-					   role="button">Закрыть</a>
-				</div>
-			</div>
-		</div>
-	</form>
+@section('form.close')
+	{{ form(\App\Models\Set::class, $mode, 'close') }}
 @endsection
 
 @push('css_after')

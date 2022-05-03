@@ -99,7 +99,8 @@ class SetController extends Controller
 	 */
     public function create()
     {
-        return view('sets.create');
+		$mode = config('global.create');
+        return view('sets.create', compact('mode'));
     }
 
 	/**
@@ -137,8 +138,9 @@ class SetController extends Controller
 	 */
     public function edit(int $id, bool $show = false)
     {
+		$mode = $show ? config('global.show') : config('global.edit');
 		$set = Set::findOrFail($id);
-        return view('sets.edit', compact('set', 'show'));
+        return view('sets.edit', compact('set', 'mode'));
     }
 
     /**

@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Events\ToastEvent;
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\Employer;
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\NewUser;
+use Exception;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
-use \Exception;
 
 class UserController extends Controller
 {
@@ -27,30 +27,31 @@ class UserController extends Controller
 	 * @return JsonResponse
 	 * @throws Exception
 	 */
-	public function getData()
+	public function getData(): JsonResponse
 	{
 		return Datatables::of(User::all())
+			->editColumn('role', fn ($user) => $user->getRoleNames()->toArray())
 			->addColumn('action', function ($user) {
 				$editRoute = route('users.edit', ['user' => $user->id, 'sid' => session()->getId()]);
 				$showRoute = route('users.show', ['user' => $user->id, 'sid' => session()->getId()]);
 				$actions = '';
 
-				if (Auth::user()->can('users.edit'))
+				if (auth()->user()->can('users.edit'))
 					$actions .=
-						"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+						"<a href=\"$editRoute\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
 						"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
 						"<i class=\"fas fa-edit\"></i>\n" .
 						"</a>\n";
-				if (Auth::user()->can('users.show'))
+				if (auth()->user()->can('users.show'))
 					$actions .=
-						"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+						"<a href=\"$showRoute\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
 						"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
 						"<i class=\"fas fa-eye\"></i>\n" .
 						"</a>\n";
-				if (Auth::user()->can('users.destroy') && Auth::user()->getKey() != $user->getKey())
+				if (auth()->user()->can('users.destroy') && auth()->user()->getKey() != $user->getKey())
 					$actions .=
 						"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-						"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$user->id}, '{$user->name}')\">\n" .
+						"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete($user->id, '$user->name')\">\n" .
 						"<i class=\"fas fa-trash-alt\"></i>\n" .
 						"</a>\n";
 				return $actions;
@@ -72,23 +73,35 @@ class UserController extends Controller
 	/**
 	 * Show the form for creating a new resource.
 	 *
-	 * @return RedirectResponse
+	 * @return Application|Factory|View
 	 */
 	public function create()
 	{
-		// TODO Сделать полноценное создание пользователя по образцу автономного
-		return redirect()->route('register', ['sid' => session()->getId()]);
+		$mode = config('global.create');
+		return view('users.create', compact('mode'));
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param Request $request
-	 * @return Response
+	 * @param UpdateUserRequest $request
+	 * @return RedirectResponse
 	 */
-	public function store(Request $request)
+	public function store(UpdateUserRequest $request)
 	{
-		//
+		$user = User::create([
+			'name' => $request->name,
+			'email' => $request->email,
+			'password' => Hash::make($request->password),
+		]);
+
+		event(new Registered($user));
+		$user->notify(new NewUser($user));
+		$name = $user->name;
+
+		session()->put('success',
+			"Зарегистрирован новый пользователь \"{$name}\"");
+		return redirect()->route('users.index', ['sid' => session()->getId()]);
 	}
 
 	/**
@@ -99,8 +112,9 @@ class UserController extends Controller
 	 */
 	public function show($id)
 	{
+		$mode = config('global.show');
 		$user = User::findOrFail($id);
-		return view('users.show', compact('user'));
+		return view('users.show', compact('user', 'mode'));
 	}
 
 	/**
@@ -112,10 +126,11 @@ class UserController extends Controller
 	 */
 	public function edit(Request $request, int $id)
 	{
+		$mode = config('global.edit');
 		$user = User::findOrFail($id);
 		$profile = $request->has('profile');
 		$roles = Role::all()->pluck('name')->toArray();
-		return view('users.edit', compact('user', 'profile', 'roles'));
+		return view('users.edit', compact('user', 'profile', 'roles', 'mode'));
 	}
 
 	/**
@@ -127,22 +142,18 @@ class UserController extends Controller
 	 */
 	public function update(UpdateUserRequest $request, $id)
 	{
-		$profile = $request->profile;
-		$draft = [
-			'name' => $request->fio,
-			'email' => $request->email,
-		];
-		if ($request->password)
-			$draft['password'] = Hash::make($request->password);
 		$user = User::findOrFail($id);
 		$name = $user->name;
+		$draft = $request->except('_token');
+		if ($request->has('password'))
+			$draft['password'] = Hash::make($request->password);
 		$user->update($draft);
+		$user->save();
 
-		$user->roles()->detach();
-		$user->assignRole($request->role);
+		session()->put('success',
+			"Пользователь \"{$name}\" обновлён");
 
-		session()->put('success', "Пользователь \"{$name}\" обновлён");
-		return redirect()->route($profile ? 'dashboard' : 'users.index', ['sid' => session()->getId()]);
+		return redirect()->route('users.index', ['sid' => session()->getId()]);
 	}
 
 	/**

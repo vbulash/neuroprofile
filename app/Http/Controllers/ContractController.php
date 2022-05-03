@@ -14,6 +14,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yajra\DataTables\DataTables;
 use Exception;
 
@@ -234,5 +236,54 @@ class ContractController extends Controller
 
 		event(new ToastEvent('success', '', "Контракт № {$number} клиента '{$name}' удалён"));
 		return true;
+	}
+
+	public function licensesExport(int $id)
+	{
+		event(new ToastEvent('info', '', "Формирование списка лицензий..."));
+
+		$contract = Contract::find($id);
+		$licenses = $contract->licenses->pluck('status', 'pkey')->toArray();
+
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->getActiveSheet();
+
+		$sheet->setCellValue('A1', sprintf("Лицензии клиента \"%s\" по контракту № %s",
+			$contract->client->name, $contract->number));
+		$sheet->setCellValue('A2', 'Персональный ключ');
+		$sheet->setCellValue('B2', 'Статус лицензии');
+		$sheet->freezePane('A3');
+
+		$row = 2;
+		foreach ($licenses as $pkey => $status) {
+			$sheet->setCellValue('A' . (++$row), $pkey);
+			$statusText = '';
+			switch($status) {
+				case License::FREE:
+					$statusText = 'Свободная';
+					break;
+				case License::USING:
+					$statusText = 'Используется';
+					break;
+				case License::USED:
+					$statusText = 'Использована';
+					break;
+				case License::BROKEN:
+					$statusText = 'Повреждена';
+					break;
+			}
+			$sheet->setCellValue('B' . $row, $statusText);
+		}
+
+		header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+		header('Content-Disposition: attachment;filename="' . env('APP_NAME') . ' - Экспорт лицензий.xlsx' . '"');
+		header('Cache-Control: max-age=0');
+
+		event(new ToastEvent('success', '', "Список лицензий сформирован"));
+
+		$writer = new Xlsx($spreadsheet);
+		$writer->save('php://output');
+
+		return redirect()->back();
 	}
 }

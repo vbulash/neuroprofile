@@ -1,53 +1,41 @@
-@extends('layouts.backend')
+@extends('layouts.wizard')
 
-@section('content')
-	<!-- Content Header (Page header) -->
-	<div class="bg-body-light">
-		<div class="content content-full">
-			<div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-				<h1 class="flex-grow-1 fs-3 fw-semibold my-2 my-sm-3">Пользователи</h1>
-				<nav class="flex-shrink-0 my-2 my-sm-0 ms-sm-3" aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item">Настройки</li>
-						<li class="breadcrumb-item active" aria-current="page">Пользователи</li>
-					</ol>
-				</nav>
-			</div>
-		</div>
+@section('header') @endsection
+
+@section('steps')
+	@php
+		$steps = [
+			['title' => 'Пользователи', 'active' => true, 'context' => 'user'],
+		];
+	@endphp
+@endsection
+
+@section('interior')
+	<div class="block-header block-header-default">
+		@hasrole('Администратор')
+		<a href="{{ route('users.create', ['sid' => session()->getId()]) }}"
+		   class="btn btn-primary mt-3 mb-3">Добавить пользователя</a>
+		@endhasrole
 	</div>
-
-	<!-- Main content -->
-	<div class="content p-3">
-		<!-- Table -->
-		<div class="block block-rounded">
-			<div class="block-header block-header-default">
-				@can('users.create')
-					<a href="{{ route('users.create', ['sid' => session()->getId()]) }}" class="btn btn-primary mt-3 mb-3">Добавить пользователя</a>
-				@endcan
+	<div class="block-content p-4">
+		@if ($count > 0)
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover text-nowrap" id="users_table"
+					   style="width: 100%;">
+					<thead>
+					<tr>
+						<th style="width: 30px">#</th>
+						<th>ФИО</th>
+						<th>Электронная почта</th>
+						<th>Действия</th>
+					</tr>
+					</thead>
+				</table>
 			</div>
-			<div class="block-content pb-3">
-				@if ($count > 0)
-					<div class="table-responsive">
-						<table class="table table-bordered table-hover text-nowrap" id="users_table"
-							   style="width: 100%;">
-							<thead>
-							<tr>
-								<th style="width: 30px">#</th>
-								<th>ФИО</th>
-								<th>Электронная почта</th>
-								<th>Действия</th>
-							</tr>
-							</thead>
-						</table>
-					</div>
-				@else
-					<p>Пользователей пока нет...</p>
-				@endif
-			</div>
-		</div>
-		<!-- END Table -->
+		@else
+			<p>Пользователей пока нет...</p>
+		@endif
 	</div>
-
 @endsection
 
 @if ($count > 0)

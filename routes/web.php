@@ -28,6 +28,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/conntracts.data', 'ContractController@getData')->name('contracts.index.data');
 	Route::get('/contracts.select/{contract}', 'ContractController@select')->name('contracts.select');
 	Route::get('/contracts.info', 'ContractController@info')->name('contracts.info');
+	Route::get('/contracts.licenses.export/{contract}', 'ContractController@licensesExport')->name('contracts.licenses.export');
 	// Наборы вопросов
 	Route::resource('/sets', 'SetController');
 	Route::get('/sets.data', 'SetController@getData')->name('sets.index.data');

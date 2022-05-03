@@ -21,7 +21,7 @@
 				</h3>
 			</div>
 			<div class="block-content p-4">
-				<table class="statistics">
+				<table class="statistics mb-4">
 					@foreach($statistics as $key => $value)
 						<tr>
 							<td class="key col-md-4">{{ $key }}:</td>
@@ -29,6 +29,8 @@
 						</tr>
 					@endforeach
 				</table>
+				<a href="{{ route('contracts.licenses.export', ['contract' => $contract->getKey(), 'sid' => session()->getId()]) }}"
+				   type="button" class="btn btn-primary">Экспорт лицензий</a>
 			</div>
 {{--			<div class="block-content block-content-full block-content-sm bg-body-light fs-sm">--}}
 {{--				<div class="row">--}}

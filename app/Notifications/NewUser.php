@@ -42,7 +42,7 @@ class NewUser extends Notification
      */
     public function toMail($notifiable)
     {
-		$roles = $notifiable->getRoleNames()->join(",<br/>");
+		$roles = $notifiable->getRoleNames()->join(" / ");
         return (new MailMessage)
 			->subject("Создан новый пользователь" )
 			->line("Создан новый пользователь \"{$notifiable->name}\" с ролью \"{$roles}\".")

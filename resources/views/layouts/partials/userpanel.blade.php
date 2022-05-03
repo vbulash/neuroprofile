@@ -1,25 +1,27 @@
 <!-- User Dropdown -->
 <div class="dropdown d-inline-block">
+	@php
+		$roles = auth()->user()->getRoleNames()->join(" / ");
+	@endphp
 	<button type="button" class="btn btn-alt-secondary" id="page-header-user-dropdown" data-bs-toggle="dropdown"
 			aria-haspopup="true" aria-expanded="false">
 		<i class="fa fa-fw fa-user d-sm-none"></i>
-		<span class="d-none d-sm-inline-block">{{ Illuminate\Support\Facades\Auth::user()->name }}</span>
+		<span class="d-none d-sm-inline-block">
+			{{ auth()->user()->name }} ({{ $roles }})
+		</span>
 		<i class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
 	</button>
 	<div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="page-header-user-dropdown">
-		<div class="bg-primary-dark rounded-top fw-semibold text-white p-3">
+		<div class="bg-primary-dark rounded-top fw-semibold text-white p-3 d-sm-none">
 			<div class="d-flex flex-column">
-				<span class="d-sm-none">{{ Illuminate\Support\Facades\Auth::user()->name }}</span>
-				@php
-					$roles = \Illuminate\Support\Facades\Auth::user()->getRoleNames()->join(",<br/>");
-				@endphp
+				<span>{{ auth()->user()->name }}</span>
 				<span class="role-name">{!! $roles !!}</span>
 			</div>
 		</div>
 		<div class="p-2">
 			<a class="dropdown-item"
 			   href="{{ route('users.edit', [
-    'user' => \Illuminate\Support\Facades\Auth::user()->getKey(),
+    'user' => auth()->user()->getKey(),
     'sid' => session()->getId(),
     'profile' => true
     ]) }}">
