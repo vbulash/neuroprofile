@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Contract extends Model
+class Contract extends Model implements FormTemplate
 {
 	use HasFactory, HasTitle;
 
@@ -92,5 +92,25 @@ class Contract extends Model
 		if (($today >= $this->start) && ($today < $this->end)) $this->status = Contract::ACTIVE;
 		if ($today > $this->end) $this->status = Contract::COMPLETE_BY_DATE;
 		$this->update();
+	}
+
+	public static function createTemplate(): array
+	{
+		return [
+			'id' => 'contract-create',
+			'name' => 'contract-create',
+			'action' => route('contracts.store', ['sid' => session()->getId()]),
+			'close' => route('contracts.index', ['sid' => session()->getId()]),
+		];
+	}
+
+	public function editTemplate(): array
+	{
+		return [
+			'id' => 'contract-edit',
+			'name' => 'contract-edit',
+			'action' => route('contracts.update', ['contract' => $this->getKey(), 'sid' => session()->getId()]),
+			'close' => route('contracts.index', ['sid' => session()->getId()]),
+		];
 	}
 }

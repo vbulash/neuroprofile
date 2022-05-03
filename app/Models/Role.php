@@ -10,7 +10,7 @@ class Role extends SpatieRole
 {
     use HasFactory, Notifiable;
 
-	protected $ffillable = [
+	protected $fillable = [
 		'name',
 		'selfassign'
 	];

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class Question extends Model
+class Question extends Model implements FormTemplate
 {
 	use HasFactory, HasTitle;
 
@@ -50,5 +50,25 @@ class Question extends Model
 			return $request->file($imageField)->store("images/{$folder}");
 		}
 		return null;
+	}
+
+	public static function createTemplate(): array
+	{
+		return [
+			'id' => 'question-create',
+			'name' => 'question-create',
+			'action' => route('questions.store', ['sid' => session()->getId()]),
+			'close' => route('questions.index', ['sid' => session()->getId()]),
+		];
+	}
+
+	public function editTemplate(): array
+	{
+		return [
+			'id' => 'question-edit',
+			'name' => 'question-edit',
+			'action' => route('questions.update', ['question' => $this->getKey(), 'sid' => session()->getId()]),
+			'close' => route('questions.index', ['sid' => session()->getId()]),
+		];
 	}
 }
