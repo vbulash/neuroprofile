@@ -285,6 +285,13 @@ SQL,
 		$name = $question->set->name;
 		$question->delete();
 
+		// Перенумеровать по порядку после удаления
+		$questions = $question->set->questions
+			->sortBy('sort_no')
+			->pluck('id')
+			->toArray();
+		$this->reorder($questions);
+
 		event(new ToastEvent('success', '', "Вопрос № {$number} из набора вопросов '{$name}' удалён"));
 		return true;
 	}
