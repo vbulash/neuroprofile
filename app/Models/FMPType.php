@@ -9,6 +9,7 @@ class FMPType extends Model implements FormTemplate
 {
     use HasFactory, HasTitle;
 
+	protected $table = 'fmptypes';
 	protected $fillable = [
 		'name',
 		'cluster',

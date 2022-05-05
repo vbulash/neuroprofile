@@ -11,7 +11,11 @@
 @endsection
 
 @section('interior.header')
-	Новый пользователь
+	@if($mode == config('global.show'))
+		Просмотр
+	@else
+		Редактирование
+	@endif анкеты пользователя &laquo;{{ $user->name }}&raquo;
 @endsection
 
 @section('form.params')

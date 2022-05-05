@@ -38,6 +38,12 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/questions.data', 'QuestionController@getData')->name('questions.index.data');
 	Route::post('/questions.up', 'QuestionController@up')->name('questions.up');
 	Route::post('/questions.down', 'QuestionController@down')->name('questions.down');
+
+	// Блок обработки результатов тестирования
+	// Тип описания
+	Route::resource('/fmptypes', 'FMPTypeController');
+	Route::get('/fmptypes.data', 'FMPTypeController@getData')->name('fmptypes.index.data');
+	Route::get('/fmptypes.select/{fmptype}', 'FMPTypeController@select')->name('fmptypes.select');
 });
 
 require __DIR__.'/auth.php';

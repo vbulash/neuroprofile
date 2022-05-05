@@ -98,7 +98,8 @@ class ClientController extends Controller
 	 */
     public function create()
     {
-        return view('clients.create');
+		$mode = config('global.create');
+        return view('clients.create', compact('mode'));
     }
 
 	/**
@@ -136,8 +137,9 @@ class ClientController extends Controller
 	 */
     public function edit(int $id, bool $show = false)
     {
+		$mode = $show ? config('global.show') : config('global.edit');
 		$client = Client::findOrFail($id);
-        return view('clients.edit', compact('client', 'show'));
+        return view('clients.edit', compact('client', 'mode'));
     }
 
 	/**

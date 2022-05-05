@@ -114,9 +114,10 @@ class ContractController extends Controller
 	 */
 	public function create()
 	{
+		$mode = config('global.create');
 		$context = session('context');
 		$client = $context['client'];
-		return view('contracts.create', compact('client'));
+		return view('contracts.create', compact('client', 'mode'));
 	}
 
 	/**
@@ -175,8 +176,9 @@ class ContractController extends Controller
 	 */
 	public function edit(int $id, bool $show = false)
 	{
+		$mode = $show ? config('global.show') : config('global.edit');
 		$contract = Contract::findOrFail($id);
-		return view('contracts.edit', compact('contract', 'show'));
+		return view('contracts.edit', compact('contract', 'mode'));
 	}
 
 	/**

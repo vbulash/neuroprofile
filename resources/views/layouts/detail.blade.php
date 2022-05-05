@@ -43,6 +43,9 @@
 							<div class="col-sm-5">
 								<input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
 									   name="{{ $field['name'] }}"
+									   @if($field['type'] == 'number' && isset($field['min']))
+										   min="{{ max(0, $field['min']) }}"
+									   @endif
 									   autocomplete="off"
 									   value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
 									   @if($mode == config('global.show') || isset($field['disabled'])) disabled @endif
@@ -92,7 +95,8 @@
 							@case('select')
 							<div class="col-sm-5">
 								<select class="form-control select2" name="{{ $field['name'] }}"
-										id="{{ $field['name'] }}" @if($mode == config('global.show')) disabled @endif
+										id="{{ $field['name'] }}"
+										@if($mode == config('global.show') || isset($field['disabled'])) disabled @endif
 								>
 									@foreach($field['options'] as $key => $value)
 										<option value="{{ $key }}"
@@ -105,6 +109,33 @@
 											{{ $value }}</option>
 									@endforeach
 								</select>
+							</div>
+							@break
+
+							@case('radio')
+							<div class="col-sm-5">
+								<div class="form-group btn-group col-lg-3 col-xs-12" role="group">
+									@php
+										$item = 1;
+									@endphp
+									@foreach($field['options'] as $key => $value)
+										<input type="radio" class="btn-check" name="{{ $field['name'] }}"
+											   id="{{ $field['name'] . $item }}"
+											   autocomplete="off"
+											   @if ($mode == config('global.create'))
+												   @if($loop->first) checked @endif
+											   @elseif ($key == $field['value'])
+												   checked
+											   @endif
+											   @if ($mode == config('global.show'))
+												   disabled
+											   @endif
+											   value="{{ $key }}"
+										>
+										<label class="btn btn-outline-primary"
+											   for="{{ $field['name'] . $item++ }}">{{ $value }}</label>
+									@endforeach
+								</div>
 							</div>
 							@break
 
