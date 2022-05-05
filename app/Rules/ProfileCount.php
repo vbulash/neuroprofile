@@ -31,7 +31,7 @@ class ProfileCount implements Rule
 	 */
 	public function passes($attribute, $value)
 	{
-		$this->count = FMPType::all()->count();
+		$this->count = FMPType::findOrFail($this->request->id)->profiles->count();
 		return intval($value) >= $this->count;
 	}
 

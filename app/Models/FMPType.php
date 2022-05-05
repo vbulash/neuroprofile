@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PhpOffice\PhpSpreadsheet\Chart\Title;
 
-class FMPType extends Model implements FormTemplate
+class FMPType extends Model implements FormTemplate, Titleable
 {
-    use HasFactory, HasTitle;
+    use HasFactory;
 
 	protected $table = 'fmptypes';
 	protected $fillable = [
@@ -17,9 +18,14 @@ class FMPType extends Model implements FormTemplate
 		'limit'
 	];
 
+	public function profiles()
+	{
+		return $this->hasMany(Profile::class, 'fmptype_id');
+	}
+
 	public function getTitle(): string
 	{
-		return $this->title;
+		return $this->name;
 	}
 
 	public static function createTemplate(): array

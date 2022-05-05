@@ -44,8 +44,12 @@
 
                         $subtitle = '';
 						if(isset($step['context']))
-                            if(isset($context[$step['context']]))
-                            	$subtitle = $context[$step['context']]->getTitle();
+                            if(isset($context[$step['context']])) {
+                                $modelClass = classByContext($step['context']);
+                            	$id = $context[$step['context']];
+                                $model = $modelClass::findOrFail($id);
+                            	$subtitle = $model->getTitle();
+							}
 					@endphp
 
 					<div class="col-md-6 col-xl-3 mb-4">

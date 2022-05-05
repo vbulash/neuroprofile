@@ -72,9 +72,8 @@ class ClientController extends Controller
 
 	public function select(int $id)
 	{
-		$client = Client::findOrFail($id);
 		session()->forget('context');
-		session()->put('context', ['client' => $client]);
+		session()->put('context', ['client' => $id]);
 
 		return redirect()->route('contracts.index', ['sid' => session()->getId()]);
 	}

@@ -9,3 +9,18 @@ if (! function_exists('form')) {
 		};
 	}
 }
+
+if (! function_exists('classByContext')) {
+	function classByContext(string $context) {
+		return match ($context) {
+			'client' => \App\Models\Client::class,
+			'contract' => \App\Models\Contract::class,
+			'fmptype' => \App\Models\FMPType::class,
+			'profile' => \App\Models\Profile::class,
+			'question' => \App\Models\Question::class,
+			'role' => \App\Models\Role::class,
+			'set' => \App\Models\Set::class,
+			'user' => \App\Models\User::class
+		};
+	}
+}

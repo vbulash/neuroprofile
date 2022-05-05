@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FormTemplate
+class User extends Authenticatable implements FormTemplate, Titleable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, Notifiable;
 
@@ -66,5 +66,10 @@ class User extends Authenticatable implements FormTemplate
 			'action' => route('users.update', ['user' => $this->getKey(), 'sid' => session()->getId()]),
 			'close' => route('users.index', ['sid' => session()->getId()]),
 		];
+	}
+
+	public function getTitle(): string
+	{
+		return $this->name;
 	}
 }

@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class Question extends Model implements FormTemplate
+class Question extends Model implements FormTemplate, Titleable
 {
-	use HasFactory, HasTitle;
+	use HasFactory;
 
 	protected $fillable = [
 		'sort_no',

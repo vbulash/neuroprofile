@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Contract extends Model implements FormTemplate
+class Contract extends Model implements FormTemplate, Titleable
 {
-	use HasFactory, HasTitle;
+	use HasFactory;
 
 	public const ACTIVE = 'Активный';
 	public const INACTIVE = 'Неактивный';

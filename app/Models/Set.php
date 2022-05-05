@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Set extends Model implements FormTemplate
+class Set extends Model implements FormTemplate, Titleable
 {
-    use HasFactory, HasTitle;
+    use HasFactory;
 
 	protected $fillable = [
 		'name',

@@ -32,7 +32,7 @@ class QuestionController extends Controller
 	public function getData(): JsonResponse
 	{
 		$context = session('context');
-		$set = $context['set'];
+		$set = Set::findOrFail($context['set']);
 		$questions = DB::select(<<< SQL
 SELECT questions.* FROM questions, sets
 WHERE sets.id = questions.set_id AND sets.id = :id
@@ -110,7 +110,8 @@ SQL,
 		unset($context['question']);
 		session()->put('context', $context);
 
-        $count = $context['set']->questions->count();
+		$set = Set::findOrFail($context['set']);
+        $count = $set->questions->count();
 		return view('questions.index', compact('count'));
     }
 
@@ -122,7 +123,7 @@ SQL,
     public function create()
     {
 		$context = session('context');
-		$set = $context['set'];
+		$set = Set::findOrFail($context['set']);
 		return view('questions.create', compact('set'));
     }
 
@@ -135,7 +136,7 @@ SQL,
     public function store(StoreQuestionRequest $request)
     {
 		$context = session('context');
-		$set = $context['set'];
+		$set = Set::findOrFail($context['set']);
 
 		$data = $request->all();
 		$data['sort_no'] = $set->questions->count() + 1;
@@ -187,7 +188,7 @@ SQL,
     public function update(UpdateQuestionRequest $request, $id)
     {
 		$context = session('context');
-		$set = $context['set'];
+		$set = Set::findOrFail($context['set']);
 
 		$question = Question::findOrFail($id);
 		$data = $request->all();

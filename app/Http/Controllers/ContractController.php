@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\ToastEvent;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Requests\UpdateContractRequest;
+use App\Models\Client;
 use App\Models\Contract;
 use App\Models\License;
 use Illuminate\Contracts\Foundation\Application;
@@ -30,7 +31,8 @@ class ContractController extends Controller
 	public function getData(): JsonResponse
 	{
 		$context = session('context');
-		$contracts = $context['client']->contracts();
+		$client = Client::findOrFail($context['client']);
+		$contracts = $client->contracts();
 
 		return Datatables::of($contracts)
 			->editColumn('start', fn($contract) => $contract->start->format('d.m.Y'))
@@ -71,7 +73,7 @@ class ContractController extends Controller
 	{
 		$context = session('context');
 		unset($context['contract']);
-		$context['contract'] = Contract::findOrFail($id);
+		$context['contract'] = $id;
 		session()->put('context', $context);
 
 		return redirect()->route('contracts.info', ['sid' => session()->getId()]);
@@ -79,7 +81,7 @@ class ContractController extends Controller
 
 	public function info() {
 		$context = session('context');
-		$contract = $context['contract'];
+		$contract = Contract::findOrFail($context['contract']);
 
 		$statuses = $contract->licenses->groupBy('status')->toArray();
 		$statistics = [
@@ -102,8 +104,9 @@ class ContractController extends Controller
 		$context = session('context');
 		unset($context['contract']);
 		session()->put('context', $context);
+		$client = Client::findOrFail($context['client']);
 
-		$count = $context['client']->contracts->count();
+		$count = $client->contracts->count();
 		return view('contracts.index', compact('count'));
 	}
 
@@ -116,7 +119,7 @@ class ContractController extends Controller
 	{
 		$mode = config('global.create');
 		$context = session('context');
-		$client = $context['client'];
+		$client = Client::findOrFail($context['client']);
 		return view('contracts.create', compact('client', 'mode'));
 	}
 

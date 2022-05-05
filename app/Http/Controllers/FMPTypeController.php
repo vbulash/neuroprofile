@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Events\ToastEvent;
 use App\Http\Requests\StoreFMPTypeRequest;
 use App\Http\Requests\UpdateFMPTypeRequest;
-use App\Models\Client;
 use App\Models\FMPType;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -13,8 +12,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Session\Store;
 use Yajra\DataTables\DataTables;
 use Exception;
 
@@ -33,7 +30,7 @@ class FMPTypeController extends Controller
 		return Datatables::of($fmptypes)
 			->editColumn('cluster', fn ($fmptype) => $fmptype->cluster ? 'Нейропрофиль' : 'ФМП')
 			->editColumn('active', fn ($fmptype) => $fmptype->active ? 'Активный' : 'Неактивный')
-			->addColumn('fact', fn ($fmtype) => 0)	// TODO сделать после добавления профилей
+			->addColumn('fact', fn ($fmptype) => $fmptype->profiles->count())
 			->addColumn('action', function ($fmptype) {
 				$editRoute = route('fmptypes.edit', ['fmptype' => $fmptype->getKey(), 'sid' => session()->getId()]);
 				$showRoute = route('fmptypes.show', ['fmptype' => $fmptype->getKey(), 'sid' => session()->getId()]);
@@ -68,11 +65,10 @@ class FMPTypeController extends Controller
 
 	public function select(int $id)
 	{
-		$fmptype = FMPType::findOrFail($id);
 		session()->forget('context');
-		session()->put('context', ['fmptype' => $fmptype]);
+		session()->put('context', ['fmptype' => $id]);
 
-		//return redirect()->route('profiles.index', ['sid' => session()->getId()]);
+		return redirect()->route('profiles.index', ['sid' => session()->getId()]);
 	}
 
     /**
@@ -152,8 +148,11 @@ class FMPTypeController extends Controller
     public function update(UpdateFMPTypeRequest $request, $id)
     {
 		$fmptype = FMPType::findOrFail($id);
+		$data = $request->except(['_token', 'id']);	// ID нужен только для валидации
+		$count = $fmptype->profiles->count();
+		$data['active'] = intval($data['limit']) == $count;
 		$name = $fmptype->name;
-		$fmptype->update($request->except('_token'));
+		$fmptype->update($data);
 
 		session()->put('success', "Тип описания \"{$name}\" обновлён");
 		return redirect()->route('fmptypes.index', ['sid' => session()->getId()]);

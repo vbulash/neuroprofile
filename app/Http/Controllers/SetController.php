@@ -73,9 +73,8 @@ class SetController extends Controller
 
 	public function select(int $id)
 	{
-		$set = Set::findOrFail($id);
 		session()->forget('context');
-		session()->put('context', ['set' => $set]);
+		session()->put('context', ['set' => $id]);
 
 		return redirect()->route('questions.index', ['sid' => session()->getId()]);
 	}
