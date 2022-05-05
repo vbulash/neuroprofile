@@ -44,7 +44,7 @@ class Profile extends Model implements FormTemplate, Titleable
 		];
 	}
 
-	private static function getAllCodes(): array
+	public static function getAllCodes(): array
 	{
 		return [
 			'BD' => 'BD',

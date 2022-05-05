@@ -158,7 +158,7 @@ class ProfileController extends Controller
 		$mode = $show ? config('global.show') : config('global.edit');
 		$profile = Profile::findOrFail($id);
 		$context = session('context');
-		$codes = Profile::getFreeCodes($context['fmptype']);
+		$codes = Profile::getAllCodes($context['fmptype']);
 		return view('profiles.edit', compact('profile', 'mode', 'codes'));
 	}
 
