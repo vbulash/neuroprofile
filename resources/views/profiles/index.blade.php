@@ -86,8 +86,8 @@
 					columns: [
 						{data: 'id', name: 'id', responsivePriority: 1},
 						{data: 'code', name: 'code', responsivePriority: 1},
-						{data: 'name', name: 'name', responsivePriority: 1},
-						{data: 'fact', name: 'fact', responsivePriority: 2},
+						{data: 'name', name: 'name', responsivePriority: 1, sortable: false},
+						{data: 'fact', name: 'fact', responsivePriority: 2, sortable: false},
 						{data: 'action', name: 'action', sortable: false, responsivePriority: 1, className: 'no-wrap dt-actions'}
 					]
 				});

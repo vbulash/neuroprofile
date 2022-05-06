@@ -150,7 +150,14 @@ SQL,
 		$question = Question::create($data);
 		$question->save();
 
-		session()->put('success', "Вопрос № {$data['sort_no']} из набора вопросов '{$set->name}' создан");
+		// Перенумеровать по порядку после создания
+		$questions = $question->set->questions
+			->sortBy('sort_no')
+			->pluck('id')
+			->toArray();
+		$this->reorder($questions);
+
+		session()->put('success', "Вопрос № {$data['sort_no']} из набора вопросов &laquo;{$set->name}&raquo; создан.<br/>Список вопросов перенумерован");
 		return redirect()->route('questions.index', ['sid' => session()->getId()]);
     }
 
@@ -201,10 +208,17 @@ SQL,
 			$data[$field] = $mediaPath;
 		}
 
-		$number = $request->sort_no;
+		$number = $question->getKey();
 		$question->update($data);
 
-		session()->put('success', "Вопрос № {$number} из набора вопросов '{$set->name}' обновлён");
+		// Перенумеровать по порядку после обновления
+		$questions = $question->set->questions
+			->sortBy('sort_no')
+			->pluck('id')
+			->toArray();
+		$this->reorder($questions);
+
+		session()->put('success', "Вопрос ID {$number} из набора вопросов &laquo;{$set->name}&raquo; обновлён.<br/>Список вопросов перенумерован");
 		return redirect()->route('questions.index', ['sid' => session()->getId()]);
     }
 
@@ -293,7 +307,7 @@ SQL,
 			->toArray();
 		$this->reorder($questions);
 
-		event(new ToastEvent('success', '', "Вопрос № {$number} из набора вопросов '{$name}' удалён"));
+		event(new ToastEvent('success', '', "Вопрос № {$number} из набора вопросов &laquo;{$name}&raquo; удалён.<br/>Список вопросов перенумерован"));
 		return true;
 	}
 }

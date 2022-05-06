@@ -44,10 +44,15 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::resource('/fmptypes', 'FMPTypeController');
 	Route::get('/fmptypes.data', 'FMPTypeController@getData')->name('fmptypes.index.data');
 	Route::get('/fmptypes.select/{fmptype}', 'FMPTypeController@select')->name('fmptypes.select');
-	//
+	// Нейропрофили
 	Route::resource('/profiles', 'ProfileController');
 	Route::get('/profiles.data', 'ProfileController@getData')->name('profiles.index.data');
 	Route::get('/profiles.select/{profile}', 'ProfileController@select')->name('profiles.select');
+	// Блоки
+	Route::resource('/blocks', 'BlockController');
+	Route::get('/blocks.data', 'BlockController@getData')->name('blocks.index.data');
+	Route::post('/blocks.up', 'BlockController@up')->name('blocks.up');
+	Route::post('/blocks.down', 'BlockController@down')->name('blocks.down');
 });
 
 require __DIR__.'/auth.php';

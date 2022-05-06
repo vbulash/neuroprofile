@@ -1,8 +1,8 @@
 {
-    "name": "laravel/laravel",
+    "name": "personahuman/neurotest-2",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "Neuro psychological testing platform",
+    "keywords": ["neuro", "tests"],
     "license": "MIT",
     "require": {
         "php": "^8.1",

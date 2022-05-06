@@ -14,7 +14,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -33,7 +32,7 @@ class ProfileController extends Controller
 		$profiles = $fmptype->profiles;
 
 		return Datatables::of($profiles)
-			->addColumn('fact', fn($profile) => 0)    // TODO Сделать по готовности блоков
+			->addColumn('fact', fn($profile) => $profile->blocks->count())
 			->addColumn('action', function ($profile) {
 				$editRoute = route('profiles.edit', ['profile' => $profile->getKey(), 'sid' => session()->getId()]);
 				$showRoute = route('profiles.show', ['profile' => $profile->getKey(), 'sid' => session()->getId()]);

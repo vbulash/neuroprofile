@@ -25,7 +25,7 @@
 	@php
 		$fields = [
 			['name' => 'code', 'title' => 'Код нейропрофиля', 'required' => true, 'type' => 'select', 'options' => $codes],
-			['name' => 'name', 'title' => 'Наименование нейропрофиля', 'required' => true, 'type' => 'text'],
+			['name' => 'name', 'title' => 'Название нейропрофиля', 'required' => true, 'type' => 'text'],
 			['name' => 'fmptype_id', 'type' => 'hidden', 'value' => $fmptype->getKey()],
 		];
 	@endphp

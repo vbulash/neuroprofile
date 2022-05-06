@@ -29,7 +29,7 @@
 	@php
 		$fields = [
 			['name' => 'code', 'title' => 'Код нейропрофиля', 'required' => false, 'type' => 'select', 'options' => $codes, 'value' => $profile->code, 'disabled' => true],
-			['name' => 'name', 'title' => 'Наименование нейропрофиля', 'required' => true, 'type' => 'text', 'value' => $profile->name],
+			['name' => 'name', 'title' => 'Название нейропрофиля', 'required' => true, 'type' => 'text', 'value' => $profile->name],
 			['name' => 'fmptype_id', 'type' => 'hidden', 'value' => $profile->fmptype->getKey()],
 		];
 	@endphp

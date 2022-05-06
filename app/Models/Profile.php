@@ -19,6 +19,10 @@ class Profile extends Model implements FormTemplate, Titleable
 		return $this->belongsTo(FMPType::class);
 	}
 
+	public function blocks() {
+		return $this->hasMany(Block::class);
+	}
+
 	public function getTitle(): string
 	{
 		return $this->name;
