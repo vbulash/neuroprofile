@@ -17,28 +17,27 @@
 @endsection
 
 @section('interior.header')
-	Новый текстовый блок описания
+	Просмотр родительского блока описания &laquo;{{ $block->name }}&raquo;<br/>
+	<small>Родительский блок используется как основа для создания ссылочного блока</small>
 @endsection
 
 @section('form.params')
-	id="{{ form(\App\Models\Block::class, $mode, 'id') }}" name="{{ form(\App\Models\Block::class, $mode, 'name') }}"
-	action="{{ form(\App\Models\Block::class, $mode, 'action') }}"
+	id="parent-show" name="parent-show"
+	action=""
 @endsection
 
 @section('form.fields')
 	@php
 		$fields = [
-			['name' => 'name', 'title' => 'Название блока', 'required' => true, 'type' => 'text'],
-			['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea'],
-			['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'editor'],
-			['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Text->value],
-			['name' => 'profile_id', 'type' => 'hidden', 'value' => $profile->getKey()],
+			['name' => 'name', 'title' => 'Название блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
+			['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea', 'value' => $block->short],
+			['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'editor', 'value' => $block->full],
 		];
 	@endphp
 @endsection
 
 @section('form.close')
-	{{ form(\App\Models\Block::class, $mode, 'close') }}
+	{{ route('aliases.index', ['sid' => session()->getId()]) }}
 @endsection
 
 @push('css_after')
@@ -107,7 +106,7 @@
 				window.editor = editor;
 				document.querySelector('.document-editor__toolbar').appendChild(editor.ui.view.toolbar.element);
 				document.querySelector('.ck-toolbar').classList.add('ck-reset_all');
-				//editor.isReadOnly = true;
+				editor.isReadOnly = true;
 			})
 			.catch(error => {
 				console.error('Oops, something went wrong!');
@@ -115,9 +114,5 @@
 				console.warn('Build id: bfknlbbh0ej1-27rpc1i5joqr');
 				console.error(error);
 			});
-
-		document.getElementById('block-create').addEventListener('submit', () => {
-			document.getElementById('full').value = editor.getData();
-		}, false);
 	</script>
 @endpush

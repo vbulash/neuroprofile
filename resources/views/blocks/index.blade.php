@@ -29,7 +29,7 @@
                         ],
                         [
                             'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Alias->value),
-                            'action' => route('blocks.create', ['type' => \App\Models\BlockType::Alias->value, 'sid' => $sid])
+                            'action' => route('aliases.index', ['sid' => $sid])
                         ],
 					];
 				@endphp

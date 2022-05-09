@@ -17,28 +17,32 @@
 @endsection
 
 @section('interior.header')
-	Новый текстовый блок описания
+	@if($mode == config('global.show'))
+		Просмотр
+	@else
+		Редактирование
+	@endif блока описания &laquo;{{ $block->name }}&raquo;
 @endsection
 
 @section('form.params')
-	id="{{ form(\App\Models\Block::class, $mode, 'id') }}" name="{{ form(\App\Models\Block::class, $mode, 'name') }}"
-	action="{{ form(\App\Models\Block::class, $mode, 'action') }}"
+	id="{{ form($block, $mode, 'id') }}" name="{{ form($block, $mode, 'name') }}"
+	action="{{ form($block, $mode, 'action') }}"
 @endsection
 
 @section('form.fields')
 	@php
 		$fields = [
-			['name' => 'name', 'title' => 'Название блока', 'required' => true, 'type' => 'text'],
-			['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea'],
-			['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'editor'],
-			['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Text->value],
-			['name' => 'profile_id', 'type' => 'hidden', 'value' => $profile->getKey()],
+			['name' => 'name', 'title' => 'Название блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
+			['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea', 'value' => $block->short],
+			['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'editor', 'value' => $block->full],
+			['name' => 'type', 'type' => 'hidden', 'value' => $block->type],
+			['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->profile->getKey()],
 		];
 	@endphp
 @endsection
 
 @section('form.close')
-	{{ form(\App\Models\Block::class, $mode, 'close') }}
+	{{ form($block, $mode, 'close') }}
 @endsection
 
 @push('css_after')
@@ -107,7 +111,9 @@
 				window.editor = editor;
 				document.querySelector('.document-editor__toolbar').appendChild(editor.ui.view.toolbar.element);
 				document.querySelector('.ck-toolbar').classList.add('ck-reset_all');
-				//editor.isReadOnly = true;
+				@if($mode == config('global.show'))
+					editor.isReadOnly = true;
+				@endif
 			})
 			.catch(error => {
 				console.error('Oops, something went wrong!');
@@ -116,8 +122,10 @@
 				console.error(error);
 			});
 
-		document.getElementById('block-create').addEventListener('submit', () => {
-			document.getElementById('full').value = editor.getData();
-		}, false);
+		@if($mode != config('global.show'))
+			document.getElementById('block-edit').addEventListener('submit', () => {
+				document.getElementById('full').value = editor.getData();
+			}, false);
+		@endif
 	</script>
 @endpush

@@ -16,7 +16,7 @@ class Profile extends Model implements FormTemplate, Titleable
 	];
 
 	public function fmptype() {
-		return $this->belongsTo(FMPType::class);
+		return $this->belongsTo(FMPType::class, 'fmptype_id');
 	}
 
 	public function blocks() {
@@ -25,7 +25,7 @@ class Profile extends Model implements FormTemplate, Titleable
 
 	public function getTitle(): string
 	{
-		return $this->name;
+		return sprintf("%s (код %s)", $this->name, $this->code);
 	}
 
 	public static function createTemplate(): array

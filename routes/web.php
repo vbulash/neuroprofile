@@ -53,6 +53,15 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/blocks.data', 'BlockController@getData')->name('blocks.index.data');
 	Route::post('/blocks.up', 'BlockController@up')->name('blocks.up');
 	Route::post('/blocks.down', 'BlockController@down')->name('blocks.down');
+	// Контроллер текстовых блоков в цепочке обработки результатов тестирования
+	//	Используются только несколько методов из полного ресурсного маршрута
+	Route::get('/texts/create', 'blocks\TextController@create')->name('texts.create');
+	Route::get('/texts/{text}/edit', 'blocks\TextController@edit')->name('texts.edit');
+	// Контроллер ссылочных блоков в цепочке обработки результатов тестирования
+	Route::get('/aliases.index', 'blocks\AliasController@index')->name('aliases.index');
+	Route::get('/aliases.data', 'blocks\AliasController@getData')->name('aliases.index.data');
+	Route::put('/aliases.link/{parent}', 'blocks\AliasController@link')->name('aliases.link');
+	Route::get('/aliases/{block}', 'blocks\AliasController@show')->name('aliases.show');
 });
 
 require __DIR__.'/auth.php';

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\ToastEvent;
+use App\Http\Controllers\blocks\TextController;
 use App\Http\Requests\StoreBlockRequest;
 use App\Models\Block;
 use App\Models\BlockType;
-use App\Models\FMPType;
 use App\Models\Profile;
-use App\Models\Set;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -16,7 +15,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -36,14 +34,14 @@ class BlockController extends Controller
 
 		$count = $blocks->count();
 		$first = $last = 0;
-		if($count > 1) {
+		if ($count > 1) {
 			$first = $blocks->first()->getKey();
 			$last = $blocks->last()->getKey();
 		}
 
 		return Datatables::of($blocks)
 			->addColumn('type', fn($block) => BlockType::getName($block->type))
-			->addColumn('action', function ($block) use($first, $last, $count) {
+			->addColumn('action', function ($block) use ($first, $last, $count) {
 				$editRoute = route('blocks.edit', ['block' => $block->getKey(), 'sid' => session()->getId()]);
 				$showRoute = route('blocks.show', ['block' => $block->getKey(), 'sid' => session()->getId()]);
 				$actions = '';
@@ -64,7 +62,7 @@ class BlockController extends Controller
 					"<i class=\"fas fa-trash-alt\"></i>\n" .
 					"</a>\n";
 
-				if($count > 1) {
+				if ($count > 1) {
 					if ($block->getKey() != $first)
 						$actions .=
 							"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
@@ -83,13 +81,14 @@ class BlockController extends Controller
 			})
 			->make(true);
 	}
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Application|Factory|View
 	 */
-    public function index()
-    {
+	public function index()
+	{
 		$context = session('context');
 		unset($context['block']);
 		session()->put('context', $context);
@@ -97,26 +96,20 @@ class BlockController extends Controller
 		$profile = Profile::findOrFail($context['profile']);
 		$count = $profile->blocks->count();
 		return view('blocks.index', compact('count'));
-    }
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return RedirectResponse
 	 */
-    public function create(Request $request)
-    {
-		$type = $request->type;
-		$mode = config('global.create');
-		$context = session('context');
-		$profile = Profile::findOrFail($context['profile']);
-		$view = match (intval($type)) {
-			BlockType::Text->value => 'blocks.text.create',
-			// TODO Реализовать ссылки на create других типов блоков
-			default => abort(500)	// Нереализованный тип блока
+	public function create(Request $request)
+	{
+		return match (intval($request->type)) {
+			BlockType::Text->value => redirect()->route('texts.create', ['sid' => session()->getId()]),
+			// TODO Ссылочный тип
 		};
-		return view($view, compact('profile', 'mode'));
-    }
+	}
 
 	/**
 	 * Store a newly created resource in storage.
@@ -124,51 +117,59 @@ class BlockController extends Controller
 	 * @param StoreBlockRequest $request
 	 * @return RedirectResponse
 	 */
-    public function store(StoreBlockRequest $request)
-    {
-		$block = Block::create($request->except('_token'));
-		$block->save();	// TODO Если будет различие в сохранении различных типов блоков - учесть
+	public function store(StoreBlockRequest $request)
+	{
+		switch ($request->type) {
+			case BlockType::Text->value:
+				$block = TextController::store($request->except('_token'));
+				break;
+				// TODO Ссылочный тип
+		}
 		// Перенумеровать блоки
 		$blocks = $block->profile->blocks
 			->sortBy('sort_no')
 			->pluck('id')
 			->toArray();
 		$this->reorder($blocks);
-		$name = $block->name;
+		$name = $block->getAttribute('name');
 
-		session()->put('success', BlockType::getName($block->type) . " &laquo;{$name}&raquo; создан.<br/>Блоки перенумерованы");
+		session()->put('success',
+			BlockType::getName($block->type) .
+			" &laquo;{$name}&raquo; создан.<br/>Блоки перенумерованы");
 		return redirect()->route('blocks.index', ['sid' => session()->getId()]);
-    }
+	}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Application|Factory|View
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param int $id
+	 * @return RedirectResponse
 	 */
-    public function show(int $id)
-    {
-        return $this->edit($id, true);
-    }
+	public function show(int $id)
+	{
+		return $this->edit($id, true);
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param int $id
 	 * @param bool $show
-     * @return Application|Factory|View
+	 * @return RedirectResponse
 	 */
-    public function edit(int $id, bool $show = false)
-    {
-        $mode = $show ? config('global.show') : config('global.edit');
+	public function edit(int $id, bool $show = false)
+	{
+		$mode = $show ? config('global.show') : config('global.edit');
 		$block = Block::findOrFail($id);
-		$view = match (intval($block->type)) {
-			BlockType::Text->value => 'blocks.text.edit',
-			// TODO Реализовать ссылки на edit других типов блоков
-			default => abort(500)	// Нереализованный тип блока
+		return match (intval($block->type)) {
+			BlockType::Text->value => redirect()->route('texts.edit', [
+				'text' => $block->getKey(),
+				'mode' => $mode,
+				'sid' => session()->getId()
+			]),
+			// TODO Ссылочный тип
 		};
-		return view($view, compact('block', 'mode'));
-    }
+	}
 
 	/**
 	 * Update the specified resource in storage.
@@ -177,21 +178,27 @@ class BlockController extends Controller
 	 * @param int $id
 	 * @return RedirectResponse
 	 */
-    public function update(Request $request, int $id)
-    {
-		$block = Block::findOrFail($id);
-		$name = $block->name;
-		$block->update($request->except('_token'));
+	public function update(Request $request, int $id)
+	{
+		switch ($request->type) {
+			case BlockType::Text->value:
+				$name = TextController::update($request->except('_token'), $id);
+				break;
+			// TODO Ссылочный тип
+		}
 		// Перенумеровать блоки
+		$block = Block::findOrFail($id);
 		$blocks = $block->profile->blocks
 			->sortBy('sort_no')
 			->pluck('id')
 			->toArray();
 		$this->reorder($blocks);
 
-		session()->put('success', BlockType::getName($block->type) . " &laquo;{$name}&raquo; обновлён.<br/>Блоки перенумерованы");
+		session()->put('success',
+			BlockType::getName($block->type) .
+			" &laquo;{$name}&raquo; обновлён.<br/>Блоки перенумерованы");
 		return redirect()->route('blocks.index', ['sid' => session()->getId()]);
-    }
+	}
 
 	/**
 	 * Remove the specified resource from storage.
@@ -206,21 +213,28 @@ class BlockController extends Controller
 		} else $id = $block;
 
 		$block = Block::findOrFail($id);
+		$profile = $block->profile;
 		$name = $block->name;
-		if($block->type == BlockType::Alias) {
-			// TODO Здесь желательно дать список блоков с возможность перехода в соответствующие списки блоков и удаления блоков-потомков
-			event(new ToastEvent('error', '', "Нельзя удалить блок &laquo;{$name}&raquo; - на него есть ссылки других блоков"));
-			return false;
+
+		switch ($block->type) {
+			case BlockType::Text->value:
+				$deleted = TextController::destroy($block->getKey());
+				break;
+			// TODO Ссылочный тип
 		}
-		$block->delete();
+		if (!$deleted) return false;
+
 		// Перенумеровать блоки
-		$blocks = $block->profile->blocks
+		$blocks = $profile->blocks
 			->sortBy('sort_no')
 			->pluck('id')
 			->toArray();
 		$this->reorder($blocks);
 
-		event(new ToastEvent('success', '', "Нейропрофиль &laquo;{$name}&raquo; удалён.<br/>Блоки перенумерованы"));
+		event(new ToastEvent('success', '',
+			BlockType::getName($block->type) .
+			" &laquo;{$name}&raquo; удалён.<br/>Блоки перенумерованы"
+		));
 		return true;
 	}
 
@@ -231,7 +245,7 @@ class BlockController extends Controller
 			foreach ($ids as $id) {
 				$counter++;
 				$block = Block::findOrFail($id);
-				if($block->sort_no != $counter)
+				if ($block->sort_no != $counter)
 					$block->update(['sort_no' => $counter]);
 			}
 		});
