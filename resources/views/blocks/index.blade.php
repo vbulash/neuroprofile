@@ -21,7 +21,6 @@
 			</button>
 			<ul class="dropdown-menu" aria-labelledby="blocks-create">
 				@php
-					// TODO Учесть различие в action различных типов блоков по мере их реализации
 					$buttons = [
                         [
                             'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Text->value),
@@ -29,7 +28,7 @@
                         ],
                         [
                             'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Alias->value),
-                            'action' => route('aliases.index', ['sid' => $sid])
+                            'action' => route('blocks.create', ['type' => \App\Models\BlockType::Alias->value, 'sid' => $sid])
                         ],
 					];
 				@endphp
@@ -111,7 +110,7 @@
 
 			function clickDelete(id, name) {
 				document.getElementById('confirm-title').innerText = "Подтвердите удаление";
-				document.getElementById('confirm-body').innerHTML = "Удалить блока &laquo;" + name + "&raquo; ?";
+				document.getElementById('confirm-body').innerHTML = "Удалить блок &laquo;" + name + "&raquo; ?";
 				document.getElementById('confirm-yes').dataset.id = id;
 				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
 				confirmDialog.show();

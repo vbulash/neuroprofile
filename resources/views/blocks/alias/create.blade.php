@@ -1,8 +1,6 @@
 @extends('layouts.detail')
 
-@section('service')
-	Работа с описаниями результатов тестирования
-@endsection
+@section('service')Работа с описаниями результатов тестирования@endsection
 
 @section('body-params')
 	data-editor="DecoupledDocumentEditor" data-collaboration="false"
@@ -10,6 +8,7 @@
 
 @section('steps')
 	@php
+		$mode = config('global.create');
 		$steps = [
 			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
 			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
@@ -19,28 +18,33 @@
 @endsection
 
 @section('interior.header')
-	Просмотр родительского блока описания &laquo;{{ $block->name }}&raquo;<br/>
-	<small>Родительский блок используется как основа для создания ссылочного блока</small>
+	Новый ссылочный блок описания
 @endsection
 
 @section('form.params')
-	id="parent-show" name="parent-show"
-	action=""
+	id="{{ form(\App\Models\Block::class, $mode, 'id') }}" name="{{ form(\App\Models\Block::class, $mode, 'name') }}"
+	action="{{ form(\App\Models\Block::class, $mode, 'action') }}"
 @endsection
 
 @section('form.fields')
 	@php
+		$parent = \App\Models\Block::findOrFail($block_id);
 		$fields = [
-			['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->getKey()],
-			['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->name],
-			['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $block->short],
-			['name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $block->full],
+			['name' => 'name', 'title' => 'Название ссылочного блока', 'required' => true, 'type' => 'text'],
+			['name' => 'block_id', 'type' => 'hidden', 'value' => $block_id],
+			['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Alias->value],
+			['name' => 'profile_id', 'type' => 'hidden', 'value' => $profile_id],
+			['type' => 'heading', 'title' => 'Данные блока-предка нового ссылочного блока'],
+			['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $parent->getKey(), 'disabled' => true],
+			['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $parent->name, 'disabled' => true],
+			['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $parent->short, 'disabled' => true],
+			['name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $parent->full, 'disabled' => true],
 		];
 	@endphp
 @endsection
 
 @section('form.close')
-	{{ route('aliases.create', ['sid' => session()->getId()]) }}
+	{{ form(\App\Models\Block::class, $mode, 'close') }}
 @endsection
 
 @push('css_after')

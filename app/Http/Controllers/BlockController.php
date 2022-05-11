@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ToastEvent;
+use App\Http\Controllers\blocks\AliasController;
 use App\Http\Controllers\blocks\TextController;
 use App\Http\Requests\StoreBlockRequest;
 use App\Models\Block;
@@ -12,6 +13,7 @@ use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -107,7 +109,7 @@ class BlockController extends Controller
 	{
 		return match (intval($request->type)) {
 			BlockType::Text->value => redirect()->route('texts.create', ['sid' => session()->getId()]),
-			// TODO Ссылочный тип
+			BlockType::Alias->value => redirect()->route('aliases.create', ['sid' => session()->getId()]),
 		};
 	}
 
@@ -119,12 +121,10 @@ class BlockController extends Controller
 	 */
 	public function store(StoreBlockRequest $request)
 	{
-		switch ($request->type) {
-			case BlockType::Text->value:
-				$block = TextController::store($request->except('_token'));
-				break;
-				// TODO Ссылочный тип
-		}
+		$block = match(intval($request->type)) {
+			BlockType::Text->value => TextController::store($request->except('_token')),
+			BlockType::Alias->value => AliasController::store($request->except('_token')),
+		};
 		// Перенумеровать блоки
 		$blocks = $block->profile->blocks
 			->sortBy('sort_no')
@@ -167,7 +167,11 @@ class BlockController extends Controller
 				'mode' => $mode,
 				'sid' => session()->getId()
 			]),
-			// TODO Ссылочный тип
+			BlockType::Alias->value => redirect()->route('aliases.edit', [
+				'alias' => $block->getKey(),
+				'mode' => $mode,
+				'sid' => session()->getId()
+			]),
 		};
 	}
 
@@ -184,7 +188,9 @@ class BlockController extends Controller
 			case BlockType::Text->value:
 				$name = TextController::update($request->except('_token'), $id);
 				break;
-			// TODO Ссылочный тип
+			case BlockType::Alias->value:
+				$name = AliasController::update($request->except('_token'), $id);
+				break;
 		}
 		// Перенумеровать блоки
 		$block = Block::findOrFail($id);
@@ -216,26 +222,31 @@ class BlockController extends Controller
 		$profile = $block->profile;
 		$name = $block->name;
 
-		switch ($block->type) {
-			case BlockType::Text->value:
-				$deleted = TextController::destroy($block->getKey());
-				break;
-			// TODO Ссылочный тип
+		try {
+			$temp = match(intval($block->type)) {
+				BlockType::Text->value => TextController::destroy($block->getKey()),
+				BlockType::Alias->value => AliasController::destroy($block->getKey())
+			};
+
+			// Перенумеровать блоки
+			$blocks = $profile->blocks
+				->sortBy('sort_no')
+				->pluck('id')
+				->toArray();
+			$this->reorder($blocks);
+
+			event(new ToastEvent('success', '',
+				BlockType::getName($block->type) .
+				" &laquo;{$name}&raquo; удалён.<br/>Блоки перенумерованы"
+			));
+			return true;
+		} catch (QueryException $exception) {
+			event(new ToastEvent('error', '',
+				"Невозможно удаление блока-предка &laquo;{$name}&raquo; удалён.<br/>" .
+				"Удалите блоки, ссылающиеся на него по ссылке"	// TODO реализовать интерфейс показа блоков-потомков
+			));
+			return false;
 		}
-		if (!$deleted) return false;
-
-		// Перенумеровать блоки
-		$blocks = $profile->blocks
-			->sortBy('sort_no')
-			->pluck('id')
-			->toArray();
-		$this->reorder($blocks);
-
-		event(new ToastEvent('success', '',
-			BlockType::getName($block->type) .
-			" &laquo;{$name}&raquo; удалён.<br/>Блоки перенумерованы"
-		));
-		return true;
 	}
 
 	private function reorder(array $ids): void

@@ -28,20 +28,20 @@ class StoreBlockRequest extends FormRequest
 	public function rules()
 	{
 		return match(intval($this->type)) {
-			BlockType::Text->value => [
+			BlockType::Text->value,
+			BlockType::Alias->value => [
 				'name' => 'required',
 			],
-			// TODO Реализовать поддержку других типов блоков
 		};
 	}
 
 	public function attributes()
 	{
 		return match(intval($this->type)) {
-			BlockType::Text->value => [
+			BlockType::Text->value,
+			BlockType::Alias->value => [
 				'name' => 'Название блока',
 			],
-			// TODO Реализовать поддержку других типов блоков
 		};
 	}
 }

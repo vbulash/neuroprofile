@@ -58,10 +58,14 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/texts/create', 'blocks\TextController@create')->name('texts.create');
 	Route::get('/texts/{text}/edit', 'blocks\TextController@edit')->name('texts.edit');
 	// Контроллер ссылочных блоков в цепочке обработки результатов тестирования
-	Route::get('/aliases.index', 'blocks\AliasController@index')->name('aliases.index');
 	Route::get('/aliases.data', 'blocks\AliasController@getData')->name('aliases.index.data');
-	Route::put('/aliases.link/{parent}', 'blocks\AliasController@link')->name('aliases.link');
-	Route::get('/aliases/{block}', 'blocks\AliasController@show')->name('aliases.show');
+	Route::get('/aliases/create', 'blocks\AliasController@create')->name('aliases.create');
+	Route::get('/aliases/{alias}/edit', 'blocks\AliasController@edit')->name('aliases.edit');
+	// Прямая работа со ссылочными блоками
+	Route::get('/aliaslists', 'blocks\AliasListController@index')->name('aliaslists.index');
+	Route::get('/aliaslists.data', 'blocks\AliasListController@getData')->name('aliaslists.index.data');
+	Route::get('/aliaslists/{alias}', 'blocks\AliasListController@show')->name('aliaslists.show');
+	Route::delete('/aliaslists/{alias}', 'blocks\AliasListController@destroy')->name('aliaslists.destroy');
 });
 
 require __DIR__.'/auth.php';

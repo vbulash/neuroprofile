@@ -21,7 +21,7 @@
 		Просмотр
 	@else
 		Редактирование
-	@endif блока описания &laquo;{{ $block->name }}&raquo;
+	@endif ссылочного блока описания &laquo;{{ $block->name }}&raquo;
 @endsection
 
 @section('form.params')
@@ -32,11 +32,15 @@
 @section('form.fields')
 	@php
 		$fields = [
-			['name' => 'name', 'title' => 'Название блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
-			['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea', 'value' => $block->short],
-			['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'editor', 'value' => $block->full],
-			['name' => 'type', 'type' => 'hidden', 'value' => $block->type],
-			['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->profile->getKey()],
+			['name' => 'name', 'title' => 'Название ссылочного блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
+			['name' => 'block_id', 'type' => 'hidden', 'value' => $block->getKey()],
+			['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Alias->value],
+			['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->parent->getKey()],
+			['type' => 'heading', 'title' => 'Данные блока-предка ссылочного блока'],
+			['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->getKey(), 'disabled' => true],
+			['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->name, 'disabled' => true],
+			['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $block->parent->short, 'disabled' => true],
+			['name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $block->parent->full, 'disabled' => true],
 		];
 	@endphp
 @endsection

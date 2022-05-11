@@ -26,6 +26,11 @@
 					@case('hidden')
 					@break
 
+					@case('heading')
+					<div class="row mt-4 mb-4">
+						<p><b>{{ $field['title'] }}</b></p>
+					@break;
+
 					@default
 					<div class="row mb-4">
 						<label class="col-sm-3 col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
@@ -74,11 +79,11 @@
 
 							@case('textarea')
 							<div class="col-sm-5">
-						<textarea class="form-control" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
-								  cols="30"
-								  rows="5"
-								  @if($mode == config('global.show')) disabled @endif
-						>{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}</textarea>
+								<textarea class="form-control" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
+										  cols="30"
+										  rows="5"
+										  @if($mode == config('global.show') || isset($field['disabled'])) disabled @endif
+								>{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}</textarea>
 							</div>
 							@break
 

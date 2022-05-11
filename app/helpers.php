@@ -13,6 +13,7 @@ if (! function_exists('form')) {
 if (! function_exists('classByContext')) {
 	function classByContext(string $context) {
 		return match ($context) {
+			'alias' => \App\Models\Block::class,
 			'client' => \App\Models\Client::class,
 			'contract' => \App\Models\Contract::class,
 			'fmptype' => \App\Models\FMPType::class,

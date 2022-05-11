@@ -46,7 +46,7 @@ class Block extends Model implements FormTemplate, Titleable
 
 	public function parent()
 	{
-		return $this->belongsTo(Block::class);
+		return $this->belongsTo(Block::class, 'block_id');
 	}
 
 	public function children()

@@ -1,7 +1,7 @@
 @extends('layouts.detail')
 
 @section('service')
-	Работа с описаниями результатов тестирования
+	Работа с ссылочными блоками
 @endsection
 
 @section('body-params')
@@ -10,37 +10,49 @@
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
-			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
-			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index', ['sid' => session()->getId()])],
-		];
+		if ($parent) {
+            $steps = [
+				['title' => 'Ссылочный блок', 'active' => false, 'context' => 'alias', 'link' => route('aliaslists.index', ['sid' => session()->getId()])],
+				['title' => 'Блок-предок', 'active' => true, 'context' => 'parent'],
+			];
+        } else {
+			$steps = [
+				['title' => 'Ссылочный блок', 'active' => true, 'context' => 'alias', 'link' => route('aliaslists.index', ['sid' => session()->getId()])],
+				['title' => 'Блок-предок', 'active' => false, 'context' => 'parent'],
+			];
+        }
 	@endphp
 @endsection
 
 @section('interior.header')
-	Просмотр родительского блока описания &laquo;{{ $block->name }}&raquo;<br/>
-	<small>Родительский блок используется как основа для создания ссылочного блока</small>
+	Просмотр
+	@if ($parent)
+		блока-предка
+	@else
+		ссылочного блока
+	@endif
 @endsection
 
 @section('form.params')
-	id="parent-show" name="parent-show"
+	id="aliaslist-show" name="aliaslist-show"
 	action=""
 @endsection
 
 @section('form.fields')
 	@php
 		$fields = [
-			['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->getKey()],
-			['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->name],
-			['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $block->short],
-			['name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $block->full],
+            ['name' => 'id', 'title' => 'ID блока', 'required' => true, 'type' => 'text', 'value' => $block->getKey()],
+            ['name' => 'fmptype', 'title' => 'Тип описания блока', 'required' => false, 'type' => 'text', 'value' => $block->profile->fmptype->name],
+            ['name' => 'profile', 'title' => 'Нейропрофиль блока', 'required' => false, 'type' => 'text', 'value' => $block->profile->name],
+			['name' => 'name', 'title' => 'Название блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
+			['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea', 'value' => $block->short],
+			['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'editor', 'value' => $block->full],
 		];
 	@endphp
 @endsection
 
 @section('form.close')
-	{{ route('aliases.create', ['sid' => session()->getId()]) }}
+	{{ route('aliaslists.index', ['sid' => session()->getId()]) }}
 @endsection
 
 @push('css_after')

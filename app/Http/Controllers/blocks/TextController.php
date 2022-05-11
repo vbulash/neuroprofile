@@ -32,11 +32,12 @@ class TextController extends Controller
 	/**
 	 * Не маршрут!
 	 *
-	 * @param StoreBlockRequest $request
+	 * @param Request $request
 	 */
 	public static function store(array $data): Block
 	{
 		$block = Block::create($data);
+		$block->sort_no = PHP_INT_MAX;
 		$block->save();
 		return $block;
 	}
@@ -78,7 +79,6 @@ class TextController extends Controller
     public static function destroy($id): bool
     {
 		$block = Block::findOrFail($id);
-		$block->delete();
-		return true;
+		return $block->delete();
     }
 }
