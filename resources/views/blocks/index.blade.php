@@ -1,6 +1,8 @@
 @extends('layouts.wizard')
 
-@section('service')Работа с описаниями результатов тестирования@endsection
+@section('service')
+	Работа с описаниями результатов тестирования
+@endsection
 
 @section('steps')
 	@php
@@ -14,28 +16,35 @@
 
 @section('interior')
 	<div class="block-header block-header-default">
-		<div class="dropdown">
-			<button class="btn btn-primary dropdown-toggle mb-3" type="button" id="blocks-create"
-					data-bs-toggle="dropdown" aria-expanded="false">
-				Добавить блок
-			</button>
-			<ul class="dropdown-menu" aria-labelledby="blocks-create">
-				@php
-					$buttons = [
-                        [
-                            'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Text->value),
-                            'action' => route('blocks.create', ['type' => \App\Models\BlockType::Text->value, 'sid' => $sid])
-                        ],
-                        [
-                            'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Alias->value),
-                            'action' => route('blocks.create', ['type' => \App\Models\BlockType::Alias->value, 'sid' => $sid])
-                        ],
-					];
-				@endphp
-				@foreach($buttons as $button)
-					<li><a class="dropdown-item" href="{{ $button['action'] }}">{{ $button['title'] }}</a></li>
-				@endforeach
-			</ul>
+		<div class="d-flex align-items-center">
+			<div class="dropdown me-2">
+				<button class="btn btn-primary dropdown-toggle" type="button" id="blocks-create"
+						data-bs-toggle="dropdown" aria-expanded="false">
+					Добавить блок
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="blocks-create">
+					@php
+						$buttons = [
+							[
+								'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Text->value),
+								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Text->value, 'sid' => $sid])
+							],
+							[
+								'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Alias->value),
+								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Alias->value, 'sid' => $sid])
+							],
+							[
+								'title' => 'Клонирование существующего блока',
+								'action' => route('clones.index', ['sid' => $sid])
+							],
+						];
+					@endphp
+					@foreach($buttons as $button)
+						<li><a class="dropdown-item" href="{{ $button['action'] }}">{{ $button['title'] }}</a></li>
+					@endforeach
+				</ul>
+			</div>
+			<div>В том числе и создать новый блок клонированием из существующего</div>
 		</div>
 	</div>
 	<div class="block-content p-4">
@@ -129,7 +138,13 @@
 						{data: 'sort_no', name: 'sort_no', responsivePriority: 1},
 						{data: 'name', name: 'name', responsivePriority: 2, sortable: false},
 						{data: 'type', name: 'type', responsivePriority: 1},
-						{data: 'action', name: 'action', sortable: false, responsivePriority: 1, className: 'no-wrap dt-actions'}
+						{
+							data: 'action',
+							name: 'action',
+							sortable: false,
+							responsivePriority: 1,
+							className: 'no-wrap dt-actions'
+						}
 					]
 				});
 			});

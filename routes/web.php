@@ -66,6 +66,11 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/aliaslists.data', 'blocks\AliasListController@getData')->name('aliaslists.index.data');
 	Route::get('/aliaslists/{alias}', 'blocks\AliasListController@show')->name('aliaslists.show');
 	Route::delete('/aliaslists/{alias}', 'blocks\AliasListController@destroy')->name('aliaslists.destroy');
+	// Копирование блоков
+	Route::get('/clones', 'blocks\CloneController@index')->name('clones.index');
+	Route::get('/clones.data', 'blocks\CloneController@getData')->name('clones.index.data');
+	Route::get('/clones/{block}', 'blocks\CloneController@show')->name('clones.show');
+	Route::get('/clones/{source}/clone', 'blocks\CloneController@clone')->name('clones.clone');
 });
 
 require __DIR__.'/auth.php';

@@ -10,31 +10,27 @@
 
 @section('steps')
 	@php
-		if ($parent) {
-            $steps = [
-				['title' => 'Ссылочный блок', 'active' => false, 'context' => 'alias', 'link' => route('aliaslists.index', ['sid' => session()->getId()])],
-				['title' => 'Блок-предок', 'active' => true, 'context' => 'parent'],
-			];
-        } else {
-			$steps = [
-				['title' => 'Ссылочный блок', 'active' => true, 'context' => 'alias', 'link' => route('aliaslists.index', ['sid' => session()->getId()])],
-				['title' => 'Блок-предок', 'active' => false, 'context' => 'parent'],
-			];
-        }
+		$steps = [
+			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
+			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
+			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index', ['sid' => session()->getId()])],
+		];
 	@endphp
 @endsection
 
 @section('interior.header')
 	Просмотр
-	@if ($parent)
-		блока-предка
-	@else
-		ссылочного блока
-	@endif
+	@php
+		echo match (intval($block->type)) {
+            \App\Models\BlockType::Text->value => 'текстового',
+            \App\Models\BlockType::Alias->value => 'ссылочного',
+		}
+	@endphp
+	блока-источника клонирования
 @endsection
 
 @section('form.params')
-	id="aliaslist-show" name="aliaslist-show"
+	id="clone-show" name="clone-show"
 	action=""
 @endsection
 
@@ -63,7 +59,7 @@
 @endsection
 
 @section('form.close')
-	{{ route('aliaslists.index', ['sid' => session()->getId()]) }}
+	{{ route('clones.index', ['sid' => session()->getId()]) }}
 @endsection
 
 @push('css_after')
