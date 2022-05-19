@@ -71,6 +71,17 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/clones.data', 'blocks\CloneController@getData')->name('clones.index.data');
 	Route::get('/clones/{block}', 'blocks\CloneController@show')->name('clones.show');
 	Route::get('/clones/{source}/clone', 'blocks\CloneController@clone')->name('clones.clone');
+
+	// Тесты
+	// Wizard добавления / редактирования / просмотра
+	Route::get('/steps/play/{mode}/{test?}', 'tests\StepController@play')->name('steps.play');
+	Route::get('/steps/back', 'tests\StepController@back')->name('steps.back');
+	Route::get('/steps/next', 'tests\StepController@next')->name('steps.next');
+	Route::get('/steps/close', 'tests\StepController@close')->name('steps.close');
+	Route::get('/steps/finish', 'tests\StepController@finish')->name('steps.finish');
+	// Тесты
+	Route::resource('/tests', 'TestController');
+	Route::get('/tests.data', 'TestController@getData')->name('tests.index.data');
 });
 
 require __DIR__.'/auth.php';

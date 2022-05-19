@@ -1,0 +1,134 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Events\ToastEvent;
+use App\Http\Controllers\tests\StepController;
+use App\Models\Test;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Yajra\DataTables\DataTables;
+use Exception;
+
+class TestController extends Controller
+{
+	/**
+	 * Process datatables ajax request.
+	 *
+	 * @return JsonResponse
+	 * @throws Exception
+	 */
+	public function getData(): JsonResponse
+	{
+		$tests = Test::all();
+
+		return Datatables::of($tests)
+			->addColumn('contract', fn($test) => sprintf("%s (%s)", $test->contract->number, $test->contract->client->name ))
+			->addColumn('action', function ($test) {
+				$editRoute = route('tests.edit', ['test' => $test->getKey(), 'sid' => session()->getId()]);
+				$showRoute = route('tests.show', ['test' => $test->getKey(), 'sid' => session()->getId()]);
+				$actions = '';
+
+				$actions .=
+					"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
+					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
+					"<i class=\"fas fa-pencil-alt\"></i>\n" .
+					"</a>\n";
+				$actions .=
+					"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
+					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
+					"<i class=\"fas fa-eye\"></i>\n" .
+					"</a>\n";
+				$actions .=
+					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-1\" " .
+					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$test->getKey()}, '{$test->name}')\">\n" .
+					"<i class=\"fas fa-trash-alt\"></i>\n" .
+					"</a>\n";
+
+				return $actions;
+			})
+			->make(true);
+	}
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Application|Factory|View
+	 */
+    public function index()
+    {
+		StepController::clearCurrentStep();
+		session()->forget('heap');
+
+		$count = Test::all()->count();
+		return view('tests.index', compact('count'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return RedirectResponse
+	 */
+    public function create()
+    {
+		return redirect()->route('steps.play', [
+			'mode' => config('global.create'),
+			'test' => 0,
+			'sid' => session()->getId()
+		]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return RedirectResponse
+	 */
+    public function show(int $id)
+    {
+        return $this->edit($id, true);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+	 * @param
+     * @return RedirectResponse
+	 */
+    public function edit(int $id, bool $show = false)
+    {
+		$mode = $show ? config('global.show') : config('global.edit');
+		return redirect()->route('steps.play', [
+			'mode' => $mode,
+			'test' => $id,
+			'sid' => session()->getId()
+		]);
+    }
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param Request $request
+	 * @param int $test
+	 * @return bool
+	 */
+	public function destroy(Request $request, int $test)
+	{
+		if ($test == 0) {
+			$id = $request->id;
+		} else $id = $test;
+
+		$test = Test::findOrFail($id);
+		$name = $test->name;
+		$test->delete();
+
+		event(new ToastEvent('success', '', "Тест '{$name}' удалён"));
+		return true;
+	}
+}

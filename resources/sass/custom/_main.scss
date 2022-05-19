@@ -66,3 +66,13 @@ a.disabled {
 	pointer-events: none;
 	cursor: default;
 }
+
+#ident-area {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.ident-group {
+	width: 300px;
+}

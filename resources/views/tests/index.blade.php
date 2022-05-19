@@ -1,39 +1,37 @@
 @extends('layouts.chain')
 
-@section('service')
-	Работа с ссылочными блоками
-@endsection
+@section('header') @endsection
 
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Ссылочный блок', 'active' => true, 'context' => 'alias', 'link' => route('aliaslists.index', ['sid' => session()->getId()])],
-			['title' => 'Блок-предок', 'active' => false, 'context' => 'parent'],
+			['title' => 'Тесты', 'active' => true, 'context' => 'test'],
 		];
 	@endphp
 @endsection
 
 @section('interior')
+	<div class="block-header block-header-default">
+		<a href="{{ route('tests.create', ['sid' => session()->getId()]) }}"
+		   class="btn btn-primary mt-3 mb-3">Добавить тест</a>
+	</div>
 	<div class="block-content p-4">
-		@if ($count)
+		@if ($count > 0)
 			<div class="table-responsive">
-				<div class="table-responsive">
-					<table class="table table-bordered table-hover text-nowrap" id="blocks_table" style="width: 100%;">
-						<thead>
-						<tr>
-							<th style="width: 30px">#</th>
-							<th>Название блока</th>
-							<th>Тип описания</th>
-							<th>Нейропрофиль</th>
-							<th># блока-предка</th>
-							<th>Действия</th>
-						</tr>
-						</thead>
-					</table>
-				</div>
+				<table class="table table-bordered table-hover text-nowrap" id="tests_table"
+					   style="width: 100%;">
+					<thead>
+					<tr>
+						<th style="width: 30px">#</th>
+						<th>Название теста</th>
+						<th>Привязка к контракту</th>
+						<th>Действия</th>
+					</tr>
+					</thead>
+				</table>
 			</div>
 		@else
-			<p>Доступных ссылочных блоков нет...</p>
+			<p>Тестов пока нет...</p>
 		@endif
 	</div>
 @endsection
@@ -49,7 +47,7 @@
 			document.getElementById('confirm-yes').addEventListener('click', (event) => {
 				$.ajax({
 					method: 'DELETE',
-					url: "{{ route('aliaslists.destroy', ['alias' => '0']) }}",
+					url: "{{ route('tests.destroy', ['test' => '0']) }}",
 					data: {
 						id: event.target.dataset.id,
 					},
@@ -62,29 +60,25 @@
 
 			function clickDelete(id, name) {
 				document.getElementById('confirm-title').innerText = "Подтвердите удаление";
-				document.getElementById('confirm-body').innerHTML = "Удалить ссылочный блок &laquo;" + name + "&raquo; ?";
+				document.getElementById('confirm-body').innerHTML = "Удалить тест &laquo;" + name + "&raquo; ?";
 				document.getElementById('confirm-yes').dataset.id = id;
 				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
 				confirmDialog.show();
 			}
 
 			$(function () {
-				window.datatable = $('#blocks_table').DataTable({
+				window.datatable = $('#tests_table').DataTable({
 					language: {
 						"url": "{{ asset('lang/ru/datatables.json') }}"
 					},
-
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('aliaslists.index.data', ['sid' => session()->getId()]) !!}',
+					ajax: '{!! route('tests.index.data') !!}',
 					responsive: true,
-					pageLength: 100,
 					columns: [
 						{data: 'id', name: 'id', responsivePriority: 1},
 						{data: 'name', name: 'name', responsivePriority: 1},
-						{data: 'fmptype', name: 'fmptype', responsivePriority: 2},
-						{data: 'profile', name: 'profile', responsivePriority: 3},
-						{data: 'parent', name: 'parent', responsivePriority: 2},
+						{data: 'contract', name: 'contract', responsivePriority: 2},
 						{
 							data: 'action',
 							name: 'action',

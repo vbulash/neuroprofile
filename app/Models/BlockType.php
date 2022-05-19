@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use phpDocumentor\Reflection\Types\Integer;
-
 enum BlockType: int
 {
 	case Text = 1;

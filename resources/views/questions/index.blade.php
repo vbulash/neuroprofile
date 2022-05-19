@@ -1,4 +1,4 @@
-@extends('layouts.wizard')
+@extends('layouts.chain')
 
 @section('service')
 	Работа с вопросами тестирования

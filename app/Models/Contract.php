@@ -71,6 +71,11 @@ class Contract extends Model implements FormTemplate, Titleable
 		return $this->hasMany(License::class);
 	}
 
+	public function tests()
+	{
+		return $this->hasMany(Test::class);
+	}
+
 	// Генератор MKey
 	public static function generateKey(string $url): string
 	{

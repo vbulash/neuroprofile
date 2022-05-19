@@ -24,6 +24,11 @@ class Set extends Model implements FormTemplate, Titleable
 		return $this->hasMany(Question::class);
 	}
 
+	public function tests()
+	{
+		return $this->hasMany(Test::class);
+	}
+
 	public static function createTemplate(): array
 	{
 		return [

@@ -19,5 +19,15 @@
         <property name="enabledTLSProtocols" value="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="Neurotest2 Development" uuid="59c68d38-ccca-48e0-ba9a-7f56382378dd">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://spl96.hosting.reg.ru:3306/u0311407_neurotest2</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="enabledTLSProtocols" value="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>

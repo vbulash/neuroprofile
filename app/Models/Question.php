@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Question extends Model implements FormTemplate, Titleable
 {
-	use HasFactory;
+	use HasFactory, UploadImage;
 
 	protected $fillable = [
 		'sort_no',
@@ -38,18 +38,6 @@ class Question extends Model implements FormTemplate, Titleable
 	public function set()
 	{
 		return $this->belongsTo(Set::class);
-	}
-
-	public static function uploadImage(Request $request, string $imageField, string $image = null)
-	{
-		if($request->hasFile($imageField)) {
-			if($image)
-				if(FileLink::unlink($image))
-					Storage::delete($image);
-			$folder = date('Y-m-d');
-			return $request->file($imageField)->store("images/{$folder}");
-		}
-		return null;
 	}
 
 	public static function createTemplate(): array
