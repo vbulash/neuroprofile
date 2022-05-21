@@ -14,7 +14,7 @@
     <div class="block-header block-header-default">
         @hasrole('Администратор')
         <a href="{{ route('users.create', ['sid' => session()->getId()]) }}"
-           class="btn btn-primary mt-3 mb-3">Добавить пользователя</a>
+           class="btn btn-primary">Добавить пользователя</a>
         @endhasrole
     </div>
     <div class="block-content p-4">

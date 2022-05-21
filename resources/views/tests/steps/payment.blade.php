@@ -1,15 +1,28 @@
 @extends('tests.steps.wizard')
 
-@section('service')Создание теста@endsection
+@section('service')
+	@if ($mode == config('global.create'))
+		Создание теста
+	@else
+		@php
+			$heap = session('heap');
+		@endphp
+		@if ($mode == config('global.show'))
+			Просмотр
+		@else
+			Редактирование
+		@endif теста &laquo;{{ $heap['name'] }}&raquo;
+	@endif
+@endsection
 
 @section('interior.subheader') @endsection
 
 @section('form.fields')
 	@php
-        $heap = session('heap');
-        $options = intval($heap['options']);
-        if (isset($heap) && isset($heap['step-payment'])) {
-            $fields = [
+		$heap = session('heap');
+		$options = intval($heap['options']);
+		if (isset($heap) && isset($heap['step-payment'])) {
+			$fields = [
 				['name' => 'merchant', 'title' => 'Магазин Robokassa', 'required' => true, 'type' => 'text', 'value' => $heap['robokassa']['merchant'] ?? ''],
 				['name' => 'password', 'title' => 'Пароль магазина Robokassa', 'required' => true, 'type' => 'password', 'value' => $heap['robokassa']['password'] ?? ''],
 				['name' => 'sum', 'title' => 'Сумма оплаты за платный результат тестирования Robokassa', 'required' => true, 'type' => 'number', 'value' => $heap['robokassa']['sum'] ?? '', 'min' => 1],
@@ -17,7 +30,7 @@
 				['name' => 'test', 'type' => 'hidden', 'value' => $test],
 				['name' => 'sid', 'type' => 'hidden', 'value' => $sid]
 			];
-        } else {
+		} else {
 			$fields = [
 				['name' => 'merchant', 'title' => 'Магазин Robokassa', 'required' => true, 'type' => 'text'],
 				['name' => 'password', 'title' => 'Пароль магазина Robokassa', 'required' => true, 'type' => 'password'],
@@ -26,7 +39,7 @@
 				['name' => 'test', 'type' => 'hidden', 'value' => $test],
 				['name' => 'sid', 'type' => 'hidden', 'value' => $sid]
 			];
-        }
+		}
 	@endphp
 @endsection
 
@@ -38,6 +51,9 @@
 					   @if ($options & \App\Models\TestOptions::CUSTOM_PAYMENT->value)
 						   checked
 					   @endif
+					   @if ($mode == config('global.show'))
+						   disabled
+					@endif
 				> Тест имеет самостоятельную оплату, отличную от встроенной</label>
 		</div>
 	</div>

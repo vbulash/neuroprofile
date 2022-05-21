@@ -16,7 +16,7 @@
 
 @section('interior')
     <div class="block-header block-header-default">
-        <a href="{{ route('fmptypes.create', ['sid' => $sid]) }}" class="btn btn-primary mb-3">Добавить тип описания</a>
+        <a href="{{ route('fmptypes.create', ['sid' => $sid]) }}" class="btn btn-primary">Добавить тип описания</a>
     </div>
     <div class="block-content p-4">
         @if ($count)

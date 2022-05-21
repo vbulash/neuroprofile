@@ -87,7 +87,7 @@ class StepController extends Controller
 		$stepClass = $this->getCurrentStepClass();
 		$step = new $stepClass();
 		$mode = intval($request->mode);
-		$test = $request->has('test') ? Test::findOrFail($request->test)->getKey() : 0;
+		$test = ($request->has('test') && $request->test != 0) ? Test::findOrFail($request->test)->getKey() : 0;
 
 		if ($mode != config('global.show'))
 			Validator::make($request->all(),
@@ -174,19 +174,17 @@ class StepController extends Controller
 				$data['key'] = Test::generateKey();
 				$test = Test::create($data);
 				$test->save();
+				session()->put('success', "Тест \"{$test->name}\" создан");
 				break;
 			case config('global.edit'):
 				$test = Test::findOrFail($test);
 				$test->update($data);
 				$test->save();
+				session()->put('success', "Тест \"{$test->name}\" изменён");
 				break;
 			case config('global.show'):
-				$test = Test::findOrFail($test);
 				break;
 		}
-		$name = $test->name;
-
-		session()->put('success', "Тест \"{$name}\" создан");
 
 		session()->forget('heap');
 		return redirect()->route('tests.index', ['sid' => session()->getId()]);

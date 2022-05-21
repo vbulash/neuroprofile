@@ -15,7 +15,7 @@
 
 @section('interior')
 	<div class="block-header block-header-default">
-		<a href="{{ route('questions.create', ['sid' => $sid]) }}" class="btn btn-primary mb-3">Добавить вопрос</a>
+		<a href="{{ route('questions.create', ['sid' => $sid]) }}" class="btn btn-primary">Добавить вопрос</a>
 	</div>
 	<div class="block-content p-4">
 		@if ($count)

@@ -19,7 +19,7 @@
         @if ($codeCount == 0)
             Полный комплект нейропрофилей ({{ $count }}), добавление нового нейропрофиля невозможно
         @else
-            <a href="{{ route('profiles.create', ['sid' => $sid]) }}" class="btn btn-primary mb-3">Добавить
+            <a href="{{ route('profiles.create', ['sid' => $sid]) }}" class="btn btn-primary">Добавить
                 нейропрофиль</a>
         @endif
     </div>

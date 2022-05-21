@@ -1,6 +1,8 @@
 @extends('layouts.blocks')
 
-@section('service')Работа с клиентами и контрактами@endsection
+@section('service')
+	Работа с клиентами и контрактами
+@endsection
 
 @section('steps')
 	@php
@@ -32,10 +34,10 @@
 				<a href="{{ route('contracts.licenses.export', ['contract' => $contract->getKey(), 'sid' => session()->getId()]) }}"
 				   type="button" class="btn btn-primary">Экспорт лицензий</a>
 			</div>
-{{--			<div class="block-content block-content-full block-content-sm bg-body-light fs-sm">--}}
-{{--				<div class="row">--}}
-{{--				</div>--}}
-{{--			</div>--}}
+			{{--			<div class="block-content block-content-full block-content-sm bg-body-light fs-sm">--}}
+			{{--				<div class="row">--}}
+			{{--				</div>--}}
+			{{--			</div>--}}
 		</div>
 	</div>
 
@@ -47,8 +49,67 @@
 				</h3>
 			</div>
 			<div class="block-content p-4">
-				<i style="color: red">Здесь будет код фреймов после реализации тестов</i>
+				@php
+					$testNo = 1;
+				@endphp
+
+				@forelse($contract->tests as $test)
+					@php
+						$code = sprintf(
+							"<iframe\n" .
+							  "src=\"%s\"\n" .
+							"width=\"1000px\"\n" .
+							"height=\"700px\"\n" .
+							"allow=\"fullscreen\">\n" .
+							"</iframe>",
+                            // TODO Убрать заглушку по ходу реализации плеера тестов
+                            "player.play/mkey=" . $contract->mkey . "/test=" . $test->key
+                            /*
+							route('player.play', [
+								'mkey' => $contract->mkey,
+								'test' => $test->key,
+							])
+                            */
+							);
+					@endphp
+					<div class="form-group">
+						<label for="html-{{ $testNo }}">Тест # {{ $test->id }} &laquo;{{ $test->name }}&raquo;</label>
+						<div class="d-flex flex-row align-items-start mt-4 mb-4">
+							<textarea name="html-{{ $testNo }}" class="form-control me-2"
+									  id="html-{{ $testNo }}" cols="40" rows="7" readonly>{{ $code }}</textarea>
+							<a href="javascript:void(0)" class="btn btn-primary btn-sm float-left htmlcopy"
+							   data-code="html-{{ $testNo }}" data-test="{{ $test->name }}"
+							   data-toggle="tooltip" data-placement="top" title="Копировать код HTML">
+								<i class="fas fa-copy" data-code="html-{{ $testNo }}" data-test="{{ $test->name }}"></i>
+							</a>
+						</div>
+					</div>
+					@php
+						$testNo++;
+					@endphp
+				@empty
+					<p>В контракте нет тестов, нет кода HTML для страниц</p>
+				@endforelse
 			</div>
 		</div>
 	</div>
 @endsection
+
+@push('js_after')
+	<script>
+		document.querySelectorAll('.htmlcopy').forEach(button => {
+			button.addEventListener('click', event => {
+				let source = event.target.dataset.code;
+				let test = event.target.dataset.test;
+
+				let copyText = document.getElementById(source);
+				copyText.select();
+				copyText.setSelectionRange(0, 99999);
+				navigator.clipboard.writeText(copyText.value);
+				copyText.setSelectionRange(0, 0);
+
+				showToast('info', 'Код для HTML-фрейма с тестом "' + test + '" скопирован в буфер обмена', false);
+			}, false);
+		});
+	</script>
+@endpush

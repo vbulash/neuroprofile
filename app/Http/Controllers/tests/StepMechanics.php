@@ -55,10 +55,11 @@ class StepMechanics implements Step
 			$heap = session('heap');
 			$test = Test::findOrFail($request->test);
 			if (!isset($heap['step-mechanics'])) {
-				$content = json_decode($test->content, true);
+				//$content = json_decode($test->content, true);
 				$heap['step-mechanics'] = true;
-				$heap['set_id'] = $test->set_id;
+				$heap['set_id'] = $test->set->getKey();
 				$heap['options'] = $test->options;
+				session()->put('heap', $heap);
 			}
 			$test = $test->getKey();
 		} else $test = $request->test;

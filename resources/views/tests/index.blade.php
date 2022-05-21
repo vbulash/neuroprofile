@@ -13,7 +13,7 @@
 @section('interior')
 	<div class="block-header block-header-default">
 		<a href="{{ route('tests.create', ['sid' => session()->getId()]) }}"
-		   class="btn btn-primary mt-3 mb-3">Добавить тест</a>
+		   class="btn btn-primary">Добавить тест</a>
 	</div>
 	<div class="block-content p-4">
 		@if ($count > 0)

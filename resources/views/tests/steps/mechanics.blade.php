@@ -1,6 +1,19 @@
 @extends('tests.steps.wizard')
 
-@section('service')Создание теста@endsection
+@section('service')
+	@if ($mode == config('global.create'))
+		Создание теста
+	@else
+		@php
+			$heap = session('heap');
+		@endphp
+		@if ($mode == config('global.show'))
+			Просмотр
+		@else
+			Редактирование
+		@endif теста &laquo;{{ $heap['name'] }}&raquo;
+	@endif
+@endsection
 
 @section('interior.subheader') @endsection
 

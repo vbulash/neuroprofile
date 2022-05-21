@@ -15,7 +15,6 @@
 	@endif
 @endsection
 
-
 @section('form.fields')
 	@php
 		$auth = [
