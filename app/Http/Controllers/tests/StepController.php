@@ -19,6 +19,7 @@ class StepController extends Controller
 		StepMechanics::class,
 		StepResults::class,
 		StepPayment::class,
+		StepBranding::class,
 	];
 
 	/**
@@ -36,7 +37,8 @@ class StepController extends Controller
 		if (self::getCurrentStep() != 0)
 			$buttons |= WizardButtons::BACK->value;
 		if (self::getCurrentStep() == count(self::$steps) - 1) {
-			$buttons |= WizardButtons::FINISH->value;
+			if ($mode != config('global.show'))
+				$buttons |= WizardButtons::FINISH->value;
 		} else {
 			$buttons |= WizardButtons::NEXT->value;
 		}
@@ -45,6 +47,30 @@ class StepController extends Controller
 			'test' => $test,
 			'buttons' => $buttons
 		]);
+		// Подготовка данных
+		if ($mode != config('global.create') && !session()->has('heap')) {
+			$test = Test::findOrFail($test);
+			session()->forget('heap');
+			$heap = [
+				'name' => $test->name,
+				'options' => $test->options,
+				'paid' => $test->paid,
+				'contract_id' => $test->contract_id,
+				'key' => $test->key,
+				'set_id' => $test->set_id
+			];
+			$content = json_decode($test->content, true);
+			if (isset($content['card']))
+				$heap['card'] = $content['card'];
+			if (isset($content['descriptions']))
+				$heap['descriptions'] = $content['descriptions'];
+			if (isset($content['robokassa']))
+				$heap['robokassa'] = $content['robokassa'];
+			if (isset($content['branding']))
+				$heap['branding'] = $content['branding'];
+			//
+			session()->put('heap', $heap);
+		}
 		session()->keep('heap');
 
 		return match ($mode) {
@@ -66,7 +92,7 @@ class StepController extends Controller
 			self::decrementCurrentStep();
 
 		$mode = $request->mode;
-		$test = $request->has('test') ? Test::findOrFail($request->test)->getKey() : 0;
+		$test = $request->test == 0 ? 0 : Test::findOrFail($request->test)->getKey();
 		session()->keep('heap');
 		return redirect()->route('steps.play', [
 			'mode' => $mode,
@@ -95,10 +121,9 @@ class StepController extends Controller
 				customAttributes: $step->getStoreAttributes()
 			)->validate();
 
-		$data = $request->except(['_token', '_method', 'mode', 'sid', 'test']);
 		$result = match($mode) {
-			config('global.create') => $step->store($data),
-			config('global.edit') => $step->update($data),
+			config('global.create') => $step->store($request),
+			config('global.edit') => $step->update($request),
 			config('global.show') => true,
 		};
 		session()->keep('heap');
@@ -139,10 +164,9 @@ class StepController extends Controller
 				customAttributes: $step->getStoreAttributes()
 			)->validate();
 
-		$data = $request->except(['_token', '_method', 'mode', 'sid']);
 		$result = match($mode) {
-			config('global.create') => $step->store($data),
-			config('global.edit') => $step->update($data),
+			config('global.create') => $step->store($request),
+			config('global.edit') => $step->update($request),
 			config('global.show') => true,
 		};
 
@@ -167,6 +191,8 @@ class StepController extends Controller
 			$content['descriptions'] = $heap['descriptions'];
 		if (isset($heap['robokassa']))
 			$content['robokassa'] = $heap['robokassa'];
+		if (isset($heap['branding']))
+			$content['branding'] = $heap['branding'];
 		$data['content'] = json_encode($content);
 
 		switch ($mode) {

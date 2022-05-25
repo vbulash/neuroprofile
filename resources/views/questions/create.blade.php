@@ -46,7 +46,7 @@
                     @default
                     <div class="row mb-4">
                         <label class="col-sm-3 col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
-                            @if($field['required'] || !$show)
+                            @if($field['required'])
                                 <span class="required">*</span>
                             @endif</label>
                         @break
@@ -61,7 +61,6 @@
                                 <input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
                                        name="{{ $field['name'] }}"
                                        value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
-                                       @if($show) disabled @endif
                                 >
                             </div>
                             @break
@@ -71,7 +70,6 @@
 						<textarea class="form-control" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
                                   cols="30"
                                   rows="5"
-                                  @if($show) disabled @endif
 						>{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}</textarea>
                             </div>
                             @break
@@ -79,10 +77,9 @@
                             @case('select')
                             <div class="col-sm-5">
                                 <select class="form-control select2" name="{{ $field['name'] }}"
-                                        id="{{ $field['name'] }}" @if($show) disabled @endif>
+                                        id="{{ $field['name'] }}">
                                     @foreach($field['options'] as $key => $value)
-                                        <option value="{{ $key }}"
-                                                @if($field['value'] == $key) selected @endif>{{ $value }}</option>
+                                        <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -119,7 +116,7 @@
                 @foreach($fields as $field)
                     <div class="col-sm-6">
                         <label class="col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
-                            @if($field['required'] || !$show)
+                            @if($field['required'])
                                 <span class="required">*</span>
                             @endif
                         </label>
@@ -128,16 +125,14 @@
                             <input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
                                    name="{{ $field['name'] }}"
                                    value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
-                                   @if($show) disabled @endif
                             >
                             @break;
 
                             @case('select')
                             <select class="form-control select2" name="{{ $field['name'] }}"
-                                    id="{{ $field['name'] }}" @if($show) disabled @endif>
-                                @foreach($field['options'] as $key)
-                                    <option value="{{ $key }}"
-                                            @if($field['value'] == $key) selected @endif>{{ $key }}</option>
+                                    id="{{ $field['name'] }}">
+                                @foreach($field['options'] as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </select>
                             @break
@@ -147,13 +142,12 @@
                                 <input type="file" class="form-control" id="{{ $field['name'] }}"
                                        name="{{ $field['name'] }}"
                                        onchange="readImage(this)"
-                                       @if($show) disabled @endif
                                 >
                             </div>
                             <div class="row mb-4" id="panel_{{ $field['name'] }}">
                                 <div class="col-sm-9">
                                     <img id="preview_{{ $field['name'] }}"
-                                         src="/uploads/{{ $field['value'] }}"
+                                         src=""
                                          alt=""
                                          class="image-preview">
                                 </div>

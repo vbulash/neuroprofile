@@ -18,12 +18,13 @@
 @section('form.fields')
 	@php
 		$heap = session('heap');
-		$auth = intval($heap['options']);
+		$auth = intval($heap['options'] ?? 0);
 
         $fields = [
 			['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 			['name' => 'test', 'type' => 'hidden', 'value' => $test],
-			['name' => 'sid', 'type' => 'hidden', 'value' => $sid]
+			['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
+			['name' => 'step-card', 'type' => 'hidden', 'value' => true]
 		];
         if (($auth & \App\Models\TestOptions::AUTH_FULL->value) ||
         	($auth & \App\Models\TestOptions::AUTH_MIX->value)) {
@@ -36,7 +37,7 @@
 						'type' => 'checkbox',
 						'short' => true
 					];
-					if (isset($heap) && isset($heap['step-card'])) {
+					if (isset($heap['card'])) {
 						$item['value'] = array_key_exists($control['name'], $heap['card']);
 					} else {
                         $item['value'] = $control['actual'] | $control['required'];

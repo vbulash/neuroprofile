@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\tests;
 
 use App\Models\Contract;
-use App\Models\Test;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use App\Models\TestOptions;
 use Illuminate\Http\Request;
 
 class StepCore implements Step
@@ -16,23 +13,31 @@ class StepCore implements Step
         return 'Основная информация';
     }
 
-    public function store(array $data): bool
+    public function store(Request $request): bool
 	{
-		$heap = [
-			'step-core' => true,
-			'name' => $data['name'],
-			'contract_id' => $data['contract_id'],
-			'options' => intval($data['auth']),
-			'paid' => isset($data['paid'])
-		];
+		$data = $request->except(['_token', '_method', 'mode', 'sid', 'test']);
+		$heap = session('heap') ?? [];
+		$heap['step-core'] = $data['step-core'];
+		$heap['name'] = $data['name'];
+		$heap['contract_id'] = $data['contract_id'];
+		$heap['paid'] = isset($data['paid']);
+		$options = $heap['options'] ?? 0;
+		$options &= ~(
+			TestOptions::AUTH_PKEY->value |
+			TestOptions::AUTH_GUEST->value |
+			TestOptions::AUTH_MIX->value |
+			TestOptions::AUTH_FULL->value
+		);
+		$options |= intval($data['auth']);
+		$heap['options'] = $options;
 		session()->put('heap', $heap);
 
         return true;
     }
 
-    public function update(array $data): bool
+    public function update(Request $request): bool
     {
-        return $this->store($data);
+        return $this->store($request);
     }
 
 	public function create(Request $request)
@@ -44,26 +49,12 @@ class StepCore implements Step
 	{
 		$mode = intval($request->mode);
 		$buttons = intval($request->buttons);
+		$test = intval($request->test);
 		$contracts = Contract::all()
 			->mapWithKeys(fn ($contract) =>
 			[$contract->getKey() => sprintf("%s (%s)", $contract->number, $contract->client->name )])
 			->toArray();
 
-		if ($mode != config('global.create')) {
-			$test = Test::findOrFail($request->test);
-			if (!isset($heap['step-card'])) {
-				$heap = [
-					'step-core' => true,
-					'name' => $test->name,
-					'key' => $test->key,
-					'contract_id' => $test->contract->getKey(),
-					'options' => $test->options,
-					'paid' => $test->paid
-				];
-				session()->put('heap', $heap);
-			}
-			$test = $test->getKey();
-		} else $test = $request->test;
 		return view('tests.steps.core', compact('mode', 'contracts', 'buttons', 'test'));
 	}
 

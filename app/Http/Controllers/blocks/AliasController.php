@@ -87,7 +87,7 @@ class AliasController extends Controller
 	public static function store(array $data): Block
 	{
 		$block = Block::create($data);
-		$block->sort_no = PHP_INT_MAX;
+		$block->sort_no = config('global.mysql-int-max');
 		$block->save();
 		return $block;
 	}

@@ -34,7 +34,7 @@
                 1 => 'Нейропрофиль',
 			], 'value' => $fmptype->cluster],
             ['name' => 'active', 'title' => 'Статус типа описания', 'required' => false, 'type' => 'text', 'value' => $fmptype->active ? 'Активный' : 'Неактивный', 'disabled' => true],
-            ['name' => 'limit', 'title' => 'Необходимо нейропрофилей', 'required' => true, 'type' => 'number', 'value' => $fmptype->limit, 'min' => 2],
+            ['name' => 'limit', 'title' => 'Необходимо нейропрофилей', 'required' => true, 'type' => 'number', 'value' => $fmptype->limit, 'min' => 2, 'max' => $max],
             ['name' => 'id', 'type' => 'hidden', 'value' => $fmptype->getKey()]
         ];
     @endphp

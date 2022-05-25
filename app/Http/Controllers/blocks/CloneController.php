@@ -100,7 +100,7 @@ class CloneController extends Controller
 		$context = session('context');
 		// Клонирование из источника
 		$to = $from->replicate()->fill([
-			'sort_no'=> PHP_INT_MAX,
+			'sort_no'=> config('global.mysql-int-max'),
 			'profile_id' => $context['profile']
 		]);
 		$to->save();

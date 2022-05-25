@@ -17,7 +17,7 @@
 @section('interior')
     <div class="block-header block-header-default">
         @if ($codeCount == 0)
-            Полный комплект нейропрофилей ({{ $count }}), добавление нового нейропрофиля невозможно
+            Полный комплект нейропрофилей (все коды введены), добавление нового нейропрофиля невозможно
         @else
             <a href="{{ route('profiles.create', ['sid' => $sid]) }}" class="btn btn-primary">Добавить
                 нейропрофиль</a>

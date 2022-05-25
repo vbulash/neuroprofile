@@ -28,6 +28,11 @@
 	@endif
 @endsection
 
+@section('form.method')method="get"@endsection
+@section('form.put')
+@method('PUT')
+@endsection
+
 @section('interior')
 	<div class="block-header block-header-default">
 		<h3 class="block-title fw-semibold">
@@ -35,12 +40,13 @@
 			@yield('interior.subheader')
 		</h3>
 	</div>
-	<form role="form" method="get"
+	<form role="form"
+		@yield('form.method')
 		  @yield('form.params')
 		  autocomplete="off" enctype="multipart/form-data">
 		@csrf
 		@if($mode == config('global.edit'))
-			@method('PUT')
+			@yield('form.put')
 		@endif
 
 		@yield('form.before.content')

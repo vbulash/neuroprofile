@@ -30,7 +30,7 @@
                 1 => 'Нейропрофиль',
 			]],
             ['name' => 'active', 'title' => 'Статус типа описания', 'required' => false, 'type' => 'text', 'value' => 'Неактивный', 'disabled' => true],
-            ['name' => 'limit', 'title' => 'Необходимо нейропрофилей', 'required' => true, 'type' => 'number', 'value' => 16, 'min' => 2],
+            ['name' => 'limit', 'title' => 'Необходимо нейропрофилей', 'required' => true, 'type' => 'number', 'value' => 16, 'min' => 2, 'max' => $max],
         ];
     @endphp
 @endsection

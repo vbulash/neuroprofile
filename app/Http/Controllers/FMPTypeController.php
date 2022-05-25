@@ -6,6 +6,7 @@ use App\Events\ToastEvent;
 use App\Http\Requests\StoreFMPTypeRequest;
 use App\Http\Requests\UpdateFMPTypeRequest;
 use App\Models\FMPType;
+use App\Models\Profile;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -92,7 +93,8 @@ class FMPTypeController extends Controller
     public function create()
     {
         $mode = config('global.create');
-		return view('fmptypes.create', compact('mode'));
+		$max = count(Profile::getAllCodes());
+		return view('fmptypes.create', compact('mode', 'max'));
     }
 
     /**
@@ -135,7 +137,8 @@ class FMPTypeController extends Controller
     {
 		$mode = $show ? config('global.show') : config('global.edit');
 		$fmptype = FMPType::findOrFail($id);
-		return view('fmptypes.edit', compact('fmptype', 'mode'));
+		$max = count(Profile::getAllCodes());
+		return view('fmptypes.edit', compact('fmptype', 'mode', 'max'));
     }
 
 	/**

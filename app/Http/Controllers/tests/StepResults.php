@@ -15,11 +15,12 @@ class StepResults implements Step
         return 'Представление результатов тестирования';
     }
 
-    public function store(array $data): bool
+    public function store(Request $request): bool
 	{
-		$heap = session('heap');
-		$heap['step-results'] = true;
-		$options = intval($heap['options']);
+		$data = $request->except(['_token', '_method', 'mode', 'sid', 'test']);
+		$heap = session('heap') ?? [];
+		$heap['step-results'] = $data['step-results'];
+		$options = intval($heap['options'] ?? 0);
 		$results = false;
 		$show = $mail = $client = 0;
 		if (isset($data['show-option'])) {
@@ -49,13 +50,14 @@ class StepResults implements Step
 				$heap['descriptions']['client'] = $client;
 		}
 		session()->put('heap', $heap);
+		session()->keep('heap');
 
         return true;
     }
 
-    public function update(array $data): bool
+    public function update(Request $request): bool
     {
-		return $this->store($data);
+		return $this->store($request);
     }
 
 	public function create(Request $request)
@@ -67,24 +69,13 @@ class StepResults implements Step
 	{
 		$mode = intval($request->mode);
 		$buttons = intval($request->buttons);
+		$test = intval($request->test);
 		$fmptypes = FMPType::all()
 			->where('active', true)
 			->sortBy('name')
 			->pluck(value: 'name', key: 'id')
 			->all()
 		;
-		if ($mode != config('global.create')) {
-			$heap = session('heap');
-			$test = Test::findOrFail($request->test);
-			if (!isset($heap['step-payment'])) {
-				$content = json_decode($test->content, true);
-				$heap['step-results'] = true;
-				$heap['options'] = $test->options;
-				$heap['descriptions'] = $content['descriptions'];
-				session()->put('heap', $heap);
-			}
-			$test = $test->getKey();
-		} else $test = $request->test;
 
 		return view('tests.steps.results', compact('mode', 'buttons', 'fmptypes', 'test'));
 	}

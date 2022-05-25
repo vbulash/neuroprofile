@@ -52,6 +52,11 @@ mix
 		'resources/js/dashmix/modules'
 	], 'public/js/modules')
 
+// Pickr
+	.copy('resources/plugins/pickr/pickr.min.js', 'public/js/pickr.min.js')
+	.copy('resources/plugins/pickr/pickr.min.js.map', 'public/js/pickr.min.js.map')
+	.copy('resources/plugins/pickr/classic.min.css', 'public/css/classic.min.css')
+
     // Media
     .copyDirectory('resources/img/photos', 'public/media/photos')
 

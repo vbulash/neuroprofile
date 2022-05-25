@@ -16,6 +16,10 @@
 	</div>
 @endsection
 
+@section('form.put')
+@method('PUT')
+@endsection
+
 @section('interior')
 	<div class="block-header block-header-default">
 		<h3 class="block-title fw-semibold">
@@ -31,7 +35,7 @@
 		  autocomplete="off" enctype="multipart/form-data">
 		@csrf
 		@if($mode == config('global.edit'))
-			@method('PUT')
+			@yield('form.put')
 		@endif
 
 		<div class="block-content p-4 area">
@@ -69,7 +73,10 @@
 									<input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
 										   name="{{ $field['name'] }}"
 										   @if($field['type'] == 'number' && isset($field['min']))
-											   min="{{ max(0, $field['min']) }}"
+											   min="{{ $field['min'] }}"
+										   @endif
+										   @if($field['type'] == 'number' && isset($field['max']))
+											   max="{{ $field['max'] }}"
 										   @endif
 										   autocomplete="off"
 										   value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"

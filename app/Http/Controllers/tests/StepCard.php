@@ -15,19 +15,21 @@ class StepCard implements Step
         return 'Конструктор анкеты';
     }
 
-    public function store(array $data): bool
+    public function store(Request $request): bool
 	{
-		$heap = session('heap');
-		$heap['step-card'] = true;
+		$data = $request->except(['_token', '_method', 'mode', 'sid', 'test']);
+		$heap = session('heap') ?? [];
+		$heap['step-card'] = $data['step-card'];
 		$heap['card'] = $data;
 		session()->put('heap', $heap);
+		session()->keep('heap');
 
         return true;
     }
 
-    public function update(array $data): bool
+    public function update(Request $request): bool
     {
-		return $this->store($data);
+		return $this->store($request);
     }
 
 	public function create(Request $request)
@@ -39,19 +41,7 @@ class StepCard implements Step
 	{
 		$mode = intval($request->mode);
 		$buttons = intval($request->buttons);
-
-		if ($mode != config('global.create')) {
-			$heap = session('heap');
-			$test = Test::findOrFail($request->test);
-			if (!isset($heap['step-card'])) {
-				$content = json_decode($test->content, true);
-
-				$heap['step-card'] = true;
-				$heap['card'] = $content['card'];
-				session()->put('heap', $heap);
-			}
-			$test = $test->getKey();
-		} else $test = $request->test;
+		$test = intval($request->test);
 
 		return view('tests.steps.card', compact('mode', 'buttons', 'test'));
 	}

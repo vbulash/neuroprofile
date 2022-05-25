@@ -24,7 +24,20 @@
             \App\Models\TestOptions::AUTH_MIX->value => 'Комбинация запросов анкеты респондента и персонального ключа'
 		];
         $heap = session('heap');
-        if (isset($heap) && isset($heap['step-core'])) {
+
+        if (!isset($heap['step-core']) && $mode == config('global.create')) {
+            $fields = [
+				['name' => 'name', 'title' => 'Название теста', 'required' => true, 'type' => 'text'],
+				['name' => 'contract_id', 'title' => 'Контракт теста', 'required' => false, 'type' => 'select', 'options' => $contracts],
+				['name' => 'auth', 'title' => 'Анкетирование в начале теста', 'required' => false, 'type' => 'select', 'options' => $auth],
+				['name' => 'paid', 'title' => 'Результат тестирования имеет платную расширенную версию', 'required' => false, 'type' => 'checkbox'],
+				['name' => 'options', 'type' => 'hidden', 'value' => 0],
+				['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
+				['name' => 'test', 'type' => 'hidden', 'value' => $test],
+				['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
+				['name' => 'step-core', 'type' => 'hidden', 'value' => true]
+			];
+        } else {
             $auth_current = 0;
             foreach (\App\Models\TestOptions::cases() as $case) {
                 if (intval($heap['options']) & $case->value) {
@@ -37,24 +50,17 @@
 				['name' => 'contract_id', 'title' => 'Контракт теста', 'required' => false, 'type' => 'select', 'options' => $contracts, 'value' => $heap['contract_id']],
 				['name' => 'auth', 'title' => 'Анкетирование в начале теста', 'required' => false, 'type' => 'select', 'options' => $auth, 'value' => $auth_current],
 				['name' => 'paid', 'title' => 'Результат тестирования имеет платную расширенную версию', 'required' => false, 'type' => 'checkbox', 'value' => $heap['paid']],
+				['name' => 'options', 'type' => 'hidden', 'value' => $heap['options']],
 				['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 				['name' => 'test', 'type' => 'hidden', 'value' => $test],
 				['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
+				['name' => 'step-core', 'type' => 'hidden', 'value' => true]
 			];
             if ($mode != config('global.create')) {
                 array_unshift($fields,
-                	['name' => 'key', 'title' => 'Ключ теста', 'required' => false, 'type' => 'text', 'value' => $heap['key'], 'disabled' => true]);
+                	['name' => 'tkey', 'title' => 'Ключ теста', 'required' => false, 'type' => 'text', 'value' => $heap['key'], 'disabled' => true]);
+                $fields[] = ['name' => 'key', 'type' => 'hidden', 'value' => $heap['key']];
             }
-        } else {
-			$fields = [
-				['name' => 'name', 'title' => 'Название теста', 'required' => true, 'type' => 'text'],
-				['name' => 'contract_id', 'title' => 'Контракт теста', 'required' => false, 'type' => 'select', 'options' => $contracts],
-				['name' => 'auth', 'title' => 'Анкетирование в начале теста', 'required' => false, 'type' => 'select', 'options' => $auth],
-				['name' => 'paid', 'title' => 'Результат тестирования имеет платную расширенную версию', 'required' => false, 'type' => 'checkbox'],
-				['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
-				['name' => 'test', 'type' => 'hidden', 'value' => $test],
-				['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
-			];
         }
 	@endphp
 @endsection

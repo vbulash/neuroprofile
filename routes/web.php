@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,10 +79,16 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/steps/back', 'tests\StepController@back')->name('steps.back');
 	Route::get('/steps/next', 'tests\StepController@next')->name('steps.next');
 	Route::get('/steps/close', 'tests\StepController@close')->name('steps.close');
-	Route::get('/steps/finish', 'tests\StepController@finish')->name('steps.finish');
+	Route::post('/steps/finish', 'tests\StepController@finish')->name('steps.finish');
 	// Тесты
 	Route::resource('/tests', 'TestController');
 	Route::get('/tests.data', 'TestController@getData')->name('tests.index.data');
+});
+
+// Служебные маршруты
+Route::get('/optimize-clear', function () {
+	$exitCode = Artisan::call('optimize:clear');
+	echo('Сделана полная оптимизация. Код завершения = '. $exitCode);
 });
 
 require __DIR__.'/auth.php';

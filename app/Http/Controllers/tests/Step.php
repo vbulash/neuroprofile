@@ -17,6 +17,6 @@ interface Step extends Titleable
 	public function getStoreAttributes(): array;
 	public function create(Request $request);
 	public function edit(Request $request);
-	public function store(array $data): bool;
-	public function update(array $data): bool;
+	public function store(Request $request): bool;
+	public function update(Request $request): bool;
 }
