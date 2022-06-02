@@ -40,7 +40,7 @@
 					if (isset($heap['card'])) {
 						$item['value'] = array_key_exists($control['name'], $heap['card']);
 					} else {
-                        $item['value'] = $control['actual'] | $control['required'];
+                        $item['value'] = false; //$control['actual'] | $control['required'];
 					}
 					$fields[] = $item;
 				}

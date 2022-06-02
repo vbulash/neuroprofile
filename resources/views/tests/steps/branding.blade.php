@@ -15,6 +15,10 @@
 	@endif
 @endsection
 
+@section('body-params')
+	data-editor="DecoupledDocumentEditor" data-collaboration="false"
+@endsection
+
 @section('interior.subheader') @endsection
 
 @section('form.fields')
@@ -36,31 +40,39 @@
 	@php
 		$heap = session('heap');
 		$options = intval($heap['options'] ?? 0);
+        $defaultSignature = sprintf(<<<EOS
+<p style="margin-top: 40px;">
+    С уважением,<br/>
+    <a href="%s" target="_blank">%s</a>
+</p>
+EOS,
+			env('BRAND_URL'), env('BRAND_NAME'));
         if (!isset($heap['step-branding']) && $mode == config('global.create')) {
             $custom = false;
             $logo = '';
             $background = '#007bff';
             $color = '#ffffff';
             $company = env('APP_NAME');
+            $signature = $defaultSignature;
         } else {
             $custom = $options & \App\Models\TestOptions::CUSTOM_BRANDING->value;
             $logo = isset($heap['branding']['logo']) ? '/uploads/' . $heap['branding']['logo'] : '';
 			$background = $heap['branding']['background'] ?? '#007bff';
             $color = $heap['branding']['fontcolor'] ?? '#ffffff';
             $company = $heap['branding']['company-name'] ?? env('APP_NAME');
+            $signature = $heap['branding']['signature'] ?? $defaultSignature;
         }
 	@endphp
 	<div class="col-sm-8 mb-4 p-4">
-		<div class="checkbox">
-			<label>
-				<input type="checkbox" id="branding-option" name="branding-option"
-					   @if ($custom)
-						   checked
-					   @endif
-					   @if ($mode == config('global.show'))
-						   disabled
-					@endif
-				> Тест имеет самостоятельный брендинг, отличный от встроенного</label>
+		<div class="form-check form-switch">
+			<input class="form-check-input"
+				   type="checkbox"
+				   id="branding-option" name="branding-option"
+				   @if($custom)
+					   checked
+				   @endif
+				   @if($mode == config('global.show')) disabled @endif>
+			<label class="form-check-label" for="branding-option">Тест имеет самостоятельный брендинг, отличный от встроенного</label>
 		</div>
 	</div>
 	<div class="p-4" id="branding-panel" style="display: none">
@@ -68,7 +80,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label
-						for="logo-file">Логотип</label>
+						for="logo-file">Логотип:</label>
 					<input type="file" id="logo-file"
 						   name="logo-file"
 						   class="image-file mb-4 form-control"
@@ -110,6 +122,20 @@
 				</div>
 			</div>
 		</div>
+		<div class="row mb-4">
+			<div class="form-group">
+				<label for="signature_editor">Подпись в письме с результатами тестирования:</label>
+				<input type="hidden" id="signature" name="signature">
+				<div class="col-sm-9">
+					<div class="row">
+						<div class="document-editor__toolbar"></div>
+					</div>
+					<div class="row row-editor">
+						<div class="editor" id="signature_editor">{!! $signature !!}</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<div class="form-group">
 			<label for="company-name-changer">Организация / компания:</label>
@@ -120,7 +146,6 @@
 				   @endif
 				   value="{{ $company }}"
 			>
-			<div class="invalid-feedback">Поле &laquo;Организация / компания&raquo; должно быть заполнено</div>
 		</div>
 
 		<div class="preview mt-5">
@@ -147,10 +172,12 @@
 
 @push('css_after')
 	<link rel="stylesheet" href="{{ asset('css/classic.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/ckeditor.css') }}">
 @endpush
 
 @push('js_after')
 	<script src="{{ asset('js/pickr.min.js') }}"></script>
+	<script src="{{ asset('js/ckeditor.js') }}"></script>
 	<script>
 		function readLogoImage(input) {
 			if (input.files && input.files[0]) {
@@ -311,6 +338,80 @@
 					button.disabled = true;
 				});
 			@endif
+		}, false);
+
+		DecoupledDocumentEditor
+			.create(document.querySelector('.editor'), {
+				toolbar: {
+					items: [
+						'heading',
+						'|',
+						'fontSize',
+						'fontFamily',
+						'|',
+						'fontColor',
+						'fontBackgroundColor',
+						'|',
+						'bold',
+						'italic',
+						'underline',
+						'strikethrough',
+						'subscript',
+						'superscript',
+						'highlight',
+						'|',
+						'alignment',
+						'|',
+						'numberedList',
+						'bulletedList',
+						'|',
+						'outdent',
+						'indent',
+						'codeBlock',
+						'|',
+						'todoList',
+						'link',
+						'blockQuote',
+						'insertTable',
+						'|',
+						'undo',
+						'redo'
+					]
+				},
+				language: 'ru',
+				codeBlock: {
+					languages: [
+						{language: 'php', label: 'PHP'}
+					]
+				},
+				table: {
+					contentToolbar: [
+						'tableColumn',
+						'tableRow',
+						'mergeTableCells',
+						'tableCellProperties',
+						'tableProperties'
+					]
+				},
+				licenseKey: '',
+			})
+			.then(editor => {
+				window.editor = editor;
+				document.querySelector('.document-editor__toolbar').appendChild(editor.ui.view.toolbar.element);
+				document.querySelector('.ck-toolbar').classList.add('ck-reset_all');
+				@if ($mode == config('global.show'))
+					editor.isReadOnly = true;
+    			@endif
+			})
+			.catch(error => {
+				console.error('Oops, something went wrong!');
+				console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+				console.warn('Build id: bfknlbbh0ej1-27rpc1i5joqr');
+				console.error(error);
+			});
+
+		document.getElementById('core-create').addEventListener('submit', () => {
+			document.getElementById('signature').value = editor.getData();
 		}, false);
 	</script>
 @endpush

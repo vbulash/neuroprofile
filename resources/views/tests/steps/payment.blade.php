@@ -50,16 +50,15 @@
 
 @section('form.before.content')
 	<div class="col-sm-8 mb-4 p-4">
-		<div class="checkbox">
-			<label>
-				<input type="checkbox" id="payment-option" name="payment-option"
-					   @if ($custom)
-						   checked
-					   @endif
-					   @if ($mode == config('global.show'))
-						   disabled
-					@endif
-				> Тест имеет самостоятельную оплату, отличную от встроенной</label>
+		<div class="form-check form-switch">
+			<input class="form-check-input"
+				   type="checkbox"
+				   id="payment-option" name="payment-option"
+				   @if($custom)
+					   checked
+				   @endif
+				   @if($mode == config('global.show')) disabled @endif>
+			<label class="form-check-label" for="payment-option">Тест имеет самостоятельную оплату, отличную от встроенной</label>
 		</div>
 	</div>
 @endsection
