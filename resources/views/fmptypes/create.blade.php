@@ -31,6 +31,7 @@
 			]],
             ['name' => 'active', 'title' => 'Статус типа описания', 'required' => false, 'type' => 'text', 'value' => 'Неактивный', 'disabled' => true],
             ['name' => 'limit', 'title' => 'Необходимо нейропрофилей', 'required' => true, 'type' => 'number', 'value' => 16, 'min' => 2, 'max' => $max],
+            ['name' => 'ethalon', 'title' => 'Эталонный тип описания', 'required' => false, 'type' => 'checkbox'],
         ];
     @endphp
 @endsection

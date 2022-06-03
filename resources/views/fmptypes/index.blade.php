@@ -16,7 +16,10 @@
 
 @section('interior')
     <div class="block-header block-header-default">
-        <a href="{{ route('fmptypes.create', ['sid' => $sid]) }}" class="btn btn-primary">Добавить тип описания</a>
+		<div>
+			<a href="{{ route('fmptypes.create', ['sid' => $sid]) }}" class="btn btn-primary mb-2">Добавить тип описания</a><br/>
+			<small>Жирным шрифтом выделен эталонный тип описания - предпочтительный источник блоков для других типов описаний</small>
+		</div>
     </div>
     <div class="block-content p-4">
         @if ($count)
@@ -32,6 +35,7 @@
                             <th>Статус</th>
                             <th>Необходимо нейропрофилей</th>
                             <th>Фактически нейропрофилей</th>
+							<th class="d-none">Эталон</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -83,6 +87,10 @@
                     serverSide: true,
                     ajax: '{!! route('fmptypes.index.data', ['sid' => session()->getId()]) !!}',
                     responsive: true,
+					createdRow: function( row, data, dataIndex ) {
+						if (data.ethalon == 1)
+							row.classList.add('fw-bold');
+					},
                     columns: [
                         {data: 'id', name: 'id', responsivePriority: 1},
                         {data: 'name', name: 'name', responsivePriority: 1},
@@ -90,6 +98,7 @@
                         {data: 'active', name: 'active', responsivePriority: 2},
                         {data: 'limit', name: 'limit', responsivePriority: 3, sortable: false},
                         {data: 'fact', name: 'fact', responsivePriority: 3},
+						{data: 'ethalon', name: 'ethalon', visible: false},
                         {
                             data: 'action',
                             name: 'action',

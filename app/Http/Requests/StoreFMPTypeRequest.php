@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\INNRule;
-use App\Rules\OGRNControlSumRule;
-use App\Rules\OGRNRule;
+use App\Rules\OneEthalonRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreFMPTypeRequest extends FormRequest
@@ -31,7 +29,8 @@ class StoreFMPTypeRequest extends FormRequest
 			'limit' => [
 				'required',
 				'numeric'
-			]
+			],
+			'ethalon' => new OneEthalonRule($this)
 		];
 	}
 
@@ -40,6 +39,7 @@ class StoreFMPTypeRequest extends FormRequest
 		return [
 			'name' => 'Наименование',
 			'limit' => 'Необходимо нейропрофилей',
+			'ethalon' => 'Эталонный тип описания'
 		];
 	}
 

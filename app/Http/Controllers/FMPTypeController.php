@@ -105,8 +105,9 @@ class FMPTypeController extends Controller
 	 */
     public function store(StoreFMPTypeRequest $request)
     {
-        $data = $request->except('_token');
+        $data = $request->except(['_token', 'ethalon']);
 		$data['active'] = false;
+		$data['ethalon'] = $request->has('ethalon');
 		$fmptype = FMPType::create($data);
 		$fmptype->save();
 
@@ -151,9 +152,10 @@ class FMPTypeController extends Controller
     public function update(UpdateFMPTypeRequest $request, $id)
     {
 		$fmptype = FMPType::findOrFail($id);
-		$data = $request->except(['_token', 'id']);	// ID нужен только для валидации
+		$data = $request->except(['_token', 'id', 'ethalon']);	// ID нужен только для валидации
 		$count = $fmptype->profiles->count();
 		$data['active'] = intval($data['limit']) == $count;
+		$data['ethalon'] = $request->has('ethalon');
 		$name = $fmptype->name;
 		$fmptype->update($data);
 

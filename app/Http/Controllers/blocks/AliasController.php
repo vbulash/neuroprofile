@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class AliasController extends Controller
@@ -24,23 +25,39 @@ class AliasController extends Controller
 	 */
 	public function getData(): JsonResponse
 	{
-		$blocks = Block::whereNull('block_id');
+		$context = session('context');
+		$profile = Profile::findOrFail($context['profile']);
+		$blocks = DB::select(<<<SQL
+SELECT
+    blocks.id as id,
+    blocks.name as name,
+    fmptypes.name as fmptype,
+    profiles.name as profile,
+    fmptypes.ethalon as ethalon
+FROM blocks, profiles, fmptypes
+WHERE blocks.profile_id = profiles.id AND profiles.fmptype_id = fmptypes.id
+    AND blocks.block_id is null AND profiles.code = :code
+ORDER BY ethalon DESC, fmptype, profile, name
+SQL,
+			['code' => $profile->code]);
+		foreach ($blocks as &$block) {
+			$block = (array) $block;
+			$block['model'] = Block::findOrFail($block['id']);
+			$block = (object) $block;
+		}
 
 		return Datatables::of($blocks)
-			// id
-			// name
-			->addColumn('linked', fn($block) => $block->children->count())
-			->addColumn('fmptype', fn($block) => $block->profile->fmptype->name)
-			->addColumn('profile', fn($block) => $block->profile->getTitle())
+			->editColumn('profile', fn ($block) => $block->model->profile->getTitle())
+			->addColumn('linked', fn ($block) => $block->model->children->count())
 			->addColumn('action', function ($block) {
 				$showRoute = route('aliases.edit', [
 					'mode' => config('global.show'),
-					'alias' => $block->getKey(),
-					'block_id' => $block->getKey(),
+					'alias' => $block->id,
+					'block_id' => $block->id,
 					'sid' => session()->getId()
 				]);
 				$linkRoute = route('aliases.create', [
-					'block_id' => $block->getKey(),
+					'block_id' => $block->id,
 					'sid' => session()->getId()
 				]);
 				$actions = '';

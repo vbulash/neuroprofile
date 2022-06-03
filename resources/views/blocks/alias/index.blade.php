@@ -33,6 +33,7 @@
 							<th>Количество блоков-потомков</th>
 							<th>Тип описания</th>
 							<th>Нейропрофиль</th>
+							<th class="d-none">Эталон</th>
 							<th>Действия</th>
 						</tr>
 						</thead>
@@ -63,13 +64,20 @@
 					serverSide: true,
 					ajax: '{!! route('aliases.index.data', ['sid' => session()->getId()]) !!}',
 					responsive: true,
-					pageLength: 100,
+					pageLength: 50,
+					order: [[5, 'desc'], [3, 'asc'], [4, 'asc'], [1, 'asc']],
+					deferRender: true,
+					createdRow: function( row, data, dataIndex ) {
+						if (data.ethalon == 1)
+							row.classList.add('fw-bold');
+					},
 					columns: [
 						{data: 'id', name: 'id', responsivePriority: 1},
 						{data: 'name', name: 'name', responsivePriority: 1},
 						{data: 'linked', name: 'linked', responsivePriority: 4},
 						{data: 'fmptype', name: 'fmptype', responsivePriority: 2},
 						{data: 'profile', name: 'profile', responsivePriority: 3},
+						{data: 'ethalon', name: 'ethalon', visible: false},
 						{
 							data: 'action',
 							name: 'action',

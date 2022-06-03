@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\OneEthalonRule;
 use App\Rules\ProfileCount;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -30,7 +31,8 @@ class UpdateFMPTypeRequest extends FormRequest
 				'required',
 				'numeric',
 				new ProfileCount($this)	// Новый план нейропрофилей не может быть больше факта
-			]
+			],
+			'ethalon' => new OneEthalonRule($this)
 		];
 	}
 
@@ -39,6 +41,7 @@ class UpdateFMPTypeRequest extends FormRequest
 		return [
 			'name' => 'Наименование',
 			'limit' => 'Необходимо нейропрофилей',
+			'ethalon' => 'Эталонный тип описания'
 		];
 	}
 

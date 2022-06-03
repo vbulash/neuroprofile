@@ -15,7 +15,8 @@ class FMPType extends Model implements FormTemplate, Titleable
 		'name',
 		'cluster',
 		'active',
-		'limit'
+		'limit',
+		'ethalon'
 	];
 
 	public function profiles()
