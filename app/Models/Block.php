@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Block extends Model implements FormTemplate, Titleable
 {
-    use HasFactory;
+    use HasFactory, UploadImage;
 
 	protected $fillable = [
 		'sort_no',

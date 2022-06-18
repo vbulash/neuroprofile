@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\ToastEvent;
 use App\Http\Controllers\blocks\AliasController;
+use App\Http\Controllers\blocks\ImageController;
 use App\Http\Controllers\blocks\TextController;
 use App\Http\Requests\StoreBlockRequest;
 use App\Models\Block;
@@ -109,6 +110,7 @@ class BlockController extends Controller
 	{
 		return match (intval($request->type)) {
 			BlockType::Text->value => redirect()->route('texts.create', ['sid' => session()->getId()]),
+			BlockType::Image->value => redirect()->route('images.create', ['sid' => session()->getId()]),
 			BlockType::Alias->value => redirect()->route('aliases.create', ['sid' => session()->getId()]),
 		};
 	}
@@ -123,6 +125,7 @@ class BlockController extends Controller
 	{
 		$block = match(intval($request->type)) {
 			BlockType::Text->value => TextController::store($request->except('_token')),
+			BlockType::Image->value => ImageController::store($request),
 			BlockType::Alias->value => AliasController::store($request->except('_token')),
 		};
 		// Перенумеровать блоки
@@ -167,6 +170,11 @@ class BlockController extends Controller
 				'mode' => $mode,
 				'sid' => session()->getId()
 			]),
+			BlockType::Image->value => redirect()->route('images.edit', [
+				'image' => $block->getKey(),
+				'mode' => $mode,
+				'sid' => session()->getId()
+			]),
 			BlockType::Alias->value => redirect()->route('aliases.edit', [
 				'alias' => $block->getKey(),
 				'mode' => $mode,
@@ -184,14 +192,12 @@ class BlockController extends Controller
 	 */
 	public function update(Request $request, int $id)
 	{
-		switch ($request->type) {
-			case BlockType::Text->value:
-				$name = TextController::update($request->except('_token'), $id);
-				break;
-			case BlockType::Alias->value:
-				$name = AliasController::update($request->except('_token'), $id);
-				break;
-		}
+		$name = match(intval($request->type)) {
+			BlockType::Text->value => TextController::update($request->except('_token'), $id),
+			BlockType::Image->value => ImageController::update($request, $id),
+			BlockType::Alias->value => AliasController::update($request->except('_token'), $id),
+			default => throw new Exception('Неизвестный тип блока')
+		};
 		// Перенумеровать блоки
 		$block = Block::findOrFail($id);
 		$blocks = $block->profile->blocks
@@ -225,6 +231,7 @@ class BlockController extends Controller
 		try {
 			$temp = match(intval($block->type)) {
 				BlockType::Text->value => TextController::destroy($block->getKey()),
+				BlockType::Image->value => ImageController::destroy($block->getKey()),
 				BlockType::Alias->value => AliasController::destroy($block->getKey())
 			};
 

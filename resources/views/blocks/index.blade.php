@@ -34,6 +34,10 @@
 								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Alias->value, 'sid' => $sid])
 							],
 							[
+								'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Image->value),
+								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Image->value, 'sid' => $sid])
+							],
+							[
 								'title' => 'Клонирование существующего блока',
 								'action' => route('clones.index', ['sid' => $sid])
 							],

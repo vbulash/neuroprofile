@@ -58,6 +58,10 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	//	Используются только несколько методов из полного ресурсного маршрута
 	Route::get('/texts/create', 'blocks\TextController@create')->name('texts.create');
 	Route::get('/texts/{text}/edit', 'blocks\TextController@edit')->name('texts.edit');
+	// Контроллер блоков-изображений в цепочке обработки результатов тестирования
+	// Используются только несколько методов из полного ресурсного маршрута
+	Route::get('/images/create', 'blocks\ImageController@create')->name('images.create');
+	Route::get('/images/{image}/edit', 'blocks\ImageController@edit')->name('images.edit');
 	// Контроллер ссылочных блоков в цепочке обработки результатов тестирования
 	Route::get('/aliases.data', 'blocks\AliasController@getData')->name('aliases.index.data');
 	Route::get('/aliases/create', 'blocks\AliasController@create')->name('aliases.create');

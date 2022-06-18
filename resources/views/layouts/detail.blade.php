@@ -186,6 +186,39 @@
 								</div>
 								@break
 
+								@case('image')
+								<div class="row items-push mb-4">
+									<input type="file" class="form-control" id="{{ $field['name'] }}"
+										   name="{{ $field['name'] }}"
+										   onchange="readImage(this)"
+										   @if($mode == config('global.show')) disabled @endif
+									>
+								</div>
+								<div class="row mb-4 d-flex flex-column justify-content-start" id="panel_{{ $field['name'] }}">
+									<div class="col-sm-9 mb-4">
+										<img id="preview_{{ $field['name'] }}"
+											@if ($mode == config('global.create'))
+												src=""
+												data-origin=""
+											@else
+												src="/uploads/{{ $field['value'] }}"
+												data-origin="/uploads/{{ $field['value'] }}"
+											@endif
+											alt=""
+											class="image-preview">
+									</div>
+									<div class="col-sm-3">
+										<a class="btn btn-primary pl-3
+										@if($mode == config('global.show')) disabled @endif clear-preview"
+										   href="javascript:void(0)"
+										   id="clear_{{ $field['name'] }}"
+										   data-image="{{ $field['name'] }}"
+										   role="button"
+										>Сбросить изменения</a>
+									</div>
+								</div>
+								@break
+
 								@case('hidden')
 								<input type="{{ $field['type'] }}" id="{{ $field['name'] }}"
 									   name="{{ $field['name'] }}" value="{{ $field['value'] }}">

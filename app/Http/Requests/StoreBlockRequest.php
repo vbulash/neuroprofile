@@ -32,6 +32,10 @@ class StoreBlockRequest extends FormRequest
 			BlockType::Alias->value => [
 				'name' => 'required',
 			],
+			BlockType::Image->value => [
+				'name' => 'required',
+				'full' => 'required'
+			],
 		};
 	}
 
@@ -41,6 +45,10 @@ class StoreBlockRequest extends FormRequest
 			BlockType::Text->value,
 			BlockType::Alias->value => [
 				'name' => 'Название блока',
+			],
+			BlockType::Image->value => [
+				'name' => 'Название блока',
+				'full' => 'Изображение блока'
 			],
 		};
 	}
