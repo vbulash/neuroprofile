@@ -40,8 +40,15 @@
 			['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->getKey(), 'disabled' => true],
 			['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->name, 'disabled' => true],
 			['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $block->parent->short, 'disabled' => true],
-			['name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $block->parent->full, 'disabled' => true],
 		];
+        $fields[] = match ($block->parent->type) {
+            \App\Models\BlockType::Text->value => [
+                'name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $block->parent->full, 'disabled' => true
+        	],
+        	\App\Models\BlockType::Image->value => [
+                'name' => 'full', 'title' => 'Изображение блока-предка', 'required' => false, 'type' => 'image', 'value' => $block->parent->full, 'disabled' => true
+			],
+        };
 	@endphp
 @endsection
 
@@ -131,5 +138,37 @@
 				document.getElementById('full').value = editor.getData();
 			}, false);
 		@endif
+
+		function readImage(input) {
+			if (input.files && input.files[0]) {
+				window.preview = 'preview_full';
+				window.clear = 'clear_full';
+
+				let reader = new FileReader();
+				reader.onload = function (event) {
+					document.getElementById(window.preview).setAttribute('src', event.target.result);
+					document.getElementById(window.clear).style.display = 'block';
+				};
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+
+		document.querySelectorAll('.clear-preview').forEach(button => {
+			document.getElementById(button.id).addEventListener('click', event => {
+				let image = 'preview_full';
+				let source = document.getElementById(image).dataset.origin;
+
+				let file = document.getElementById(event.target.dataset.image);
+				file.setAttribute('type', 'text');
+				file.setAttribute('type', 'file');
+
+				document.getElementById(image).setAttribute('src', source);
+				event.target.style.display = 'none';
+			});
+		});
+
+		document.addEventListener("DOMContentLoaded", () => {
+			document.getElementById('clear_full').style.display = 'none';
+		}, false);
 	</script>
 @endpush

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\blocks;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBlockRequest;
 use App\Models\Block;
+use App\Models\BlockKind;
 use App\Models\BlockType;
 use App\Models\Profile;
 use Illuminate\Contracts\Foundation\Application;
@@ -53,7 +54,8 @@ class TextController extends Controller
 	{
 		$mode = $request->mode;
 		$block = Block::findOrFail($id);
-		return view('blocks.text.edit', compact('block', 'mode'));
+		$kind = $request->has('kind') ? $request->kind : BlockKind::Block->value;
+		return view('blocks.text.edit', compact('block', 'mode', 'kind'));
 	}
 
 	/**

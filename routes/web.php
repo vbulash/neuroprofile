@@ -66,11 +66,16 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/aliases.data', 'blocks\AliasController@getData')->name('aliases.index.data');
 	Route::get('/aliases/create', 'blocks\AliasController@create')->name('aliases.create');
 	Route::get('/aliases/{alias}/edit', 'blocks\AliasController@edit')->name('aliases.edit');
-	// Прямая работа со ссылочными блоками
-	Route::get('/aliaslists', 'blocks\AliasListController@index')->name('aliaslists.index');
-	Route::get('/aliaslists.data', 'blocks\AliasListController@getData')->name('aliaslists.index.data');
-	Route::get('/aliaslists/{alias}', 'blocks\AliasListController@show')->name('aliaslists.show');
-	Route::delete('/aliaslists/{alias}', 'blocks\AliasListController@destroy')->name('aliaslists.destroy');
+	// Работа с блоками-предками
+	Route::get('/parents', 'blocks\ParentController@index')->name('parents.index');
+	Route::get('/parents.data', 'blocks\ParentController@getData')->name('parents.index.data');
+	Route::get('/parents/{parent}', 'blocks\ParentController@show')->name('parents.show');
+	Route::get('/parents/{parent}/edit', 'blocks\ParentController@edit')->name('parents.edit');
+	Route::get('/parents.select/{parent}', 'blocks\ParentController@select')->name('parents.select');
+	// Работа с блоками-потомками
+	Route::get('/kids', 'blocks\KidController@index')->name('kids.index');
+	Route::get('/kids.data', 'blocks\KidController@getData')->name('kids.index.data');
+	Route::get('/kids.unlink/{kid}', 'blocks\KidController@unlink')->name('kids.unlink');
 	// Копирование блоков
 	Route::get('/clones', 'blocks\CloneController@index')->name('clones.index');
 	Route::get('/clones.data', 'blocks\CloneController@getData')->name('clones.index.data');

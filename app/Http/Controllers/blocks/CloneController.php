@@ -31,6 +31,7 @@ class CloneController extends Controller
 		return Datatables::of($blocks)
 			// id
 			// name
+			->addColumn('type', fn($block) => BlockType::getName($block->type))
 			->addColumn('fmptype', fn($block) => $block->profile->fmptype->name)
 			->addColumn('profile', fn($block) => $block->profile->getTitle())
 			->addColumn('action', function ($block) {

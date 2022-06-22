@@ -8,6 +8,7 @@ use App\Http\Controllers\blocks\ImageController;
 use App\Http\Controllers\blocks\TextController;
 use App\Http\Requests\StoreBlockRequest;
 use App\Models\Block;
+use App\Models\BlockKind;
 use App\Models\BlockType;
 use App\Models\Profile;
 use Exception;
@@ -19,6 +20,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\DataTables;
 
 class BlockController extends Controller
@@ -92,6 +94,7 @@ class BlockController extends Controller
 	 */
 	public function index()
 	{
+		$area = explode('.', Route::currentRouteName())[0];
 		$context = session('context');
 		unset($context['block']);
 		session()->put('context', $context);
@@ -145,38 +148,43 @@ class BlockController extends Controller
 	/**
 	 * Display the specified resource.
 	 *
+	 * @param Request $request
 	 * @param int $id
 	 * @return RedirectResponse
 	 */
-	public function show(int $id)
+	public function show(Request $request, int $id)
 	{
-		return $this->edit($id, true);
+		return $this->edit($request, $id, true);
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 *
+	 * @param Request $request
 	 * @param int $id
 	 * @param bool $show
 	 * @return RedirectResponse
 	 */
-	public function edit(int $id, bool $show = false)
+	public function edit(Request $request, int $id, bool $show = false)
 	{
 		$mode = $show ? config('global.show') : config('global.edit');
 		$block = Block::findOrFail($id);
 		return match (intval($block->type)) {
 			BlockType::Text->value => redirect()->route('texts.edit', [
 				'text' => $block->getKey(),
+				'kind' => $request->has('kind') ? $request->kind : BlockKind::Block->value,
 				'mode' => $mode,
 				'sid' => session()->getId()
 			]),
 			BlockType::Image->value => redirect()->route('images.edit', [
 				'image' => $block->getKey(),
+				'kind' => $request->has('kind') ? $request->kind : BlockKind::Block->value,
 				'mode' => $mode,
 				'sid' => session()->getId()
 			]),
 			BlockType::Alias->value => redirect()->route('aliases.edit', [
 				'alias' => $block->getKey(),
+				'kind' => $request->has('kind') ? $request->kind : BlockKind::Block->value,
 				'mode' => $mode,
 				'sid' => session()->getId()
 			]),
@@ -192,11 +200,12 @@ class BlockController extends Controller
 	 */
 	public function update(Request $request, int $id)
 	{
+		$kind = $request->has('kind') ? $request->kind : BlockKind::Block->value;
 		$name = match(intval($request->type)) {
 			BlockType::Text->value => TextController::update($request->except('_token'), $id),
 			BlockType::Image->value => ImageController::update($request, $id),
 			BlockType::Alias->value => AliasController::update($request->except('_token'), $id),
-			default => throw new Exception('Неизвестный тип блока')
+			default => 'dashboard'
 		};
 		// Перенумеровать блоки
 		$block = Block::findOrFail($id);
@@ -209,7 +218,13 @@ class BlockController extends Controller
 		session()->put('success',
 			BlockType::getName($block->type) .
 			" &laquo;{$name}&raquo; обновлён.<br/>Блоки перенумерованы");
-		return redirect()->route('blocks.index', ['sid' => session()->getId()]);
+
+		$route = match (strval($kind)) {
+			BlockKind::Block->value => 'blocks.index',
+			BlockKind::Parent->value => 'parents.index',
+			default => 'dashboard'
+		};
+		return redirect()->route($route, ['sid' => session()->getId()]);
 	}
 
 	/**

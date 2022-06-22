@@ -22,11 +22,12 @@
 	Просмотр
 	@php
 		echo match (intval($block->type)) {
-            \App\Models\BlockType::Text->value => 'текстового',
-            \App\Models\BlockType::Alias->value => 'ссылочного',
+            \App\Models\BlockType::Text->value => 'текстового блока',
+            \App\Models\BlockType::Alias->value => 'ссылочного блока',
+            \App\Models\BlockType::Image->value => 'блока-изображения'
 		}
 	@endphp
-	блока-источника клонирования
+	 - источника клонирования
 @endsection
 
 @section('form.params')
@@ -47,12 +48,20 @@
                 $fields[] = ['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea', 'value' => $block->short];
                 $fields[] = ['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'editor', 'value' => $block->full];
                 break;
-			case \App\Models\BlockType::Alias->value:
+            case App\Models\BlockType::Image->value:
+                $fields[] = ['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea', 'value' => $block->short];
+                $fields[] = ['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'image', 'value' => $block->full];
+                break;
+			case App\Models\BlockType::Alias->value:
 				$fields[] = ['type' => 'heading', 'title' => 'Данные блока-предка ссылочного блока'];
 				$fields[] = ['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->getKey(), 'disabled' => true];
 				$fields[] = ['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->name, 'disabled' => true];
 				$fields[] = ['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $block->parent->short, 'disabled' => true];
-				$fields[] = ['name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $block->parent->full, 'disabled' => true];
+
+                $fields[] = match (intval($block->parent->type)) {
+                    App\Models\BlockType::Text->value => ['name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $block->parent->full, 'disabled' => true],
+                    App\Models\BlockType::Image->value => ['name' => 'full', 'title' => 'Изображение текст блока-предка', 'required' => false, 'type' => 'image', 'value' => $block->parent->full, 'disabled' => true],
+                };
 				break;
         };
 	@endphp
@@ -136,5 +145,9 @@
 				console.warn('Build id: bfknlbbh0ej1-27rpc1i5joqr');
 				console.error(error);
 			});
+
+		document.addEventListener("DOMContentLoaded", () => {
+			document.getElementById('clear_full').style.display = 'none';
+		}, false);
 	</script>
 @endpush

@@ -1,15 +1,14 @@
 @extends('layouts.chain')
 
 @section('service')
-	Работа с описаниями результатов тестирования
+	Работа с ссылочными блоками
 @endsection
 
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
-			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
-			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index', ['sid' => session()->getId()])],
+			['title' => 'Блок-предок', 'active' => false, 'context' => 'parent', 'link' => route('parents.index', ['sid' => session()->getId()])],
+			['title' => 'Блок-потомок', 'active' => true, 'context' => 'profile'],
 		];
 	@endphp
 @endsection
@@ -17,7 +16,7 @@
 @section('interior')
 	<div class="block-header block-header-default">
 		<div>
-			Блок-источник для клонирования нового блока
+			Блоки-потомки (ссылочные блоки)
 		</div>
 	</div>
 	<div class="block-content p-4">
@@ -29,9 +28,6 @@
 						<tr>
 							<th style="width: 30px">#</th>
 							<th>Название блока</th>
-							<th>Тип блока</th>
-							<th>Тип описания</th>
-							<th>Нейропрофиль</th>
 							<th>Действия</th>
 						</tr>
 						</thead>
@@ -39,7 +35,7 @@
 				</div>
 			</div>
 		@else
-			<p>Доступных блоков нет...</p>
+			<p>Доступных блоков-потомков нет...</p>
 		@endif
 	</div>
 @endsection
@@ -52,6 +48,28 @@
 	@push('js_after')
 		<script src="{{ asset('js/datatables.js') }}"></script>
 		<script>
+			document.getElementById('confirm-yes').addEventListener('click', (event) => {
+				$.ajax({
+					method: 'GET',
+					url: "{{ route('kids.unlink', ['kid' => '0']) }}",
+					data: {
+						id: event.target.dataset.id,
+					},
+					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+					success: () => {
+						window.datatable.ajax.reload();
+					}
+				});
+			}, false);
+
+			function clickUnlink(id, name) {
+				document.getElementById('confirm-title').innerText = "Подтвердите разрыв связи";
+				document.getElementById('confirm-body').innerHTML = "Сделать блок &laquo;" + name + "&raquo; самостоятельным, не связанным с предком ?";
+				document.getElementById('confirm-yes').dataset.id = id;
+				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
+				confirmDialog.show();
+			}
+
 			$(function () {
 				window.datatable = $('#blocks_table').DataTable({
 					language: {
@@ -60,15 +78,12 @@
 
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('clones.index.data', ['sid' => session()->getId()]) !!}',
+					ajax: '{!! route('kids.index.data', ['sid' => session()->getId()]) !!}',
 					responsive: true,
 					pageLength: 100,
 					columns: [
 						{data: 'id', name: 'id', responsivePriority: 1},
 						{data: 'name', name: 'name', responsivePriority: 1},
-						{data: 'type', name: 'type', responsivePriority: 2},
-						{data: 'fmptype', name: 'fmptype', responsivePriority: 2},
-						{data: 'profile', name: 'profile', responsivePriority: 3},
 						{
 							data: 'action',
 							name: 'action',

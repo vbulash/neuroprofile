@@ -7,13 +7,18 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Ссылочный блок', 'active' => true, 'context' => 'alias', 'link' => route('aliaslists.index', ['sid' => session()->getId()])],
-			['title' => 'Блок-предок', 'active' => false, 'context' => 'parent'],
+			['title' => 'Блок-предок', 'active' => true, 'context' => 'parent'],
+			['title' => 'Блок-потомок', 'active' => false, 'context' => 'profile'],
 		];
 	@endphp
 @endsection
 
 @section('interior')
+	<div class="block-header block-header-default">
+		<div>
+			Блоки-предки ссылочных блоков
+		</div>
+	</div>
 	<div class="block-content p-4">
 		@if ($count)
 			<div class="table-responsive">
@@ -23,9 +28,9 @@
 						<tr>
 							<th style="width: 30px">#</th>
 							<th>Название блока</th>
+							<th>Тип блока</th>
 							<th>Тип описания</th>
 							<th>Нейропрофиль</th>
-							<th># блока-предка</th>
 							<th>Действия</th>
 						</tr>
 						</thead>
@@ -33,7 +38,7 @@
 				</div>
 			</div>
 		@else
-			<p>Доступных ссылочных блоков нет...</p>
+			<p>Доступных блоков-предков нет...</p>
 		@endif
 	</div>
 @endsection
@@ -46,28 +51,6 @@
 	@push('js_after')
 		<script src="{{ asset('js/datatables.js') }}"></script>
 		<script>
-			document.getElementById('confirm-yes').addEventListener('click', (event) => {
-				$.ajax({
-					method: 'DELETE',
-					url: "{{ route('aliaslists.destroy', ['alias' => '0']) }}",
-					data: {
-						id: event.target.dataset.id,
-					},
-					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-					success: () => {
-						window.datatable.ajax.reload();
-					}
-				});
-			}, false);
-
-			function clickDelete(id, name) {
-				document.getElementById('confirm-title').innerText = "Подтвердите удаление";
-				document.getElementById('confirm-body').innerHTML = "Удалить ссылочный блок &laquo;" + name + "&raquo; ?";
-				document.getElementById('confirm-yes').dataset.id = id;
-				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
-				confirmDialog.show();
-			}
-
 			$(function () {
 				window.datatable = $('#blocks_table').DataTable({
 					language: {
@@ -76,15 +59,15 @@
 
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('aliaslists.index.data', ['sid' => session()->getId()]) !!}',
+					ajax: '{!! route('parents.index.data', ['sid' => session()->getId()]) !!}',
 					responsive: true,
 					pageLength: 100,
 					columns: [
 						{data: 'id', name: 'id', responsivePriority: 1},
 						{data: 'name', name: 'name', responsivePriority: 1},
+						{data: 'type', name: 'type', responsivePriority: 2},
 						{data: 'fmptype', name: 'fmptype', responsivePriority: 2},
 						{data: 'profile', name: 'profile', responsivePriority: 3},
-						{data: 'parent', name: 'parent', responsivePriority: 2},
 						{
 							data: 'action',
 							name: 'action',

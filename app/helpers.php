@@ -17,6 +17,7 @@ if (! function_exists('classByContext')) {
 			'client' => \App\Models\Client::class,
 			'contract' => \App\Models\Contract::class,
 			'fmptype' => \App\Models\FMPType::class,
+			'parent' => \App\Models\Block::class,
 			'profile' => \App\Models\Profile::class,
 			'question' => \App\Models\Question::class,
 			'role' => \App\Models\Role::class,
