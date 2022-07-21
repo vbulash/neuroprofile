@@ -108,23 +108,52 @@
 			}
 
 			document.getElementById('confirm-yes').addEventListener('click', (event) => {
-				$.ajax({
-					method: 'DELETE',
-					url: "{{ route('blocks.destroy', ['block' => '0']) }}",
-					data: {
-						id: event.target.dataset.id,
-					},
-					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-					success: () => {
-						window.datatable.ajax.reload();
-					}
-				});
+				switch (document.getElementById('modal-confirm').dataset.kind) {
+					case 'delete':
+						$.ajax({
+							method: 'DELETE',
+							url: "{{ route('blocks.destroy', ['block' => '0']) }}",
+							data: {
+								id: event.target.dataset.id,
+							},
+							headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+							success: () => {
+								window.datatable.ajax.reload();
+							}
+						});
+						break;
+					case 'unlink':
+						$.ajax({
+							method: 'GET',
+							url: "{{ route('kids.unlink', ['kid' => '0']) }}",
+							data: {
+								id: event.target.dataset.id,
+							},
+							headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+							success: () => {
+								window.datatable.ajax.reload();
+							}
+						});
+						break;
+				}
+
+
 			}, false);
 
 			function clickDelete(id, name) {
 				document.getElementById('confirm-title').innerText = "Подтвердите удаление";
 				document.getElementById('confirm-body').innerHTML = "Удалить блок &laquo;" + name + "&raquo; ?";
 				document.getElementById('confirm-yes').dataset.id = id;
+				document.getElementById('modal-confirm').dataset.kind = 'delete';
+				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
+				confirmDialog.show();
+			}
+
+			function clickUnlink(id, name) {
+				document.getElementById('confirm-title').innerText = "Подтвердите разрыв связи";
+				document.getElementById('confirm-body').innerHTML = "Сделать блок &laquo;" + name + "&raquo; самостоятельным, не связанным с предком ?";
+				document.getElementById('confirm-yes').dataset.id = id;
+				document.getElementById('modal-confirm').dataset.kind = 'unlink';
 				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
 				confirmDialog.show();
 			}

@@ -28,6 +28,8 @@
 						<tr>
 							<th style="width: 30px">#</th>
 							<th>Название блока</th>
+							<th>Тип описания</th>
+							<th>Нейропрофиль</th>
 							<th>Действия</th>
 						</tr>
 						</thead>
@@ -84,6 +86,8 @@
 					columns: [
 						{data: 'id', name: 'id', responsivePriority: 1},
 						{data: 'name', name: 'name', responsivePriority: 1},
+						{data: 'fmptype', name: 'fmptype', responsivePriority: 2},
+						{data: 'profile', name: 'profile', responsivePriority: 3},
 						{
 							data: 'action',
 							name: 'action',

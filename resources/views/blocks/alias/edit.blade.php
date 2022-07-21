@@ -8,11 +8,21 @@
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
-			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
-			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index', ['sid' => session()->getId()])],
-		];
+		$steps = match (strval($kind)) {
+            \App\Models\BlockKind::Kid->value => [
+                ['title' => 'Блок-предок', 'active' => true, 'context' => 'parent', 'link' => route('parents.index', ['sid' => session()->getId()])],
+				['title' => 'Блок-потомок', 'active' => false, 'context' => 'profile', 'link' => '#'],
+			],
+			\App\Models\BlockKind::Block->value => [
+				['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
+				['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
+				['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index', ['sid' => session()->getId()])],
+			]
+		};
+        $close = match (strval($kind)) {
+            \App\Models\BlockKind::Kid->value => route('kids.index', ['sid' => session()->getId()]),
+            \App\Models\BlockKind::Block->value => form($block, $mode, 'close'),
+        };
 	@endphp
 @endsection
 
@@ -31,24 +41,35 @@
 
 @section('form.fields')
 	@php
-		$fields = [
-			['name' => 'name', 'title' => 'Название ссылочного блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
-			['name' => 'block_id', 'type' => 'hidden', 'value' => $block->getKey()],
-			['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Alias->value],
-			['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->parent->getKey()],
-			['type' => 'heading', 'title' => 'Данные блока-предка ссылочного блока'],
-			['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->getKey(), 'disabled' => true],
-			['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->name, 'disabled' => true],
-			['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $block->parent->short, 'disabled' => true],
-		];
-        $fields[] = match ($block->parent->type) {
-            \App\Models\BlockType::Text->value => [
-                'name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $block->parent->full, 'disabled' => true
-        	],
-        	\App\Models\BlockType::Image->value => [
-                'name' => 'full', 'title' => 'Изображение блока-предка', 'required' => false, 'type' => 'image', 'value' => $block->parent->full, 'disabled' => true
-			],
-        };
+		if ($kind == \App\Models\BlockKind::Block->value) {
+			$fields = [
+				['name' => 'name', 'title' => 'Название ссылочного блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
+				['name' => 'block_id', 'type' => 'hidden', 'value' => $block->getKey()],
+				['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Alias->value],
+				['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->parent->getKey()],
+				['type' => 'heading', 'title' => 'Данные блока-предка ссылочного блока'],
+				['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->getKey(), 'disabled' => true],
+				['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $block->parent->name, 'disabled' => true],
+				['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $block->parent->short, 'disabled' => true],
+				['name' => 'kind', 'type' => 'hidden', 'value' => $kind],
+				['name' => 'type', 'type' => 'hidden', 'value' => $block->type],
+				['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->profile->getKey()],
+			];
+			$fields[] = match ($block->parent->type) {
+				\App\Models\BlockType::Text->value => [
+					'name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $block->parent->full, 'disabled' => true
+				],
+				\App\Models\BlockType::Image->value => [
+					'name' => 'full', 'title' => 'Изображение блока-предка', 'required' => false, 'type' => 'image', 'value' => $block->parent->full, 'disabled' => true
+				],
+			};
+        } elseif ($kind == \App\Models\BlockKind::Kid->value)
+			$fields = [
+				['name' => 'name', 'title' => 'Название ссылочного блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
+				['name' => 'kind', 'type' => 'hidden', 'value' => $kind],
+				['name' => 'type', 'type' => 'hidden', 'value' => $block->type],
+				['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->profile->getKey()],
+			];
 	@endphp
 @endsection
 

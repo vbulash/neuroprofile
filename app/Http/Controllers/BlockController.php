@@ -67,6 +67,13 @@ class BlockController extends Controller
 					"<i class=\"fas fa-trash-alt\"></i>\n" .
 					"</a>\n";
 
+				if ($block->type == BlockType::Alias->value)
+					$actions .=
+						"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
+						"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Разрыв связи\" onclick=\"clickUnlink({$block->getKey()}, '{$block->name}')\">\n" .
+						"<i class=\"fas fa-unlink\"></i>\n" .
+						"</a>\n";
+
 				if ($count > 1) {
 					if ($block->getKey() != $first)
 						$actions .=
@@ -94,7 +101,6 @@ class BlockController extends Controller
 	 */
 	public function index()
 	{
-		$area = explode('.', Route::currentRouteName())[0];
 		$context = session('context');
 		unset($context['block']);
 		session()->put('context', $context);
@@ -222,6 +228,7 @@ class BlockController extends Controller
 		$route = match (strval($kind)) {
 			BlockKind::Block->value => 'blocks.index',
 			BlockKind::Parent->value => 'parents.index',
+			BlockKind::Kid->value => 'kids.index',
 			default => 'dashboard'
 		};
 		return redirect()->route($route, ['sid' => session()->getId()]);

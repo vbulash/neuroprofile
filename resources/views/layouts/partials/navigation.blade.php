@@ -12,7 +12,8 @@
 
 			['title' => 'Конструктор тестов', 'heading' => true],
 			['title' => 'Вопросы тестов', 'icon' => 'fas fa-question-circle', 'route' => 'sets.index', 'pattern' => ['sets.*', 'questions.*']],
-			['title' => 'Обработка результатов', 'icon' => 'fas fa-drafting-compass', 'route' => 'fmptypes.index', 'pattern' => ['fmptypes.*', 'profiles.*', 'blocks.*', 'aliases.*', 'clones.*']],
+			['title' => 'Обработка результатов', 'icon' => 'fas fa-drafting-compass', 'route' => 'fmptypes.index',
+				'pattern' => ['fmptypes.*', 'profiles.*', 'blocks.*', 'aliases.*', 'clones.*', 'texts.*', 'images.*']],
 			['title' => 'Ссылочные блоки', 'icon' => 'fas fa-link', 'route' => 'parents.index', 'pattern' => ['parents.*']],
 			['title' => 'Тесты', 'icon' => 'fas fa-drafting-compass', 'route' => 'tests.index', 'pattern' => ['tests.*']],
 

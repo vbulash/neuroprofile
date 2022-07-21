@@ -1,4 +1,6 @@
-<div class="modal fade" id="modal-confirm" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="modal-confirm-label" aria-hidden="true">
+<div class="modal fade" id="modal-confirm" data-bs-backdrop="static" data-bs-keyboard="true"
+	 data-kind="delete"
+	 tabindex="-1" aria-labelledby="modal-confirm-label" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">

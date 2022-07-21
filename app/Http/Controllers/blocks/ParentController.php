@@ -51,6 +51,8 @@ SQL);
 		return Datatables::of($blocks)
 			->editColumn('profile', fn ($block) => $block->model->profile->getTitle())
 			->addColumn('type', fn($block) => BlockType::getName($block->model->type))
+			->addColumn('created_at', fn ($block) => $block->model->created_at->format('d.m.Y H:i:s'))
+			->addColumn('updated_at', fn ($block) => $block->model->updated_at->format('d.m.Y H:i:s'))
 			->addColumn('action', function ($block) {
 				$editRoute = route('parents.edit', [
 					'parent' => $block->model->getKey(),
@@ -77,12 +79,7 @@ SQL);
 					"<i class=\"fas fa-eye\"></i>\n" .
 					"</a>\n";
 				$actions .=
-					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$block->model->getKey()}, '{$block->model->name}')\">\n" .
-					"<i class=\"fas fa-trash-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$selectRoute}\" class=\"btn btn-primary btn-sm float-left\" " .
+					"<a href=\"{$selectRoute}\" class=\"btn btn-primary btn-sm float-left ms-5\" " .
 					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выбор\">\n" .
 					"<i class=\"fas fa-check\"></i>\n" .
 					"</a>\n";

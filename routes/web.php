@@ -69,13 +69,15 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	// Работа с блоками-предками
 	Route::get('/parents', 'blocks\ParentController@index')->name('parents.index');
 	Route::get('/parents.data', 'blocks\ParentController@getData')->name('parents.index.data');
-	Route::get('/parents/{parent}', 'blocks\ParentController@show')->name('parents.show');
+	Route::get('/parents/{parent}', 'blocks\ParentController@show')->name('pareМаксnts.show');
 	Route::get('/parents/{parent}/edit', 'blocks\ParentController@edit')->name('parents.edit');
 	Route::get('/parents.select/{parent}', 'blocks\ParentController@select')->name('parents.select');
 	// Работа с блоками-потомками
 	Route::get('/kids', 'blocks\KidController@index')->name('kids.index');
 	Route::get('/kids.data', 'blocks\KidController@getData')->name('kids.index.data');
+	Route::get('/kids/{kid}/edit', 'blocks\KidController@edit')->name('kids.edit');
 	Route::get('/kids.unlink/{kid}', 'blocks\KidController@unlink')->name('kids.unlink');
+	Route::get('/kids.follow/{kid}', 'blocks\KidController@follow')->name('kids.follow');
 	// Копирование блоков
 	Route::get('/clones', 'blocks\CloneController@index')->name('clones.index');
 	Route::get('/clones.data', 'blocks\CloneController@getData')->name('clones.index.data');

@@ -18,7 +18,7 @@
             \App\Models\BlockKind::Parent->value,
             \App\Models\BlockKind::Kid->value => [
                 ['title' => 'Блок-предок', 'active' => true, 'context' => 'parent', 'link' => route('parents.index', ['sid' => session()->getId()])],
-				['title' => 'Блок-потомок', 'active' => false, 'context' => 'profile', 'link' => '#'],
+				['title' => 'Блок-потомок', 'active' => false, 'context' => 'profile'],
 			],
 			\App\Models\BlockKind::Block->value => [
 				['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],

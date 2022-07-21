@@ -31,6 +31,8 @@
 							<th>Тип блока</th>
 							<th>Тип описания</th>
 							<th>Нейропрофиль</th>
+							<th>Дата создания</th>
+							<th>Дата изменения</th>
 							<th>Действия</th>
 						</tr>
 						</thead>
@@ -68,6 +70,8 @@
 						{data: 'type', name: 'type', responsivePriority: 2},
 						{data: 'fmptype', name: 'fmptype', responsivePriority: 2},
 						{data: 'profile', name: 'profile', responsivePriority: 3},
+						{data: 'created_at', name: 'created_at', responsivePriority: 4},
+						{data: 'updated_at', name: 'updated_at', responsivePriority: 4},
 						{
 							data: 'action',
 							name: 'action',

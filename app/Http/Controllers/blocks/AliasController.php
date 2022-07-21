@@ -5,6 +5,7 @@ namespace App\Http\Controllers\blocks;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBlockRequest;
 use App\Models\Block;
+use App\Models\BlockKind;
 use App\Models\Profile;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -125,7 +126,8 @@ SQL,
 		} else {	// Просмотр предка
 			$view = 'blocks.alias.parent';
 		}
-		return view($view, compact('block', 'mode'));
+		$kind = $request->has('kind') ? $request->kind : BlockKind::Block->value;
+		return view($view, compact('block', 'mode', 'kind'));
 	}
 
 	/**
