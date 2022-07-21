@@ -52,13 +52,14 @@ mix
 		'resources/js/dashmix/modules'
 	], 'public/js/modules')
 
-// Pickr
+	// Pickr
 	.copy('resources/plugins/pickr/pickr.min.js', 'public/js/pickr.min.js')
 	.copy('resources/plugins/pickr/pickr.min.js.map', 'public/js/pickr.min.js.map')
 	.copy('resources/plugins/pickr/classic.min.css', 'public/css/classic.min.css')
 
     // Media
     .copyDirectory('resources/img/photos', 'public/media/photos')
+	.copyDirectory('resources/favicon', 'public/media/favicons')
 
 	// Разное
 	.copy('resources/plugins/datatables/lang/ru/datatables.json', 'public/lang/ru/datatables.json')
