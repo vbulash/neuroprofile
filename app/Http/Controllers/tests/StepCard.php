@@ -22,7 +22,7 @@ class StepCard implements Step
 		$heap['step-card'] = $data['step-card'];
 		$heap['card'] = $data;
 		session()->put('heap', $heap);
-		session()->keep('heap');
+//		session()->keep('heap');
 
         return true;
     }

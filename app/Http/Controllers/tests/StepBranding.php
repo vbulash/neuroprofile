@@ -37,7 +37,7 @@ class StepBranding implements Step
 			$heap['options'] = $options;
 		} else unset($heap['branding']);
 		session()->put('heap', $heap);
-		session()->keep('heap');
+//		session()->keep('heap');
 
         return true;
     }

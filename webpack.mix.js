@@ -76,4 +76,35 @@ mix
         processCssUrls: true
     });
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Front
+mix.styles([
+	'resources/assets/front/plugins/fontawesome-free/css/all.min.css',
+	'resources/assets/front/css/SourceSansPro.css',
+	'resources/assets/front/plugins/bootstrap/css/bootstrap.css',
+	'resources/assets/front/plugins/select2/css/select2.css',
+	'resources/assets/front/plugins/select2-bootstrap4-theme/select2-bootstrap4.css',
+	'resources/assets/front/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css',
+	'resources/assets/front/plugins/toastr/toastr.min.css',
+	'resources/assets/front/plugins/pusher/pusher.min.js',
+	'resources/assets/front/css/main.css',
+], 'public/assets/front/css/front.css');
 
+mix.scripts([
+	'resources/assets/front/plugins/jquery/jquery.min.js',
+	'resources/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js',
+	'resources/assets/front/plugins/select2/js/select2.full.js',
+	'resources/assets/front/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js',
+	'resources/assets/front/plugins/toastr/toastr.min.js',
+	'resources/assets/front/plugins/pusher/pusher.min.js',
+	'resources/assets/front/js/main.js',
+], 'public/assets/front/js/front.js');
+
+mix.copyDirectory('resources/assets/front/plugins/fontawesome-free/webfonts', 'public/assets/front/webfonts');
+mix.copyDirectory('resources/assets/googlefonts', 'public/assets/front/fonts');
+
+mix.copy('resources/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map', 'public/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map');
+mix.copy('resources/assets/front/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css.map', 'public/assets/front/css/bootstrap-datepicker.css.map');
+
+// Toastr
+mix.copy('resources/assets/front/plugins/toastr/toastr.js.map', 'public/assets/front/js/toastr.js.map');

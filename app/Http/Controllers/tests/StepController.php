@@ -71,7 +71,7 @@ class StepController extends Controller
 			//
 			session()->put('heap', $heap);
 		}
-		session()->keep('heap');
+		//session()->keep('heap');
 
 		return match ($mode) {
 			config('global.create') => $step->create($request),
@@ -93,7 +93,7 @@ class StepController extends Controller
 
 		$mode = $request->mode;
 		$test = $request->test == 0 ? 0 : Test::findOrFail($request->test)->getKey();
-		session()->keep('heap');
+//		session()->keep('heap');
 		return redirect()->route('steps.play', [
 			'mode' => $mode,
 			'test' => $test,
@@ -126,7 +126,7 @@ class StepController extends Controller
 			config('global.edit') => $step->update($request),
 			config('global.show') => true,
 		};
-		session()->keep('heap');
+//		session()->keep('heap');
 		if (!$result)
 			return redirect()->route('steps.play', [
 				'mode' => $mode,

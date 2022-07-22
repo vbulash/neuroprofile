@@ -18,8 +18,7 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-				{{-- TODO Вставить запуск теста --}}
-                <form role="form" method="get" action="#"
+                <form role="form" method="get" action="{{ route('player.play', ['sid' => $sid]) }}"
                       id="start-player">
                     @csrf
                     <input type="hidden" name="mkey-modal" id="mkey-modal">

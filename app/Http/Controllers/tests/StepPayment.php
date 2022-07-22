@@ -29,7 +29,7 @@ class StepPayment implements Step
 			$heap['options'] = $options;
 		} else unset($heap['robokassa']);
 		session()->put('heap', $heap);
-		session()->keep('heap');
+//		session()->keep('heap');
 
         return true;
     }

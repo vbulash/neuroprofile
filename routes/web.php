@@ -103,4 +103,29 @@ Route::get('/optimize-clear', function () {
 	echo('Сделана полная оптимизация. Код завершения = '. $exitCode);
 });
 
+// Плеер
+Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.session'], function () {
+	// Проверка
+	Route::get('/player.iframe', 'PlayerController@iframe')->name('player.iframe');
+	//
+	Route::get('/player.index', 'PlayerController@index')->name('player.index');
+	Route::get('/player.play/{mkey?}/{test?}', 'PlayerController@play')->name('player.play');
+	Route::get('/player.card', 'PlayerController@card')->name('player.card');
+	// Маршруты сохранения предварительной информации (из карточек)
+	Route::get('/player.pkey', 'PlayerController@store_pkey')->name('player.pkey');
+	Route::get('/player.full', 'PlayerController@store_full_card')->name('player.full');
+
+	// TODO обменять body и body2 после полной отладки
+	//Route::get('/player.body/{question?}', 'PlayerController@body')->name('player.body');
+	//
+	Route::get('/player.body2', 'PlayerController@body2')->name('player.body2');
+	Route::post('/player/body2.store', 'PlayerController@body2_store')->name('player.body2.store');
+	//
+	Route::get('/player.precalc/{history_id}', 'PlayerController@precalc')->name('player.precalc');
+	Route::get('/player.calculate/{history_id}', 'PlayerController@calculate')->name('player.calculate');
+	Route::get('/player.mail/{history_id}', 'PlayerController@mail')->name('player.mail');
+
+	Route::get('/player.policy/{document}/{mail?}', 'PlayerController@showDocument')->name('player.policy');
+});
+
 require __DIR__.'/auth.php';

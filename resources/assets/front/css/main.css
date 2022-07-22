@@ -1,0 +1,53 @@
+.main-header {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.main-header > navbar {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+.module-wrapper {
+    min-height: 70vh;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    text-align: left;
+}
+
+.test-row {
+    justify-content: space-evenly;
+}
+
+.step-image {
+    cursor: pointer;
+}
+
+nav.navbar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.navbar-brand {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.navbar-brand a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-brand i {
+    margin-right: 1rem;
+}
+
+.navbar-text {
+    color: white !important;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+#toast-container > div {
+    opacity: 1;
+}

@@ -50,7 +50,7 @@ class StepResults implements Step
 				$heap['descriptions']['client'] = $client;
 		}
 		session()->put('heap', $heap);
-		session()->keep('heap');
+//		session()->keep('heap');
 
         return true;
     }
