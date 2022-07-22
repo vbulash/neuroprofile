@@ -42,6 +42,7 @@
 
 @include('layouts.partials.toast')
 @include('layouts.partials.modal-confirm')
+@include('tests.player-modal')
 
 @stack('js_before')
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>

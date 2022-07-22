@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Exception;
 
@@ -129,5 +130,16 @@ class TestController extends Controller
 
 		event(new ToastEvent('success', '', "Тест '{$name}' удалён"));
 		return true;
+	}
+
+	public function list(Request $request)
+	{
+		return json_encode(DB::select(<<<EOS
+SELECT t.id as id, t.name as name, c.mkey as mkey, t.`key` as test
+FROM tests as t, contracts as c
+WHERE t.contract_id = c.id
+ORDER BY t.name
+EOS
+		));
 	}
 }

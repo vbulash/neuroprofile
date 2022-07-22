@@ -17,6 +17,9 @@
 			['title' => 'Ссылочные блоки', 'icon' => 'fas fa-link', 'route' => 'parents.index', 'pattern' => ['parents.*']],
 			['title' => 'Тесты', 'icon' => 'fas fa-drafting-compass', 'route' => 'tests.index', 'pattern' => ['tests.*']],
 
+			['title' => 'Прохождение тестов', 'heading' => true],
+			['title' => 'Проверочный плеер', 'icon' => "fas fa-play-circle", 'modal' => 'tests-play', 'pattern' => []],
+
 			['title' => 'Настройки', 'heading' => true],
 			['title' => 'Пользователи', 'icon' => 'fa fa-user-alt', 'route' => 'users.index', 'pattern' => 'users.*'],
 			['title' => 'Laravel Telescope', 'icon' => 'fa fa-gears', 'route' => 'telescope', 'pattern' => 'telescope'],
@@ -29,7 +32,13 @@
 			@else
 				<li class="nav-main-item">
 					<a class="nav-main-link{{ request()->routeIs($item['pattern']) ? ' active' : '' }}"
-					   href="{{ route($item['route'], ['sid' => session()->getId()]) }}">
+					   @if (isset($item['modal']))
+						   href="javascript:void(0)"
+						   data-bs-toggle="modal" data-bs-target="#{{ $item['modal'] }}"
+					   @else
+						   href="{{ route($item['route'], ['sid' => session()->getId()]) }}"
+					   @endif
+					>
 						<i class="nav-main-link-icon {{ $item['icon'] }}"></i>
 						<span class="nav-main-link-name">{{ $item['title'] }}</span>
 					</a>

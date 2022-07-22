@@ -94,6 +94,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	// Тесты
 	Route::resource('/tests', 'TestController');
 	Route::get('/tests.data', 'TestController@getData')->name('tests.index.data');
+	Route::get('/tests.list', 'TestController@list')->name('tests.list');
 });
 
 // Служебные маршруты
