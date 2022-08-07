@@ -12,3 +12,4 @@ yarn-error.log
 /.vscode
 /database/data/
 /database/*.sqlite
+/exportToHTML/
