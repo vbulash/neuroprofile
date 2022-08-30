@@ -69,7 +69,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	// Работа с блоками-предками
 	Route::get('/parents', 'blocks\ParentController@index')->name('parents.index');
 	Route::get('/parents.data', 'blocks\ParentController@getData')->name('parents.index.data');
-	Route::get('/parents/{parent}', 'blocks\ParentController@show')->name('pareМаксnts.show');
+	Route::get('/parents/{parent}', 'blocks\ParentController@show')->name('parents.show');
 	Route::get('/parents/{parent}/edit', 'blocks\ParentController@edit')->name('parents.edit');
 	Route::get('/parents.select/{parent}', 'blocks\ParentController@select')->name('parents.select');
 	// Работа с блоками-потомками

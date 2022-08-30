@@ -22,7 +22,6 @@
 
 			['title' => 'Настройки', 'heading' => true],
 			['title' => 'Пользователи', 'icon' => 'fa fa-user-alt', 'route' => 'users.index', 'pattern' => 'users.*'],
-			['title' => 'Laravel Telescope', 'icon' => 'fa fa-gears', 'route' => 'telescope', 'pattern' => 'telescope'],
 		];
 	@endphp
 	<ul class="nav-main">

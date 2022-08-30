@@ -9,7 +9,7 @@
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/database/database.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="Neurotest Production" read-only="true" uuid="0cf45d8f-6d0d-438b-8720-ce823fd2fa4e">
+    <data-source source="LOCAL" name="Neurotest Production" uuid="0cf45d8f-6d0d-438b-8720-ce823fd2fa4e">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

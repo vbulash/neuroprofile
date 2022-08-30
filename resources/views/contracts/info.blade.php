@@ -56,21 +56,17 @@
 				@forelse($contract->tests as $test)
 					@php
 						$code = sprintf(
-							"<iframe\n" .
-							  "src=\"%s\"\n" .
-							"width=\"1000px\"\n" .
-							"height=\"700px\"\n" .
-							"allow=\"fullscreen\">\n" .
-							"</iframe>",
-                            // TODO Убрать заглушку по ходу реализации плеера тестов
-                            "player.play/mkey=" . $contract->mkey . "/test=" . $test->key
-                            /*
-							route('player.play', [
-								'mkey' => $contract->mkey,
-								'test' => $test->key,
-							])
-                            */
-							);
+                            "<iframe\n" .
+	  	                    "src=\"%s\"\n" .
+		                    "width=\"1000px\"\n" .
+		                    "height=\"700px\"\n" .
+		                    "allow=\"fullscreen\">\n" .
+		                    "frameborder=\"0\">\n" .
+		                    "</iframe>",
+		                    route('player.play', [
+                                'mkey' => $contract->mkey,
+                                'test' => $test->key,
+                            ]));
 					@endphp
 					<div class="form-group">
 						<label for="html-{{ $testNo }}">Тест # {{ $test->id }} &laquo;{{ $test->name }}&raquo;</label>

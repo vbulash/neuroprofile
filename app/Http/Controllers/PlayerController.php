@@ -96,6 +96,10 @@ class PlayerController extends Controller
 			$content = json_decode($test->content, true);
 			$branding = null;
 			if(isset($content['branding'])) {
+				if (!isset($content['branding']['background']))
+					$content['branding']['background'] = '#007bff';
+				if (!isset($content['branding']['fontcolor']))
+					$content['branding']['fontcolor'] = '#ffffff';
 				$branding = [
 					'company' => isset($content['branding']['company-name']) ? $content['branding']['company-name'] : '',
 					'logo' => isset($content['branding']['logo']) ? $content['branding']['logo'] : null,
@@ -190,6 +194,7 @@ EOS
 
         $stack = [];
         $steps = [];
+		$cuts = [];
         foreach ($view as $item) {
             $stack[] = $item->qid;
             $step = [
@@ -199,6 +204,7 @@ EOS
                 'timeout' => env('QUESTION_TIMEOUT') ?  $item->qtimeout : '0',
                 'quantity' => 2
             ];
+			$cut = $step;
 
             $images = [];
             for ($iimage = 1; $iimage <= 2; $iimage++)
@@ -206,6 +212,7 @@ EOS
             $step['images'] = $images;
 
             $steps[] = $step;
+			$cuts[] = $cut;
         }
 
         // Блокировка лицензии для прохождения теста
@@ -232,7 +239,7 @@ EOS
 		}
         $license->lock();
 
-        return view('front.body2', compact('test', 'steps', 'stack'));
+        return view('front.body2', compact('test', 'steps', 'cuts', 'stack'));
     }
 
     public function body2_store(Request $request): RedirectResponse
@@ -311,7 +318,7 @@ EOS
 			// Код нейропрофиля вычислен и сохранен
 
 			session()->put('success', "Результат тестирования = $profile_code");
-			return redirect()->route('dashboard', ['sid' => session()->getId()]);
+			return redirect()->route('player.index', ['sid' => session()->getId()]);
 		}
 
         return null;
@@ -332,13 +339,13 @@ EOS
 		}
 	}
 
-    public function iframe()
-    {
+    public function iframe(): Factory|View|Application
+	{
         return view('front.iframe');
     }
 
-    public function showDocument(Request $request, string $document, bool $mail = false)
-    {
+    public function showDocument(Request $request, string $document, bool $mail = false): Factory|View|Application
+	{
         $test = session('test');
         $docviews = [
             'privacy' => 'front.documents.privacy',

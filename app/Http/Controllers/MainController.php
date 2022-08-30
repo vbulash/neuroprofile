@@ -7,6 +7,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class MainController extends Controller
 {
@@ -17,6 +18,8 @@ class MainController extends Controller
 	 */
 	public function index()
 	{
+		Redis::set('test', 12345);
+		$a = Redis::get('test');
 		return view('empty');
 		// TODO Убрать заглушку, сделать нормальный dashboard
 //		return view('main');

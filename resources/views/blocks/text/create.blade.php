@@ -47,7 +47,7 @@
 
 @push('js_after')
 	<script src="{{ asset('js/ckeditor.js') }}"></script>
-	<script>
+	<script type="module">
 		DecoupledDocumentEditor
 			.create(document.querySelector('.editor'), {
 				toolbar: {
@@ -64,9 +64,6 @@
 						'italic',
 						'underline',
 						'strikethrough',
-						'subscript',
-						'superscript',
-						'highlight',
 						'|',
 						'alignment',
 						'|',
@@ -75,35 +72,28 @@
 						'|',
 						'outdent',
 						'indent',
-						'codeBlock',
 						'|',
-						'todoList',
 						'link',
 						'blockQuote',
+						'imageUpload',
 						'insertTable',
+						'mediaEmbed',
 						'|',
 						'undo',
 						'redo'
 					]
 				},
-				language: 'ru',
-				codeBlock: {
-					languages: [
-						{language: 'php', label: 'PHP'}
-					]
-				},
-				table: {
-					contentToolbar: [
-						'tableColumn',
-						'tableRow',
-						'mergeTableCells',
-						'tableCellProperties',
-						'tableProperties'
-					]
-				},
-				licenseKey: '',
+				simpleUpload: {
+					uploadUrl: 'http://example.com',
+					withCredentials: false,
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+				}
 			})
 			.then(editor => {
+				//console.log(Array.from( editor.ui.componentFactory.names()));
+
 				window.editor = editor;
 				document.querySelector('.document-editor__toolbar').appendChild(editor.ui.view.toolbar.element);
 				document.querySelector('.ck-toolbar').classList.add('ck-reset_all');
