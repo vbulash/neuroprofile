@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="fb3856fd-8c5e-4bb6-b184-bbb4c6f77fdb" name="Neurotest2 Local" url="http://neurotest.bulash.ru">
+        <fileTransfer mountedRoot="$USER_HOME$/Sites/neurotest" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>
