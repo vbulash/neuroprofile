@@ -88,7 +88,7 @@
 		cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
 	});
 
-	let channel = pusher.subscribe('neurotest-channel-{!! $sid !!}');
+	let channel = pusher.subscribe('neuroprofile-channel-{!! $sid !!}');
 	channel.bind('toast-event', (data) => {
 		toastr[data.type](data.message, data.title);
 	});

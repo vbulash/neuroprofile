@@ -24,7 +24,7 @@ class ToastEvent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return ['needful-channel-' . session()->getId()];
+        return ['neuroprofile-channel-' . session()->getId()];
     }
 
     public function broadcastAs()

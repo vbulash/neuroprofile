@@ -34,16 +34,17 @@
                     @case("number")
                     @case("email")
                     @case("phone")
-                        <div class="form-group col-md-6">
+                        <div class="form-floating col-md-6">
                             <input type="{{ $type }}" name="{{ $name }}" id="{{ $name }}"
                                    class="form-control mb-2 @error("{{ $name }}") is-invalid @enderror"
                                    placeholder="{{ $title }}@if($required) * @endif"
                                    @if($required) required @endif
                                    @if($value) value="{{ $value }}" @endif>
+							<label class="form-label" for="{{ $name }}">{{ $title }}@if($required) * @endif</label>
                         </div>
                         @break
                     @case("date")
-                        <div class="input-group date col-md-6" data-provide="datepicker" style="width: 50%;">
+                        <div class="input-group form-floating date col-md-6" data-provide="datepicker" style="width: 50%;">
                             <input type="text" name="{{ $name }}" id="{{ $name }}"
                                    class="form-control mb-2 @error("{{ $name }}") is-invalid @enderror"
                                    placeholder="{{ $title }}@if($required) * @endif"
@@ -52,6 +53,7 @@
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-th"></span>
                             </div>
+							<label class="form-label" for="{{ $name }}">{{ $title }}@if($required) * @endif</label>
                         </div>
                         @break
                     @case("select")
