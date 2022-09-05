@@ -14,11 +14,10 @@ use Illuminate\Database\Eloquent\Collection;
 class BlocksComposer
 {
 	private History $history;
-	public Profile $profile;
 	private array $area;
 
 	/**
-	 * @param int|History $history_id ID записи истории
+	 * @param int|History $history_id ID или объект записи истории
 	 */
 	public function __construct(int|History $history_id)
 	{
@@ -35,22 +34,26 @@ class BlocksComposer
 	}
 
 	/**
-	 * Формирование упорядоченной коллекции блоков
-	 *
-	 * @param BlocksArea $area Название типа описания, которому должна соотвествовать коллекция
-	 * @return Collection|null Коллекция блоков
+	 * @param BlocksArea $area
 	 */
-	public function getBlocks(BlocksArea $area): ?Collection
+	public function getProfile(BlocksArea $area): ?Profile
 	{
 		$fmptype_id = $this->area[$area->value];
 		if (!isset($fmptype_id)) return null;
 
 		$fmptype = FMPType::findOrFail($fmptype_id);
-		$this->profile = $fmptype->profiles
+		return $fmptype->profiles
 			->where('code', $this->history->code)
 			->first();
+	}
 
-		return $this->profile->blocks
-			->sortBy(['sort_no', 'id']);
+	/**
+	 * Формирование упорядоченной коллекции блоков
+	 *
+	 * @return Collection|null Коллекция блоков
+	 */
+	public function getBlocks(Profile $profile): ?Collection
+	{
+		return $profile->blocks->sortBy(['sort_no', 'id']);
 	}
 }

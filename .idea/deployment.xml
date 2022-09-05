@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="Neurotest2 Local" remoteFilesAllowedToDisappearOnAutoupload="false" showAutoUploadSettingsWarning="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Neurotest2 Local" createEmptyFolders="true" showAutoUploadSettingsWarning="false">
     <serverData>
       <paths name="Neurotest2 Local">
         <serverdata>

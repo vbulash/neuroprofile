@@ -1,8 +1,8 @@
 @extends('front.layouts.layout')
 
-@push('title') - Тест &laquo;{{ $test->name }}&raquo;@endpush
+@push('title') - Тест &laquo;{{ $history->test->name }}&raquo;@endpush
 
-@push('testname') Тест &laquo;{{ $test->name }}&raquo;@endpush
+@push('testname') Тест &laquo;{{ $history->test->name }}&raquo;@endpush
 
 @push('step_description')
     Результат тестирования
@@ -16,7 +16,7 @@
 {{--		</h3>--}}
 {{--	@endif--}}
 
-    @if($test->paid)
+    @if($history->test->paid)
         <h5 class="mt-4">Вы видите краткую бесплатную версию результатов тестирования.<br/>
             Оплатите полный результат тестирования и получите его по электронной почте.<br/>
         </h5>
@@ -24,6 +24,7 @@
 {{--            $rk = new \App\Http\Payment\Robokassa($test);--}}
 {{--            $rk->setMail(false);--}}
 {{--            $rk->setInvoice($history->id);--}}
+{{--		// TODO $card - массив "метка - значение". Поле по названию - Электронная почта--}}
 {{--            $rk->setEmail($card->email);--}}
 {{--            $rk->setDescription('Оплата полного результата нейротестирования');--}}
 {{--            //$button = $rk->getHTMLButton();--}}
@@ -34,7 +35,7 @@
     @endif
 
     <h1>
-        @if($test->paid)
+        @if($history->test->paid)
             @if($history->paid == '1')
                 Полный результат вашего тестирования:
             @else
@@ -44,11 +45,11 @@
             Результат вашего тестирования:
         @endif
     </h1>
-{{--    <h4>Наименование нейропрофиля: {{ $profile_name }}</h4>--}}
+    <h4>Наименование нейропрофиля: {{ $profile->getTitle() }}</h4>
 
     @forelse($blocks  as $block)
         <h2>{{ $block->name }}</h2>
-        @if($test->paid)
+        @if($history->test->paid)
             <div style="margin-left: 20px;">
                 @if($block->short)
                     {{ $block->short }}
@@ -58,11 +59,11 @@
                 @endif
             </div>
         @else
-            <div style="margin-left: 20px;">{!! $block->content !!}</div>
+            <div style="margin-left: 20px;">{!! $block->full !!}</div>
         @endif
     @empty
         <h2>Настройка теста не завершена.<br/>
-            Нет блоков описаний, соответствующих коду нейропрофиля &laquo;{{ $profile_code }}&raquo;</h2>
+            Нет блоков описаний, соответствующих коду нейропрофиля &laquo;{{ $profile->code }}&raquo;</h2>
     @endforelse
 @endsection
 
