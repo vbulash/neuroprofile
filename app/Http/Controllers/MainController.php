@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\results\BlocksArea;
+use App\Http\Controllers\results\BlocksComposer;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -18,8 +20,6 @@ class MainController extends Controller
 	 */
 	public function index()
 	{
-		Redis::set('test', 12345);
-		$a = Redis::get('test');
 		return view('empty');
 		// TODO Убрать заглушку, сделать нормальный dashboard
 //		return view('main');

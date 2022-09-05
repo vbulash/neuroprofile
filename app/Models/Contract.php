@@ -6,7 +6,12 @@ use DateTime;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property string $number
+ */
 class Contract extends Model implements FormTemplate, Titleable
 {
 	use HasFactory;
@@ -61,17 +66,17 @@ class Contract extends Model implements FormTemplate, Titleable
 		);
 	}
 
-	public function client()
+	public function client(): BelongsTo
 	{
 		return $this->belongsTo(Client::class);
 	}
 
-	public function licenses()
+	public function licenses(): HasMany
 	{
 		return $this->hasMany(License::class);
 	}
 
-	public function tests()
+	public function tests(): HasMany
 	{
 		return $this->hasMany(Test::class);
 	}

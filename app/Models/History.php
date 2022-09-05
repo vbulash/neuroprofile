@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property string $card
+ * @property bool $done
+ * @property string $code
+ * @property bool $paid
+ * @method static findOrFail(int $history_id)
+ */
 class History extends Model
 {
     use HasFactory;

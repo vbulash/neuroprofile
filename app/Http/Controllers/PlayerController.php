@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\ToastEvent;
+use App\Http\Controllers\results\BlocksArea;
+use App\Http\Controllers\results\BlocksComposer;
 use App\Http\Requests\PKeyRequest;
 use App\Models\Contract;
 use App\Models\FMPType;
@@ -317,27 +319,16 @@ EOS
 			$history->update();
 			// Код нейропрофиля вычислен и сохранен
 
-			session()->put('success', "Результат тестирования = $profile_code");
-			return redirect()->route('player.index', ['sid' => session()->getId()]);
+			$card = ($history->card ? json_decode($history->card) : null);
+			$composer = new BlocksComposer($history->getKey());
+
+			$blocks = $composer->getBlocks(BlocksArea::SHOW);
+			if ($blocks)
+				return view('front.show', compact('card', 'test', 'blocks', 'profile_code', 'history'));
 		}
 
         return null;
     }
-
-	private function getProfile(int $fmptype_id, string $code): ?Profile
-	{
-		$fmtype = FMPType::find($fmptype_id);
-		$profile = Profile::all()
-			->where('fmptype_id', $fmptype_id)
-			->where('code', $code)
-			->first();
-		if($profile) {
-			return $profile;
-		} else {
-			session()->put('error', "Не найден нейропрофиль \"{$code}\" из типа описания ФМП \"{$fmtype->name}\". Добавьте нейропрофиль");
-			return null;
-		}
-	}
 
     public function iframe(): Factory|View|Application
 	{

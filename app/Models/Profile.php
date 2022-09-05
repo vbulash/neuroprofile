@@ -4,7 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property string $code
+ * @property string $name
+ */
 class Profile extends Model implements FormTemplate, Titleable
 {
     use HasFactory;
@@ -15,11 +21,13 @@ class Profile extends Model implements FormTemplate, Titleable
 		'fmptype_id'
 	];
 
-	public function fmptype() {
+	public function fmptype(): BelongsTo
+	{
 		return $this->belongsTo(FMPType::class, 'fmptype_id');
 	}
 
-	public function blocks() {
+	public function blocks(): HasMany
+	{
 		return $this->hasMany(Block::class);
 	}
 

@@ -4,7 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property string $name
+ */
 class Block extends Model implements FormTemplate, Titleable
 {
     use HasFactory, UploadImage;
@@ -44,17 +49,17 @@ class Block extends Model implements FormTemplate, Titleable
 		];
 	}
 
-	public function parent()
+	public function parent(): BelongsTo
 	{
 		return $this->belongsTo(Block::class, 'block_id');
 	}
 
-	public function children()
+	public function children(): HasMany
 	{
 		return $this->hasMany(Block::class);
 	}
 
-	public function profile()
+	public function profile(): BelongsTo
 	{
 		return $this->belongsTo(Profile::class);
 	}

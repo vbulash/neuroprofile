@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use PhpOffice\PhpSpreadsheet\Chart\Title;
 
+/**
+ * @method static findOrFail(int $fmptype_id)
+ */
 class FMPType extends Model implements FormTemplate, Titleable
 {
     use HasFactory;

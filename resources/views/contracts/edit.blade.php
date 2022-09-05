@@ -31,6 +31,12 @@
 			['name' => 'number', 'title' => 'Номер контракта', 'required' => true, 'type' => 'text', 'value' => $contract->number],
 			['name' => 'start', 'title' => 'Дата начала контракта', 'required' => true, 'type' => 'date', 'value' => $contract->start->format('d.m.Y')],
 			['name' => 'end', 'title' => 'Дата завершения контракта', 'required' => true, 'type' => 'date', 'value' => $contract->end->format('d.m.Y')],
+			['name' => 'status', 'title' => 'Статус контракта', 'required' => false, 'type' => 'text', 'disabled' => true, 'value' => match($contract->status) {
+            	\App\Models\Contract::INACTIVE => 'Неактивен (дата начала в будущем)',
+            	\App\Models\Contract::ACTIVE => 'Исполняется',
+            	\App\Models\Contract::COMPLETE_BY_DATE => 'Завершен по дате',
+            	\App\Models\Contract::COMPLETE_BY_COUNT => 'Закончились свободные лицензии'
+			}],
 			['name' => 'invoice', 'title' => 'Номер оплаченного счета', 'required' => true, 'type' => 'text', 'value' => $contract->invoice],
 			['name' => 'license_count', 'title' => 'Количество лицензий контракта', 'required' => true, 'type' => 'number', 'value' => $contract->license_count],
 			['name' => 'url', 'title' => 'URL страницы сайта клиента', 'required' => true, 'type' => 'text', 'value' => $contract->url],
