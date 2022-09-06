@@ -59,6 +59,7 @@ mix
 
     // Media
     .copyDirectory('resources/img/photos', 'public/media/photos')
+	.copyDirectory('resources/img/screenshots', 'public/media/screenshots')
 	.copyDirectory('resources/favicon', 'public/media/favicons')
 
 	// Разное
