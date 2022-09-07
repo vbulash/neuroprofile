@@ -16,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yajra\DataTables\DataTables;
 use Exception;
@@ -41,25 +42,23 @@ class ContractController extends Controller
 				$editRoute = route('contracts.edit', ['contract' => $contract->getKey(), 'sid' => session()->getId()]);
 				$showRoute = route('contracts.show', ['contract' => $contract->getKey(), 'sid' => session()->getId()]);
 				$selectRoute = route('contracts.select', ['contract' => $contract->getKey(), 'sid' => session()->getId()]);
-				$actions = '';
 
-				$actions .=
-					"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+				$actions = "<a href=\"$editRoute\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
 					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
 					"<i class=\"fas fa-pencil-alt\"></i>\n" .
 					"</a>\n";
 				$actions .=
-					"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+					"<a href=\"$showRoute\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
 					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
 					"<i class=\"fas fa-eye\"></i>\n" .
 					"</a>\n";
 				$actions .=
 					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$contract->getKey()}, '{$contract->number}')\">\n" .
+					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete($contract->getKey(), '$contract->number')\">\n" .
 					"<i class=\"fas fa-trash-alt\"></i>\n" .
 					"</a>\n";
 				$actions .=
-					"<a href=\"{$selectRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+					"<a href=\"$selectRoute\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
 					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выбор\">\n" .
 					"<i class=\"fas fa-check\"></i>\n" .
 					"</a>\n";
@@ -69,7 +68,7 @@ class ContractController extends Controller
 			->make(true);
 	}
 
-	public function select(int $id)
+	public function select(int $id): RedirectResponse
 	{
 		$context = session('context');
 		unset($context['contract']);
@@ -79,7 +78,8 @@ class ContractController extends Controller
 		return redirect()->route('contracts.info', ['sid' => session()->getId()]);
 	}
 
-	public function info() {
+	public function info(): Factory|View|Application
+	{
 		$context = session('context');
 		$contract = Contract::findOrFail($context['contract']);
 
@@ -99,7 +99,7 @@ class ContractController extends Controller
 	 *
 	 * @return Application|Factory|View|RedirectResponse
 	 */
-	public function index()
+	public function index(): View|Factory|RedirectResponse|Application
 	{
 		$context = session('context');
 		unset($context['contract']);
@@ -115,7 +115,7 @@ class ContractController extends Controller
 	 *
 	 * @return Application|Factory|View
 	 */
-	public function create()
+	public function create(): View|Factory|Application
 	{
 		$mode = config('global.create');
 		$context = session('context');
@@ -129,14 +129,15 @@ class ContractController extends Controller
 	 * @param StoreContractRequest $request
 	 * @return RedirectResponse
 	 */
-	public function store(StoreContractRequest $request)
+	public function store(StoreContractRequest $request): RedirectResponse
 	{
 		$data = $request->all();
 		$data['mkey'] = Contract::generateKey($request->url);
+		$data['commercial'] = $request->has('commercial');
 		$number = '';
 		$count = 0;
 
-		DB::transaction(function () use ($request, $data, &$number, &$count) {
+		DB::transaction(function () use ($data, &$number, &$count) {
 			$contract = Contract::create($data);
 			$contract->save();
 			$number = $contract->number;
@@ -156,7 +157,7 @@ class ContractController extends Controller
 			$contract->updateStatus();
 		});
 
-		session()->put('success', "Контракт № {$number} создан<br/>Сгенерированы лицензии: {$count}");
+		session()->put('success', "Контракт № $number создан<br/>Сгенерированы лицензии: $count");
 		return redirect()->route('contracts.index', ['sid' => session()->getId()]);
 	}
 
@@ -166,7 +167,7 @@ class ContractController extends Controller
 	 * @param int $id
 	 * @return Application|Factory|View
 	 */
-	public function show($id)
+	public function show(int $id): View|Factory|Application
 	{
 		return $this->edit($id, true);
 	}
@@ -175,9 +176,10 @@ class ContractController extends Controller
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param int $id
+	 * @param bool $show
 	 * @return Application|Factory|View
 	 */
-	public function edit(int $id, bool $show = false)
+	public function edit(int $id, bool $show = false): View|Factory|Application
 	{
 		$mode = $show ? config('global.show') : config('global.edit');
 		$contract = Contract::findOrFail($id);
@@ -187,18 +189,22 @@ class ContractController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param \Illuminate\Http\Request $request
+	 * @param UpdateContractRequest $request
 	 * @param int $id
 	 * @return RedirectResponse
 	 */
-	public function update(UpdateContractRequest $request, $id)
+	public function update(UpdateContractRequest $request, $id): RedirectResponse
 	{
 		$contract = Contract::findOrFail($id);
 		$count = 0;
 		$current = $contract->license_count;
-		DB::transaction(function () use ($request, $contract, $current, &$count) {
-			$contract->update($request->all());
-			$count = $request->license_count - $current;
+
+		$data = $request->all();
+		$data['commercial'] = $request->has('commercial');
+
+		DB::transaction(function () use ($data, $contract, $current, &$count) {
+			$contract->update($data);
+			$count = $data['license_count'] - $current;
 
 			// Сгенерировать $count свободных лицензий под текущий контракт
 			if ($count > 0) {
@@ -217,7 +223,7 @@ class ContractController extends Controller
 		});
 		$number = $contract->number;
 
-		session()->put('success', "Контракт № {$number} обновлён " . ($count > 0 ? "<br/>Сгенерированы дополнительные лицензии: {$count}" : ""));
+		session()->put('success', "Контракт № $number обновлён " . ($count > 0 ? "<br/>Сгенерированы дополнительные лицензии: $count" : ""));
 		return redirect()->route('contracts.index', ['sid' => session()->getId()]);
 	}
 
@@ -228,7 +234,7 @@ class ContractController extends Controller
 	 * @param int $contract
 	 * @return bool
 	 */
-	public function destroy(Request $request, int $contract)
+	public function destroy(Request $request, int $contract): bool
 	{
 		if ($contract == 0) {
 			$id = $request->id;
@@ -239,11 +245,11 @@ class ContractController extends Controller
 		$number = $contract->number;
 		$contract->delete();
 
-		event(new ToastEvent('success', '', "Контракт № {$number} клиента '{$name}' удалён"));
+		event(new ToastEvent('success', '', "Контракт № $number клиента '$name' удалён"));
 		return true;
 	}
 
-	public function licensesExport(int $id)
+	public function licensesExport(int $id): RedirectResponse
 	{
 		event(new ToastEvent('info', '', "Формирование списка лицензий..."));
 
@@ -287,7 +293,10 @@ class ContractController extends Controller
 		event(new ToastEvent('success', '', "Список лицензий сформирован"));
 
 		$writer = new Xlsx($spreadsheet);
-		$writer->save('php://output');
+		try {
+			$writer->save('php://output');
+		} catch (SpreadsheetException $e) {
+		}
 
 		return redirect()->back();
 	}

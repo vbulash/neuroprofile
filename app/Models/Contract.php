@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $number
+ * @property bool commercial
+ * @method static findOrFail(mixed $contract)
+ * @method static create(array $data)
+ * @method static find(int $id)
  */
 class Contract extends Model implements FormTemplate, Titleable
 {
@@ -26,6 +30,7 @@ class Contract extends Model implements FormTemplate, Titleable
 		'invoice',
 		'start',
 		'end',
+		'commercial',
 		'mkey',
 		'license_count',
 		'url',

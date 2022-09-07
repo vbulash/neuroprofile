@@ -38,6 +38,7 @@
             	\App\Models\Contract::COMPLETE_BY_COUNT => 'Закончились свободные лицензии'
 			}],
 			['name' => 'invoice', 'title' => 'Номер оплаченного счета', 'required' => true, 'type' => 'text', 'value' => $contract->invoice],
+			['name' => 'commercial', 'title' => 'Коммерческий контракт', 'required' => false, 'type' => 'checkbox', 'value' => $contract->commercial],
 			['name' => 'license_count', 'title' => 'Количество лицензий контракта', 'required' => true, 'type' => 'number', 'value' => $contract->license_count],
 			['name' => 'url', 'title' => 'URL страницы сайта клиента', 'required' => true, 'type' => 'text', 'value' => $contract->url],
 			['name' => 'mkey', 'title' => 'Мастер-ключ контракта', 'type' => 'text', 'required' => false, 'value' => $contract->mkey, 'disabled' => true],
@@ -49,3 +50,20 @@
 @section('form.close')
 	{{ form($contract, $mode, 'close') }}
 @endsection
+
+@push('js_after')
+	<script>
+		let commercial = document.getElementById('commercial');
+		commercial.addEventListener('change', (event) => {
+			if (event.target.checked) {	// Коммерческий контракт
+				event.target.parentElement.querySelector('label').innerText = 'Коммерческий контракт';
+			} else {	// Некоммерческий контракт
+				event.target.parentElement.querySelector('label').innerText = 'Некоммерческий контракт';
+			}
+		}, false);
+
+		document.addEventListener("DOMContentLoaded", () => {
+			commercial.dispatchEvent(new Event('change'));
+		}, false);
+	</script>
+@endpush

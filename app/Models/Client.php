@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static findOrFail(mixed $client)
+ */
 class Client extends Model implements FormTemplate, Titleable
 {
     use HasFactory;
