@@ -108,7 +108,7 @@ mix.copy('resources/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.ma
 mix.copy('resources/assets/front/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css.map', 'public/assets/front/css/bootstrap-datepicker.css.map');
 
 // Chart.js
-mix.copy('resources/plugins/chart.js/chart.min.js', 'public/assets/chart.min.js');
+mix.copy('resources/plugins/chart.js/chart.min.js', 'public/js/chart.min.js');
 
 // Toastr
 mix.copy('resources/assets/front/plugins/toastr/toastr.js.map', 'public/assets/front/js/toastr.js.map');
