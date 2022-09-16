@@ -85,7 +85,7 @@
 		cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
 	});
 
-	var channel = pusher.subscribe('needful-channel-{!! $sid !!}');
+	var channel = pusher.subscribe('neuroprofile-channel-{!! $sid !!}');
 	channel.bind('toast-event', (data) => {
 		showToast(data.type, data.message, false);
 	});

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ToastEvent;
 use App\Models\FMPType;
 use App\Models\History;
+use App\Models\License;
 use DateTime;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -94,6 +96,8 @@ EOS);
 	public function index()
 	{
 		$count = History::all()->count();
+		event(new ToastEvent('error', '',
+			"Проверка toast-системы"));
 		return view('history.index', compact('count'));
 	}
 
@@ -155,11 +159,24 @@ EOS);
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param int $id
-	 * @return Response
+	 * @param Request $request
+	 * @param int $history
+	 * @return bool
 	 */
-	public function destroy($id)
+	public function destroy(Request $request, int $history): bool
 	{
-		//
+		if ($history == 0) {
+			$id = $request->id;
+		} else $id = $history;
+
+		$h = History::findOrFail($id);
+		$h->license->status = License::FREE;
+		$h->license->update();
+		$h->delete();
+
+		/** @var int $id */
+		event(new ToastEvent('success', '',
+			"Запись истории № {$id} удалена<br/>Лицензию можно использовать повторно"));
+		return true;
 	}
 }

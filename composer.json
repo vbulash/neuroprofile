@@ -17,7 +17,8 @@
         "predis/predis": "^2.0",
         "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-permission": "^5.5",
-        "yajra/laravel-datatables": "^1.5"
+        "yajra/laravel-datatables": "^1.5",
+      	"ext-pdo": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
