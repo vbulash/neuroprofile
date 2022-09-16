@@ -89,3 +89,8 @@ a.disabled {
 .pcr-button {
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
+
+.dataTables_processing {
+	background-color: $theme-xsmooth-primary;
+	color: $theme-xsmooth-body-bg-light;
+}

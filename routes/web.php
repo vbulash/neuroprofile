@@ -98,8 +98,8 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 
 	// История прохождения тестирования
 	Route::resource('/history', 'HistoryController');
-	Route::get('/histories.data', 'HistoryController@getData')->name('histories.index.data');
-	Route::get('/histories.mail', 'HistoryController@mail')->name('histories.mail');
+	Route::get('/history.data', 'HistoryController@getData')->name('history.index.data');
+	Route::get('/history.mail', 'HistoryController@mail')->name('history.mail');
 });
 
 // Служебные маршруты

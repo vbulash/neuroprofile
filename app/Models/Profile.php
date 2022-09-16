@@ -49,8 +49,8 @@ class Profile extends Model implements FormTemplate, Titleable
 	public function editTemplate(): array
 	{
 		return [
-			'id' => 'fmptype-edit',
-			'name' => 'fmptype-edit',
+			'id' => 'profile-edit',
+			'name' => 'profile-edit',
 			'action' => route('profiles.update', ['profile' => $this->getKey(), 'sid' => session()->getId()]),
 			'close' => route('profiles.index', ['sid' => session()->getId()]),
 		];

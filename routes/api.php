@@ -28,6 +28,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Artisan::call('down');
 		abort(503);
 	})->name('api.down');
+	// Оплата
+	Route::get('/payment.result', 'PlayerController@paymentResult')->name('payment.result');
+	Route::get('/payment.success', 'PlayerController@paymentSuccess')->name('payment.success');
+	Route::get('/payment.fail', 'PlayerController@paymentFail')->name('payment.fail');
 	// Окружение
 	Route::get('/phpinfo', fn() => phpinfo())->name('api.phpinfo');
 });

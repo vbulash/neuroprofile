@@ -19,6 +19,7 @@
 
 			['title' => 'Прохождение тестов', 'heading' => true],
 			['title' => 'Проверочный плеер', 'icon' => "fas fa-play-circle", 'modal' => 'tests-play', 'pattern' => []],
+			['title' => 'История прохождения', 'icon' => 'fas fa-file-video', 'route' => 'history.index', 'pattern' => ['history.*']],
 
 			['title' => 'Настройки', 'heading' => true],
 			['title' => 'Пользователи', 'icon' => 'fa fa-user-alt', 'route' => 'users.index', 'pattern' => 'users.*'],

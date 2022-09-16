@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
  * @property bool $paid
  * @method static findOrFail(int $history_id)
  */
-class History extends Model
+class History extends Model implements FormTemplate
 {
     use HasFactory;
 
@@ -51,4 +51,25 @@ class History extends Model
 	{
 		return $this->hasMany(HistoryStep::class);
 	}
+
+	public static function createTemplate(): array
+	{
+		return [
+			'id' => 'history-create',
+			'name' => 'history-create',
+			'action' => route('history.store', ['sid' => session()->getId()]),
+			'close' => route('history.index', ['sid' => session()->getId()]),
+		];
+	}
+
+	public function editTemplate(): array
+	{
+		return [
+			'id' => 'history-edit',
+			'name' => 'history-edit',
+			'action' => route('history.update', ['history' => $this->getKey(), 'sid' => session()->getId()]),
+			'close' => route('history.index', ['sid' => session()->getId()]),
+		];
+	}
+
 }
