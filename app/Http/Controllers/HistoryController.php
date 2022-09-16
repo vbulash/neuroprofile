@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 use Exception;
 
@@ -27,7 +28,7 @@ class HistoryController extends Controller
 	 */
 	public function getData(Request $request): JsonResponse
 	{
-		$history = collect(DB::select(<<<EOS
+		$histories = DB::select(<<<EOS
 SELECT
     history.id,
     history.done as timestamp,
@@ -35,7 +36,7 @@ SELECT
     clients.name as client,
     contracts.number as contract,
     tests.name as test,
-    history.card->"$.email" as email,
+    history.card->>"$.email" as email,
     contracts.commercial,
     history.paid
 FROM history, licenses, tests, contracts, clients
@@ -45,13 +46,14 @@ WHERE
     AND contracts.id = tests.contract_id
     AND clients.id = contracts.client_id
 ORDER BY id DESC
-EOS));
-		$count = $history->count();
+EOS);
+		$count = count($histories);
 
-		return Datatables::of($history)
-			->addColumn('commercial', fn($history) => $history->commercial ? 'Да' : 'Нет')
-			->addColumn('paid', fn($history) => $history->paid ? 'Да' : 'Нет')
-			->addColumn('action', function ($history) {
+		return Datatables::of($histories)
+			->editColumn('timestamp', fn($history) => (new DateTime($history->timestamp))->format('d.m.Y G:i:s'))
+			->editColumn('commercial', fn($history) => $history->commercial ? 'Да' : 'Нет')
+			->editColumn('paid', fn($history) => $history->paid ? 'Да' : 'Нет')
+			->editColumn('action', function ($history) {
 				$editRoute = route('history.edit', ['history' => $history->id, 'sid' => session()->getId()]);
 				$showRoute = route('history.show', ['history' => $history->id, 'sid' => session()->getId()]);
 				$mailRoute = route('payment.result', ['InvId' => $history->id, 'List' => true, 'sid' => session()->getId()]);
@@ -66,7 +68,7 @@ EOS));
 					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
 					"<i class=\"fas fa-eye\"></i>\n" .
 					"</a>\n";
-				if ($history->test->contract->commercial)
+				if ($history->commercial)
 					$actions .=
 						"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left\" " .
 						"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$history->id})\">\n" .
