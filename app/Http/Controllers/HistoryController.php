@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Exception;
 
@@ -26,46 +27,29 @@ class HistoryController extends Controller
 	 */
 	public function getData(Request $request): JsonResponse
 	{
-		$fmptypes = FMPType::all()->pluck('name', 'id')->toArray();
-		$query = History::all()
-			->sortBy('done', descending: true);
-		$count = $query->count();
+		$history = collect(DB::select(<<<EOS
+SELECT
+    history.id,
+    history.done as timestamp,
+    licenses.pkey as license,
+    clients.name as client,
+    contracts.number as contract,
+    tests.name as test,
+    history.card->"$.email" as email,
+    contracts.commercial,
+    history.paid
+FROM history, licenses, tests, contracts, clients
+WHERE
+    licenses.id = history.license_id
+    AND tests.id = history.test_id
+    AND contracts.id = tests.contract_id
+    AND clients.id = contracts.client_id
+ORDER BY id DESC
+EOS));
+		$count = $history->count();
 
-		$data = Datatables::of($query)
-			->addColumn('timestamp', function ($history) {
-				$content = json_decode($history->test->content);
-				$descriptions = $content->descriptions;
-				session()->put('descriptions', $descriptions);
-				//
-				return (new DateTime($history->done))->format('d.m.Y G:i:s');
-			})
-			->addColumn('license', fn($history) => $history->license->pkey)
-			->addColumn('client', fn($history) => $history->test->contract->client->getTitle())
-			->addColumn('contract', fn($history) => $history->test->contract->number)
-			->addColumn('test', fn($history) => $history->test->getTitle())
-			->addColumn('results_show', function ($history) use ($fmptypes) {
-				$descriptions = session('descriptions');
-				$fmptype_show = $descriptions->show ?? 0;
-				if ($fmptype_show == 0) return '';
-				return $fmptypes[$fmptype_show];
-			})
-			->addColumn('results_mail', function ($history) use ($fmptypes) {
-				$descriptions = session('descriptions');
-				$fmptype_mail = $descriptions->mail ?? 0;
-				if ($fmptype_mail == 0) return '';
-				return $fmptypes[$fmptype_mail];
-			})
-			->addColumn('results_client', function ($history) use ($fmptypes) {
-				$descriptions = session('descriptions');
-				$fmptype_client = $descriptions->client ?? 0;
-				if ($fmptype_client == 0) return '';
-				return $fmptypes[$fmptype_client];
-			})
-			->addColumn('email', function ($history) {
-				$content = json_decode($history->card);
-				return $content->email ?? '';
-			})
-			->addColumn('commercial', fn($history) => $history->test->contract->commercial ? 'Да' : 'Нет')
+		return Datatables::of($history)
+			->addColumn('commercial', fn($history) => $history->commercial ? 'Да' : 'Нет')
 			->addColumn('paid', fn($history) => $history->paid ? 'Да' : 'Нет')
 			->addColumn('action', function ($history) {
 				$editRoute = route('history.edit', ['history' => $history->id, 'sid' => session()->getId()]);
@@ -98,14 +82,6 @@ class HistoryController extends Controller
 			})
 			//;
 			->make(true);
-
-//		return response(200)->json([
-//			'draw' => intval($request->draw),
-//			'recordsTotal' => $count,
-//			'recordsFiltered' => $count,
-//			'data' => $data->collection->toJson()
-//		]);
-		return $data;
 	}
 
 	/**

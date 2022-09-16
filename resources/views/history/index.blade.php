@@ -31,9 +31,6 @@
 						<th>Клиент</th>
 						<th>Контракт</th>
 						<th>Тест</th>
-						<th>Тип описания<br/>Отображение на экране</th>
-						<th>Тип описания<br/>Письмо респонденту</th>
-						<th>Тип описания<br>Письмо клиенту</th>
 						<th>Электронная почта</th>
 						<th>Коммерческий<br/>контракт</th>
 						<th>Результат<br/>оплачен</th>
@@ -101,9 +98,6 @@
 						{data: 'client', name: 'client', responsivePriority: 3},
 						{data: 'contract', name: 'contract', responsivePriority: 3},
 						{data: 'test', name: 'test', responsivePriority: 2},
-						{data: 'results_show', name: 'results_show', responsivePriority: 4},
-						{data: 'results_mail', name: 'results_mail', responsivePriority: 4},
-						{data: 'results_client', name: 'results_client', responsivePriority: 4},
 						{data: 'email', name: 'email', responsivePriority: 2},
 						{data: 'commercial', name: 'commercial', responsivePriority: 4},
 						{data: 'paid', name: 'paid', responsivePriority: 2},
