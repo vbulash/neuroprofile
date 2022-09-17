@@ -22,13 +22,13 @@ class ToastEvent implements ShouldBroadcast
         $this->message = $message;
     }
 
-    public function broadcastOn()
-    {
+    public function broadcastOn(): array
+	{
         return ['neuroprofile-channel-' . session()->getId()];
     }
 
-    public function broadcastAs()
-    {
+    public function broadcastAs(): string
+	{
         return 'toast-event';
     }
 }

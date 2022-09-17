@@ -68,7 +68,7 @@
 		let elToast = document.getElementById('livetoast');
 		let toast = new bootstrap.Toast(elToast);
 
-		toast.hide();
+		//toast.hide();
 
 		elToast.className = classList;
 		elToast.setAttribute('data-bs-autohide', autohide);
@@ -81,11 +81,16 @@
 
 	// Ошибки и сообщения
 	// Broadcast
-	var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+	@production
+	@else
+		Pusher.logToConsole = true;
+	@endproduction
+
+	let pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
 		cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
 	});
 
-	var channel = pusher.subscribe('neuroprofile-channel-{!! $sid !!}');
+	let channel = pusher.subscribe('neuroprofile-channel-{!! $sid !!}');
 	channel.bind('toast-event', (data) => {
 		showToast(data.type, data.message, false);
 	});
