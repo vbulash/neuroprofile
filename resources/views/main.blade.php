@@ -20,11 +20,11 @@
 							<a class="block block-rounded block-link-shadow bg-success" href="{{ route('history.index', ['sid' => $sid]) }}">
 								<div class="block-content block-content-full d-flex align-items-center justify-content-between">
 									<div>
-										<i class="fa fa-2x fa-chart-line text-primary-lighter"></i>
+										<i class="fa fa-2x fa-chart-line text-white"></i>
 									</div>
 									<div class="ms-3 text-end">
 										<p class="text-white fs-3 fw-medium mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_ALL_COUNT] }}</p>
-										<p class="text-white-75 mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_ALL_COUNT . '.letter'] }}</p>
+										<p class="text-white mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_ALL_COUNT . '.letter'] }}</p>
 									</div>
 								</div>
 							</a>
@@ -35,11 +35,11 @@
 							<a class="block block-rounded block-link-shadow bg-warning" href="{{ route('history.index', ['sid' => $sid]) }}">
 								<div class="block-content block-content-full d-flex align-items-center justify-content-between">
 									<div>
-										<i class="fa fa-2x fa-coins text-primary-lighter"></i>
+										<i class="fa fa-2x fa-coins text-white"></i>
 									</div>
 									<div class="ms-3 text-end">
 										<p class="text-white fs-3 fw-medium mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_PAID_COUNT] }}</p>
-										<p class="text-white-75 mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_PAID_COUNT . '.letter'] }}</p>
+										<p class="text-white mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_PAID_COUNT . '.letter'] }}</p>
 									</div>
 								</div>
 							</a>
