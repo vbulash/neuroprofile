@@ -14,7 +14,7 @@
 		@csrf
 		<input type="hidden" name="sid" value="{{ $sid }}">
 		<input type="hidden" name="nextblock" value="card">
-		<div id="safari">
+		<div id="safari" style="display: none">
 			<div id="mac" class="mb-4">
 				<p>Мы обнаружили, что вы запускаете тест на компьютере Mac в браузере Safari. Для прохождения теста без ошибки
 					вам необходимо переключить флажок, как показано на скриншоте ниже (на компьютере в меню Safari -> Настройки -> Конфиденциальность -> Отслеживание на веб-сайтах): </p>

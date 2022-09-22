@@ -13,16 +13,16 @@ use App\Models\Contract;
 use App\Models\History;
 use App\Models\HistoryStep;
 use App\Models\License;
-use App\Models\Profile;
 use App\Models\Test;
 use App\Models\TestOptions;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -305,85 +305,36 @@ EOS
 		return view('front.precalc', compact('test', 'history_id'));
 	}
 
-	public function calculate(int $history_id): View|Factory|bool|Application|RedirectResponse|null
+	public function calculate(int $history_id, bool $repeat = false, bool $historyMode = false): View|Factory|bool|Application|RedirectResponse
 	{
 		$history = History::findOrFail($history_id);
-		$content = json_decode($history->test->content);
-		$fmptype_show = $content->descriptions->show ?? false;
-		$fmptype_mail = $content->descriptions->mail ?? false;
-		$fmptype_client = $content->descriptions->client ?? false;
-		$branding = $content->branding ?? false;
-
 		// Не переименовывать переменную - может использоваться в коде набора вопросов в eval()
 		$result = HistoryStep::where('history_id', $history_id)->pluck('key')->toArray();
 
-		$code = htmlspecialchars_decode(strip_tags($history->test->set->code));
-		$profile_code = eval($code);
+		if (!$repeat) {
+			$code = htmlspecialchars_decode(strip_tags($history->test->set->code));
+			$profile_code = eval($code);
 
-		if ($profile_code == null) // Ситуация фантастическая, но встречается очень часто
-			$history->delete();
-		else {
 			$history->code = $profile_code;
 			$history->update();
 			// Код нейропрофиля вычислен и сохранен
+		}
 
-			$card = (new CardComposer($history))->getCard();
-			$composer = new BlocksComposer($history);
+		$content = json_decode($history->test->content);
+		$maildata = [];
+		$maildata['show'] = $content->descriptions->show ?? false;
+		$maildata['mail'] = $content->descriptions->mail ?? false;
+		$maildata['client'] = $content->descriptions->client ?? false;
+		$maildata['$branding'] = $content->branding ?? false;
 
-			if ($fmptype_mail) {
-				$profile = $composer->getProfile(BlocksArea::MAIL);
-				$blocks = $composer->getBlocks($profile);
+		if ($maildata['mail']) $this->mailRespondent($history, $maildata, $historyMode);
+		if ($maildata['client']) $this->mailClient($history, $maildata, $historyMode);
 
-				$recipient = (object)[
-					'name' =>
-						join(' ', [$card['Фамилия'] ?? null, $card['Имя'] ?? null, $card['Отчество'] ?? null]),
-					'email' => $card['Электронная почта']
-				];
-				$copy = (object)[
-					'name' => env('MAIL_FROM_NAME'),
-					'email' => env('MAIL_FROM_ADDRESS')
-				];
+		$card = (new CardComposer($history))->getCard();
+		$composer = new BlocksComposer($history);
 
-				try {
-					Mail::to($recipient)
-						->cc($copy)
-						->send(new TestResult($history, $blocks, $card, $profile, $branding));
-
-					event(new ToastEvent('success', '', 'Вам отправлено письмо с результатами тестирования'));
-				} catch (Exception $exc) {
-					session()->put('error', "Ошибка отправки письма с результатами тестирования:<br/>" .
-						$exc->getMessage());
-					return redirect()->route('player.index', ['sid' => session()->getId()]);
-				}
-			}
-
-			if ($fmptype_client) {
-				$profile = $composer->getProfile(BlocksArea::CLIENT);
-				$blocks = $composer->getBlocks($profile);
-
-				$recipient = (object)[
-					'name' => $history->test->contract->client->name,
-					'email' => $history->test->contract->client->email
-				];
-				$copy = (object)[
-					'name' => env('MAIL_FROM_NAME'),
-					'email' => env('MAIL_FROM_ADDRESS')
-				];
-
-				try {
-					Mail::to($recipient)
-						->cc($copy)
-						->send(new TestClientResult($history, $blocks, $card, $profile, $branding));
-
-					//event(new ToastEvent('success', '', 'Вам отправлено письмо с результатами тестирования'));
-				} catch (Exception $exc) {
-					session()->put('error', "Ошибка отправки письма клиенту с результатами тестирования:<br/>" .
-						$exc->getMessage());
-					return redirect()->route('player.index', ['sid' => session()->getId()]);
-				}
-			}
-
-			if ($fmptype_show) {
+		if (!$repeat) {
+			if ($maildata['show']) {
 				$profile = $composer->getProfile(BlocksArea::SHOW);
 				$blocks = $composer->getBlocks($profile);
 
@@ -393,7 +344,7 @@ EOS
 			} else return redirect()->route('player.index', ['sid' => session()->getId()]);
 		}
 
-		return null;
+		return true;
 	}
 
 	public function iframe(): Factory|View|Application
@@ -411,5 +362,103 @@ EOS
 		];
 
 		return view($docviews[$document], compact('mail', 'test'));
+	}
+
+	/**
+	 * @param History $history
+	 * @param array $maildata
+	 * @param bool $historyMode
+	 * @return Response
+	 */
+	private function mailRespondent(History $history, array $maildata, bool $historyMode): Response
+	{
+		$card = (new CardComposer($history))->getCard();
+		$composer = new BlocksComposer($history);
+		$profile = $composer->getProfile(BlocksArea::MAIL);
+		$blocks = $composer->getBlocks($profile);
+
+		$recipient = (object)[
+			'name' =>
+				join(' ', [$card['Фамилия'] ?? null, $card['Имя'] ?? null, $card['Отчество'] ?? null]),
+			'email' => $card['Электронная почта']
+		];
+		$copy = (object)[
+			'name' => env('MAIL_FROM_NAME'),
+			'email' => env('MAIL_FROM_ADDRESS')
+		];
+
+		try {
+			Mail::to($recipient)
+				->cc($copy)
+				->send(new TestResult($history, $blocks, $card, $profile, $maildata['branding'] ?? null));
+
+			event(new ToastEvent('success', '', 'Вам отправлено письмо с результатами тестирования'));
+//			session()->put('success', 'Вам отправлено письмо с результатами тестирования');
+		} catch (Exception $exc) {
+			session()->put('error', "Ошибка отправки письма с результатами тестирования:<br/>" .
+				$exc->getMessage());
+			return response(status: 500);
+		}
+		return response(status: 200);
+	}
+
+	/**
+	 * @param History $history
+	 * @param array $maildata
+	 * @param bool $historyMode
+	 * @return Response
+	 */
+	private function mailClient(History $history, array $maildata, bool $historyMode): Response
+	{
+		//  TODO Уточнить - нужно ли клиентское письмо в ходе повтора из истории
+		if ($historyMode) return response(status: 204);
+
+		$card = (new CardComposer($history))->getCard();
+		$composer = new BlocksComposer($history);
+		$profile = $composer->getProfile(BlocksArea::CLIENT);
+		$blocks = $composer->getBlocks($profile);
+
+		$recipient = (object)[
+			'name' => $history->test->contract->client->name,
+			'email' => $history->test->contract->client->email
+		];
+		$copy = (object)[
+			'name' => env('MAIL_FROM_NAME'),
+			'email' => env('MAIL_FROM_ADDRESS')
+		];
+
+		try {
+			Mail::to($recipient)
+				->cc($copy)
+				->send(new TestClientResult($history, $blocks, $card, $profile, $maildata['branding'] ?? null));
+
+			//event(new ToastEvent('success', '', 'Вам отправлено письмо с результатами тестирования'));
+		} catch (Exception $exc) {
+			session()->put('error', "Ошибка отправки письма клиенту с результатами тестирования:<br/>" .
+				$exc->getMessage());
+			return response(status: 500);
+		}
+		return response(status: 200);
+	}
+
+	/**
+	 * Результат оплаты в Робокасса
+	 * @param Request $request
+	 * @return View|Factory|bool|Application|RedirectResponse
+	 */
+	public function paymentResult(Request $request): View|Factory|bool|Application|RedirectResponse
+	{
+		$history_id = $request->InvId;
+		return $this->calculate($history_id, true, false);
+	}
+
+	/**
+	 * Повтор электронных писем по итогам тестирования через историю (history.index)
+	 * @param Request $request
+	 * @return View|Factory|bool|Application|RedirectResponse
+	 */
+	public function mail(Request $request): View|Factory|bool|Application|RedirectResponse
+	{
+		return $this->calculate($request->history, true, true);
 	}
 }

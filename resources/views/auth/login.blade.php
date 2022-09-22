@@ -24,26 +24,17 @@
 
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
-                                    <div class="mb-4">
-										<label class="col-form-label" for="email">Электронная почта</label>
-                                        <div class="input-group input-group-lg">
-                                            <input type="email" class="form-control" id="email" name="email"
-                                                   placeholder="Электронная почта">
-                                            <span class="input-group-text">
-                                            <i class="fa fa-user-circle"></i>
-                                        </span>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-										<label class="col-form-label" for="email">Пароль</label>
-                                        <div class="input-group input-group-lg">
-                                            <input type="password" class="form-control" id="password" name="password"
-                                                   placeholder="Пароль">
-                                            <span class="input-group-text">
-                                            <i class="fa fa-asterisk"></i>
-                                        </span>
-                                        </div>
-                                    </div>
+									<div class="form-floating mb-4">
+										<input type="email" class="form-control" id="email" name="email"
+											   placeholder="Электронная почта">
+										<label for="email">Электронная почта</label>
+									</div>
+									<div class="form-floating mb-4">
+										<input type="password" class="form-control" id="password" name="password"
+											   placeholder="Пароль">
+										<label for="password">Пароль</label>
+									</div>
+
                                     <div
                                         class="d-sm-flex justify-content-sm-between align-items-sm-center text-center text-sm-start mb-4">
                                         <div class="form-check">

@@ -18,7 +18,7 @@ class CardComposer
 		else $this->history = History::findOrFail($history_id);
 	}
 
-	public function getCard(): ?array
+	public function getCard(bool $extra = false): ?array
 	{
 		$history_card = $this->history->card ? json_decode($this->history->card) : null;
 
@@ -29,6 +29,23 @@ class CardComposer
 			$name = $field['name'];
 			$title = $field['label'];
 			if (isset($history_card->$name))
+				if ($extra) {
+					$items = [
+						'name' => $name,
+						'title' => $title,
+						'value' => $history_card->$name,
+						'required' => $field['required'],
+						'type' => $field['type']
+					];
+					if ($field['type'] == 'select') {
+						$options = [];
+						foreach ($field['cases'] as $case)
+							$options[$case['value']] = $case['label'];
+						$items['options'] = $options;
+					}
+					$card[] = $items;
+				}
+			else
 				$card[$title] = $history_card->$name;
 		}
 		return $card;

@@ -89,8 +89,8 @@ class TestController extends Controller
      * @param  int  $id
      * @return RedirectResponse
 	 */
-    public function show(int $id)
-    {
+    public function show(int $id): RedirectResponse
+	{
         return $this->edit($id, true);
     }
 
@@ -101,8 +101,8 @@ class TestController extends Controller
 	 * @param
      * @return RedirectResponse
 	 */
-    public function edit(int $id, bool $show = false)
-    {
+    public function edit(int $id, bool $show = false): RedirectResponse
+	{
 		$mode = $show ? config('global.show') : config('global.edit');
 		return redirect()->route('steps.play', [
 			'mode' => $mode,

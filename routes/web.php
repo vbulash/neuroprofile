@@ -99,7 +99,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	// История прохождения тестирования
 	Route::resource('/history', 'HistoryController');
 	Route::get('/history.data', 'HistoryController@getData')->name('history.index.data');
-	Route::get('/history.mail', 'HistoryController@mail')->name('history.mail');
+	Route::get('/history.mail', 'PlayerController@mail')->name('history.mail');
 });
 
 // Служебные маршруты

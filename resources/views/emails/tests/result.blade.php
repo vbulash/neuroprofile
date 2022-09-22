@@ -83,7 +83,7 @@
 @endforelse
 
 <div style="margin-top: 40px;">
-	@if (isset($branding->signature))
+	@if (isset($branding) && isset($branding->signature))
 		{!! $branding->signature !!}
 	@else
 		С уважением,<br/>

@@ -94,3 +94,27 @@ a.disabled {
 	background-color: $theme-xsmooth-primary;
 	color: $theme-xsmooth-body-bg-light;
 }
+
+.flatpickr-input.form-control:disabled, .flatpickr-input.form-control[readonly] {
+	background-color: #e9ecef;
+}
+
+.form-check-input {
+	border-color: $theme-xsmooth-primary !important;
+}
+
+.table.dataTable {
+	> thead {
+		vertical-align: top;
+		background-color: rgba(0, 0, 0, 0.05);
+
+		.sorting, .sorting_asc, .sorting_desc, .sorting_asc_disabled, .sorting_desc_disabled {
+			::before {
+				content: "\2191";
+			}
+			::after {
+				content: "\2193";
+			}
+		}
+	}
+}

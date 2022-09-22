@@ -45,7 +45,7 @@
             Результат вашего тестирования:
         @endif
     </h1>
-    <h4>Наименование нейропрофиля: {{ $profile->getTitle() }}</h4>
+    <h4>Наименование нейропрофиля: {{ $profile->name }}</h4>
 
     @forelse($blocks  as $block)
         <h2>{{ $block->name }}</h2>

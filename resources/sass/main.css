@@ -32216,4 +32216,23 @@ a.disabled {
   color: #f8f9fc;
 }
 
+.flatpickr-input.form-control:disabled, .flatpickr-input.form-control[readonly] {
+  background-color: #e9ecef;
+}
+
+.form-check-input {
+  border-color: #7351c0 !important;
+}
+
+.table.dataTable > thead {
+  vertical-align: top;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.table.dataTable > thead .sorting ::before, .table.dataTable > thead .sorting_asc ::before, .table.dataTable > thead .sorting_desc ::before, .table.dataTable > thead .sorting_asc_disabled ::before, .table.dataTable > thead .sorting_desc_disabled ::before {
+  content: "↑";
+}
+.table.dataTable > thead .sorting ::after, .table.dataTable > thead .sorting_asc ::after, .table.dataTable > thead .sorting_desc ::after, .table.dataTable > thead .sorting_asc_disabled ::after, .table.dataTable > thead .sorting_desc_disabled ::after {
+  content: "↓";
+}
+
 /*# sourceMappingURL=main.css.map */

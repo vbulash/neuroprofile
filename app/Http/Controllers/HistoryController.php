@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Events\ToastEvent;
+use App\Http\Controllers\results\CardComposer;
+use App\Http\Requests\UpdateHistoryRequest;
 use App\Models\FMPType;
 use App\Models\History;
 use App\Models\License;
 use DateTime;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 use Exception;
 
@@ -58,7 +59,6 @@ EOS);
 			->editColumn('action', function ($history) {
 				$editRoute = route('history.edit', ['history' => $history->id, 'sid' => session()->getId()]);
 				$showRoute = route('history.show', ['history' => $history->id, 'sid' => session()->getId()]);
-				$mailRoute = route('payment.result', ['InvId' => $history->id, 'List' => true, 'sid' => session()->getId()]);
 
 				$actions =
 					"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
@@ -77,7 +77,7 @@ EOS);
 						"<i class=\"fas fa-trash-alt\"></i>\n" .
 						"</a>\n";
 				$actions .=
-					"<a href=\"$mailRoute\" class=\"btn btn-primary btn-sm float-left ms-5\" " .
+					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left ms-5\" " .
 					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Повтор письма\" onclick=\"clickMail({$history->id})\">\n" .
 					"<i class=\"fas fa-envelope\"></i>\n" .
 					"</a>\n";
@@ -93,7 +93,7 @@ EOS);
 	 *
 	 * @return Application|Factory|View
 	 */
-	public function index()
+	public function index(): View|Factory|Application
 	{
 		$count = History::all()->count();
 		event(new ToastEvent('error', '',
@@ -102,58 +102,57 @@ EOS);
 	}
 
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param Request $request
-	 * @return Response
-	 */
-	public function store(Request $request)
-	{
-		//
-	}
-
-	/**
 	 * Display the specified resource.
 	 *
 	 * @param int $id
-	 * @return Response
+	 * @return Application|Factory|View
 	 */
-	public function show($id)
+	public function show(int $id): Application|Factory|View
 	{
-		//
+		return $this->edit($id, true);
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param int $id
-	 * @return Response
+	 * @param bool $show
+	 * @return Application|Factory|View
 	 */
-	public function edit($id)
+	public function edit(int $id, bool $show = false): View|Factory|Application
 	{
-		//
+		$mode = $show ? config('global.show') : config('global.edit');
+		$history = History::findOrFail($id);
+		$composer = new CardComposer($history);
+		$card = $composer->getCard(true);
+		return view('history.edit', compact('history', 'mode', 'card'));
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param Request $request
+	 * @param UpdateHistoryRequest $request
 	 * @param int $id
-	 * @return Response
+	 * @return RedirectResponse
 	 */
-	public function update(Request $request, $id)
+	public function update(UpdateHistoryRequest $request, int $id): RedirectResponse
 	{
-		//
+		$history = History::findOrFail($id);
+		$updates = [];
+		$card = json_decode($history->card);
+		if (isset($card->email) && $card->email != $request->email) {
+			$card->email = $request->email;
+			$updates['card'] = json_encode($card);
+		}
+		if ($history->paid != $request->has('paid')) {
+			$updates['paid'] = $request->has('paid');
+		}
+		if( count($updates) > 0) {
+			$history->update($updates);
+			session()->put('success', "Запись истории тестирования № {$history->getKey()} обновлена");
+		}
+
+		return redirect()->route('history.index', ['sid' => session()->getId()]);
 	}
 
 	/**

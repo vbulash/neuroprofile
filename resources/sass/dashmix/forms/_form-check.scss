@@ -17,7 +17,7 @@
   position: relative;
   padding: 0;
   z-index: 1;
-  
+
   .form-check-input {
     position: absolute;
     left: 0;
@@ -76,7 +76,7 @@
   }
 
   .form-check-input:disabled:not([checked]) + .form-check-label:hover,
-  .form-check-input[readonly]:not([checked]) + .form-check-label:hover { 
+  .form-check-input[readonly]:not([checked]) + .form-check-label:hover {
     border-color: $body-bg-dark;
   }
 }

@@ -53,24 +53,20 @@
 	@push('js_after')
 		<script src="{{ asset('js/datatables.js') }}"></script>
 		<script>
-			document.getElementById('confirm-yes').addEventListener('click', (event) => {
-				$.ajax({
-					method: 'DELETE',
-					url: "{{ route('history.destroy', ['history' => '0']) }}",
-					data: {
-						id: event.target.dataset.id,
-					},
-					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-					success: () => {
-						window.datatable.ajax.reload();
-					}
-				});
-			}, false);
-
 			function clickDelete(id) {
-				document.getElementById('confirm-title').innerText = "Подтвердите удаление";
-				document.getElementById('confirm-body').innerHTML = "Удалить запись истории тестирования № " + id + " ?";
-				document.getElementById('confirm-yes').dataset.id = id;
+				$('#confirm-title').html('Подтвердите удаление');
+				$('#confirm-body').html('Удалить запись истории тестирования № ' + id + ' ?');
+				$('#confirm-yes').attr('data-id', id);
+				$('#confirm-type').val('delete');
+				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
+				confirmDialog.show();
+			}
+
+			function clickMail(id) {
+				$('#confirm-title').html('Подтвердите отправку письма');
+				$('#confirm-body').html('Повторить письмо с результатами тестирования записи истории тестирования № ' + id + ' ?');
+				$('#confirm-yes').attr('data-id', id);
+				$('#confirm-type').val('mail');
 				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
 				confirmDialog.show();
 			}
@@ -108,6 +104,37 @@
 							className: 'no-wrap dt-actions'
 						}
 					]
+				});
+
+				$('#confirm-yes').on('click', event => {
+					switch($('#confirm-type').val()) {
+						case 'delete':
+							$.ajax({
+								method: 'DELETE',
+								url: "{{ route('history.destroy', ['history' => '0']) }}",
+								data: {
+									id: event.target.dataset.id,
+								},
+								headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+								success: () => {
+									window.datatable.ajax.reload();
+								}
+							});
+							break;
+						case 'mail':
+							$.ajax({
+								method: 'GET',
+								url: "{{ route('history.mail', ['sid' => $sid]) }}",
+								data: {
+									history: event.target.dataset.id,
+								},
+								headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+								success: () => {
+									window.location.reload();
+								}
+							});
+							break;
+					}
 				});
 			});
 		</script>

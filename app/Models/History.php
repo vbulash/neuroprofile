@@ -54,12 +54,7 @@ class History extends Model implements FormTemplate
 
 	public static function createTemplate(): array
 	{
-		return [
-			'id' => 'history-create',
-			'name' => 'history-create',
-			'action' => route('history.store', ['sid' => session()->getId()]),
-			'close' => route('history.index', ['sid' => session()->getId()]),
-		];
+		return [];
 	}
 
 	public function editTemplate(): array

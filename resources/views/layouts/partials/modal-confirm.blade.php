@@ -9,6 +9,7 @@
 			</div>
 			<div class="modal-body" id="confirm-body">
 			</div>
+			<input type="hidden" id="confirm-type" value="delete">
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" id="confirm-yes" data-bs-dismiss="modal">Да</button>
 				<button type="button" class="btn btn-primary" id="confirm-no" data-bs-dismiss="modal">Нет</button>
