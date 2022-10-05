@@ -32235,4 +32235,23 @@ a.disabled {
   content: "↓";
 }
 
+li.select2-selection__choice {
+  background-color: #7351c0 !important;
+  border: 1px solid #7351c0 !important;
+}
+
+button.select2-selection__choice__remove {
+  color: white !important;
+  border: 1px solid #7351c0 !important;
+}
+button.select2-selection__choice__remove :hover {
+  color: white !important;
+  background-color: #7351c0 !important;
+  border: 1px solid #7351c0 !important;
+}
+
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+  background-color: #7351c0 !important;
+}
+
 /*# sourceMappingURL=main.css.map */

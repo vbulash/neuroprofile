@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Exception as ExcelException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -249,6 +250,9 @@ class ContractController extends Controller
 		return true;
 	}
 
+	/**
+	 * @throws ExcelException
+	 */
 	public function licensesExport(int $id): RedirectResponse
 	{
 		event(new ToastEvent('info', '', "Формирование списка лицензий..."));
@@ -286,9 +290,11 @@ class ContractController extends Controller
 			$sheet->setCellValue('B' . $row, $statusText);
 		}
 
+		ob_end_clean();
 		header('Content-Type: application/vnd.ms-excel; charset=utf-8');
 		header('Content-Disposition: attachment;filename="' . env('APP_NAME') . ' - Экспорт лицензий.xlsx' . '"');
 		header('Cache-Control: max-age=0');
+		ob_end_clean();
 
 		event(new ToastEvent('success', '', "Список лицензий сформирован"));
 

@@ -15,10 +15,16 @@
 @section('interior')
 	<div class="block-header block-header-default">
 		<div>
-			<small>Эта таблица не помещается на экран по ширине. Для прокрутки влево / вправо вы можете пользоваться
-				полосой прокрутки ниже таблицы, а также клик мыши внутри таблицы и далее клавишами &larr; и &rarr;</small>
+			<p><small>Эта таблица не помещается на экран по ширине. Для прокрутки влево / вправо вы можете пользоваться
+					полосой прокрутки ниже таблицы, а также клик мыши внутри таблицы и далее клавишами &larr; и
+					&rarr;</small></p>
+			<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
+					data-bs-target="#filter-history" @if (!$count) disabled @endif>
+				Экспорт истории тестирования
+			</button>
 		</div>
 	</div>
+
 	<div class="block-content p-4">
 		@if ($count)
 			<div>
@@ -42,6 +48,62 @@
 		@else
 			<p>Истории тестирования пока нет...</p>
 		@endif
+	</div>
+
+	<div class="modal fade" id="filter-history" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+		 data-bs-keyboard="false">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Фильтрация выгрузки истории тестирования по датам</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+				</div>
+				<form action="{{ route('history.export') }}" method="GET" id="form-export">
+					@csrf
+					<div class="modal-body">
+						<div class="d-flex flex-column align-items-start">
+							<small>
+								<p class="mb-2">Укажите граничные даты для выгрузки по следующим правилам:</p>
+								<ul>
+									<li>Указаны обе даты - фильтрация в рамках дат</li>
+									<li>Не указана дата &laquo;С&raquo; - все записи с начала ведения истории по дату &laquo;По&raquo;</li>
+									<li>Не указана дата &laquo;По&raquo; - все записи позднее &laquo;С&raquo;</li>
+									<li>Не указаны обе даты - нет фильтра = полная выгрузка. Просьба использовать данный режим с осторожностью - полная выборка формируется долго и могут быть проблемы в Excel с открытием большой таблицы</li>
+								</ul>
+								<p class="mb-4">Даты указываются включительно</p>
+							</small>
+							<div class="d-flex justify-content-between">
+								<div class="form-floating mb-4">
+									<input type="text" class="flatpickr-input form-control" id="from" name="from"
+										   placeholder="Дата с" data-date-format="d.m.Y">
+									<label for="from">Дата с</label>
+								</div>
+								<div class="form-floating ms-4 mb-4">
+									<input type="text" class="flatpickr-input form-control" id="to" name="to"
+										   placeholder="Дата по" data-date-format="d.m.Y">
+									<label for="from">Дата по</label>
+								</div>
+							</div>
+							<input type="hidden" name="field-list" id="field-list">
+							<label class="col-form-label mb-2" for="field-select">
+								Выберите поля, которые попадут в отчет. Пустой список = экспорт всех полей
+							</label>
+							<select class="form-control select2" id="field-select" style="width: 100%;"></select>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close">
+							Закрыть
+						</button>
+
+						<button type="submit" class="btn btn-primary" data-bs-dismiss="modal" data-role="submit"
+								id="btn-export">
+							Выполнить экспорт
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
 @endsection
 
@@ -107,7 +169,7 @@
 				});
 
 				$('#confirm-yes').on('click', event => {
-					switch($('#confirm-type').val()) {
+					switch ($('#confirm-type').val()) {
 						case 'delete':
 							$.ajax({
 								method: 'DELETE',
@@ -135,6 +197,34 @@
 							});
 							break;
 					}
+				});
+
+				$('#field-select').on('select2:select', (event) => {
+					// let data = event.params.data;
+					// $('#btn-export').removeAttr('disabled');
+				});
+
+				$('#field-select').on('select2:unselect', (event) => {
+					// let data = event.params.data;
+					// if ($('#field-select').val().length === 0)
+					// 	$('#btn-export').attr('disabled', true);
+					// else
+					// 	$('#btn-export').removeAttr('disabled');
+				});
+
+				let select = $('#field-select');
+				select.select2('destroy');
+				select.select2({
+					language: 'ru',
+					dropdownParent: $('#filter-history'),
+					data: {!! $fields !!},
+					multiple: true,
+					placeholder: 'Выберите одно или несколько полей из выпадающего списка',
+				});
+				select.val(null).trigger('change');
+
+				$('#form-export').on('submit', event => {
+					$('#field-list').val(JSON.stringify($('#field-select').val()));
 				});
 			});
 		</script>

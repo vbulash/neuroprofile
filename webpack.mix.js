@@ -19,7 +19,7 @@ mix
         'resources/sass/main.css',
         'resources/sass/dashmix/themes/xsmooth.css',
 		'resources/plugins/flatpickr/flatpickr.min.css',
-		'resources/plugins/select2/select2.min.css'
+		// 'resources/plugins/select2/select2.min.css'
     ], 'public/css/app.css')
     .copy([
         'resources/plugins/bootstrap/css/bootstrap.min.css.map',
@@ -38,7 +38,7 @@ mix
         'resources/plugins/pusher/pusher.min.js',
 		'resources/plugins/flatpickr/flatpickr.min.js',
 		'resources/plugins/flatpickr/l10n/ru.js',
-		'resources/plugins/select2/select2.min.js'
+		// 'resources/plugins/select2/select2.min.js'
     ], 'public/js/app.js')
     .copy([
         'resources/plugins/bootstrap/js/bootstrap.bundle.min.js.map',

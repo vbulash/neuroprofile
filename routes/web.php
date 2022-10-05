@@ -100,6 +100,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::resource('/history', 'HistoryController');
 	Route::get('/history.data', 'HistoryController@getData')->name('history.index.data');
 	Route::get('/history.mail', 'PlayerController@mail')->name('history.mail');
+	Route::get('history.export', 'HistoryController@export')->name('history.export');
 });
 
 // Служебные маршруты

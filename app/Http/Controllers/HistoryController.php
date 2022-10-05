@@ -5,20 +5,22 @@ namespace App\Http\Controllers;
 use App\Events\ToastEvent;
 use App\Http\Controllers\results\CardComposer;
 use App\Http\Requests\UpdateHistoryRequest;
-use App\Models\FMPType;
 use App\Models\History;
 use App\Models\License;
 use DateTime;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Exception as SpreadsheetException;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yajra\DataTables\DataTables;
-use Exception;
 
 class HistoryController extends Controller
 {
@@ -49,7 +51,8 @@ WHERE
     AND contracts.id = tests.contract_id
     AND clients.id = contracts.client_id
 ORDER BY id DESC
-EOS);
+EOS
+		);
 		$count = count($histories);
 
 		return Datatables::of($histories)
@@ -96,9 +99,13 @@ EOS);
 	public function index(): View|Factory|Application
 	{
 		$count = History::all()->count();
-		event(new ToastEvent('error', '',
-			"Проверка toast-системы"));
-		return view('history.index', compact('count'));
+		$row = 0;
+		$fields = [];
+		foreach (History::$fields as $key => $value) {
+			$fields[] = ['id' => $row++, 'text' => $value['title']];
+		}
+		$fields = json_encode($fields);
+		return view('history.index', compact('count', 'fields'));
 	}
 
 	/**
@@ -147,7 +154,7 @@ EOS);
 		if ($history->paid != $request->has('paid')) {
 			$updates['paid'] = $request->has('paid');
 		}
-		if( count($updates) > 0) {
+		if (count($updates) > 0) {
 			$history->update($updates);
 			session()->put('success', "Запись истории тестирования № {$history->getKey()} обновлена");
 		}
@@ -177,5 +184,98 @@ EOS);
 		event(new ToastEvent('success', '',
 			"Запись истории № {$id} удалена<br/>Лицензию можно использовать повторно"));
 		return true;
+	}
+
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 */
+	public function export(Request $request): RedirectResponse
+	{
+		event(new ToastEvent('info', '', "Формирование экспортных данных истории тестирования..."));
+
+		$from = $request->from ? new DateTime($request->from) : new DateTime('1969-07-01');
+		$to = $request->to ? (new DateTime($request->to))->modify('+1 day -1 microsecond') : new DateTime('2200-01-01');
+
+		$sql = [];
+		$fieldList = json_decode($request->get('field-list'));
+		if (count($fieldList) == 0) {
+			foreach (History::$fields as $number => $field) {
+				$fieldList[] = $number;
+				$sql[] = $field['sql'];
+			}
+		} else {
+			foreach ($fieldList as $number) {
+				$sql[] = History::$fields[$number]['sql'];
+			}
+		}
+		$sql = implode(', ', $sql);
+
+		$histories = DB::select(sprintf(<<<EOS
+SELECT DISTINCT
+    %s
+FROM history, tests, sets, historysteps, questions
+WHERE
+    tests.id = history.test_id AND
+    sets.id = tests.set_id AND
+    historysteps.history_id = history.id AND
+    questions.id = historysteps.question_id AND
+    history.code IS NOT NULL AND
+    history.done BETWEEN :from AND :to
+ORDER BY
+    history.id,
+    questions.sort_no
+EOS,
+		$sql),
+			['from' => $from->format('Y-m-d G:i:s.u'), 'to' => $to->format('Y-m-d G:i:s.u')]
+		);
+
+		if (count($histories) == 0) {
+			session()->put('error', "Заданы слишком жесткие условия фильтра - записи истории не найдены<br/>Исправьте ваш фильтр экспорта");
+			return redirect()->back();
+		}
+
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->getActiveSheet();
+
+		$sheet->setCellValue('A1', sprintf("Подробная история прохождения тестирования за период %s%s",
+			$request->from ? 'с ' . $from->format('d.m.Y') : ' ',
+			$request->to ? 'по ' . $to->format('d.m.Y') : ''));
+
+		$column = 0;
+		foreach ($fieldList as $number) {
+			$name = History::$fields[$number]['title'];
+			$letter = chr(ord('A') + $column++);
+			$sheet->setCellValue($letter . '2', $name);
+		}
+		$sheet->freezePane('A3');
+
+		$row = 2;
+		foreach ($histories as $history) {
+			$row++;
+			$column = 0;
+			foreach ($fieldList as $number) {
+				$letter = chr(ord('A') + $column++);
+				$result = eval(History::$fields[$number]['code']);
+				$sheet->setCellValue($letter . $row, $result);
+			}
+		}
+
+//		ob_end_clean();
+		header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+		header('Content-Disposition: attachment;filename="' . env('APP_NAME') . ' - Экспорт истории тестирования.xlsx' . '"');
+		header('Cache-Control: max-age=0');
+//		ob_end_clean();
+
+		event(new ToastEvent('success', '', "Данные для экспорта истории тестирования сформированы"));
+
+		$writer = new Xlsx($spreadsheet);
+		try {
+			$writer->save('php://output');
+		} catch (SpreadsheetException $e) {
+		}
+
+		return redirect()->back();
 	}
 }
