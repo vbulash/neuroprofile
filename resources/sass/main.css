@@ -32250,7 +32250,7 @@ button.select2-selection__choice__remove :hover {
   border: 1px solid #7351c0 !important;
 }
 
-.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+.select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected {
   background-color: #7351c0 !important;
 }
 

@@ -135,7 +135,6 @@ button.select2-selection__choice__remove {
 	}
 }
 
-.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+.select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected {
 	background-color: $theme-xsmooth-primary !important;
 }
-
