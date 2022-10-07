@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\ReportDataController as RDC;
 use App\Http\Controllers\results\CardComposer;
+use App\Models\History;
+use App\Models\Test;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

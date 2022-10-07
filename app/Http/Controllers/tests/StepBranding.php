@@ -28,10 +28,12 @@ class StepBranding implements Step
 				$mediaPath = Test::uploadImage($request, 'logo-file');
 				if ($mediaPath) FileLink::link($mediaPath);
 				$heap['branding']['logo'] = $mediaPath;
-			} elseif (!isset($heap['branding']['logo']))
-				$heap['branding']['logo'] = null;
-			$heap['branding']['background'] = $data['background-input'];
-			$heap['branding']['fontcolor'] = $data['font-color-input'];
+			} elseif (isset($heap['branding']['logo']))
+				unset($heap['branding']['logo']);
+			if ($data['background-input'])
+				$heap['branding']['background'] = $data['background-input'];
+			if ($data['font-color-input'])
+				$heap['branding']['fontcolor'] = $data['font-color-input'];
 			$heap['branding']['company-name'] = $data['company-name-changer'];
 			$heap['branding']['signature'] = $data['signature'];
 			$heap['options'] = $options;

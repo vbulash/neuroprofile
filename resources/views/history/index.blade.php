@@ -141,7 +141,7 @@
 					processing: true,
 					serverSide: true,
 					ajax: '{!! route('history.index.data') !!}',
-					deferRender: true,
+					//deferRender: true,
 					pageLength: 100,
 					scrollX: true,
 					sScrollXInner: "100%",

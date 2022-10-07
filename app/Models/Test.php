@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $content
  * @property string $key
  * @property int $paid
+ * @method static findOrFail(int $int)
  */
 class Test extends Model implements Titleable
 {

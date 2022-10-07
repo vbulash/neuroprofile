@@ -215,12 +215,15 @@ EOS
 		$histories = DB::select(sprintf(<<<EOS
 SELECT DISTINCT
     %s
-FROM history, tests, sets, historysteps, questions
+FROM history, tests, sets, historysteps, questions, contracts, clients, licenses
 WHERE
     tests.id = history.test_id AND
     sets.id = tests.set_id AND
     historysteps.history_id = history.id AND
     questions.id = historysteps.question_id AND
+    contracts.id = tests.contract_id AND
+    clients.id = contracts.client_id AND
+    licenses.id = history.license_id AND
     history.code IS NOT NULL AND
     history.done BETWEEN :from AND :to
 ORDER BY

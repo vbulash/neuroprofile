@@ -2,8 +2,15 @@
     @if($history->paid == '0')
         <h3>Вы получили краткую бесплатную версию результата тестирования.<br/>
             Оплатите полный результат тестирования и получите его по электронной почте.<br/>
-            Ссылка оплаты:
         </h3>
+		<p>Нажимая ссылку оплаты ниже и выполняя оплату, вы соглашаетесь с условиями <a
+				href="{{ route('player.policy', ['document' => 'oferta', 'mail' => false]) }}">публичного
+				договора-оферты</a></p>
+		<x-robokassa.link
+			:history="$history"
+			description="Оплата полного результата нейротестирования">
+			Оплата через Робокассу
+		</x-robokassa.link>
 {{--        @php--}}
 {{--            $rk = new \App\Http\Payment\Robokassa($test);--}}
 {{--            $rk->setMail(true);--}}
@@ -12,9 +19,7 @@
 {{--            $rk->setDescription('Оплата полного результата нейротестирования');--}}
 {{--            $button = $rk->getHTMLLink();--}}
 {{--        @endphp--}}
-{{--        <p>Нажимая ссылку оплаты ниже и выполняя оплату, вы соглашаетесь с условиями <a--}}
-{{--                href="{{ route('player.policy', ['document' => 'oferta', 'mail' => false]) }}">публичного--}}
-{{--                договора-оферты</a></p>--}}
+
 {{--        {!! $button !!}--}}
     @endif
 @endif
@@ -63,7 +68,7 @@
     <h2>{{ $block->name }}</h2>
     @if($history->test->paid)
         @if($history->paid == '1')
-            <div style="margin-left: 20px;">{!! $block->content !!}</div>
+            <div style="margin-left: 20px;">{!! $block->full !!}</div>
         @else
             <div style="margin-left: 20px;">
                 @if($block->short)

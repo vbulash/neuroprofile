@@ -11,7 +11,6 @@
 						<div class="block-options">
 							<button type="button" class="btn-block-option" data-toggle="block-option"
 									data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-							</button>
 						</div>
 					</div>
 					<div class="block-content row">

@@ -68,7 +68,6 @@ class PlayerController extends Controller
 				if (!$test) {
 					//Log::debug(__METHOD__ . ':' . __LINE__);
 					$messages[] = 'Не найден тест с указанным ключом';
-				} else {
 				}
 			}
 
@@ -85,13 +84,13 @@ class PlayerController extends Controller
 		}
 	}
 
-	public function index(Request $request)
+	public function index(Request $request): Factory|View|Application
 	{
 		$test = $request->test ?: session('test');
 		return view('front.index', compact('test'));
 	}
 
-	public function play(Request $request, string $mkey = null, string $test = null)
+	public function play(Request $request, string $mkey = null, string $test = null): Factory|View|RedirectResponse|Application
 	{
 		$mkey = $mkey ?: $request->{'mkey-modal'};
 		$test = $test ?: $request->test;
@@ -122,7 +121,7 @@ class PlayerController extends Controller
 		}
 	}
 
-	public function card(Request $request)
+	public function card(Request $request): View|Factory|bool|RedirectResponse|Application
 	{
 		if (!$this->check($request)) {
 			//Log::debug('player.card: ' . __METHOD__ . ':' . __LINE__);
@@ -143,6 +142,7 @@ class PlayerController extends Controller
 				return view('front.pkey_card', compact('test'));
 			}
 		}
+		return false;
 	}
 
 	public function store_pkey(PKeyRequest $request)
@@ -305,13 +305,18 @@ EOS
 		return view('front.precalc', compact('test', 'history_id'));
 	}
 
-	public function calculate(int $history_id, bool $repeat = false, bool $historyMode = false): View|Factory|bool|Application|RedirectResponse
+	public function calculate(
+		int $history_id, bool $repeat = false, bool $historyMode = false, bool $pay = false
+	): View|Factory|Response|Application|RedirectResponse|ResponseFactory
 	{
 		$history = History::findOrFail($history_id);
-		// Не переименовывать переменную - может использоваться в коде набора вопросов в eval()
-		$result = HistoryStep::where('history_id', $history_id)->pluck('key')->toArray();
+
+		if ($pay) $history->update(['paid' => true]);
 
 		if (!$repeat) {
+			// Не переименовывать переменную - может использоваться в коде набора вопросов в eval()
+			$result = HistoryStep::where('history_id', $history_id)->pluck('key')->toArray();
+
 			$code = htmlspecialchars_decode(strip_tags($history->test->set->code));
 			$profile_code = eval($code);
 
@@ -328,7 +333,7 @@ EOS
 		$maildata['$branding'] = $content->branding ?? false;
 
 		if ($maildata['mail']) $this->mailRespondent($history, $maildata, $historyMode);
-		if ($maildata['client']) $this->mailClient($history, $maildata, $historyMode);
+		if (!$pay && $maildata['client']) $this->mailClient($history, $maildata, $historyMode);
 
 		$card = (new CardComposer($history))->getCard();
 		$composer = new BlocksComposer($history);
@@ -344,7 +349,7 @@ EOS
 			} else return redirect()->route('player.index', ['sid' => session()->getId()]);
 		}
 
-		return true;
+		return response(content: 'OK' . $history_id, status: 200);
 	}
 
 	public function iframe(): Factory|View|Application
@@ -368,9 +373,9 @@ EOS
 	 * @param History $history
 	 * @param array $maildata
 	 * @param bool $historyMode
-	 * @return Response
+	 * @return void
 	 */
-	private function mailRespondent(History $history, array $maildata, bool $historyMode): Response
+	private function mailRespondent(History $history, array $maildata, bool $historyMode): void
 	{
 		$card = (new CardComposer($history))->getCard();
 		$composer = new BlocksComposer($history);
@@ -387,31 +392,34 @@ EOS
 			'email' => env('MAIL_FROM_ADDRESS')
 		];
 
+		$testResult = new TestResult($history, $blocks, $card, $profile, $maildata['branding'] ?? null);
 		try {
-			Mail::to($recipient)
-				->cc($copy)
-				->send(new TestResult($history, $blocks, $card, $profile, $maildata['branding'] ?? null));
+			if ($historyMode)
+				Mail::to($recipient)
+					->send($testResult);
+			else
+				Mail::to($recipient)
+					->cc($copy)
+					->send($testResult);
 
 			event(new ToastEvent('success', '', 'Вам отправлено письмо с результатами тестирования'));
 //			session()->put('success', 'Вам отправлено письмо с результатами тестирования');
 		} catch (Exception $exc) {
 			session()->put('error', "Ошибка отправки письма с результатами тестирования:<br/>" .
 				$exc->getMessage());
-			return response(status: 500);
 		}
-		return response(status: 200);
 	}
 
 	/**
 	 * @param History $history
 	 * @param array $maildata
 	 * @param bool $historyMode
-	 * @return Response
+	 * @return void
 	 */
-	private function mailClient(History $history, array $maildata, bool $historyMode): Response
+	private function mailClient(History $history, array $maildata, bool $historyMode): void
 	{
 		//  TODO Уточнить - нужно ли клиентское письмо в ходе повтора из истории
-		if ($historyMode) return response(status: 204);
+		if ($historyMode) return;
 
 		$card = (new CardComposer($history))->getCard();
 		$composer = new BlocksComposer($history);
@@ -422,42 +430,81 @@ EOS
 			'name' => $history->test->contract->client->name,
 			'email' => $history->test->contract->client->email
 		];
-		$copy = (object)[
-			'name' => env('MAIL_FROM_NAME'),
-			'email' => env('MAIL_FROM_ADDRESS')
-		];
 
 		try {
 			Mail::to($recipient)
-				->cc($copy)
 				->send(new TestClientResult($history, $blocks, $card, $profile, $maildata['branding'] ?? null));
 
 			//event(new ToastEvent('success', '', 'Вам отправлено письмо с результатами тестирования'));
 		} catch (Exception $exc) {
 			session()->put('error', "Ошибка отправки письма клиенту с результатами тестирования:<br/>" .
 				$exc->getMessage());
-			return response(status: 500);
 		}
-		return response(status: 200);
 	}
 
 	/**
 	 * Результат оплаты в Робокасса
-	 * @param Request $request
-	 * @return View|Factory|bool|Application|RedirectResponse
 	 */
-	public function paymentResult(Request $request): View|Factory|bool|Application|RedirectResponse
+	public function paymentResult(Request $request)
 	{
+//		Log::debug('Robokassa result = ' . print_r($request->all(), true));
 		$history_id = $request->InvId;
-		return $this->calculate($history_id, true, false);
+		$session = $request->Shp_Session ?? null;
+		if($session && $session != session()->getId()) {
+			session()->setId($session);
+			session()->start();
+		}
+
+		return $this->calculate($history_id, true, true, true);
+	}
+
+	public function paymentSuccess(Request $request)
+	{
+//		Log::debug('Robokassa success = ' . print_r($request->all(), true));
+		$history_id = $request->InvId;
+		$session = $request->Shp_Session ?? null;
+		$history = History::findOrFail($history_id);
+		$test = $history->test;
+		if($session && $session != session()->getId()) {
+			session()->setId($session);
+			session()->start();
+		}
+
+		session()->put('success', 'Вам отправлено письмо с полными результатами тестирования');
+
+		if (auth()->check())
+			return redirect()->route('dashboard');
+		else
+			return response(status: 200);
+	}
+
+	public function paymentFail(Request $request)
+	{
+//		Log::debug('Robokassa fail = ' . print_r($request->all(), true));
+		$history_id = $request->InvId;
+		$mail = ($request->Shp_Mail == '1');
+		$session = $request->Shp_Session ?? null;
+		if($session && $session != session()->getId()) {
+			session()->setId($session);
+			session()->start();
+		}
+
+		$history = History::findOrFail($history_id);
+		$test = $history->test;
+
+		session()->forget('error');
+
+		if (auth()->check())
+			return redirect()->route('dashboard');
+		else
+			return response(status: 200);
 	}
 
 	/**
 	 * Повтор электронных писем по итогам тестирования через историю (history.index)
 	 * @param Request $request
-	 * @return View|Factory|bool|Application|RedirectResponse
 	 */
-	public function mail(Request $request): View|Factory|bool|Application|RedirectResponse
+	public function mail(Request $request)
 	{
 		return $this->calculate($request->history, true, true);
 	}
