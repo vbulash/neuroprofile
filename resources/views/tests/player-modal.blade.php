@@ -12,8 +12,7 @@
                     <div class="form-control mb-4" id="no-tests" style="display: none;">
                         <p>Нет доступных тестов для проверки</p>
                     </div>
-                    <select name="tests" class="select2 form-control" style="display:none;width:100%;" id="tests" size="10">
-                    </select>
+                    <select name="tests" class="select2 form-control" style="display:none;width:100%;" id="tests" size="10"></select>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
