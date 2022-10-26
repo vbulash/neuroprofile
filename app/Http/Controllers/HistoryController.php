@@ -7,6 +7,7 @@ use App\Http\Controllers\results\CardComposer;
 use App\Http\Requests\UpdateHistoryRequest;
 use App\Models\History;
 use App\Models\License;
+use ArrayObject;
 use DateTime;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -22,8 +23,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yajra\DataTables\DataTables;
 
-class HistoryController extends Controller
-{
+class HistoryController extends Controller {
 	/**
 	 * Process datatables ajax request.
 	 *
@@ -31,8 +31,7 @@ class HistoryController extends Controller
 	 * @return JsonResponse
 	 * @throws Exception
 	 */
-	public function getData(Request $request): JsonResponse
-	{
+	public function getData(Request $request): JsonResponse {
 		$histories = DB::select(<<<EOS
 SELECT
     history.id,
@@ -56,38 +55,39 @@ EOS
 		$count = count($histories);
 
 		return Datatables::of($histories)
-			->editColumn('timestamp', fn($history) => (new DateTime($history->timestamp))->format('d.m.Y G:i:s'))
+			->editColumn('date', fn($history) => (new DateTime($history->timestamp))->format('d.m.Y'))
+			->editColumn('time', fn($history) => (new DateTime($history->timestamp))->format('H:i:s'))
 			->editColumn('commercial', fn($history) => $history->commercial ? 'Да' : 'Нет')
 			->editColumn('paid', fn($history) => $history->paid ? 'Да' : 'Нет')
 			->editColumn('action', function ($history) {
-				$editRoute = route('history.edit', ['history' => $history->id, 'sid' => session()->getId()]);
-				$showRoute = route('history.show', ['history' => $history->id, 'sid' => session()->getId()]);
+			    $editRoute = route('history.edit', ['history' => $history->id, 'sid' => session()->getId()]);
+			    $showRoute = route('history.show', ['history' => $history->id, 'sid' => session()->getId()]);
 
-				$actions =
-					"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
-					"<i class=\"fas fa-pencil-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
-					"<i class=\"fas fa-eye\"></i>\n" .
-					"</a>\n";
-				if ($history->commercial)
-					$actions .=
-						"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left\" " .
-						"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$history->id})\">\n" .
-						"<i class=\"fas fa-trash-alt\"></i>\n" .
-						"</a>\n";
-				$actions .=
-					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left ms-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Повтор письма\" onclick=\"clickMail({$history->id})\">\n" .
-					"<i class=\"fas fa-envelope\"></i>\n" .
-					"</a>\n";
+			    $actions =
+			    	"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
+			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
+			    	"<i class=\"fas fa-pencil-alt\"></i>\n" .
+			    	"</a>\n";
+			    $actions .=
+			    	"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
+			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
+			    	"<i class=\"fas fa-eye\"></i>\n" .
+			    	"</a>\n";
+			    if ($history->commercial)
+				    $actions .=
+				    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left\" " .
+				    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$history->id})\">\n" .
+				    	"<i class=\"fas fa-trash-alt\"></i>\n" .
+				    	"</a>\n";
+			    $actions .=
+			    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left ms-5\" " .
+			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Повтор письма\" onclick=\"clickMail({$history->id})\">\n" .
+			    	"<i class=\"fas fa-envelope\"></i>\n" .
+			    	"</a>\n";
 
-				return $actions;
-			})
-			//;
+			    return $actions;
+		    })
+				//;
 			->make(true);
 	}
 
@@ -96,13 +96,16 @@ EOS
 	 *
 	 * @return Application|Factory|View
 	 */
-	public function index(): View|Factory|Application
-	{
+	public function index(): View|Factory|Application {
 		$count = History::all()->count();
 		$row = 0;
 		$fields = [];
 		foreach (History::$fields as $key => $value) {
-			$fields[] = ['id' => $row++, 'text' => $value['title']];
+			$id = $row++;
+			if (isset($value['hidden']))
+				continue;
+
+			$fields[] = ['id' => $id, 'text' => $value['title']];
 		}
 		$fields = json_encode($fields);
 		return view('history.index', compact('count', 'fields'));
@@ -114,8 +117,7 @@ EOS
 	 * @param int $id
 	 * @return Application|Factory|View
 	 */
-	public function show(int $id): Application|Factory|View
-	{
+	public function show(int $id): Application|Factory|View {
 		return $this->edit($id, true);
 	}
 
@@ -126,8 +128,7 @@ EOS
 	 * @param bool $show
 	 * @return Application|Factory|View
 	 */
-	public function edit(int $id, bool $show = false): View|Factory|Application
-	{
+	public function edit(int $id, bool $show = false): View|Factory|Application {
 		$mode = $show ? config('global.show') : config('global.edit');
 		$history = History::findOrFail($id);
 		$composer = new CardComposer($history);
@@ -142,8 +143,7 @@ EOS
 	 * @param int $id
 	 * @return RedirectResponse
 	 */
-	public function update(UpdateHistoryRequest $request, int $id): RedirectResponse
-	{
+	public function update(UpdateHistoryRequest $request, int $id): RedirectResponse {
 		$history = History::findOrFail($id);
 		$updates = [];
 		$card = json_decode($history->card);
@@ -169,11 +169,11 @@ EOS
 	 * @param int $history
 	 * @return bool
 	 */
-	public function destroy(Request $request, int $history): bool
-	{
+	public function destroy(Request $request, int $history): bool {
 		if ($history == 0) {
 			$id = $request->id;
-		} else $id = $history;
+		} else
+			$id = $history;
 
 		$h = History::findOrFail($id);
 		$h->license->status = License::FREE;
@@ -191,8 +191,7 @@ EOS
 	 * @return RedirectResponse
 	 * @throws \PhpOffice\PhpSpreadsheet\Exception
 	 */
-	public function export(Request $request): RedirectResponse
-	{
+	public function export(Request $request): RedirectResponse {
 		event(new ToastEvent('info', '', "Формирование экспортных данных истории тестирования..."));
 
 		$from = $request->from ? new DateTime($request->from) : new DateTime('1969-07-01');
@@ -206,8 +205,13 @@ EOS
 				$sql[] = $field['sql'];
 			}
 		} else {
-			foreach ($fieldList as $number) {
-				$sql[] = History::$fields[$number]['sql'];
+			$temp = (new ArrayObject($fieldList))->getArrayCopy();
+			$fieldList = [];
+			foreach (History::$fields as $number => $field) {
+				if (isset($field['hidden']) || in_array($number, $temp)) {
+					$fieldList[] = $number;
+					$sql[] = $field['sql'];
+				}
 			}
 		}
 		$sql = implode(', ', $sql);
@@ -230,7 +234,7 @@ ORDER BY
     history.id,
     questions.sort_no
 EOS,
-		$sql),
+			$sql),
 			['from' => $from->format('Y-m-d G:i:s.u'), 'to' => $to->format('Y-m-d G:i:s.u')]
 		);
 
@@ -260,16 +264,20 @@ EOS,
 			$column = 0;
 			foreach ($fieldList as $number) {
 				$letter = chr(ord('A') + $column++);
-				$result = eval(History::$fields[$number]['code']);
+				try {
+					$result = eval(History::$fields[$number]['code']);
+				} catch (Exception $exc) {
+					$result = "";
+				}
 				$sheet->setCellValue($letter . $row, $result);
 			}
 		}
 
-//		ob_end_clean();
+		//		ob_end_clean();
 		header('Content-Type: application/vnd.ms-excel; charset=utf-8');
 		header('Content-Disposition: attachment;filename="' . env('APP_NAME') . ' - Экспорт истории тестирования.xlsx' . '"');
 		header('Cache-Control: max-age=0');
-//		ob_end_clean();
+		//		ob_end_clean();
 
 		event(new ToastEvent('success', '', "Данные для экспорта истории тестирования сформированы"));
 
