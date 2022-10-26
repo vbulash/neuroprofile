@@ -4,26 +4,28 @@
 			$allowed = true;	// TODO Разрешения в зависимости от роли пользователя
 		}
 
-		$menu = [
-            ['title' => 'Главная', 'icon' => 'fa fa-home', 'route' => 'dashboard', 'pattern' => 'dashboard'],
+		$menu = [];
+		$menu[] = ['title' => 'Главная', 'icon' => 'fa fa-home', 'route' => 'dashboard', 'pattern' => 'dashboard'];
 
-            ['title' => 'Клиенты', 'heading' => true],
-            ['title' => 'Клиенты и контракты', 'icon' => 'fas fa-building', 'route' => 'clients.index', 'pattern' => ['clients.*', 'contracts.*']],
+		$menu[] = ['title' => 'Клиенты', 'heading' => true];
+		$menu[] = ['title' => 'Клиенты и контракты', 'icon' => 'fas fa-building', 'route' => 'clients.index', 'pattern' => ['clients.*', 'contracts.*']];
 
-			['title' => 'Конструктор тестов', 'heading' => true],
-			['title' => 'Вопросы тестов', 'icon' => 'fas fa-question-circle', 'route' => 'sets.index', 'pattern' => ['sets.*', 'questions.*']],
-			['title' => 'Обработка результатов', 'icon' => 'fas fa-drafting-compass', 'route' => 'fmptypes.index',
-				'pattern' => ['fmptypes.*', 'profiles.*', 'blocks.*', 'aliases.*', 'clones.*', 'texts.*', 'images.*']],
-			['title' => 'Ссылочные блоки', 'icon' => 'fas fa-link', 'route' => 'parents.index', 'pattern' => ['parents.*']],
-			['title' => 'Тесты', 'icon' => 'fas fa-drafting-compass', 'route' => 'tests.index', 'pattern' => ['tests.*']],
+		$menu[] = ['title' => 'Конструктор тестов', 'heading' => true];
+		$menu[] = ['title' => 'Вопросы тестов', 'icon' => 'fas fa-question-circle', 'route' => 'sets.index', 'pattern' => ['sets.*', 'questions.*']];
 
-			['title' => 'Прохождение тестов', 'heading' => true],
-			['title' => 'Проверочный плеер', 'icon' => "fas fa-play-circle", 'modal' => 'tests-play', 'pattern' => []],
-			['title' => 'История прохождения', 'icon' => 'fas fa-file-video', 'route' => 'history.index', 'pattern' => ['history.*']],
+		if (!env('RESEARCH')) {
+			$menu[] = ['title' => 'Обработка результатов', 'icon' => 'fas fa-drafting-compass', 'route' => 'fmptypes.index',
+				'pattern' => ['fmptypes.*', 'profiles.*', 'blocks.*', 'aliases.*', 'clones.*', 'texts.*', 'images.*']];
+			$menu[] = ['title' => 'Ссылочные блоки', 'icon' => 'fas fa-link', 'route' => 'parents.index', 'pattern' => ['parents.*']];
+		}
+		$menu[] = ['title' => 'Тесты', 'icon' => 'fas fa-drafting-compass', 'route' => 'tests.index', 'pattern' => ['tests.*']];
 
-			['title' => 'Настройки', 'heading' => true],
-			['title' => 'Пользователи', 'icon' => 'fa fa-user-alt', 'route' => 'users.index', 'pattern' => 'users.*'],
-		];
+		$menu[] = ['title' => 'Прохождение тестов', 'heading' => true];
+		$menu[] = ['title' => 'Проверочный плеер', 'icon' => "fas fa-play-circle", 'modal' => 'tests-play', 'pattern' => []];
+		$menu[] = ['title' => 'История прохождения', 'icon' => 'fas fa-file-video', 'route' => 'history.index', 'pattern' => ['history.*']];
+
+		$menu[] = ['title' => 'Настройки', 'heading' => true];
+		$menu[] = ['title' => 'Пользователи', 'icon' => 'fa fa-user-alt', 'route' => 'users.index', 'pattern' => 'users.*'];
 	@endphp
 	<ul class="nav-main">
 		@foreach($menu as $item)

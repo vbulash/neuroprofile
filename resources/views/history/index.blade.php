@@ -88,7 +88,7 @@
                             </div>
                             <input type="hidden" name="field-list" id="field-list">
                             <label class="col-form-label mb-2" for="field-select">
-                                Выберите поля, которые попадут в отчет. Пустой список = экспорт всех полей
+                                Выберите поля, которые попадут в отчет. Пустой список = экспорт всех полей. Ctrl+клик = множественный выбор полей
                             </label>
                             <select class="form-control select2" id="field-select" style="width: 100%;"></select>
                         </div>

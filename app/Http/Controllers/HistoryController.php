@@ -60,8 +60,8 @@ EOS
 			->editColumn('commercial', fn($history) => $history->commercial ? 'Да' : 'Нет')
 			->editColumn('paid', fn($history) => $history->paid ? 'Да' : 'Нет')
 			->editColumn('action', function ($history) {
-			    $editRoute = route('history.edit', ['history' => $history->id, 'sid' => session()->getId()]);
-			    $showRoute = route('history.show', ['history' => $history->id, 'sid' => session()->getId()]);
+			    $editRoute = route('history.edit', ['history' => $history->id]);
+			    $showRoute = route('history.show', ['history' => $history->id]);
 
 			    $actions =
 			    	"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
@@ -98,15 +98,23 @@ EOS
 	 */
 	public function index(): View|Factory|Application {
 		$count = History::all()->count();
+
 		$row = 0;
 		$fields = [];
-		foreach (History::$fields as $key => $value) {
-			$id = $row++;
-			if (isset($value['hidden']))
-				continue;
-
-			$fields[] = ['id' => $id, 'text' => $value['title']];
+		foreach (History::$groups as $group) {
+			$children = [];
+			foreach ($group['fields'] as $field) {
+				$id = $row++;
+				if (isset($field['hidden']))
+					continue;
+				$children[] = ['id' => $id, 'text' => $field['title']];
+			}
+			$fields[] = [
+				'text' => $group['label'],
+				'children' => $children
+			];
 		}
+
 		$fields = json_encode($fields);
 		return view('history.index', compact('count', 'fields'));
 	}
@@ -199,15 +207,16 @@ EOS
 
 		$sql = [];
 		$fieldList = json_decode($request->get('field-list'));
+		$fields = History::getFields();
 		if (count($fieldList) == 0) {
-			foreach (History::$fields as $number => $field) {
+			foreach ($fields as $number => $field) {
 				$fieldList[] = $number;
 				$sql[] = $field['sql'];
 			}
 		} else {
 			$temp = (new ArrayObject($fieldList))->getArrayCopy();
 			$fieldList = [];
-			foreach (History::$fields as $number => $field) {
+			foreach ($fields as $number => $field) {
 				if (isset($field['hidden']) || in_array($number, $temp)) {
 					$fieldList[] = $number;
 					$sql[] = $field['sql'];
@@ -251,8 +260,9 @@ EOS,
 			$request->to ? 'по ' . $to->format('d.m.Y') : ''));
 
 		$column = 0;
+		$fields = History::getFields();
 		foreach ($fieldList as $number) {
-			$name = History::$fields[$number]['title'];
+			$name = $fields[$number]['title'];
 			$letter = chr(ord('A') + $column++);
 			$sheet->setCellValue($letter . '2', $name);
 		}
@@ -265,9 +275,11 @@ EOS,
 			foreach ($fieldList as $number) {
 				$letter = chr(ord('A') + $column++);
 				try {
-					$result = eval(History::$fields[$number]['code']);
+					$result = eval($fields[$number]['code']);
+					if ($result == null || $result == 'null')
+						$result = '';
 				} catch (Exception $exc) {
-					$result = "";
+					$result = '';
 				}
 				$sheet->setCellValue($letter . $row, $result);
 			}
