@@ -132,7 +132,7 @@ class PlayerController extends Controller
 
 			if ($test->options & TestOptions::AUTH_GUEST->value) {
 				//return redirect()->route('player.body', ['question' => 0, 'sid' => session()->getId()]);
-				return redirect()->route('player.body2', ['sid' => session()->getId()]);
+				return redirect()->route('player.body2');
 			} elseif ($test->options & (TestOptions::AUTH_FULL->value | TestOptions::AUTH_MIX->value)) {
 				$content = json_decode($test->content, true);
 				$card = $content['card'];
@@ -180,6 +180,7 @@ class PlayerController extends Controller
 SELECT
        t.id as tid,
        q.id as qid,
+	   q.cue as cue,
        q.sort_no as qsort_no,
        q.learning as qlearning,
        q.timeout as qtimeout,
@@ -209,7 +210,8 @@ EOS
 				'sort_no' => $item->qsort_no,
 				'learning' => $item->qlearning,
 				'timeout' => env('QUESTION_TIMEOUT') ? $item->qtimeout : '0',
-				'quantity' => 2
+				'quantity' => 2,
+				'cue' => $item->cue,
 			];
 			$cut = $step;
 

@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class Question extends Model implements FormTemplate, Titleable
-{
+class Question extends Model implements FormTemplate, Titleable {
 	use HasFactory, UploadImage;
 
 	protected $fillable = [
@@ -19,7 +18,8 @@ class Question extends Model implements FormTemplate, Titleable
 		'image2',
 		'value1',
 		'value2',
-		'set_id'
+		'set_id',
+		'cue'
 	];
 
 	public static array $values = [
@@ -35,18 +35,15 @@ class Question extends Model implements FormTemplate, Titleable
 		'E-' => 'E-',
 	];
 
-	public function getTitle(): string
-	{
+	public function getTitle(): string {
 		return $this->sort_no;
 	}
 
-	public function set()
-	{
+	public function set() {
 		return $this->belongsTo(Set::class);
 	}
 
-	public static function createTemplate(): array
-	{
+	public static function createTemplate(): array {
 		return [
 			'id' => 'question-create',
 			'name' => 'question-create',
@@ -55,8 +52,7 @@ class Question extends Model implements FormTemplate, Titleable
 		];
 	}
 
-	public function editTemplate(): array
-	{
+	public function editTemplate(): array {
 		return [
 			'id' => 'question-edit',
 			'name' => 'question-edit',

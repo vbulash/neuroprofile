@@ -28,6 +28,7 @@
 						<th>Режим прохождения</th>
 						<th>Таймаут, секунд</th>
 						<th>Ключи вопроса</th>
+						<th>Подсказка к вопросу</th>
 						<th>Действия</th>
 					</tr>
 					</thead>
@@ -125,6 +126,9 @@
 						{data: 'learning', name: 'learning', responsivePriority: 2},
 						{data: 'timeout', name: 'timeout', responsivePriority: 2},
 						{data: 'key', name: 'key', responsivePriority: 3},
+						{data: 'cue', name: 'cue', responsivePriority: 3, render: (data) => {
+							return data ? data : 'Нет';
+						}},
 						{
 							data: 'action',
 							name: 'action',

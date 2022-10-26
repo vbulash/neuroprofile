@@ -24,6 +24,7 @@
 					<tr>
 						<th style="width: 30px">#</th>
 						<th>Название теста</th>
+						<th>Набор вопросов</th>
 						<th>Привязка к контракту</th>
 						<th>Действия</th>
 					</tr>
@@ -78,6 +79,7 @@
 					columns: [
 						{data: 'id', name: 'id', responsivePriority: 1},
 						{data: 'name', name: 'name', responsivePriority: 1},
+						{data: 'set', name: 'set', responsivePriority: 2},
 						{data: 'contract', name: 'contract', responsivePriority: 2},
 						{
 							data: 'action',

@@ -33,6 +33,7 @@
                         '1' => 'Учебный вопрос'
                     ]],
                     ['name' => 'timeout', 'title' => 'Таймаут прохождения вопроса, секунд', 'required' => true, 'type' => 'number', 'value' => 0],
+					['name' => 'cue', 'title' => 'Отдельная подсказка к вопросу', 'required' => false, 'type' => 'text'],
                     //
                     ['name' => 'set_id', 'type' => 'hidden', 'value' => $set->getKey()],
                 ];

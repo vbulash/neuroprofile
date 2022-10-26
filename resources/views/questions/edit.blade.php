@@ -41,6 +41,7 @@
                         '1' => 'Учебный вопрос'
                     ], 'value' => ($question->learning ? 1 : 0)],
                     ['name' => 'timeout', 'title' => 'Таймаут прохождения вопроса, секунд', 'required' => true, 'type' => 'number', 'value' => $question->timeout],
+					['name' => 'cue', 'title' => 'Отдельная подсказка к вопросу', 'required' => false, 'type' => 'text', 'value' => $question->cue],
                 ];
             @endphp
 
@@ -52,7 +53,7 @@
                     @default
                     <div class="row mb-4">
                         <label class="col-sm-3 col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
-                            @if($field['required'] || !$show)
+                            @if($field['required'] && !$show)
                                 <span class="required">*</span>
                             @endif</label>
                         @break
@@ -125,7 +126,7 @@
                 @foreach($fields as $field)
                     <div class="col-sm-6">
                         <label class="col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
-                            @if($field['required'] || !$show)
+                            @if($field['required'] && !$show)
                                 <span class="required">*</span>
                             @endif
                         </label>

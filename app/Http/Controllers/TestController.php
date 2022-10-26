@@ -29,6 +29,7 @@ class TestController extends Controller
 
 		return Datatables::of($tests)
 			->addColumn('contract', fn($test) => sprintf("%s (%s)", $test->contract->number, $test->contract->client->name ))
+			->addColumn('set', fn ($test) => $test->set->name)
 			->addColumn('action', function ($test) {
 				$editRoute = route('tests.edit', ['test' => $test->getKey(), 'sid' => session()->getId()]);
 				$showRoute = route('tests.show', ['test' => $test->getKey(), 'sid' => session()->getId()]);
