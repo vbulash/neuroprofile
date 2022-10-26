@@ -69,7 +69,7 @@ mix
 	.copyDirectory('database/data', 'public/uploads')
 
     // Tools
-    .browserSync('localhost:8000')
+    .browserSync('localhost:8001')
     //.disableNotifications()
 
     // Options

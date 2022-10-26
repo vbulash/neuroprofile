@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="needful" default="deploy">
+
+	<target name="init">
+		<tstamp>
+			<format property="TSTAMP" pattern="%c" locale="ru_RU"/>
+		</tstamp>
+		<property name="ftp.server" value="bulash.site"/>
+		<property name="ftp.port" value="22"/>
+		<property name="ftp.username" value="vbulash"/>
+		<property name="ftp.password" value="AeebIex1!"/>
+		<property name="ftp.dir" value="/Users/vbulash/Sites"/>
+		<property name="project.folder" value="neurotest"/>
+	</target>
+
+	<target name="deploy" depends="init,modify.env,copy,compile">
+		<echo message="Работа скрипта завершена" />
+	</target>
+
+	<target name="compile">
+		<echo message="Компиляция пакетов node.js и composer..."/>
+
+		<echo message="#!/bin/bash ${line.separator}" file="tmp.sh"/>
+		<echo message="cd ${ftp.dir}/${project.folder} ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="mv .env.temp .env ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="composer install --optimize-autoloader --no-dev ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="npm update ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="npm run prod ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="mkdir -p storage/framework/views ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="php artisan optimize:clear ${line.separator}" file="tmp.sh" append="true"/>
+		<!-- Команда 'artisan config:cache' блокирует работу хелпера env() - всегда возвращает null -->
+		<!-- <echo message="php artisan config:cache ${line.separator}" file="tmp.sh" append="true"/> -->
+		<echo message="php artisan route:cache ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="php artisan view:cache ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="rm composer.* ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="rm package*.* ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="rm webpack.mix.js ${line.separator}" file="tmp.sh" append="true"/>
+
+		<scp username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" todir="." file="tmp.sh" level="info" />
+		<delete file="tmp.sh" />
+		<ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" display="yes" command="source /etc/profile; sh ./tmp.sh 2&gt;&amp;1" />
+		<ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" display="yes" command="rm tmp.sh" />
+	</target>
+
+	<target name="copy">
+		<echo message="Развёртывание платформы..."/>
+
+		<scp username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" todir="${ftp.dir}/${project.folder}" level="info">
+			<fileset dir=".">
+				<patternset>
+					<exclude name="**/.DS_Store"/>
+					<exclude name="storage/logs/*"/>
+					<include name=".env.temp"/>
+					<include name="artisan"/>
+					<include name="composer.json"/>
+					<include name="package.json"/>
+					<include name="webpack.mix.js"/>
+					<include name="app/**/*"/>
+					<include name="bootstrap/**/*"/>
+					<include name="config/**/*"/>
+					<include name="database/data/**/*"/>
+					<include name="database/factories/**/*"/>
+					<include name="public/**/*"/>
+					<include name="resources/**/*"/>
+					<include name="routes/**/*"/>
+					<include name="storage/**/*"/>
+				</patternset>
+			</fileset>
+		</scp>
+		<delete file=".env.temp" />
+	</target>
+
+	<target name="modify.env">
+		<copy file=".env" tofile=".env.temp">
+			<filterchain>
+				<replaceregexp>
+					<regexp pattern="APP_ENV=local" replace="APP_ENV=production"/>
+					<regexp pattern="APP_DEBUG=true" replace="APP_DEBUG=false"/>
+				</replaceregexp>
+			</filterchain>
+		</copy>
+	</target>
+
+</project>
