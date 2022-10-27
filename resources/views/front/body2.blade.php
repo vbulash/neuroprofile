@@ -53,6 +53,8 @@
 					<h4 class="mt-4 mb-4 text-center">
 						@if (isset($step['cue']))
 							{{ $step['cue']}}
+						@elseif (isset($test->cue))
+							{{ $test->cue}}
 						@else
 							Выберите одно изображение
 						@endif

@@ -25,7 +25,8 @@ class Test extends Model implements Titleable
 		'key',			// Ключ теста
 		'paid',			// Отметка платности теста
 		'contract_id',	// Связанный контракт
-		'set_id'		// Связанный набор вопросов
+		'set_id',		// Связанный набор вопросов
+		'cue',			// Подсказка к вопросу
 	];
 
 	/**

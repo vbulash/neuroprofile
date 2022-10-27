@@ -57,7 +57,8 @@ class StepController extends Controller
 				'paid' => $test->paid,
 				'contract_id' => $test->contract_id,
 				'key' => $test->key,
-				'set_id' => $test->set_id
+				'set_id' => $test->set_id,
+				'cue' => $test->cue,
 			];
 			$content = json_decode($test->content, true);
 			if (isset($content['card']))
@@ -96,8 +97,7 @@ class StepController extends Controller
 //		session()->keep('heap');
 		return redirect()->route('steps.play', [
 			'mode' => $mode,
-			'test' => $test,
-			'sid' => session()->getId()
+			'test' => $test
 		]);
 	}
 
@@ -130,8 +130,7 @@ class StepController extends Controller
 		if (!$result)
 			return redirect()->route('steps.play', [
 				'mode' => $mode,
-				'test' => $test,
-				'sid' => session()->getId()
+				'test' => $test
 			]);
 
 		if (self::getCurrentStep() < count(self::$steps) - 1)
@@ -139,8 +138,7 @@ class StepController extends Controller
 
 		return redirect()->route('steps.play', [
 			'mode' => $mode,
-			'test' => $test,
-			'sid' => session()->getId()
+			'test' => $test
 		]);
 	}
 
@@ -182,7 +180,8 @@ class StepController extends Controller
 			'options' => $heap['options'],
 			'paid' => $heap['paid'],
 			'contract_id' => $heap['contract_id'],
-			'set_id' => $heap['set_id']
+			'set_id' => $heap['set_id'],
+			'cue' => $heap['cue'],
 		];
 		$content = [];
 		if (isset($heap['card']))

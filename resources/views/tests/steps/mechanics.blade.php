@@ -23,6 +23,7 @@
         $options = intval($heap['options'] ?? 0);
         if (!isset($heap['step-mechanics']) && $mode == config('global.create')) {
             $fields = [
+				['name' => 'cue', 'title' => 'Общая подсказка к вопросам теста', 'required' => false, 'type' => 'text'],
 				['name' => 'set_id', 'title' => 'Набор вопросов', 'required' => false, 'type' => 'select', 'options' => $sets],
 				['title' => 'Дополнительные механики нейротеста', 'type' => 'heading'],
 				['name' => 'eye', 'title' => 'Eye-tracking (отслеживание движения зрачков глаз)', 'required' => false, 'type' => 'checkbox'],
@@ -34,6 +35,7 @@
 			];
         } else {
             $fields = [
+				['name' => 'cue', 'title' => 'Общая подсказка к вопросам теста', 'required' => false, 'type' => 'text', 'value' => $heap['cue']],
 				['name' => 'set_id', 'title' => 'Набор вопросов', 'required' => false, 'type' => 'select', 'options' => $sets, 'value' => $heap['set_id']],
 				['title' => 'Дополнительные механики нейротеста', 'type' => 'heading'],
 				['name' => 'eye', 'title' => 'Eye-tracking (отслеживание движения зрачков глаз)', 'required' => false, 'type' => 'checkbox', 'value' => $options & \App\Models\TestOptions::EYE_TRACKING->value],

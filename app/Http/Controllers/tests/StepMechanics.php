@@ -26,6 +26,7 @@ class StepMechanics implements Step
 		if (isset($data['mouse']))
 			$options |= TestOptions::MOUSE_TRACKING->value;
 		$heap['options'] = $options;
+		$heap['cue'] = $data['cue'];
 		session()->put('heap', $heap);
 //		session()->keep('heap');
 
