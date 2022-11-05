@@ -40,9 +40,9 @@ class SetController extends Controller
 				}
 			})
 			->addColumn('action', function ($set) {
-				$editRoute = route('sets.edit', ['set' => $set->getKey(), 'sid' => session()->getId()]);
-				$showRoute = route('sets.show', ['set' => $set->getKey(), 'sid' => session()->getId()]);
-				$selectRoute = route('sets.select', ['set' => $set->getKey(), 'sid' => session()->getId()]);
+				$editRoute = route('sets.edit', ['set' => $set->getKey()]);
+				$showRoute = route('sets.show', ['set' => $set->getKey()]);
+				$selectRoute = route('sets.select', ['set' => $set->getKey()]);
 				$actions = '';
 
 				$actions .=
@@ -76,7 +76,7 @@ class SetController extends Controller
 		session()->forget('context');
 		session()->put('context', ['set' => $id]);
 
-		return redirect()->route('questions.index', ['sid' => session()->getId()]);
+		return redirect()->route('questions.index');
 	}
 
     /**
@@ -117,7 +117,7 @@ class SetController extends Controller
 		$name = $set->name;
 
 		session()->put('success', "Набор вопросов \"{$name}\" создан");
-		return redirect()->route('sets.index', ['sid' => session()->getId()]);
+		return redirect()->route('sets.index');
     }
 
     /**
@@ -161,7 +161,7 @@ class SetController extends Controller
 		]);
 
 		session()->put('success', "Набор вопросов \"{$name}\" обновлён");
-		return redirect()->route('sets.index', ['sid' => session()->getId()]);
+		return redirect()->route('sets.index');
     }
 
 	/**

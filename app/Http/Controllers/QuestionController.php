@@ -38,17 +38,17 @@ class QuestionController extends Controller {
 		}
 
 		return Datatables::of($questions)
-			// ->editColumn('preview', function ($question) {
-			//     $data = [];
-			//     foreach (['image1', 'image2'] as $field) {
-			// 	    $path = $question->{ $field};
-			// 	    if ($path)
-			// 		    $data[] = '/uploads/' . $path;
-			//     }
-			//     return ($data ? json_encode($data) : '');
-		    // })
+			->editColumn('preview', function ($question) {
+			    $data = [];
+			    foreach ($question->parts as $part) {
+				    $path = $part->image;
+				    if ($path) $data[] = '/uploads/' . $path;
+			    }
+			    return ($data ? json_encode($data) : '');
+		    })
 			->editColumn('learning', fn($question) => $question->learning ? 'Учебный' : 'Реальный')
-			// ->editColumn('key', fn($question) => $question->value1 . '|' . $question->value2)
+			->editColumn('cue', fn($question) => $question->cue ? 'Есть' : 'Нет')
+			->editColumn('kind', fn ($question) => $question->kind->name)
 			->addColumn('action', function ($question) use ($first, $last, $count) {
 			    $editRoute = route('questions.edit', ['question' => $question->getKey()]);
 			    $showRoute = route('questions.show', ['question' => $question->getKey()]);
@@ -102,10 +102,8 @@ class QuestionController extends Controller {
 	}
 
 	public function create(Request $request) {
-		$context = session('context');
-		$set = Set::findOrFail($context['set']);
-		$kind = $request->kind;
-		return view('questions.create', compact('set', 'kind'));
+		$kind = Kind::findOrFail($request->kind);
+		return view('questions.create', compact('kind'));
 	}
 
 	public function store(StoreQuestionRequest $request) {
@@ -126,7 +124,12 @@ class QuestionController extends Controller {
 		// 		break;
 		// }
 
-		$question = Question::create($data);
+		$question = new Question();
+		$sort_no = $question->sort_no = $set->questions->count() + 1;
+		$question->learning = $request->learning;
+		$question->timeout = $request->timeout;
+		$question->cue = $request->has('cue') ? $request->cue : '';
+		$question->kind->associate($request->kind);
 		$question->save();
 
 		// Перенумеровать по порядку после создания
@@ -136,8 +139,8 @@ class QuestionController extends Controller {
 			->toArray();
 		$this->reorder($questions);
 
-		session()->put('success', "Вопрос № {$data['sort_no']} из набора вопросов &laquo;{$set->name}&raquo; создан.<br/>Список вопросов перенумерован");
-		return redirect()->route('questions.index', ['sid' => session()->getId()]);
+		session()->put('success', "Вопрос № {$sort_no} из набора вопросов &laquo;{$set->name}&raquo; создан.<br/>Список вопросов перенумерован");
+		return redirect()->route('questions.index');
 	}
 
 	public function show($id) {
@@ -145,37 +148,38 @@ class QuestionController extends Controller {
 	}
 
 	public function edit(int $id, bool $show = false) {
+		$mode = $show ? config('global.show') : config('global.edit');
 		$question = Question::findOrFail($id);
-		return match (intval($question->kind)) {
-			QuestionKind::SINGLE2->value => view('questions.single2.edit', compact('question', 'show')),
-			default => ''
-		};
+		return view('questions.edit', compact('question', 'mode'));
 	}
 
-	public function update(UpdateQuestionRequest $request, $id) {
+	public function update(UpdateQuestionRequest $request, int $id) {
 		$context = session('context');
 		$set = Set::findOrFail($context['set']);
-
 		$question = Question::findOrFail($id);
 
-		switch ($request->kind) {
-			case QuestionKind::SINGLE2->value:
-				$data = $request->all();
+		// switch ($request->kind) {
+		// 	case QuestionKind::SINGLE2->value:
+		// 		$data = $request->all();
 
-				foreach (['image1', 'image2'] as $field) {
-					if (!$request->has($field))
-						continue;
+		// 		foreach (['image1', 'image2'] as $field) {
+		// 			if (!$request->has($field))
+		// 				continue;
 
-					$mediaPath = Question::uploadImage($request, $field, $question->getAttribute($field));
-					if ($mediaPath)
-						FileLink::link($mediaPath);
-					$data[$field] = $mediaPath;
-				}
-				break;
-		}
+		// 			$mediaPath = Question::uploadImage($request, $field, $question->getAttribute($field));
+		// 			if ($mediaPath)
+		// 				FileLink::link($mediaPath);
+		// 			$data[$field] = $mediaPath;
+		// 		}
+		// 		break;
+		// }
 
-		$number = $question->getKey();
-		$question->update($data);
+		$number = $question->sort_no;
+		$question->update([
+			'learning' => $request->learning,
+			'timeout' => $request->timeout,
+			'cue' => $request->has('cue') ? $request->cue : ''
+		]);
 
 		// Перенумеровать по порядку после обновления
 		$questions = $question->set->questions

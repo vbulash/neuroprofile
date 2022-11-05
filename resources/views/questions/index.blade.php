@@ -34,11 +34,11 @@
 				<table class="table table-bordered table-hover text-nowrap" id="questions_table" style="width: 100%;">
 					<thead>
 					<tr>
-						<th>Номер по порядку</th>
-						{{-- <th>Миниатюры изображений</th> --}}
+						<th>№ п/п</th>
+						<th>Миниатюры изображений</th>
+						<th>Тип вопроса</th>
 						<th>Режим прохождения</th>
 						<th>Таймаут, секунд</th>
-						{{-- <th>Ключи вопроса</th> --}}
 						<th>Отдельная подсказка к вопросу</th>
 						<th>Действия</th>
 					</tr>
@@ -121,22 +121,22 @@
 					pageLength: 100,
 					columns: [
 						{data: 'sort_no', name: 'sort_no', responsivePriority: 1},
-						// {
-						// 	data: 'preview', name: 'preview', responsivePriority: 3, render: (data) => {
-						// 		if (data) {
-						// 			let thumbs = JSON.parse(data.replace(/&quot;/g, '"'));
-						// 			let preview = '';
-						// 			thumbs.forEach((thumb) => {
-						// 				preview = preview +
-						// 					"<img src=\"" + thumb + "\" alt=\"\" class=\"thumb-row\">\n";
-						// 			});
-						// 			return preview;
-						// 		} else return '';
-						// 	}
-						// },
+						{
+							data: 'preview', name: 'preview', responsivePriority: 3, render: (data) => {
+								if (data) {
+									let thumbs = JSON.parse(data.replace(/&quot;/g, '"'));
+									let preview = '';
+									thumbs.forEach((thumb) => {
+										preview = preview +
+											"<img src=\"" + thumb + "\" alt=\"\" class=\"thumb-row\">\n";
+									});
+									return preview;
+								} else return '';
+							}
+						},
+						{data: 'kind', name: 'kind', responsivePriority: 3},
 						{data: 'learning', name: 'learning', responsivePriority: 2},
 						{data: 'timeout', name: 'timeout', responsivePriority: 2},
-						// {data: 'key', name: 'key', responsivePriority: 3},
 						{data: 'cue', name: 'cue', responsivePriority: 3, render: (data) => {
 							return data ? data : 'Нет';
 						}},

@@ -6,36 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class Question extends Model implements FormTemplate, Titleable {
-	use HasFactory, UploadImage;
+	use HasFactory;
 
 	protected $fillable = [
-		'sort_no',
-		'learning',
-		'timeout',
-		'image1',
-		'image2',
-		'value1',
-		'value2',
-		'set_id',
+		'sort_no',	// Номер по порядку
+		'learning',	// Учебный вопрос
+		'timeout',	// Таймаут вопроса (0 - нет таймаута)
 		'cue',		// Подсказка к вопросу
-		'kind',		// Тип вопроса
-	];
-
-	public static array $values = [
-		'A+' => 'A+',
-		'A-' => 'A-',
-		'B+' => 'B+',
-		'B-' => 'B-',
-		'C+' => 'C+',
-		'C-' => 'C-',
-		'D+' => 'D+',
-		'D-' => 'D-',
-		'E+' => 'E+',
-		'E-' => 'E-',
 	];
 
 	public function getTitle(): string {

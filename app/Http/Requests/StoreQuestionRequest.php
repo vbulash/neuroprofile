@@ -29,16 +29,6 @@ class StoreQuestionRequest extends FormRequest
 				'required',
 				'numeric'
 			],
-			'image1' => [
-				'required',
-				'image'
-			],
-			'image2' => [
-				'required',
-				'image'
-			],
-			'value1' => 'required',
-			'value2' => 'required'
         ];
     }
 
@@ -47,10 +37,6 @@ class StoreQuestionRequest extends FormRequest
 		return [
 			'learning' => 'Режим прохождения',
 			'timeout' => 'Таймаут прохождения вопроса',
-			'image1' => 'Левая картинка вопроса',
-			'image2' => 'Правая картинка вопроса',
-			'value1' => 'Ключ левой картинки вопроса',
-			'value2' => 'Ключ правой картинки вопроса'
 		];
 	}
 }
