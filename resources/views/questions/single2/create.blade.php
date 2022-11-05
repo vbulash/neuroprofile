@@ -7,41 +7,37 @@
 @section('steps')
     @php
         $steps = [
-            ['title' => 'Набор вопросов', 'active' => false, 'context' => 'set', 'link' => route('sets.index', ['sid' => session()->getId()])],
-            ['title' => 'Вопросы', 'active' => true, 'context' => 'question', 'link' => route('questions.index', ['sid' => session()->getId()])],
+            ['title' => 'Набор вопросов', 'active' => false, 'context' => 'set', 'link' => route('sets.index')],
+            ['title' => 'Вопросы', 'active' => true, 'context' => 'question', 'link' => route('questions.index')],
         ];
     @endphp
 @endsection
 
 @section('interior')
     <form role="form" class="p-5" method="post"
-          id="client-edit" name="client-edit"
-          action="{{ route('questions.update', ['question' => $question->getKey(), 'sid' => session()->getId()]) }}"
+          id="client-create" name="client-create"
+          action="{{ route('questions.store', ['sid' => session()->getId()]) }}"
           autocomplete="off" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
         <div class="block-header block-header-default">
             <h3 class="block-title fw-semibold">
-                @if($show)
-                    Просмотр
-                @else
-                    Редактирование
-                @endif вопроса № {{ $question->sort_no }} для набора вопросов &laquo;{{ $question->set->name }}&raquo;.
-                @if(!$show)
-                    <br/>
-                    <small><span class="required">*</span> - поля, обязательные для заполнения</small>
-                @endif
+                Создание вопроса для набора вопросов &laquo;{{ $set->name }}&raquo;.<br/>
+                <small><span class="required">*</span> - поля, обязательные для заполнения</small>
             </h3>
         </div>
         <div class="block-content p-4">
             @php
                 $fields = [
+					['name' => 'kind', 'type' => 'hidden', 'value' => $kind],
+					['name' => 'kindname', 'title' => 'Тип вопроса', 'required' => false, 'type' => 'text', 'value' => \App\Models\QuestionKind::getName(\App\Models\QuestionKind::SINGLE2->value), 'disabled' => true],
                     ['name' => 'learning', 'title' => 'Режим прохождения', 'required' => true, 'type' => 'select', 'options' => [
                         '0' => 'Реальный вопрос',
                         '1' => 'Учебный вопрос'
-                    ], 'value' => ($question->learning ? 1 : 0)],
-                    ['name' => 'timeout', 'title' => 'Таймаут прохождения вопроса, секунд', 'required' => true, 'type' => 'number', 'value' => $question->timeout],
-					['name' => 'cue', 'title' => 'Отдельная подсказка к вопросу', 'required' => false, 'type' => 'text', 'value' => $question->cue],
+                    ]],
+                    ['name' => 'timeout', 'title' => 'Таймаут прохождения вопроса, секунд', 'required' => true, 'type' => 'number', 'value' => 0],
+					['name' => 'cue', 'title' => 'Отдельная подсказка к вопросу', 'required' => false, 'type' => 'text'],
+                    //
+                    ['name' => 'set_id', 'type' => 'hidden', 'value' => $set->getKey()],
                 ];
             @endphp
 
@@ -53,7 +49,7 @@
                     @default
                     <div class="row mb-4">
                         <label class="col-sm-3 col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
-                            @if($field['required'] && !$show)
+                            @if($field['required'])
                                 <span class="required">*</span>
                             @endif</label>
                         @break
@@ -68,7 +64,7 @@
                                 <input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
                                        name="{{ $field['name'] }}"
                                        value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
-                                       @if($show) disabled @endif
+									   @isset($field['disabled']) disabled @endisset
                                 >
                             </div>
                             @break
@@ -78,7 +74,6 @@
 						<textarea class="form-control" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
                                   cols="30"
                                   rows="5"
-                                  @if($show) disabled @endif
 						>{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}</textarea>
                             </div>
                             @break
@@ -86,10 +81,9 @@
                             @case('select')
                             <div class="col-sm-5">
                                 <select class="form-control select2" name="{{ $field['name'] }}"
-                                        id="{{ $field['name'] }}" @if($show) disabled @endif>
+                                        id="{{ $field['name'] }}">
                                     @foreach($field['options'] as $key => $value)
-                                        <option value="{{ $key }}"
-                                                @if($field['value'] == $key) selected @endif>{{ $value }}</option>
+                                        <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -113,11 +107,11 @@
             @php
                 $fields = [
                     //
-                    ['name' => 'image1', 'title' => 'Левая картинка вопроса', 'type' => 'image', 'required' => true, 'value' => $question->image1],
-                    ['name' => 'image2', 'title' => 'Правая картинка вопроса', 'type' => 'image', 'required' => true, 'value' => $question->image2],
+                    ['name' => 'image1', 'title' => 'Левая картинка вопроса', 'type' => 'image', 'required' => true],
+                    ['name' => 'image2', 'title' => 'Правая картинка вопроса', 'type' => 'image', 'required' => true],
                     //
-                    ['name' => 'value1', 'title' => 'Ключ левой картинки', 'required' => true, 'type' => 'select', 'value' => $question->value1, 'options' => \App\Models\Question::$values],
-                    ['name' => 'value2', 'title' => 'Ключ правой картинки', 'required' => true, 'type' => 'select', 'value' => $question->value2, 'options' => \App\Models\Question::$values],
+                    ['name' => 'value1', 'title' => 'Ключ левой картинки', 'required' => true, 'type' => 'select', 'options' => \App\Models\Question::$values],
+                    ['name' => 'value2', 'title' => 'Ключ правой картинки', 'required' => true, 'type' => 'select', 'options' => \App\Models\Question::$values],
                     //
                 ];
             @endphp
@@ -126,7 +120,7 @@
                 @foreach($fields as $field)
                     <div class="col-sm-6">
                         <label class="col-form-label" for="{{ $field['name'] }}">{{ $field['title'] }}
-                            @if($field['required'] && !$show)
+                            @if($field['required'])
                                 <span class="required">*</span>
                             @endif
                         </label>
@@ -135,16 +129,14 @@
                             <input type="{{ $field['type'] }}" class="form-control" id="{{ $field['name'] }}"
                                    name="{{ $field['name'] }}"
                                    value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
-                                   @if($show) disabled @endif
                             >
                             @break;
 
                             @case('select')
                             <select class="form-control select2" name="{{ $field['name'] }}"
-                                    id="{{ $field['name'] }}" @if($show) disabled @endif>
-                                @foreach($field['options'] as $key)
-                                    <option value="{{ $key }}"
-                                            @if($field['value'] == $key) selected @endif>{{ $key }}</option>
+                                    id="{{ $field['name'] }}">
+                                @foreach($field['options'] as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </select>
                             @break
@@ -154,24 +146,14 @@
                                 <input type="file" class="form-control" id="{{ $field['name'] }}"
                                        name="{{ $field['name'] }}"
                                        onchange="readImage(this)"
-                                       @if($show) disabled @endif
                                 >
                             </div>
                             <div class="row mb-4" id="panel_{{ $field['name'] }}">
                                 <div class="col-sm-9">
                                     <img id="preview_{{ $field['name'] }}"
-                                         src="/uploads/{{ $field['value'] }}"
-                                         data-origin="/uploads/{{ $field['value'] }}"
+                                         src=""
                                          alt=""
                                          class="image-preview">
-                                </div>
-                                <div class="col-sm-3">
-                                    <a class="btn btn-primary pl-3 @if($show) disabled @endif clear-preview"
-                                       href="javascript:void(0)"
-                                       id="clear_{{ $field['name'] }}"
-                                       data-image="{{ $field['name'] }}"
-                                       role="button"
-                                    >Сбросить изменения</a>
                                 </div>
                             </div>
                             @break
@@ -184,20 +166,12 @@
         <div class="block-content block-content-full block-content-sm bg-body-light fs-sm">
             <div class="row">
                 <div class="col-sm-3 col-form-label">&nbsp;</div>
-                @if($show)
-                    <div class="col-sm-5">
-                        <a class="btn btn-primary pl-3"
-                           href="{{ route('questions.index', ['sid' => session()->getId()]) }}"
-                           role="button">Закрыть</a>
-                    </div>
-                @else
-                    <div class="col-sm-5">
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
-                        <a class="btn btn-secondary pl-3"
-                           href="{{ route('questions.index', ['sid' => session()->getId()]) }}"
-                           role="button">Закрыть</a>
-                    </div>
-                @endif
+                <div class="col-sm-5">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <a class="btn btn-secondary pl-3"
+                       href="{{ route('questions.index', ['sid' => session()->getId()]) }}"
+                       role="button">Закрыть</a>
+                </div>
             </div>
         </div>
     </form>
@@ -208,34 +182,18 @@
         function readImage(input) {
             if (input.files && input.files[0]) {
                 window.preview = 'preview_' + input.id;
-                window.clear = 'clear_' + input.id;
 
                 let reader = new FileReader();
                 reader.onload = function (event) {
                     document.getElementById(window.preview).setAttribute('src', event.target.result);
-                    document.getElementById(window.clear).style.display = 'block';
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        document.querySelectorAll('.clear-preview').forEach(button => {
-            document.getElementById(button.id).addEventListener('click', event => {
-                let image = 'preview_' + event.target.dataset.image;
-                let source = document.getElementById(image).dataset.origin;
-
-                let file = document.getElementById(event.target.dataset.image);
-                file.setAttribute('type', 'text');
-                file.setAttribute('type', 'file');
-
-                document.getElementById(image).setAttribute('src', source);
-                event.target.style.display = 'none';
-            });
-        });
 
         document.addEventListener("DOMContentLoaded", () => {
-            for (i = 1; i < 3; i++)
-                document.getElementById('clear_image' + i).style.display = 'none';
+            //
         }, false);
     </script>
 @endpush

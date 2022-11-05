@@ -4,11 +4,9 @@
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Набор вопросов', 'active' => false, 'context' => 'set', 'link' => route('sets.index')],
-			['title' => 'Вопросы', 'active' => true, 'context' => 'question', 'link' => route('questions.index')],
-			['title' => 'Изображения вопросов', 'active' => false, 'context' => 'part'],
-		];
+	$steps = [
+            ['title' => 'Тип вопросов тестов', 'active' => true, 'context' => 'kind', 'link' => route('kinds.index') ],
+        ];
 	@endphp
 @endsection
 

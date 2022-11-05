@@ -9,6 +9,7 @@
         $steps = [
             ['title' => 'Набор вопросов', 'active' => true, 'context' => 'set'],
             ['title' => 'Вопросы', 'active' => false, 'context' => 'question'],
+			['title' => 'Изображения вопросов', 'active' => false, 'context' => 'part'],
         ];
     @endphp
 @endsection

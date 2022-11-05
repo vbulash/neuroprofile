@@ -7,15 +7,26 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Набор вопросов', 'active' => false, 'context' => 'set', 'link' => route('sets.index', ['sid' => session()->getId()])],
+			['title' => 'Набор вопросов', 'active' => false, 'context' => 'set', 'link' => route('sets.index')],
 			['title' => 'Вопросы', 'active' => true, 'context' => 'question'],
+			['title' => 'Изображения вопросов', 'active' => false, 'context' => 'part'],
 		];
 	@endphp
 @endsection
 
 @section('interior')
 	<div class="block-header block-header-default">
-		<a href="{{ route('questions.create', ['sid' => $sid]) }}" class="btn btn-primary">Добавить вопрос</a>
+		<div class="dropdown me-2">
+				<button class="btn btn-primary dropdown-toggle" type="button" id="question-create"
+						data-bs-toggle="dropdown" aria-expanded="false">
+					Добавить вопрос
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="question-create">
+					@foreach($kinds as $kind)
+						<li><a class="dropdown-item" href="{{ route('questions.create', ['kind' => $kind->getKey()]) }}">{{ $kind->name }}</a></li>
+					@endforeach
+				</ul>
+			</div>
 	</div>
 	<div class="block-content p-4">
 		@if ($count)
@@ -24,11 +35,11 @@
 					<thead>
 					<tr>
 						<th>Номер по порядку</th>
-						<th>Миниатюры изображений</th>
+						{{-- <th>Миниатюры изображений</th> --}}
 						<th>Режим прохождения</th>
 						<th>Таймаут, секунд</th>
-						<th>Ключи вопроса</th>
-						<th>Подсказка к вопросу</th>
+						{{-- <th>Ключи вопроса</th> --}}
+						<th>Отдельная подсказка к вопросу</th>
 						<th>Действия</th>
 					</tr>
 					</thead>
@@ -50,7 +61,7 @@
 		<script>
 			function clickUp(id) {
 				$.post({
-					url: "{{ route('questions.up', ['sid' => $sid]) }}",
+					url: "{{ route('questions.up') }}",
 					data: {
 						id: id,
 					},
@@ -63,7 +74,7 @@
 
 			function clickDown(id) {
 				$.post({
-					url: "{{ route('questions.down', ['sid' => $sid]) }}",
+					url: "{{ route('questions.down') }}",
 					data: {
 						id: id,
 					},
@@ -110,22 +121,22 @@
 					pageLength: 100,
 					columns: [
 						{data: 'sort_no', name: 'sort_no', responsivePriority: 1},
-						{
-							data: 'preview', name: 'preview', responsivePriority: 3, render: (data) => {
-								if (data) {
-									let thumbs = JSON.parse(data.replace(/&quot;/g, '"'));
-									let preview = '';
-									thumbs.forEach((thumb) => {
-										preview = preview +
-											"<img src=\"" + thumb + "\" alt=\"\" class=\"thumb-row\">\n";
-									});
-									return preview;
-								} else return '';
-							}
-						},
+						// {
+						// 	data: 'preview', name: 'preview', responsivePriority: 3, render: (data) => {
+						// 		if (data) {
+						// 			let thumbs = JSON.parse(data.replace(/&quot;/g, '"'));
+						// 			let preview = '';
+						// 			thumbs.forEach((thumb) => {
+						// 				preview = preview +
+						// 					"<img src=\"" + thumb + "\" alt=\"\" class=\"thumb-row\">\n";
+						// 			});
+						// 			return preview;
+						// 		} else return '';
+						// 	}
+						// },
 						{data: 'learning', name: 'learning', responsivePriority: 2},
 						{data: 'timeout', name: 'timeout', responsivePriority: 2},
-						{data: 'key', name: 'key', responsivePriority: 3},
+						// {data: 'key', name: 'key', responsivePriority: 3},
 						{data: 'cue', name: 'cue', responsivePriority: 3, render: (data) => {
 							return data ? data : 'Нет';
 						}},

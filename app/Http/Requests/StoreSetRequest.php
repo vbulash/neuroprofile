@@ -23,17 +23,17 @@ class StoreSetRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required',
-			'code' => 'required'
-        ];
+		$rules = ['name' => 'required'];
+		if (!env('RESEARCH'))
+			$rules['code'] = 'required';
+        return $rules;
     }
 
 	public function attributes()
 	{
-		return [
-			'name' => 'Наименование набора вопросов',
-			'code' => 'PHP-код вычисления кода нейропрофиля',
-		];
+		$attributes = ['name' => 'Наименование набора вопросов'];
+		if (!env('RESEARCH'))
+			$attributes['code'] = 'PHP-код вычисления кода нейропрофиля';
+		return $attributes;
 	}
 }

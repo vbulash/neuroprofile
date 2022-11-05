@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +21,8 @@ class Question extends Model implements FormTemplate, Titleable {
 		'value1',
 		'value2',
 		'set_id',
-		'cue'
+		'cue',		// Подсказка к вопросу
+		'kind',		// Тип вопроса
 	];
 
 	public static array $values = [
@@ -39,8 +42,16 @@ class Question extends Model implements FormTemplate, Titleable {
 		return $this->sort_no;
 	}
 
-	public function set() {
+	public function set(): BelongsTo {
 		return $this->belongsTo(Set::class);
+	}
+
+	public function parts(): HasMany {
+		return $this->hasMany(Part::class);
+	}
+
+	public function kind(): BelongsTo {
+		return $this->belongsTo(Kind::class);
 	}
 
 	public static function createTemplate(): array {

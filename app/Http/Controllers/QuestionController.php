@@ -6,7 +6,9 @@ use App\Events\ToastEvent;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\FileLink;
+use App\Models\Kind;
 use App\Models\Question;
+use App\Models\QuestionKind;
 use App\Models\Set;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,131 +16,115 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Exception;
 
-class QuestionController extends Controller
-{
+class QuestionController extends Controller {
 	/**
 	 * Process datatables ajax request.
 	 *
 	 * @return JsonResponse
 	 * @throws Exception
 	 */
-	public function getData(): JsonResponse
-	{
+	public function getData(): JsonResponse {
 		$context = session('context');
 		$set = Set::findOrFail($context['set']);
-		$questions = DB::select(<<< SQL
-SELECT questions.* FROM questions, sets
-WHERE sets.id = questions.set_id AND sets.id = :id
-ORDER BY sort_no
-SQL,
-			['id' => $set->getKey()]);
+		$questions = Question::where('set_id', $set->getKey())
+			->get()
+			->sortBy('sort_no');
 
-		$count = count($questions);
+		$count = $questions->count();
 		$first = $last = 0;
-		if($count > 1) {
-			$first = $questions[0]->id;
-			$last = $questions[$count - 1]->id;
+		if ($questions->count() > 1) {
+			$first = $questions->first()->getKey();
+			$last = $questions->last()->getKey();
 		}
 
 		return Datatables::of($questions)
-			->editColumn('preview', function ($question) {
-				$data = [];
-				foreach (['image1', 'image2'] as $field) {
-					$path = $question->{$field};
-					if ($path) $data[] = '/uploads/' . $path;
-				}
-				return ($data ? json_encode($data) : '');
-			})
+			// ->editColumn('preview', function ($question) {
+			//     $data = [];
+			//     foreach (['image1', 'image2'] as $field) {
+			// 	    $path = $question->{ $field};
+			// 	    if ($path)
+			// 		    $data[] = '/uploads/' . $path;
+			//     }
+			//     return ($data ? json_encode($data) : '');
+		    // })
 			->editColumn('learning', fn($question) => $question->learning ? 'Учебный' : 'Реальный')
-			->editColumn('key', fn($question) => $question->value1 . '|' . $question->value2)
-			->addColumn('action', function ($question) use($first, $last, $count) {
-				$editRoute = route('questions.edit', ['question' => $question->id, 'sid' => session()->getId()]);
-				$showRoute = route('questions.show', ['question' => $question->id, 'sid' => session()->getId()]);
-				$actions = '';
+			// ->editColumn('key', fn($question) => $question->value1 . '|' . $question->value2)
+			->addColumn('action', function ($question) use ($first, $last, $count) {
+			    $editRoute = route('questions.edit', ['question' => $question->getKey()]);
+			    $showRoute = route('questions.show', ['question' => $question->getKey()]);
+			    $actions = '';
 
-				$actions .=
-					"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
-					"<i class=\"fas fa-pencil-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
-					"<i class=\"fas fa-eye\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$question->id}, '{$question->sort_no}')\">\n" .
-					"<i class=\"fas fa-trash-alt\"></i>\n" .
-					"</a>\n";
+			    $actions .=
+			    	"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
+			    	"<i class=\"fas fa-pencil-alt\"></i>\n" .
+			    	"</a>\n";
+			    $actions .=
+			    	"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
+			    	"<i class=\"fas fa-eye\"></i>\n" .
+			    	"</a>\n";
+			    $actions .=
+			    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
+			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$question->getKey()}, '{$question->sort_no}')\">\n" .
+			    	"<i class=\"fas fa-trash-alt\"></i>\n" .
+			    	"</a>\n";
 
-				if($count > 1) {
-					if ($question->id != $first)
-						$actions .=
-							"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-							"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выше\" onclick=\"clickUp({$question->id})\">\n" .
-							"<i class=\"fas fa-arrow-up\"></i>\n" .
-							"</a>\n";
-					if ($question->id != $last)
-						$actions .=
-							"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-							"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ниже\" onclick=\"clickDown({$question->id})\">\n" .
-							"<i class=\"fas fa-arrow-down\"></i>\n" .
-							"</a>\n";
-				}
+			    if ($count > 1) {
+				    if ($question->getKey() != $first)
+					    $actions .=
+					    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+					    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выше\" onclick=\"clickUp({$question->getKey()})\">\n" .
+					    	"<i class=\"fas fa-arrow-up\"></i>\n" .
+					    	"</a>\n";
+				    if ($question->getKey() != $last)
+					    $actions .=
+					    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+					    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ниже\" onclick=\"clickDown({$question->getKey()})\">\n" .
+					    	"<i class=\"fas fa-arrow-down\"></i>\n" .
+					    	"</a>\n";
+			    }
 
-				return $actions;
-			})
+			    return $actions;
+		    })
 			->make(true);
 	}
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
-	 */
-    public function index()
-    {
+	public function index() {
 		$context = session('context');
 		unset($context['question']);
 		session()->put('context', $context);
 
 		$set = Set::findOrFail($context['set']);
-        $count = $set->questions->count();
-		return view('questions.index', compact('count'));
-    }
+		$count = $set->questions->count();
+		$kinds = Kind::all();
+		return view('questions.index', compact('count', 'kinds'));
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-	 */
-    public function create()
-    {
+	public function create(Request $request) {
 		$context = session('context');
 		$set = Set::findOrFail($context['set']);
-		return view('questions.create', compact('set'));
-    }
+		$kind = $request->kind;
+		return view('questions.create', compact('set', 'kind'));
+	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param StoreQuestionRequest $request
-	 * @return RedirectResponse
-	 */
-    public function store(StoreQuestionRequest $request)
-    {
+	public function store(StoreQuestionRequest $request) {
 		$context = session('context');
 		$set = Set::findOrFail($context['set']);
 
-		$data = $request->all();
-		$data['sort_no'] = $set->questions->count() + 1;
+		// switch ($request->kind) {
+		// 	case QuestionKind::SINGLE2->value:
+		// 		$data = $request->all();
+		// 		$data['sort_no'] = $set->questions->count() + 1;
 
-		foreach	(['image1', 'image2'] as $field) {
-			$mediaPath = Question::uploadImage($request, $field);
-			if ($mediaPath) FileLink::link($mediaPath);
-			$data[$field] = $mediaPath;
-		}
+		// 		foreach (['image1', 'image2'] as $field) {
+		// 			$mediaPath = Question::uploadImage($request, $field);
+		// 			if ($mediaPath)
+		// 				FileLink::link($mediaPath);
+		// 			$data[$field] = $mediaPath;
+		// 		}
+		// 		break;
+		// }
 
 		$question = Question::create($data);
 		$question->save();
@@ -152,53 +138,40 @@ SQL,
 
 		session()->put('success', "Вопрос № {$data['sort_no']} из набора вопросов &laquo;{$set->name}&raquo; создан.<br/>Список вопросов перенумерован");
 		return redirect()->route('questions.index', ['sid' => session()->getId()]);
-    }
+	}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Application|Factory|View
-	 */
-    public function show($id)
-    {
-        return $this->edit($id, true);
-    }
+	public function show($id) {
+		return $this->edit($id, true);
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-	 * @param	bool $show
-     * @return Application|Factory|View
-	 */
-    public function edit(int $id, bool $show = false)
-    {
+	public function edit(int $id, bool $show = false) {
 		$question = Question::findOrFail($id);
-        return view('questions.edit', compact('question', 'show'));
-    }
+		return match (intval($question->kind)) {
+			QuestionKind::SINGLE2->value => view('questions.single2.edit', compact('question', 'show')),
+			default => ''
+		};
+	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param UpdateQuestionRequest $request
-	 * @param int $id
-	 * @return RedirectResponse
-	 */
-    public function update(UpdateQuestionRequest $request, $id)
-    {
+	public function update(UpdateQuestionRequest $request, $id) {
 		$context = session('context');
 		$set = Set::findOrFail($context['set']);
 
 		$question = Question::findOrFail($id);
-		$data = $request->all();
 
-		foreach	(['image1', 'image2'] as $field) {
-			if(!$request->has($field)) continue;
+		switch ($request->kind) {
+			case QuestionKind::SINGLE2->value:
+				$data = $request->all();
 
-			$mediaPath = Question::uploadImage($request, $field, $question->getAttribute($field));
-			if ($mediaPath) FileLink::link($mediaPath);
-			$data[$field] = $mediaPath;
+				foreach (['image1', 'image2'] as $field) {
+					if (!$request->has($field))
+						continue;
+
+					$mediaPath = Question::uploadImage($request, $field, $question->getAttribute($field));
+					if ($mediaPath)
+						FileLink::link($mediaPath);
+					$data[$field] = $mediaPath;
+				}
+				break;
 		}
 
 		$number = $question->getKey();
@@ -213,23 +186,21 @@ SQL,
 
 		session()->put('success', "Вопрос ID {$number} из набора вопросов &laquo;{$set->name}&raquo; обновлён.<br/>Список вопросов перенумерован");
 		return redirect()->route('questions.index', ['sid' => session()->getId()]);
-    }
+	}
 
-	private function reorder(array $ids): void
-	{
+	private function reorder(array $ids): void {
 		DB::transaction(function () use ($ids) {
 			$counter = 0;
 			foreach ($ids as $id) {
 				$counter++;
 				$question = Question::findOrFail($id);
-				if($question->sort_no != $counter)
+				if ($question->sort_no != $counter)
 					$question->update(['sort_no' => $counter]);
 			}
 		});
 	}
 
-	private function move(int $id, bool $up)
-	{
+	private function move(int $id, bool $up) {
 		$question = Question::findOrFail($id);
 		$questions = $question->set->questions
 			->sortBy('sort_no')
@@ -252,8 +223,7 @@ SQL,
 	 * @param int $id
 	 * @return bool
 	 */
-	public function up(Request $request)
-	{
+	public function up(Request $request) {
 		$this->move($request->id, true);
 		//event(new ToastEvent('success', '', 'Вопрос перемещен ближе к началу списка'));
 
@@ -267,8 +237,7 @@ SQL,
 	 * @param int $id
 	 * @return bool
 	 */
-	public function down(Request $request)
-	{
+	public function down(Request $request) {
 		$this->move($request->id, false);
 		//event(new ToastEvent('success', '', 'Вопрос перемещен ближе к концу списка'));
 
@@ -282,11 +251,11 @@ SQL,
 	 * @param int $question
 	 * @return bool
 	 */
-	public function destroy(Request $request, int $question)
-	{
+	public function destroy(Request $request, int $question) {
 		if ($question == 0) {
 			$id = $request->id;
-		} else $id = $question;
+		} else
+			$id = $question;
 
 		$question = Question::findOrFail($id);
 		$number = $question->number;

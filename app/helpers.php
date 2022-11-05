@@ -23,7 +23,8 @@ if (! function_exists('classByContext')) {
 			'role' => \App\Models\Role::class,
 			'set' => \App\Models\Set::class,
 			'user' => \App\Models\User::class,
-			'history' => \App\Models\History::class
+			'history' => \App\Models\History::class,
+			'kind' => \App\Models\Kind::class,
 		};
 	}
 }

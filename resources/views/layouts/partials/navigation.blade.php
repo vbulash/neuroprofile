@@ -26,6 +26,7 @@
 
 		$menu[] = ['title' => 'Настройки', 'heading' => true];
 		$menu[] = ['title' => 'Пользователи', 'icon' => 'fa fa-user-alt', 'route' => 'users.index', 'pattern' => 'users.*'];
+		$menu[] = ['title' => 'Типы вопросов', 'icon' => 'fa fa-question-circle', 'route' => 'kinds.index', 'pattern' => 'kinds.*'];
 	@endphp
 	<ul class="nav-main">
 		@foreach($menu as $item)

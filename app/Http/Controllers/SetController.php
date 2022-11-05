@@ -110,7 +110,9 @@ class SetController extends Controller
 	 */
     public function store(StoreSetRequest $request)
     {
-		$set = Set::create($request->all());
+		$set = new Set();
+		$set->name = $request->name;
+		$set->code = env('RESEARCH') ? '//' : $request->code;
 		$set->save();
 		$name = $set->name;
 
@@ -153,7 +155,10 @@ class SetController extends Controller
     {
 		$set = Set::findOrFail($id);
 		$name = $set->name;
-		$set->update($request->all());
+		$set->update([
+			'name' => $request->name,
+			'code' => env('RESEARCH') ? '//' : $request->code
+		]);
 
 		session()->put('success', "Набор вопросов \"{$name}\" обновлён");
 		return redirect()->route('sets.index', ['sid' => session()->getId()]);

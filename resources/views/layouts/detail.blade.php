@@ -48,7 +48,7 @@
 
 					@case('heading')
 					<div class="row mt-4 mb-4">
-						<p><b>{{ $field['title'] }}</b></p>
+						<p><b>{!! $field['title'] !!}</b></p>
 						@break;
 
 						@case('checkbox')

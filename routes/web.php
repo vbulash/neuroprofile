@@ -39,6 +39,9 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/questions.data', 'QuestionController@getData')->name('questions.index.data');
 	Route::post('/questions.up', 'QuestionController@up')->name('questions.up');
 	Route::post('/questions.down', 'QuestionController@down')->name('questions.down');
+	// Типы вопросов
+	Route::resource('/kinds', 'KindController');
+	Route::get('/kinds.data', 'KindController@getData')->name('kinds.index.data');
 
 	// Блок обработки результатов тестирования
 	// Тип описания
