@@ -73,9 +73,7 @@ class SetController extends Controller
 
 	public function select(int $id)
 	{
-		session()->forget('context');
 		session()->put('context', ['set' => $id]);
-
 		return redirect()->route('questions.index');
 	}
 

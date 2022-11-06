@@ -25,6 +25,7 @@ if (! function_exists('classByContext')) {
 			'user' => \App\Models\User::class,
 			'history' => \App\Models\History::class,
 			'kind' => \App\Models\Kind::class,
+			'part' => \App\Models\Part::class,
 		};
 	}
 }

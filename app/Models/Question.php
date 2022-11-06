@@ -18,7 +18,7 @@ class Question extends Model implements FormTemplate, Titleable {
 	];
 
 	public function getTitle(): string {
-		return $this->sort_no;
+		return sprintf("%d (%s)", $this->sort_no, $this->kind->getTitle());
 	}
 
 	public function set(): BelongsTo {

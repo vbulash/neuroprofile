@@ -99,7 +99,8 @@ class QuestionController extends Controller {
 
 	public function select(int $id) {
 		$context = session('context');
-		session()->put('context', ['question' => $id]);
+		$context['question'] = $id;
+		session()->put('context', $context);
 
 		return redirect()->route('parts.index');
 	}
@@ -116,34 +117,22 @@ class QuestionController extends Controller {
 	}
 
 	public function create(Request $request) {
+		$mode = config('global.create');
 		$kind = Kind::findOrFail($request->kind);
-		return view('questions.create', compact('kind'));
+		return view('questions.create', compact('mode', 'kind'));
 	}
 
 	public function store(StoreQuestionRequest $request) {
 		$context = session('context');
 		$set = Set::findOrFail($context['set']);
 
-		// switch ($request->kind) {
-		// 	case QuestionKind::SINGLE2->value:
-		// 		$data = $request->all();
-		// 		$data['sort_no'] = $set->questions->count() + 1;
-
-		// 		foreach (['image1', 'image2'] as $field) {
-		// 			$mediaPath = Question::uploadImage($request, $field);
-		// 			if ($mediaPath)
-		// 				FileLink::link($mediaPath);
-		// 			$data[$field] = $mediaPath;
-		// 		}
-		// 		break;
-		// }
-
 		$question = new Question();
 		$sort_no = $question->sort_no = $set->questions->count() + 1;
 		$question->learning = $request->learning;
 		$question->timeout = $request->timeout;
 		$question->cue = $request->has('cue') ? $request->cue : '';
-		$question->kind->associate($request->kind);
+		$question->set()->associate($set->getKey());
+		$question->kind()->associate($request->kind);
 		$question->save();
 
 		// Перенумеровать по порядку после создания
@@ -172,22 +161,6 @@ class QuestionController extends Controller {
 		$set = Set::findOrFail($context['set']);
 		$question = Question::findOrFail($id);
 
-		// switch ($request->kind) {
-		// 	case QuestionKind::SINGLE2->value:
-		// 		$data = $request->all();
-
-		// 		foreach (['image1', 'image2'] as $field) {
-		// 			if (!$request->has($field))
-		// 				continue;
-
-		// 			$mediaPath = Question::uploadImage($request, $field, $question->getAttribute($field));
-		// 			if ($mediaPath)
-		// 				FileLink::link($mediaPath);
-		// 			$data[$field] = $mediaPath;
-		// 		}
-		// 		break;
-		// }
-
 		$number = $question->sort_no;
 		$question->update(
 			[
@@ -205,7 +178,7 @@ class QuestionController extends Controller {
 		$this->reorder($questions);
 
 		session()->put('success', "Вопрос ID {$number} из набора вопросов &laquo;{$set->name}&raquo; обновлён.<br/>Список вопросов перенумерован");
-		return redirect()->route('questions.index', ['sid' => session()->getId()]);
+		return redirect()->route('questions.index');
 	}
 
 	private function reorder(array $ids): void {

@@ -11,7 +11,7 @@
 		$menu[] = ['title' => 'Клиенты и контракты', 'icon' => 'fas fa-building', 'route' => 'clients.index', 'pattern' => ['clients.*', 'contracts.*']];
 
 		$menu[] = ['title' => 'Конструктор тестов', 'heading' => true];
-		$menu[] = ['title' => 'Вопросы тестов', 'icon' => 'fas fa-question-circle', 'route' => 'sets.index', 'pattern' => ['sets.*', 'questions.*']];
+		$menu[] = ['title' => 'Вопросы тестов', 'icon' => 'fas fa-question-circle', 'route' => 'sets.index', 'pattern' => ['sets.*', 'questions.*', 'parts.*']];
 
 		if (!env('RESEARCH')) {
 			$menu[] = ['title' => 'Обработка результатов', 'icon' => 'fas fa-drafting-compass', 'route' => 'fmptypes.index',
