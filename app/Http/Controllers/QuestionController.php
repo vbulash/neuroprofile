@@ -42,25 +42,27 @@ class QuestionController extends Controller {
 			    $data = [];
 			    foreach ($question->parts as $part) {
 				    $path = $part->image;
-				    if ($path) $data[] = '/uploads/' . $path;
+				    if ($path)
+					    $data[] = '/uploads/' . $path;
 			    }
 			    return ($data ? json_encode($data) : '');
 		    })
 			->editColumn('learning', fn($question) => $question->learning ? 'Учебный' : 'Реальный')
 			->editColumn('cue', fn($question) => $question->cue ? 'Есть' : 'Нет')
-			->editColumn('kind', fn ($question) => $question->kind->name)
+			->editColumn('kind', fn($question) => $question->kind->name)
 			->addColumn('action', function ($question) use ($first, $last, $count) {
 			    $editRoute = route('questions.edit', ['question' => $question->getKey()]);
 			    $showRoute = route('questions.show', ['question' => $question->getKey()]);
+			    $selectRoute = route('questions.select', ['question' => $question->getKey()]);
 			    $actions = '';
 
 			    $actions .=
-			    	"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+			    	"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
 			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
 			    	"<i class=\"fas fa-pencil-alt\"></i>\n" .
 			    	"</a>\n";
 			    $actions .=
-			    	"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+			    	"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
 			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
 			    	"<i class=\"fas fa-eye\"></i>\n" .
 			    	"</a>\n";
@@ -69,17 +71,22 @@ class QuestionController extends Controller {
 			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$question->getKey()}, '{$question->sort_no}')\">\n" .
 			    	"<i class=\"fas fa-trash-alt\"></i>\n" .
 			    	"</a>\n";
+			    $actions .=
+			    	"<a href=\"{$selectRoute}\" class=\"btn btn-primary btn-sm float-left me-5\" " .
+			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выбор\">\n" .
+			    	"<i class=\"fas fa-check\"></i>\n" .
+			    	"</a>\n";
 
 			    if ($count > 1) {
 				    if ($question->getKey() != $first)
 					    $actions .=
-					    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+					    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-1\" " .
 					    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выше\" onclick=\"clickUp({$question->getKey()})\">\n" .
 					    	"<i class=\"fas fa-arrow-up\"></i>\n" .
 					    	"</a>\n";
 				    if ($question->getKey() != $last)
 					    $actions .=
-					    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
+					    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left\" " .
 					    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ниже\" onclick=\"clickDown({$question->getKey()})\">\n" .
 					    	"<i class=\"fas fa-arrow-down\"></i>\n" .
 					    	"</a>\n";
@@ -88,6 +95,13 @@ class QuestionController extends Controller {
 			    return $actions;
 		    })
 			->make(true);
+	}
+
+	public function select(int $id) {
+		$context = session('context');
+		session()->put('context', ['question' => $id]);
+
+		return redirect()->route('parts.index');
 	}
 
 	public function index() {
@@ -175,11 +189,13 @@ class QuestionController extends Controller {
 		// }
 
 		$number = $question->sort_no;
-		$question->update([
-			'learning' => $request->learning,
-			'timeout' => $request->timeout,
-			'cue' => $request->has('cue') ? $request->cue : ''
-		]);
+		$question->update(
+			[
+				'learning' => $request->learning,
+				'timeout' => $request->timeout,
+				'cue' => $request->has('cue') ? $request->cue : ''
+			]
+		);
 
 		// Перенумеровать по порядку после обновления
 		$questions = $question->set->questions

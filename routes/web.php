@@ -37,8 +37,12 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	// Вопросы
 	Route::resource('/questions', 'QuestionController');
 	Route::get('/questions.data', 'QuestionController@getData')->name('questions.index.data');
+	Route::get('/questions.select/{question}', 'QuestionController@select')->name('questions.select');
 	Route::post('/questions.up', 'QuestionController@up')->name('questions.up');
 	Route::post('/questions.down', 'QuestionController@down')->name('questions.down');
+	// Изображения
+	Route::resource('/parts', 'PartController');
+	Route::get('/parts.data', 'PartController@getData')->name('parts.index.data');
 	// Типы вопросов
 	Route::resource('/kinds', 'KindController');
 	Route::get('/kinds.data', 'KindController@getData')->name('kinds.index.data');
