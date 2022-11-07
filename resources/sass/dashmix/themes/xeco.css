@@ -1319,7 +1319,6 @@ a.btn-block-option:focus,
 .page-header-dark #page-header .nav-main-horizontal .nav-main-submenu .nav-main-item:hover .nav-main-link {
     background-color: transparent;
   }
-
   .page-header-dark #page-header .nav-main-horizontal .nav-main-link:hover, .page-header-dark #page-header .nav-main-horizontal .nav-main-link.active {
     background-color: #246945;
   }
@@ -2123,8 +2122,20 @@ a.btn-block-option:focus,
 .dark-mode .form-text {
   color: #5a87a5;
 }
+.dark-mode .form-control::-moz-placeholder {
+  color: #5a87a5;
+}
+.dark-mode .form-control:-ms-input-placeholder {
+  color: #5a87a5;
+}
 .dark-mode .form-control::placeholder {
   color: #5a87a5;
+}
+.dark-mode .form-floating > .form-control::-moz-placeholder {
+  color: transparent;
+}
+.dark-mode .form-floating > .form-control:-ms-input-placeholder {
+  color: transparent;
 }
 .dark-mode .form-floating > .form-control::placeholder {
   color: transparent;
@@ -2297,6 +2308,12 @@ a.btn-block-option:focus,
   border-color: rgba(20, 83, 45, 0.85);
   background-color: rgba(20, 83, 45, 0.85);
 }
+.dark-mode .form-control.form-control-alt.is-valid::-moz-placeholder {
+  color: #5a87a5;
+}
+.dark-mode .form-control.form-control-alt.is-valid:-ms-input-placeholder {
+  color: #5a87a5;
+}
 .dark-mode .form-control.form-control-alt.is-valid::placeholder {
   color: #5a87a5;
 }
@@ -2307,6 +2324,12 @@ a.btn-block-option:focus,
 .dark-mode .form-control.form-control-alt.is-invalid {
   border-color: rgba(127, 29, 29, 0.85);
   background-color: rgba(127, 29, 29, 0.85);
+}
+.dark-mode .form-control.form-control-alt.is-invalid::-moz-placeholder {
+  color: #5a87a5;
+}
+.dark-mode .form-control.form-control-alt.is-invalid:-ms-input-placeholder {
+  color: #5a87a5;
 }
 .dark-mode .form-control.form-control-alt.is-invalid::placeholder {
   color: #5a87a5;
@@ -2691,6 +2714,12 @@ a.btn-block-option:focus,
   color: #fff;
   background-color: #308a5a;
 }
+.dark-mode .select2-container--default .select2-search__field::-moz-placeholder {
+  color: #5a87a5;
+}
+.dark-mode .select2-container--default .select2-search__field:-ms-input-placeholder {
+  color: #5a87a5;
+}
 .dark-mode .select2-container--default .select2-search__field::placeholder {
   color: #5a87a5;
 }
@@ -2825,6 +2854,4 @@ a.btn-block-option:focus,
 .dark-mode .dd-placeholder {
   border-color: #93d9b4;
   background: #1b2932;
-}
-
-/*# sourceMappingURL=xeco.css.map */
+}/*# sourceMappingURL=xeco.css.map */

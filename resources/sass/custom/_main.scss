@@ -138,3 +138,13 @@ button.select2-selection__choice__remove {
 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected {
 	background-color: $theme-xsmooth-primary !important;
 }
+
+.step-image .multiple {
+	border: white 4px solid;
+	border-radius: 4px;
+	padding: 1rem;
+
+	.active {
+		border: $theme-xsmooth-primary 4px solid;
+	}
+}

@@ -35,8 +35,8 @@
 					    $columns = 2;
 					    $grid = 6;
 					} else {
-					    $columns = 3;
-					    $grid = 4;
+					    $columns = 4;
+					    $grid = 3;
 					}
 					$rows = intval(ceil($question->kind->images / $columns));
 				@endphp
@@ -55,10 +55,12 @@
 					<div class="d-flex flex-wrap test-row">
 						@foreach ($question->parts as $part)
 							<div class="col-{{ $grid }}">
-								<div class="me-4 mb-4">
+								<div class="mb-5 text-center">
 									<img src="/uploads/{{ $part->image }}" data-id="{{ $question->getKey() }}"
 										data-sort-no="{{ $question->sort_no }}" data-key="{{ $part->key }}" alt=""
-										class="step-image img-fluid">
+										class="step-image img-fluid
+										@if ($question->kind->answers > 1) multiple @endif
+										">
 								</div>
 							</div>
 							@php($imageNo++)
@@ -157,7 +159,7 @@
 		function startTimers() {
 			let element = questions.get();
 			let counter = document.getElementById('step-countdown');
-			if (element.timeout === '0') {
+			if (element.timeout === 0) {
 				document.querySelectorAll('.step-countdown').forEach((counter) => {
 					counter.innerText = 'таймаут выключен';
 				});
