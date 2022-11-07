@@ -133,8 +133,6 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.se
 	//
 	Route::get('/player.body2', 'PlayerController@body2')->name('player.body2');
 	Route::post('/player/body2.store', 'PlayerController@body2_store')->name('player.body2.store');
-	//
-	Route::get('/player.precalc/{history_id}', 'PlayerController@precalc')->name('player.precalc');
 	Route::get('/player.calculate/{history_id}', 'PlayerController@calculate')->name('player.calculate');
 	Route::get('/player.mail/{history_id}', 'PlayerController@mail')->name('player.mail');
 

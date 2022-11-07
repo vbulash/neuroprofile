@@ -124,13 +124,7 @@ class ContractController extends Controller
 		return view('contracts.create', compact('client', 'mode'));
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param StoreContractRequest $request
-	 * @return RedirectResponse
-	 */
-	public function store(StoreContractRequest $request): RedirectResponse
+	public function store(StoreContractRequest $request)
 	{
 		$data = $request->all();
 		$data['mkey'] = Contract::generateKey($request->url);
@@ -159,7 +153,7 @@ class ContractController extends Controller
 		});
 
 		session()->put('success', "Контракт № $number создан<br/>Сгенерированы лицензии: $count");
-		return redirect()->route('contracts.index', ['sid' => session()->getId()]);
+		return redirect()->route('contracts.index');
 	}
 
 	/**

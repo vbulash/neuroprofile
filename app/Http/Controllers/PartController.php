@@ -85,7 +85,7 @@ class PartController extends Controller {
 	}
 
 	public function show(int $id) {
-		$this->edit($id, true);
+		return $this->edit($id, true);
 	}
 
 	public function edit(int $id, bool $show = false) {

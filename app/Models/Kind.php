@@ -14,6 +14,7 @@ class Kind extends Model implements FormTemplate, Titleable {
 		'images',	// Количество изображений в вопросе
 		'answers',	// Количество ответов в вопросе
 		'keys',		// Ключи вопросов
+		'cue',		// Подсказка к вопросам
 	];
 
 	public function questions(): HasMany {

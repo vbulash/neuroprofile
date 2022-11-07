@@ -26,6 +26,7 @@
 	@php
 		$fields = [];
 		$fields[] = ['name' => 'name', 'title' => 'Название', 'required' => true, 'type' => 'text', 'value' => $kind->name];
+		$fields[] = ['name' => 'cue', 'title' => 'Подсказка к вопросам', 'required' => true, 'type' => 'text', 'value' => $kind->cue];
 		$fields[] = ['name' => 'images', 'title' => 'Количество изображений вопроса', 'required' => true, 'type' => 'number', 'value' => $kind->images, 'min' => 2];
 		$fields[] = ['name' => 'answers', 'title' => 'Количество ответов вопроса', 'required' => true, 'type' => 'number', 'value' => $kind->answers, 'min' => 1];
 		if ($mode == config('global.edit')) {

@@ -26,6 +26,7 @@
 								<th>Наименование типа вопроса</th>
 								<th>Количество изображений в вопросе</th>
 								<th>Количество ответов в вопросе</th>
+								<th>Подсказка к вопросам</th>
 								<th>Действия</th>
 							</tr>
 						</thead>
@@ -98,6 +99,11 @@
 							data: 'answers',
 							name: 'answers',
 							responsivePriority: 2
+						},
+						{
+							data: 'cue',
+							name: 'cue',
+							responsivePriority: 3
 						},
 						{
 							data: 'action',

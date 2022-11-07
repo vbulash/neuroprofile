@@ -26,7 +26,7 @@
 @section('form.fields')
 	@php
 		$fields = [];
-		if (count($card) == 0)
+		if (!isset($card) || count($card) == 0)
             $fields[] = ['title' => 'В ходе тестирования не собиралась дополнительная информация о респонденте', 'type' => 'heading'];
         else {
             $fields[] = ['title' => 'В ходе тестирования собрана дополнительная информация о респонденте', 'type' => 'heading'];
@@ -45,7 +45,7 @@
         $fields[] = ['name' => 'test', 'title' => 'Название теста', 'type' => 'text', 'required' => false, 'disabled' => true, 'value' => $history->test->getTitle()];
 
         $content = json_decode($history->test->content);
-        $descriptions = $content->descriptions;
+        $descriptions = $content->descriptions ?? null;
 
         $fmptype_show = $descriptions->show ?? 0;
         if ($fmptype_show == 0) $label = 'Не назначен';

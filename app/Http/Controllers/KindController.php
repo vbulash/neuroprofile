@@ -55,6 +55,7 @@ class KindController extends Controller {
 		$kind->images = $request->images;
 		$kind->answers = $request->answers;
 		$kind->keys = $request->keys;
+		$kind->cue = $request->cue;
 		$kind->save();
 
 		session()->put('success', "Тип вопросов &laquo;{$kind->name}&raquo; создан");
@@ -77,7 +78,8 @@ class KindController extends Controller {
 			'name' => $request->name,
 			'images' => $request->images,
 			'answers' => $request->answers,
-			'keys' => $request->keys
+			'keys' => $request->keys,
+			'cue' => $request->cue,
 		]);
 
 		session()->put('success', "Тип вопросов &laquo;{$kind->name}&raquo; обновлён");

@@ -7,10 +7,11 @@ use App\Models\License;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class ClearBrokenHistory
-{
-	public function __invoke(): void
-	{
+class ClearBrokenHistory {
+	public function __invoke(): void {
+		if (env('RESEARCH'))
+			return;
+
 		$histories = History::whereNull('code');
 		$count = $histories->count();
 		if ($count > 0) {

@@ -27,19 +27,19 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use DateTime;
 
-class PlayerController extends Controller
-{
-	public function check(Request $request, string $mkey = null, string $test_key = null): bool
-	{
-//        Log::debug('mkey = ' . $mkey);
+class PlayerController extends Controller {
+	public function check(Request $request, string $mkey = null, string $test_key = null): bool {
+		//        Log::debug('mkey = ' . $mkey);
 //        Log::debug('test_key = ' . $test_key);
 		if (!$mkey) {
 			if (!session()->has('mkey')) {
 				Log::debug('Внутренняя ошибка: потерян мастер-ключ');
 				session()->flash('error', 'Внутренняя ошибка: потерян мастер-ключ');
 				return false;
-			} else return true;
+			} else
+				return true;
 		}
 		session()->forget('test');
 
@@ -58,7 +58,7 @@ class PlayerController extends Controller
 			// TODO Включить проверку URL
 			//$result = Str::startsWith($realUrl['scheme'] . '://' . $realUrl['host'], $contractUrl['scheme'] . '://' . $contractUrl['host']);
 			$result = true;
-//            Log::debug('contractUrl = ' . $contractUrl['scheme'] . '://' . $contractUrl['host'] .
+			//            Log::debug('contractUrl = ' . $contractUrl['scheme'] . '://' . $contractUrl['host'] .
 //                ' | realUrl = ' . $realUrl['scheme'] . '://' . $realUrl['host'] .
 //                ' | compare = ' . $result);
 			if (!$result) {
@@ -84,15 +84,13 @@ class PlayerController extends Controller
 		}
 	}
 
-	public function index(Request $request): Factory|View|Application
-	{
+	public function index(Request $request): Factory|View|Application {
 		$test = $request->test ?: session('test');
 		return view('front.index', compact('test'));
 	}
 
-	public function play(Request $request, string $mkey = null, string $test = null): Factory|View|RedirectResponse|Application
-	{
-		$mkey = $mkey ?: $request->{'mkey-modal'};
+	public function play(Request $request, string $mkey = null, string $test = null): Factory|View|RedirectResponse|Application {
+		$mkey = $mkey ?: $request->{ 'mkey-modal'};
 		$test = $test ?: $request->test;
 		if (!$this->check($request, $mkey, $test)) {
 			//Log::debug('player.play: ' . __METHOD__ . ':' . __LINE__);
@@ -121,8 +119,7 @@ class PlayerController extends Controller
 		}
 	}
 
-	public function card(Request $request): View|Factory|bool|RedirectResponse|Application
-	{
+	public function card(Request $request): View|Factory|bool|RedirectResponse|Application {
 		if (!$this->check($request)) {
 			//Log::debug('player.card: ' . __METHOD__ . ':' . __LINE__);
 			return redirect()->route('player.index', ['sid' => session()->getId()]);
@@ -145,84 +142,34 @@ class PlayerController extends Controller
 		return false;
 	}
 
-	public function store_pkey(PKeyRequest $request)
-	{
+	public function store_pkey(PKeyRequest $request) {
 		session()->forget('pkey');
 		session()->put('pkey', $request->pkey);
 		return redirect()->route('player.body2', ['question' => 0, 'sid' => session()->getId()]);
 	}
 
-	public function store_full_card(Request $request)
-	{
+	public function store_full_card(Request $request) {
 		$data = $request->except(['sid', 'privacy_policy', 'privacy_personal', '_token']);
 
 		session()->forget('pkey');
 		if ($request->has('pkey'))
-			session()->put('pkey', $request->pkey);;
+			session()->put('pkey', $request->pkey);
+		;
 		session()->put('card', $data);
 
 		//return redirect()->route('player.body', ['question' => 0, 'sid' => session()->getId()]);
 		return redirect()->route('player.body2', ['sid' => session()->getId()]);
 	}
 
-	public function body2(Request $request)
-	{
+	public function body2(Request $request) {
 		if (!$this->check($request)) {
 			$test = session('test');
 			//Log::debug('player.body2: ' . __METHOD__ . ':' . __LINE__);
-			return redirect()->route('player.index', ['sid' => session()->getId()])->with('error', session('error'));
+			return redirect()->route('player.index');
 		}
 
 		$test = session('test');
-		$set = $test->qset;
-
-		$view = DB::select(<<<EOS
-SELECT
-       t.id as tid,
-       q.id as qid,
-	   q.cue as cue,
-       q.sort_no as qsort_no,
-       q.learning as qlearning,
-       q.timeout as qtimeout,
-       q.image1 as qimage1,
-       q.image2 as qimage2,
-       q.value1 as qvalue1,
-       q.value2 as qvalue2
-FROM
-    tests AS t, sets AS s, questions as q
-WHERE
-    s.id = t.set_id AND
-    q.set_id = s.id AND
-    t.id = :tid
-ORDER BY
-    qsort_no
-EOS
-			, ['tid' => $test->getKey()]
-		);
-
-		$stack = [];
-		$steps = [];
-		$cuts = [];
-		foreach ($view as $item) {
-			$stack[] = $item->qid;
-			$step = [
-				'id' => $item->qid,
-				'sort_no' => $item->qsort_no,
-				'learning' => $item->qlearning,
-				'timeout' => env('QUESTION_TIMEOUT') ? $item->qtimeout : '0',
-				'quantity' => 2,
-				'cue' => $item->cue,
-			];
-			$cut = $step;
-
-			$images = [];
-			for ($iimage = 1; $iimage <= 2; $iimage++)
-				$images[$item->{'qimage' . $iimage}] = $item->{'qvalue' . $iimage};
-			$step['images'] = $images;
-
-			$steps[] = $step;
-			$cuts[] = $cut;
-		}
+		$questions = $test->set->questions;
 
 		// Блокировка лицензии для прохождения теста
 		$license = null;
@@ -231,98 +178,80 @@ EOS
 			$license = License::where('pkey', session('pkey'))->first();
 			if (!$license) {
 				session()->put('error', 'Не найдена лицензия, соответствующая персональному ключу ' . session('pkey'));
-				return redirect()->route('player.index', ['sid' => session()->getId()]);
+				return redirect()->route('player.index');
 			} elseif ($license->status != License::FREE) {
 				session()->put('error', 'Лицензия, соответствующая персональному ключу ' . session('pkey') . ', уже использована. Запросите новый персональный ключ');
-				return redirect()->route('player.index', ['sid' => session()->getId()]);
+				return redirect()->route('player.index');
 			}
-		} else {    // Найти любую свободную лицензию
+		} else { // Найти любую свободную лицензию
 			$license = $test->contract->licenses->where('status', License::FREE)->first();
 			if ($license) {
 				session()->put('pkey', $license->pkey);
 			} else {
 				session()->put('error', 'Свободные лицензии закончились, обратитесь в Persona');
 				//Log::debug(__METHOD__ . ':' . __LINE__);
-				return redirect()->route('player.index', ['sid' => session()->getId()]);
+				return redirect()->route('player.index');
 			}
 		}
 		$license->lock();
 
-		return view('front.body2', compact('test', 'steps', 'cuts', 'stack'));
+		return view('front.body2', compact('test', 'questions'));
 	}
 
-	public function body2_store(Request $request): RedirectResponse
-	{
+	public function body2_store(Request $request): RedirectResponse {
 		event(new ToastEvent('info', '', "Анализ результатов тестирования..."));
 
 		$test = session('test');
-		$data = $request->except(['sid', 'privacy_policy', 'privacy_personal']);
+		$data = $request->except(['privacy_policy', 'privacy_personal', '_token']);
 
 		// Фиксация лицензии по завершению тестирования
 		$license = License::all()->where('pkey', session('pkey'))->first();
 		$license->done();
 
-		// Зафиксировать историю теста и индивидуальные результаты прохождения вопросов в рамках транзакции
-		DB::transaction(function () use ($data, $license, $test) {
-			$history = History::create([
-				'test_id' => $test->getKey(),
-				'license_id' => $license->getKey(),
-				'card' => (session()->has('card') ? json_encode(session('card')) : null),
-			]);
-			$history->save();
-			session()->put('hid', $history->getKey());
+		// Зафиксировать историю теста и индивидуальные результаты прохождения вопросов
 
-			foreach ($data as $answer => $value) {
-				if (!Str::startsWith($answer, 'answer-')) continue;
-				$parts = explode('-', $answer);
-				$key = $parts[1];
-				// $key => $value
-				$hs = HistoryStep::create([
-					'history_id' => $history->getKey(),
-					'question_id' => $key,
-					'key' => $value,
-					'done' => date("Y-m-d H:i:s")
-				]);
-				$hs->save();
-			}
+		$history = new History();
+		$history->card = session()->has('card') ? json_encode(session('card')) : null;
+		$history->paid = false;
+		$history->test()->associate($test);
+		$history->license()->associate($license);
+		$history->save();
 
-			$history->update(['done' => date("Y-m-d H:i:s")]);
-		});
+		foreach ($data as $answer => $value) {
+			if (!Str::startsWith($answer, 'answer-')) continue;
+			$parts = explode('-', $answer);
+			$key = $parts[1];
 
-		$hid = session('hid');
-		session()->forget('hid');
-		return redirect()->route('player.precalc',
-			[
-				'test' => $test->getKey(),
-				'history_id' => $hid,
-				'sid' => session()->getId()
-			]
-		);
-	}
+			$step = new HistoryStep();
+			$step->key = $value;
+			$step->history()->associate($history);
+			$step->question()->associate($key);
+			$step->done = new DateTime();
+			$step->save();
+		}
+		$history->update(['done' => new DateTime()]);
 
-	public function precalc(int $history_id)
-	{
-		$history = History::findOrFail($history_id);
-		$test = $history->test;
-		return view('front.precalc', compact('test', 'history_id'));
+		return redirect()->route('player.calculate', ['history_id' => $history->getKey()]);
 	}
 
 	public function calculate(
 		int $history_id, bool $repeat = false, bool $historyMode = false, bool $pay = false
-	): View|Factory|Response|Application|RedirectResponse|ResponseFactory
-	{
+	) {
 		$history = History::findOrFail($history_id);
+		if (env('RESEARCH')) {
+			$test = $history->test;
+			return view('front.thanks', compact('test'));
+		}
 
-		if ($pay) $history->update(['paid' => true]);
+		if ($pay)
+			$history->update(['paid' => true]);
 
 		if (!$repeat) {
 			// Не переименовывать переменную - может использоваться в коде набора вопросов в eval()
-			$result = HistoryStep::where('history_id', $history_id)->pluck('key')->toArray();
+			$result = $history->steps()->pluck('key')->toArray();
 
 			$code = htmlspecialchars_decode(strip_tags($history->test->set->code));
-			$profile_code = eval($code);
-
-			$history->code = $profile_code;
+			$history->code = eval($code);
 			$history->update();
 			// Код нейропрофиля вычислен и сохранен
 		}
@@ -334,8 +263,10 @@ EOS
 		$maildata['client'] = $content->descriptions->client ?? false;
 		$maildata['$branding'] = $content->branding ?? false;
 
-		if ($maildata['mail']) $this->mailRespondent($history, $maildata, $historyMode);
-		if (!$pay && $maildata['client']) $this->mailClient($history, $maildata, $historyMode);
+		if ($maildata['mail'])
+			$this->mailRespondent($history, $maildata, $historyMode);
+		if (!$pay && $maildata['client'])
+			$this->mailClient($history, $maildata, $historyMode);
 
 		$card = (new CardComposer($history))->getCard();
 		$composer = new BlocksComposer($history);
@@ -348,19 +279,18 @@ EOS
 				event(new ToastEvent('success', '', 'Результаты тестирования отображаются на экране'));
 				if ($blocks)
 					return view('front.show', compact('card', 'blocks', 'profile', 'history'));
-			} else return redirect()->route('player.index', ['sid' => session()->getId()]);
+			} else
+				return redirect()->route('player.index', ['sid' => session()->getId()]);
 		}
 
 		return response(content: 'OK' . $history_id, status: 200);
 	}
 
-	public function iframe(): Factory|View|Application
-	{
+	public function iframe(): Factory|View|Application {
 		return view('front.iframe');
 	}
 
-	public function showDocument(Request $request, string $document, bool $mail = false): Factory|View|Application
-	{
+	public function showDocument(Request $request, string $document, bool $mail = false): Factory|View|Application {
 		$test = session('test');
 		$docviews = [
 			'privacy' => 'front.documents.privacy',
@@ -377,19 +307,18 @@ EOS
 	 * @param bool $historyMode
 	 * @return void
 	 */
-	private function mailRespondent(History $history, array $maildata, bool $historyMode): void
-	{
+	private function mailRespondent(History $history, array $maildata, bool $historyMode): void {
 		$card = (new CardComposer($history))->getCard();
 		$composer = new BlocksComposer($history);
 		$profile = $composer->getProfile(BlocksArea::MAIL);
 		$blocks = $composer->getBlocks($profile);
 
-		$recipient = (object)[
+		$recipient = (object) [
 			'name' =>
-				join(' ', [$card['Фамилия'] ?? null, $card['Имя'] ?? null, $card['Отчество'] ?? null]),
+			join(' ', [$card['Фамилия'] ?? null, $card['Имя'] ?? null, $card['Отчество'] ?? null]),
 			'email' => $card['Электронная почта']
 		];
-		$copy = (object)[
+		$copy = (object) [
 			'name' => env('MAIL_FROM_NAME'),
 			'email' => env('MAIL_FROM_ADDRESS')
 		];
@@ -405,7 +334,7 @@ EOS
 					->send($testResult);
 
 			event(new ToastEvent('success', '', 'Вам отправлено письмо с результатами тестирования'));
-//			session()->put('success', 'Вам отправлено письмо с результатами тестирования');
+			//			session()->put('success', 'Вам отправлено письмо с результатами тестирования');
 		} catch (Exception $exc) {
 			session()->put('error', "Ошибка отправки письма с результатами тестирования:<br/>" .
 				$exc->getMessage());
@@ -418,17 +347,17 @@ EOS
 	 * @param bool $historyMode
 	 * @return void
 	 */
-	private function mailClient(History $history, array $maildata, bool $historyMode): void
-	{
+	private function mailClient(History $history, array $maildata, bool $historyMode): void {
 		//  TODO Уточнить - нужно ли клиентское письмо в ходе повтора из истории
-		if ($historyMode) return;
+		if ($historyMode)
+			return;
 
 		$card = (new CardComposer($history))->getCard();
 		$composer = new BlocksComposer($history);
 		$profile = $composer->getProfile(BlocksArea::CLIENT);
 		$blocks = $composer->getBlocks($profile);
 
-		$recipient = (object)[
+		$recipient = (object) [
 			'name' => $history->test->contract->client->name,
 			'email' => $history->test->contract->client->email
 		];
@@ -447,12 +376,11 @@ EOS
 	/**
 	 * Результат оплаты в Робокасса
 	 */
-	public function paymentResult(Request $request)
-	{
-//		Log::debug('Robokassa result = ' . print_r($request->all(), true));
+	public function paymentResult(Request $request) {
+		//		Log::debug('Robokassa result = ' . print_r($request->all(), true));
 		$history_id = $request->InvId;
 		$session = $request->Shp_Session ?? null;
-		if($session && $session != session()->getId()) {
+		if ($session && $session != session()->getId()) {
 			session()->setId($session);
 			session()->start();
 		}
@@ -460,14 +388,13 @@ EOS
 		return $this->calculate($history_id, true, true, true);
 	}
 
-	public function paymentSuccess(Request $request)
-	{
-//		Log::debug('Robokassa success = ' . print_r($request->all(), true));
+	public function paymentSuccess(Request $request) {
+		//		Log::debug('Robokassa success = ' . print_r($request->all(), true));
 		$history_id = $request->InvId;
 		$session = $request->Shp_Session ?? null;
 		$history = History::findOrFail($history_id);
 		$test = $history->test;
-		if($session && $session != session()->getId()) {
+		if ($session && $session != session()->getId()) {
 			session()->setId($session);
 			session()->start();
 		}
@@ -480,13 +407,12 @@ EOS
 			return response(status: 200);
 	}
 
-	public function paymentFail(Request $request)
-	{
-//		Log::debug('Robokassa fail = ' . print_r($request->all(), true));
+	public function paymentFail(Request $request) {
+		//		Log::debug('Robokassa fail = ' . print_r($request->all(), true));
 		$history_id = $request->InvId;
 		$mail = ($request->Shp_Mail == '1');
 		$session = $request->Shp_Session ?? null;
-		if($session && $session != session()->getId()) {
+		if ($session && $session != session()->getId()) {
 			session()->setId($session);
 			session()->start();
 		}
@@ -506,8 +432,7 @@ EOS
 	 * Повтор электронных писем по итогам тестирования через историю (history.index)
 	 * @param Request $request
 	 */
-	public function mail(Request $request)
-	{
+	public function mail(Request $request) {
 		return $this->calculate($request->history, true, true);
 	}
 }

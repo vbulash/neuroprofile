@@ -18,8 +18,8 @@
 @endpush
 
 @section('content')
-	<form method="post" action="{{ route('player.body2.store') }}" enctype="multipart/form-data" {{--          onsubmit="if(submitted) return false; submitted = true; return true" --}}
-		name="play-form" id="play-form">
+	<form method="post" action="{{ route('player.body2.store') }}" enctype="multipart/form-data" name="play-form"
+		id="play-form">
 		@csrf
 		<input type="hidden" name="sid" value="{{ $sid }}">
 
@@ -28,58 +28,46 @@
 		{{--            <h4 class="mt-4 text-center">Загрузка вопросов теста...</h4> --}}
 		{{--        </div> --}}
 
-
-		@php
-			$rows = 1;
-			$columns = 2;
-			//				if(count($step['images']) == \App\Models\TestOptions::IMAGES2->value) {
-			//					$rows = 1;
-			//					$columns = 2;
-			//				} elseif(count($step['images']) == \App\Models\TestOptions::IMAGES4->value) {
-			//					$rows = 2;
-			//					$columns = 2;
-			//				}
-			$grid = intval(12 / $columns);
-		@endphp
-
 		<div>
-			@foreach ($steps as $step)
+			@foreach ($questions as $question)
 				@php
-					$keys = array_keys($step['images']);
+					if ($question->kind->images <= 2) {
+					    $columns = 2;
+					    $grid = 6;
+					} else {
+					    $columns = 3;
+					    $grid = 4;
+					}
+					$rows = intval(ceil($question->kind->images / $columns));
 				@endphp
 
-				<input type="hidden" name="answer-{{ $step['id'] }}" id="answer-{{ $step['id'] }}">
-				<div id="div-{{ $step['id'] }}" class="question-div" style="display: none">
+				<input type="hidden" name="answer-{{ $question->getKey() }}" id="answer-{{ $question->getKey() }}">
+				<div id="div-{{ $question->getKey() }}" class="question-div" style="display: none">
 					<h4 class="mt-4 mb-4 text-center">
-						@if (isset($step['cue']))
-							{{ $step['cue']}}
-						@elseif (isset($test->cue))
-							{{ $test->cue}}
-						@else
-							Выберите одно изображение
+						@if (isset($question->cue))
+							{!! $question->cue !!}
+						@elseif (isset($question->kind->cue))
+							{!! $question->kind->cue !!}
 						@endif
 					</h4>
-					@for ($row = 0; $row < $rows; $row++)
-						@php($imageNo = 0)
-						<div class="row test-row mb-4">
-							@for ($column = 0; $column < $columns; $column++)
-								<div class="col-{{ $grid }}">
-									<div class="@if ($column == 0) mr-4 @endif">
-										<img src="/uploads/{{ $keys[$imageNo] }}" data-id="{{ $step['id'] }}"
-											data-sort-no="{{ $step['sort_no'] }}" data-idx="{{ $imageNo + 1 }}"
-											data-key="{{ $step['images'][$keys[$imageNo]] }}" alt=""
-											class="step-image img-fluid">
-									</div>
+
+					@php($imageNo = 0)
+					<div class="d-flex flex-wrap test-row">
+						@foreach ($question->parts as $part)
+							<div class="col-{{ $grid }}">
+								<div class="me-4 mb-4">
+									<img src="/uploads/{{ $part->image }}" data-id="{{ $question->getKey() }}"
+										data-sort-no="{{ $question->sort_no }}" data-key="{{ $part->key }}" alt=""
+										class="step-image img-fluid">
 								</div>
-								@php($imageNo++)
-							@endfor
-						</div>
-					@endfor
+							</div>
+							@php($imageNo++)
+						@endforeach
+					</div>
 				</div>
 			@endforeach
 		</div>
 	</form>
-
 @endsection
 
 @push('scripts.injection')
@@ -95,17 +83,15 @@
 				this.stack = new Map();
 				let index = 0;
 
-				let json = {!! json_encode($cuts) !!};
-				while (index in json) {
-					let question = json[index++];
-					let element = {
-						id: question.id,
-						sort_no: question.sort_no,
-						learning: question.learning,
-						timeout: question.timeout
-					};
-					this.stack.set(element.id, element);
-				}
+				@foreach ($questions as $question)
+					this.stack.set({{ $question->getKey() }}, {
+						id: {{ $question->getKey() }},
+						sort_no: {{ $question->sort_no }},
+						learning: {{ $question->learning }},
+						timeout: {{ $question->timeout }},
+						answers: {{ $question->kind->answers }},
+					});
+				@endforeach
 			}
 
 			this.next = function() {
@@ -152,7 +138,6 @@
 		function prepareQuestion() {
 			let div = null;
 			window.pressed = false;
-			//console.log('window.pressed = ' + window.pressed.toString());
 			let element = questions.get();
 			if (window.slide !== undefined) { // Сначала нужно погасить предыдущие слайды
 				div = document.getElementById('div-' + window.slide);
@@ -191,7 +176,7 @@
 			});
 
 			document.querySelectorAll('.step-countdown').forEach((counter) => {
-							counter.innerText = element.timeout;
+				counter.innerText = element.timeout;
 			});
 			window.counter = parseInt(element.timeout);
 
@@ -206,7 +191,6 @@
 					document.getElementById('answer-' + element.id).value = 0;
 
 					if (element.learning === 0) {
-						// TODO Комментируем только на время отладки устранения дублей
 						questions.again();
 						prepareQuestion();
 						//console.log('real again:');
@@ -229,32 +213,32 @@
 		// Нажатие на картинку вопроса
 		document.querySelectorAll(".step-image").forEach((pic) => {
 			pic.addEventListener('click', event => {
-				// Предотвращение повторных нажатий
-				if (window.pressed) {
-					event.stopPropagation();
-					event.stopImmediatePropagation();
-					return;
-				}
-				//debugger;
-				window.pressed = true;
+				let question = questions.get();
+				if (question.answers == 1) {
+					// Предотвращение повторных нажатий
+					if (window.pressed) {
+						event.stopPropagation();
+						event.stopImmediatePropagation();
+						return;
+					}
+					window.pressed = true;
 
-				// Зафиксировать результат нажатия
-				let image = event.target;
+					// Зафиксировать результат нажатия
+					let image = event.target;
 
-				let qid = image.dataset.id;
-				// TODO постепенно перейти с использования ключа на использование номера картинки
-				document.getElementById('answer-' + qid).value = image.dataset.key;
-				//document.getElementById('answer-' + qid).value = image.dataset.idx;
+					let qid = image.dataset.id;
+					document.getElementById('answer-' + qid).value = image.dataset.key;
 
-				stopTimers();
+					stopTimers();
 
-				// Переключиться на следующий вопрос
-				if (questions.next()) {
-					prepareQuestion();
-					//console.log('next: ');
-					//console.log([...questions.stack.keys()]);
+					// Переключиться на следующий вопрос
+					if (questions.next()) {
+						prepareQuestion();
+					} else {
+						document.getElementById('play-form').submit();
+					}
 				} else {
-					document.getElementById('play-form').submit();
+					// TODO Отработать множественные ответы
 				}
 			}, false);
 		});
@@ -296,7 +280,6 @@
 		@endif
 
 		document.addEventListener("DOMContentLoaded", () => {
-			console.log('session at player = {!! session()->getId() !!}');
 			prepareQuestion();
 			window.submitted = false;
 		}, false);

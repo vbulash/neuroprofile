@@ -24,7 +24,8 @@ class StoreKindRequest extends FormRequest {
 			'name' => 'required',
 			'images' => ['required', 'numeric'],
 			'answers' => ['required', 'numeric'],
-			'keys' => ['required']
+			'keys' => ['required'],
+			'cue' => ['required'],
 		];
 	}
 
@@ -34,6 +35,7 @@ class StoreKindRequest extends FormRequest {
 			'images' => 'Количество изображений вопроса',
 			'answers' => 'Количество ответов в вопросе',
 			'keys' => 'Множество ключей вопросов',
+			'cue' => 'Подсказка к вопросам',
 		];
 	}
 }
