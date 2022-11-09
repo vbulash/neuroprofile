@@ -26,6 +26,9 @@ class StoreKindRequest extends FormRequest {
 			'answers' => ['required', 'numeric'],
 			'keys' => ['required'],
 			'cue' => ['required'],
+			'phone' => ['required', 'numeric'],
+			'tablet' => ['required', 'numeric'],
+			'desktop' => ['required', 'numeric'],
 		];
 	}
 
@@ -36,6 +39,9 @@ class StoreKindRequest extends FormRequest {
 			'answers' => 'Количество ответов в вопросе',
 			'keys' => 'Множество ключей вопросов',
 			'cue' => 'Подсказка к вопросам',
+			'phone' => 'Изображений в ряд (телефон)',
+			'tablet' => 'Изображений в ряд (планшет)',
+			'desktop' => 'Изображений в ряд (ноутбук / настольный компьютер)'
 		];
 	}
 }

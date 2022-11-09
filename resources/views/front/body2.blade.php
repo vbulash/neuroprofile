@@ -31,14 +31,10 @@
 		<div>
 			@foreach ($questions as $question)
 				@php
-					if ($question->kind->images <= 2) {
-					    $columns = 2;
-					    $grid = 6;
-					} else {
-					    $columns = 4;
-					    $grid = 3;
-					}
-					$rows = intval(ceil($question->kind->images / $columns));
+					$gridPhone = intval(ceil(12 / $question->kind->phone));
+					$gridTablet = intval(ceil(12 / $question->kind->tablet));
+					$gridDesktop = intval(ceil(12 / $question->kind->desktop));
+					$answers = intval($question->kind->answers);
 				@endphp
 
 				<input type="hidden" name="answer-{{ $question->getKey() }}" id="answer-{{ $question->getKey() }}">
@@ -52,20 +48,33 @@
 					</h4>
 
 					@php($imageNo = 0)
-					<div class="d-flex flex-wrap test-row">
+					<div class="d-flex flex-wrap">
 						@foreach ($question->parts as $part)
-							<div class="col-{{ $grid }}">
+							<div
+								class="col-xs-{{ $gridPhone }}
+							col-sm-{{ $gridPhone }}
+							col-md-{{ $gridPhone }}
+							col-lg-{{ $gridTablet }}
+							col-xl-{{ $gridDesktop }}">
 								<div class="mb-5 text-center">
-									<img src="/uploads/{{ $part->image }}" data-id="{{ $question->getKey() }}"
-										data-sort-no="{{ $question->sort_no }}" data-key="{{ $part->key }}" alt=""
-										class="step-image img-fluid
-										@if ($question->kind->answers > 1) multiple @endif
-										">
+									<img src="/uploads/{{ $part->image }}" data-id="{{ $question->getKey() }}" data-idx="{{ $part->getKey() }}"
+										data-key="{{ $part->key }}" alt=""
+										class="step-image img-fluid @if ($question->kind->answers > 1) multiple @else @endif">
 								</div>
 							</div>
 							@php($imageNo++)
 						@endforeach
 					</div>
+
+					{{-- <span>{{ $answers}}</span> --}}
+					@if ($answers > 1)
+						<div class="text-center mb-4">
+							<button type="button" class="btn btn-primary take-answer" id="take-answer-{{ $question->getKey() }}"
+								data-id="{{ $question->getKey() }}" disabled>
+								Зафиксировать выбор &gt;
+							</button>
+						</div>
+					@endif
 				</div>
 			@endforeach
 		</div>
@@ -74,6 +83,31 @@
 
 @push('scripts.injection')
 	<script>
+		String.prototype.replaceAt = function(index, replacement) {
+			return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+		}
+
+		function fixAnswer(id, key) {
+			// Предотвращение повторных нажатий
+			if (window.pressed) {
+				event.stopPropagation();
+				event.stopImmediatePropagation();
+				return;
+			}
+			window.pressed = true;
+
+			document.getElementById('answer-' + id).value = key;
+
+			stopTimers();
+
+			// Переключиться на следующий вопрос
+			if (questions.next()) {
+				prepareQuestion();
+			} else {
+				document.getElementById('play-form').submit();
+			}
+		}
+
 		// Очередь вопросов
 		function Questions() {
 			this.stack = null;
@@ -216,32 +250,49 @@
 		document.querySelectorAll(".step-image").forEach((pic) => {
 			pic.addEventListener('click', event => {
 				let question = questions.get();
-				if (question.answers == 1) {
-					// Предотвращение повторных нажатий
-					if (window.pressed) {
-						event.stopPropagation();
-						event.stopImmediatePropagation();
-						return;
+				if (question.answers == 1)
+					fixAnswer(event.target.dataset.id, event.target.dataset.key);
+				else { // Отработать множественные ответы
+					if (window.answers == undefined)
+						window.answers = new Map();
+
+					const id = event.target.dataset.id;
+					const idx = event.target.dataset.idx;
+					const key = event.target.dataset.key;
+					const classList = event.target.classList;
+					if (classList.contains('active')) {
+						classList.remove('active');
+						window.answers.delete(idx);
+
+					} else if (window.answers.size < question.answers) {
+						classList.add('active');
+						window.answers.set(idx, key);
 					}
-					window.pressed = true;
 
-					// Зафиксировать результат нажатия
-					let image = event.target;
-
-					let qid = image.dataset.id;
-					document.getElementById('answer-' + qid).value = image.dataset.key;
-
-					stopTimers();
-
-					// Переключиться на следующий вопрос
-					if (questions.next()) {
-						prepareQuestion();
-					} else {
-						document.getElementById('play-form').submit();
-					}
-				} else {
-					// TODO Отработать множественные ответы
+					document.getElementById('take-answer-' + id).disabled =
+						window.answers.size != question.answers;
 				}
+			}, false);
+		});
+
+		// Нажатие на кнопку фиксации множественного выбора
+		document.querySelectorAll(".take-answer").forEach((button) => {
+			button.addEventListener('click', (event) => {
+				const id = event.target.dataset.id;
+
+				debugger
+				let key = '';
+				window.answers.forEach(element => {
+					if (key === '')
+						key = element;
+					else
+						for (var i = 0; i < key.length; i++) {
+							if (element[i] === '*') continue;
+							else key = key.replaceAt(i, element[i]);
+						}
+				});
+
+				fixAnswer(id, key);
 			}, false);
 		});
 

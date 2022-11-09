@@ -105,9 +105,10 @@ class PartController extends Controller {
 		$question = Question::findOrFail($context['question']);
 		$part = Part::findOrFail($id);
 		$mediaPath = Part::uploadImage($request, 'image', $part->image);
-		if ($mediaPath)
+		if ($mediaPath) {
 			FileLink::link($mediaPath);
-		$part->image = $mediaPath;
+			$part->image = $mediaPath;
+		}
 		$part->key = $request->key;
 		$part->update();
 

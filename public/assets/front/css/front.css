@@ -12155,6 +12155,19 @@ form.was-validated select:valid ~ .select2-container--bootstrap4 .select2-select
     cursor: pointer;
 }
 
+img.step-image.multiple {
+	border: white 4px solid;
+	border-radius: 4px;
+	padding: 4px;
+}
+
+img.step-image.multiple.active {
+	border: #7351c0 4px solid;
+	border-radius: 4px;
+	padding: 4px;
+
+}
+
 nav.navbar {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -12162,6 +12175,7 @@ nav.navbar {
 .navbar-brand {
     padding-left: 2rem;
     padding-right: 2rem;
+	white-space: normal;
 }
 
 .navbar-brand a {

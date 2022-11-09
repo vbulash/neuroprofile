@@ -28,7 +28,7 @@
 		<echo message="mv .env.temp .env ${line.separator}" file="tmp.sh" append="true"/>
 		<echo message="composer install --optimize-autoloader --no-dev ${line.separator}" file="tmp.sh" append="true"/>
 		<echo message="npm update ${line.separator}" file="tmp.sh" append="true"/>
-		<echo message="npm run prod ${line.separator}" file="tmp.sh" append="true"/>
+		<echo message="npm run dev ${line.separator}" file="tmp.sh" append="true"/>
 		<echo message="php artisan optimize:clear ${line.separator}" file="tmp.sh" append="true"/>
 		<!-- Команда 'artisan config:cache' блокирует работу хелпера env() - всегда возвращает null -->
 		<!-- <echo message="php artisan config:cache ${line.separator}" file="tmp.sh" append="true"/> -->
