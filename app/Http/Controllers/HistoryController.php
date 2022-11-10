@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use Yajra\DataTables\DataTables;
 
 class HistoryController extends Controller {
@@ -219,31 +220,29 @@ EOS
 			foreach ($fields as $number => $field) {
 				if (isset($field['hidden']) || in_array($number, $temp)) {
 					$fieldList[] = $number;
-					$sql[] = $field['sql'];
+					if (!isset($field['special']))
+						$sql[] = $field['sql'];
 				}
 			}
 		}
 		$sql = implode(', ', $sql);
-
-		$histories = DB::select(sprintf(<<<EOS
-SELECT DISTINCT
-    %s
+		$sql = sprintf(<<<EOS
+SELECT DISTINCT %s
 FROM history, tests, sets, historysteps, questions, contracts, clients, licenses
 WHERE
-    tests.id = history.test_id AND
-    sets.id = tests.set_id AND
-    historysteps.history_id = history.id AND
-    questions.id = historysteps.question_id AND
-    contracts.id = tests.contract_id AND
-    clients.id = contracts.client_id AND
-    licenses.id = history.license_id AND
-    history.code IS NOT NULL AND
-    history.done BETWEEN :from AND :to
+	tests.id=history.test_id AND
+	sets.id=tests.set_id AND
+	historysteps.history_id=history.id AND
+	questions.id=historysteps.question_id AND
+	contracts.id=tests.contract_id AND
+	clients.id=contracts.client_id AND
+	licenses.id=history.license_id AND
+	history.done BETWEEN :from AND :to
 ORDER BY
-    history.id,
-    questions.sort_no
-EOS,
-			$sql),
+	history.id, questions.sort_no
+EOS, $sql);
+
+		$histories = DB::select($sql,
 			['from' => $from->format('Y-m-d G:i:s.u'), 'to' => $to->format('Y-m-d G:i:s.u')]
 		);
 
@@ -256,14 +255,16 @@ EOS,
 		$sheet = $spreadsheet->getActiveSheet();
 
 		$sheet->setCellValue('A1', sprintf("Подробная история прохождения тестирования за период %s%s",
-			$request->from ? 'с ' . $from->format('d.m.Y') : ' ',
+			$request->from ? 'с ' . $from->format('d.m.Y') . ' ' : ' ',
 			$request->to ? 'по ' . $to->format('d.m.Y') : ''));
 
-		$column = 0;
+		$column = 1;
 		$fields = History::getFields();
 		foreach ($fieldList as $number) {
+			if (isset($fields[$number]['special']))
+				continue;
 			$name = $fields[$number]['title'];
-			$letter = chr(ord('A') + $column++);
+			$letter = Coordinate::stringFromColumnIndex($column++);
 			$sheet->setCellValue($letter . '2', $name);
 		}
 		$sheet->freezePane('A3');
@@ -271,17 +272,29 @@ EOS,
 		$row = 2;
 		foreach ($histories as $history) {
 			$row++;
-			$column = 0;
+			$column = 1;
 			foreach ($fieldList as $number) {
-				$letter = chr(ord('A') + $column++);
-				try {
-					$result = eval($fields[$number]['code']);
-					if ($result == null || $result == 'null')
+				$letter = Coordinate::stringFromColumnIndex($column++);
+				if (isset($fields[$number]['special'])) {
+					$special = $fields[$number]['special'];
+					if ($special == 'answers') {
+						$sheet->setCellValue($letter . '2', 'Блок ответов на вопросы');
+						$hist = History::findOrFail($history->id);
+						foreach ($hist->steps as $step) {
+							$sheet->setCellValue($letter . $row, $step->key);
+							$letter = Coordinate::stringFromColumnIndex($column++);
+						}
+					}
+				} else
+					try {
+						$result = eval($fields[$number]['code']);
+						if ($result == null || $result == 'null')
+							$result = '';
+					} catch (Exception $exc) {
 						$result = '';
-				} catch (Exception $exc) {
-					$result = '';
-				}
-				$sheet->setCellValue($letter . $row, $result);
+					} finally {
+						$sheet->setCellValue($letter . $row, $result);
+					}
 			}
 		}
 
