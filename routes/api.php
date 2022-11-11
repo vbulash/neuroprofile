@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 
 // Утилиты
@@ -24,14 +24,20 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	// Генерация случайного пароля длиной length символов
 	Route::post('/get.password/{length}', 'HelperController@generatePassword')->name('api.get.password');
 	// Перевод в режим обслуживания
-	Route::get('/down', function() {
+	Route::get('/down', function () {
 		Artisan::call('down');
 		abort(503);
-	})->name('api.down');
+	}
+	)->name('api.down');
 	// Оплата
 	Route::get('/payment.result', 'PlayerController@paymentResult')->name('payment.result');
 	Route::get('/payment.success', 'PlayerController@paymentSuccess')->name('payment.success');
 	Route::get('/payment.fail', 'PlayerController@paymentFail')->name('payment.fail');
 	// Окружение
 	Route::get('/phpinfo', fn() => phpinfo())->name('api.phpinfo');
+});
+
+// Нейросеть
+Route::group(['namespace' => 'App\Http\Controllers\neural'], function () {
+	Route::post('/shot.done', 'NeuralController@shotDone')->name('neural.shot.done');
 });
