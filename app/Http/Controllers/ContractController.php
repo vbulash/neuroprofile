@@ -15,8 +15,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Exception as ExcelException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yajra\DataTables\DataTables;
@@ -244,10 +248,7 @@ class ContractController extends Controller
 		return true;
 	}
 
-	/**
-	 * @throws ExcelException
-	 */
-	public function licensesExport(int $id): RedirectResponse
+	public function licensesExport(int $id)
 	{
 		event(new ToastEvent('info', '', "Формирование списка лицензий..."));
 
@@ -261,6 +262,14 @@ class ContractController extends Controller
 			$contract->client->name, $contract->number));
 		$sheet->setCellValue('A2', 'Персональный ключ');
 		$sheet->setCellValue('B2', 'Статус лицензии');
+		for ($row = 1; $row <= 2; $row++)
+			for ($column = 1; $column <= 2; $column++) {
+				$letter = Coordinate::stringFromColumnIndex($column);
+				$style = $sheet->getStyle($letter . $row);
+				$style->getFont()->setBold(true);
+				$style->getFill()->setFillType(Fill::FILL_SOLID);
+				$style->getFill()->getStartColor()->setRGB('B0B3B2');
+			}
 		$sheet->freezePane('A3');
 
 		$row = 2;
@@ -283,21 +292,18 @@ class ContractController extends Controller
 			}
 			$sheet->setCellValue('B' . $row, $statusText);
 		}
-
-		ob_end_clean();
-		header('Content-Type: application/vnd.ms-excel; charset=utf-8');
-		header('Content-Disposition: attachment;filename="' . env('APP_NAME') . ' - Экспорт лицензий.xlsx' . '"');
-		header('Cache-Control: max-age=0');
-		ob_end_clean();
-
 		event(new ToastEvent('success', '', "Список лицензий сформирован"));
 
+		$tmpsheet = 'tmp/' . Str::uuid() . '.xlsx';
 		$writer = new Xlsx($spreadsheet);
 		try {
-			$writer->save('php://output');
+			Storage::makeDirectory('tmp');
+			$writer->save(Storage::path($tmpsheet));
+			return response()
+				->download(Storage::path($tmpsheet), env('APP_NAME') . ' - Экспорт лицензий.xlsx')
+				->deleteFileAfterSend();
 		} catch (SpreadsheetException $e) {
 		}
-
 		return redirect()->back();
 	}
 }

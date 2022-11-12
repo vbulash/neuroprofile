@@ -18,6 +18,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -196,12 +198,7 @@ EOS
 		return true;
 	}
 
-	/**
-	 * @param Request $request
-	 * @return RedirectResponse
-	 * @throws \PhpOffice\PhpSpreadsheet\Exception
-	 */
-	public function export(Request $request): RedirectResponse {
+	public function export(Request $request) {
 		event(new ToastEvent('info', '', "Формирование экспортных данных истории тестирования..."));
 
 		$from = $request->from ? new DateTime($request->from) : new DateTime('1969-07-01');
@@ -317,21 +314,18 @@ EOS, $sql);
 				$style->getFill()->setFillType(Fill::FILL_SOLID);
 				$style->getFill()->getStartColor()->setRGB('B0B3B2');
 			}
-
-		//		ob_end_clean();
-		header('Content-Type: application/vnd.ms-excel; charset=utf-8');
-		header('Content-Disposition: attachment;filename="' . env('APP_NAME') . ' - Экспорт истории тестирования.xlsx' . '"');
-		header('Cache-Control: max-age=0');
-		//		ob_end_clean();
-
 		event(new ToastEvent('success', '', "Данные для экспорта истории тестирования сформированы"));
 
+		$tmpsheet = 'tmp/' . Str::uuid() . '.xlsx';
 		$writer = new Xlsx($spreadsheet);
 		try {
-			$writer->save('php://output');
+			Storage::makeDirectory('tmp');
+			$writer->save(Storage::path($tmpsheet));
+			return response()
+				->download(Storage::path($tmpsheet), env('APP_NAME') . ' - Экспорт истории тестирования.xlsx')
+				->deleteFileAfterSend();
 		} catch (SpreadsheetException $e) {
 		}
-
 		return redirect()->back();
 	}
 }
