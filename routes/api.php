@@ -40,4 +40,5 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 // Нейросеть
 Route::group(['namespace' => 'App\Http\Controllers\neural'], function () {
 	Route::post('/shot.done', 'NeuralController@shotDone')->name('neural.shot.done');
+	Route::post('/net.done', 'NeuralController@netDone')->name('neural.net.done');
 });
