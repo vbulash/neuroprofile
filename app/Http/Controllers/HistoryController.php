@@ -22,6 +22,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use Yajra\DataTables\DataTables;
 
 class HistoryController extends Controller {
@@ -254,34 +255,45 @@ EOS, $sql);
 		$spreadsheet = new Spreadsheet();
 		$sheet = $spreadsheet->getActiveSheet();
 
-		$sheet->setCellValue('A1', sprintf("Подробная история прохождения тестирования за период %s%s",
-			$request->from ? 'с ' . $from->format('d.m.Y') . ' ' : ' ',
-			$request->to ? 'по ' . $to->format('d.m.Y') : ''));
+		$sheet->setCellValue('A1', sprintf("Подробная история прохождения тестирования за период с %s по %s",
+			$request->from ? $from->format('d.m.Y') : 'начала ведения истории',
+			$request->to ? $to->format('d.m.Y') : 'настоящее время'));
 
 		$column = 1;
+		$height = $row = 2;
 		$fields = History::getFields();
 		foreach ($fieldList as $number) {
-			if (isset($fields[$number]['special']))
-				continue;
-			$name = $fields[$number]['title'];
 			$letter = Coordinate::stringFromColumnIndex($column++);
-			$sheet->setCellValue($letter . '2', $name);
+			if (isset($fields[$number]['special'])) {
+				$special = $fields[$number]['special'];
+				if ($special == 'answers') {
+					$sheet->setCellValue($letter . $row, 'Блок ответов на вопросы');
+					$height = $row = 3;
+				}
+			} else {
+				$name = $fields[$number]['title'];
+				$sheet->setCellValue($letter . $row, $name);
+			}
 		}
-		$sheet->freezePane('A3');
+		$sheet->freezePane('A' . $row + 1);
 
-		$row = 2;
+		$width = 1;
 		foreach ($histories as $history) {
 			$row++;
 			$column = 1;
+			$answer = 1;
 			foreach ($fieldList as $number) {
+				$width = max($width, $column);
 				$letter = Coordinate::stringFromColumnIndex($column++);
 				if (isset($fields[$number]['special'])) {
 					$special = $fields[$number]['special'];
 					if ($special == 'answers') {
-						$sheet->setCellValue($letter . '2', 'Блок ответов на вопросы');
 						$hist = History::findOrFail($history->id);
 						foreach ($hist->steps as $step) {
+							if ($row == 4)
+								$sheet->setCellValue($letter . $row - 1, $answer++);
 							$sheet->setCellValue($letter . $row, $step->key);
+							$width = max($width, $column);
 							$letter = Coordinate::stringFromColumnIndex($column++);
 						}
 					}
@@ -297,6 +309,14 @@ EOS, $sql);
 					}
 			}
 		}
+		for ($row = 1; $row <= $height; $row++)
+			for ($column = 1; $column < $width; $column++) {
+				$letter = Coordinate::stringFromColumnIndex($column);
+				$style = $sheet->getStyle($letter . $row);
+				$style->getFont()->setBold(true);
+				$style->getFill()->setFillType(Fill::FILL_SOLID);
+				$style->getFill()->getStartColor()->setRGB('B0B3B2');
+			}
 
 		//		ob_end_clean();
 		header('Content-Type: application/vnd.ms-excel; charset=utf-8');

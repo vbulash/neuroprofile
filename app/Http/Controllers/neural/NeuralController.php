@@ -32,6 +32,12 @@ class NeuralController extends Controller {
 		IMAGETYPE_WEBP => 'WEBP',
 	];
 
+	/**
+	 * Приёмка фотографии от модуля съёмки
+	 *
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+	 */
 	public function shotDone(Request $request) {
 		// Декодировать запрос
 		$png = base64_decode($request->photo);
@@ -75,6 +81,12 @@ class NeuralController extends Controller {
 			], $status);
 	}
 
+	/**
+	 * Приёмка результата работы нейросети
+	 *
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+	 */
 	public function netDone(Request $request) {
 		return response('');
 	}
