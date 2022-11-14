@@ -41,6 +41,7 @@ class NeuralController extends Controller {
 	public function shotDone(Request $request) {
 		// Декодировать запрос
 		$png = base64_decode($request->photo);
+		$uuid = $request->uuid;
 		// Сохранить временную картинку .png для анализа формата
 		$tmpimage = 'tmp/' . Str::uuid() . '.png';
 		Storage::put($tmpimage, $png);
@@ -69,7 +70,7 @@ class NeuralController extends Controller {
 
 		// Сохранение целевого фото
 		if ($status == 200) {
-			$destfile = 'neural/faces/face1.png'; // TODO Сгенерировать реальные папку и имя изображения
+			$destfile = sprintf("neural/%s/%s_1.png", $uuid, $uuid);
 			Storage::move($tmpimage, $destfile);
 		}
 		Storage::delete($tmpimage);
@@ -88,6 +89,47 @@ class NeuralController extends Controller {
 	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
 	 */
 	public function netDone(Request $request) {
+		// Декодировать запрос
+		$result = json_encode($request->result);
+		$uuid = $request->uuid;
+		$codeMap = [
+			'A' => 'BD',
+			'B' => 'BH',
+			'C' => 'BO',
+			'D' => 'BP',
+			'F' => 'CI',
+			'G' => 'CO',
+			'H' => 'CS',
+			'K' => 'CV',
+			'L' => 'OA',
+			'M' => 'OI',
+			'N' => 'OO',
+			'O' => 'OV',
+			'P' => 'PA',
+			'Q' => 'PK',
+			'R' => 'PP',
+			'S' => 'PR',
+		];
+
+		$neural = [];
+		foreach ($result as $item)
+			$neural[] = [
+				'code' => $codeMap[$item->code],
+				'average' => $item->average,
+				'meansquare' => $item->meansquare,
+			];
+
+		$history = History::has('licenses')->where('pkey', $uuid);
+		if (!isset($history))
+			return response('Поврежден UUID', 204);
+
+		$card = json_encode($history->card);
+		unset($card['neural']);
+		$card['neural'] = $neural;
+		$history->update([
+			'card' => $card
+		]);
+
 		return response('');
 	}
 }
