@@ -328,8 +328,7 @@
 					X.toString() + ' / Y = ' + Y.toString());
 			}
 
-			// TODO вернуть mouse-tracker
-			//document.addEventListener('mousemove', mouseListener, false);
+			document.addEventListener('mousemove', mouseListener, false);
 		@endif
 
 		document.addEventListener("DOMContentLoaded", () => {
