@@ -2,6 +2,11 @@
 
 @section('content')
 	<div class="content">
+		{{-- <form action="{{ route('neural.net.done') }}" method="POST" id="form-net-done">
+			<input type="hidden" name="uuid" id="uuid" value="pkey_628c8b6d245934.76213557">
+			<input type="hidden" name="result" id="result">
+			<button type="submit" class="btn btn-primary">Проверка net.done</button>
+		</form> --}}
 		<!-- Статистика -->
 		<div class="row">
 			<div class="col">
@@ -9,8 +14,8 @@
 					<div class="block-header block-header-default">
 						<h3 class="block-title">Статистика тестирования</h3>
 						<div class="block-options">
-							<button type="button" class="btn-block-option" data-toggle="block-option"
-									data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+							<button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i
+									class="si si-arrow-up"></i></button>
 						</div>
 					</div>
 					<div class="block-content row">
@@ -22,8 +27,10 @@
 										<i class="fa fa-2x fa-chart-line text-white"></i>
 									</div>
 									<div class="ms-3 text-end">
-										<p class="text-white fs-3 fw-medium mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_ALL_COUNT] }}</p>
-										<p class="text-white mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_ALL_COUNT . '.letter'] }}</p>
+										<p class="text-white fs-3 fw-medium mb-0">
+											{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_ALL_COUNT] }}</p>
+										<p class="text-white mb-0">
+											{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_ALL_COUNT . '.letter'] }}</p>
 									</div>
 								</div>
 							</a>
@@ -37,8 +44,10 @@
 										<i class="fa fa-2x fa-coins text-white"></i>
 									</div>
 									<div class="ms-3 text-end">
-										<p class="text-white fs-3 fw-medium mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_PAID_COUNT] }}</p>
-										<p class="text-white mb-0">{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_PAID_COUNT . '.letter'] }}</p>
+										<p class="text-white fs-3 fw-medium mb-0">
+											{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_PAID_COUNT] }}</p>
+										<p class="text-white mb-0">
+											{{ $data[\App\Http\Controllers\ReportDataController::HISTORY_PAID_COUNT . '.letter'] }}</p>
 									</div>
 								</div>
 							</a>
@@ -57,8 +66,8 @@
 					<div class="block-header block-header-default">
 						<h3 class="block-title">Динамика тестирования</h3>
 						<div class="block-options">
-							<button type="button" class="btn-block-option" data-toggle="block-option"
-									data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+							<button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i
+									class="si si-arrow-up"></i></button>
 							</button>
 						</div>
 					</div>
@@ -82,8 +91,7 @@
 	<script>
 		let areaChartData = {
 			labels: null,
-			datasets: [
-				{
+			datasets: [{
 					label: 'Тестирований пройдено',
 					backgroundColor: '#007bff',
 					data: null
@@ -96,8 +104,12 @@
 			]
 		};
 		areaChartData.labels = [{!! "'" . implode("', '", $data[\App\Http\Controllers\ReportDataController::HISTORY_DYNAMIC_LABELS]) . "'" !!}];
-		areaChartData.datasets[0].data = [{{ implode(', ', $data[\App\Http\Controllers\ReportDataController::HISTORY_DYNAMIC_ALL_COUNT]) }}];
-		areaChartData.datasets[1].data = [{{ implode(', ', $data[\App\Http\Controllers\ReportDataController::HISTORY_DYNAMIC_PAID_COUNT]) }}];
+		areaChartData.datasets[0].data = [
+			{{ implode(', ', $data[\App\Http\Controllers\ReportDataController::HISTORY_DYNAMIC_ALL_COUNT]) }}
+		];
+		areaChartData.datasets[1].data = [
+			{{ implode(', ', $data[\App\Http\Controllers\ReportDataController::HISTORY_DYNAMIC_PAID_COUNT]) }}
+		];
 
 		let areaChartOptions = {
 			responsive: true,
@@ -128,6 +140,27 @@
 			data: areaChartData,
 			options: areaChartOptions
 		});
+
+// 		document.getElementById('form-net-done').addEventListener('submit', () => {
+// 			document.getElementById('result').value = `
+// [
+// 	{
+// 		"code": "A",
+// 		"average": 0.7,
+// 		"meansquare": 0.01
+// 	},
+// 	{
+// 		"code": "B",
+// 		"average": 0.1,
+// 		"meansquare": 0.2
+// 	},
+// 	{
+// 		"code": "C",
+// 		"average": 0.1,
+// 		"meansquare": 0.3
+// 	}
+// ]
+// 			`;
+// 		}, false);
 	</script>
 @endpush
-

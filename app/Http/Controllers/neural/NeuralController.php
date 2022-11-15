@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\neural;
 
 use App\Http\Controllers\Controller;
+use App\Models\History;
+use App\Models\License;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
@@ -90,7 +93,7 @@ class NeuralController extends Controller {
 	 */
 	public function netDone(Request $request) {
 		// Декодировать запрос
-		$result = json_encode($request->result);
+		$result = $request->result;
 		$uuid = $request->uuid;
 		$codeMap = [
 			'A' => 'BD',
@@ -114,17 +117,17 @@ class NeuralController extends Controller {
 		$neural = [];
 		foreach ($result as $item)
 			$neural[] = [
-				'code' => $codeMap[$item->code],
-				'average' => $item->average,
-				'meansquare' => $item->meansquare,
+				'code' => $codeMap[$item['code']],
+				'average' => $item['average'],
+				'meansquare' => $item['meansquare'],
 			];
 
-		$history = History::has('licenses')->where('pkey', $uuid);
+		$license = License::where('pkey', $uuid)->first();
+		$history = $license->history;
 		if (!isset($history))
 			return response('Поврежден UUID', 204);
 
-		$card = json_encode($history->card);
-		unset($card['neural']);
+		$card = json_decode($history->card, true);
 		$card['neural'] = $neural;
 		$history->update([
 			'card' => $card
