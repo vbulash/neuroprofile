@@ -37,6 +37,9 @@
 				@endphp
 
 				<input type="hidden" name="answer-{{ $question->getKey() }}" id="answer-{{ $question->getKey() }}">
+				@if ($mousetracking)
+					<input type="hidden" name="mousemove-{{ $question->getKey() }}" id="mousemove-{{ $question->getKey() }}">
+				@endif
 				<div id="div-{{ $question->getKey() }}" class="question-div" style="display: none">
 					<h4 class="mt-4 mb-4 text-center">
 						@if (isset($question->cue))
@@ -95,6 +98,10 @@
 			}
 			window.pressed = true;
 
+			@if ($mousetracking)
+				document.getElementById('mousemove-' + id).value = JSON.stringify(window.moves);
+				window.moves = [];
+			@endif
 			document.getElementById('answer-' + id).value = key;
 
 			stopTimers();
@@ -278,8 +285,6 @@
 		document.querySelectorAll(".take-answer").forEach((button) => {
 			button.addEventListener('click', (event) => {
 				const id = event.target.dataset.id;
-
-				debugger
 				let key = '';
 				window.answers.forEach(element => {
 					if (key === '')
@@ -323,14 +328,22 @@
 
 				let X = Math.min(event.pageX / window.innerWidth, 1);
 				let Y = Math.min(event.pageY / window.innerHeight, 1);
-				console.log((new Date()).getTime().toString() + ' : ID вопроса = ' + window.slide.toString() + ' : X = ' +
-					X.toString() + ' / Y = ' + Y.toString());
+				// console.log((new Date()).getTime().toString() + ' : ID вопроса = ' + window.slide.toString() + ' : X = ' +
+				// 	X.toString() + ' / Y = ' + Y.toString());
+				window.moves.push({
+					"timestamp": (new Date()).getTime(),
+					"x": X,
+					"y": Y
+				});
 			}
 
 			document.addEventListener('mousemove', mouseListener, false);
 		@endif
 
 		document.addEventListener("DOMContentLoaded", () => {
+			@if ($mousetracking)
+				window.moves = [];
+			@endif
 			prepareQuestion();
 			window.submitted = false;
 		}, false);

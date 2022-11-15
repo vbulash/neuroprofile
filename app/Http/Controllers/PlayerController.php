@@ -13,6 +13,7 @@ use App\Models\Contract;
 use App\Models\History;
 use App\Models\HistoryStep;
 use App\Models\License;
+use App\Models\MouseMove;
 use App\Models\Test;
 use App\Models\TestOptions;
 use Exception;
@@ -233,7 +234,20 @@ class PlayerController extends Controller {
 			$step->history()->associate($history);
 			$step->question()->associate($key);
 			$step->done = new DateTime();
+
 			$step->save();
+
+			$movekey = 'mousemove-' . $key;
+			if (isset($data[$movekey])) {
+				$moves = json_decode($data[$movekey]);
+				foreach ($moves as $item) {
+					$move = new MouseMove();
+					$move->time = $item->timestamp;
+					$move->x = $item->x;
+					$move->y = $item->y;
+					$step->moves()->save($move);
+				}
+			}
 		}
 		$history->update(['done' => new DateTime()]);
 

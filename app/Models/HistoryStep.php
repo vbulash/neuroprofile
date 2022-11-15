@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static where(string $string, int $history_id)
@@ -27,5 +28,9 @@ class HistoryStep extends Model
 	public function question()
 	{
 		return $this->belongsTo(Question::class);
+	}
+
+	public function moves(): HasMany {
+		return $this->hasMany(MouseMove::class, 'step_id');
 	}
 }
