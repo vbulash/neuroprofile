@@ -21,6 +21,8 @@ class StepMechanics implements Step
 		$heap['set_id'] = $data['set_id'];
 		$heap['step-mechanics'] = $data['step-mechanics'];
 		$options = intval($heap['options'] ?? 0);
+		if (isset($data['face']))
+			$options |= TestOptions::FACE_NEURAL->value;
 		if (isset($data['eye']))
 			$options |= TestOptions::EYE_TRACKING->value;
 		if (isset($data['mouse']))

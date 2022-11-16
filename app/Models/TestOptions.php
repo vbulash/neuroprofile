@@ -16,7 +16,7 @@ enum TestOptions: int
 	// Дополнительные опции механики
 	case EYE_TRACKING = 0b10000000;		// Eye-tracking (не реализовано)
 	case MOUSE_TRACKING = 0b100000000;	// Mouse-tracking
-	case RESERVED2 = 0b1000000000;
+	case FACE_NEURAL = 0b1000000000;	// Нейросеть (распознавание лица)
 	case RESERVED3 = 0b10000000000;
 	// Опции показа результата тестирования
 	case RESULTS_SHOW = 0b100000000000;		// Показать результат на экране респондента
