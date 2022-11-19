@@ -31,8 +31,8 @@ class TestController extends Controller
 			->addColumn('contract', fn($test) => sprintf("%s (%s)", $test->contract->number, $test->contract->client->name ))
 			->addColumn('set', fn ($test) => $test->set->name)
 			->addColumn('action', function ($test) {
-				$editRoute = route('tests.edit', ['test' => $test->getKey(), 'sid' => session()->getId()]);
-				$showRoute = route('tests.show', ['test' => $test->getKey(), 'sid' => session()->getId()]);
+				$editRoute = route('tests.edit', ['test' => $test->getKey()]);
+				$showRoute = route('tests.show', ['test' => $test->getKey()]);
 				$actions = '';
 
 				$actions .=
@@ -79,8 +79,7 @@ class TestController extends Controller
     {
 		return redirect()->route('steps.play', [
 			'mode' => config('global.create'),
-			'test' => 0,
-			'sid' => session()->getId()
+			'test' => 0
 		]);
     }
 
@@ -107,8 +106,7 @@ class TestController extends Controller
 		$mode = $show ? config('global.show') : config('global.edit');
 		return redirect()->route('steps.play', [
 			'mode' => $mode,
-			'test' => $id,
-			'sid' => session()->getId()
+			'test' => $id
 		]);
     }
 

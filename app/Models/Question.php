@@ -37,8 +37,8 @@ class Question extends Model implements FormTemplate, Titleable {
 		return [
 			'id' => 'question-create',
 			'name' => 'question-create',
-			'action' => route('questions.store', ['sid' => session()->getId()]),
-			'close' => route('questions.index', ['sid' => session()->getId()]),
+			'action' => route('questions.store'),
+			'close' => route('questions.index'),
 		];
 	}
 
@@ -46,8 +46,8 @@ class Question extends Model implements FormTemplate, Titleable {
 		return [
 			'id' => 'question-edit',
 			'name' => 'question-edit',
-			'action' => route('questions.update', ['question' => $this->getKey(), 'sid' => session()->getId()]),
-			'close' => route('questions.index', ['sid' => session()->getId()]),
+			'action' => route('questions.update', ['question' => $this->getKey()]),
+			'close' => route('questions.index'),
 		];
 	}
 }

@@ -33,9 +33,9 @@ class FMPTypeController extends Controller
 			->editColumn('active', fn ($fmptype) => $fmptype->active ? 'Активный' : 'Неактивный')
 			->addColumn('fact', fn ($fmptype) => $fmptype->profiles->count())
 			->addColumn('action', function ($fmptype) {
-				$editRoute = route('fmptypes.edit', ['fmptype' => $fmptype->getKey(), 'sid' => session()->getId()]);
-				$showRoute = route('fmptypes.show', ['fmptype' => $fmptype->getKey(), 'sid' => session()->getId()]);
-				$selectRoute = route('fmptypes.select', ['fmptype' => $fmptype->getKey(), 'sid' => session()->getId()]);
+				$editRoute = route('fmptypes.edit', ['fmptype' => $fmptype->getKey()]);
+				$showRoute = route('fmptypes.show', ['fmptype' => $fmptype->getKey()]);
+				$selectRoute = route('fmptypes.select', ['fmptype' => $fmptype->getKey()]);
 				$actions = '';
 
 				$actions .=
@@ -69,7 +69,7 @@ class FMPTypeController extends Controller
 		session()->forget('context');
 		session()->put('context', ['fmptype' => $id]);
 
-		return redirect()->route('profiles.index', ['sid' => session()->getId()]);
+		return redirect()->route('profiles.index');
 	}
 
     /**
@@ -114,7 +114,7 @@ class FMPTypeController extends Controller
 		$name = $fmptype->name;
 
 		session()->put('success', "Тип описания \"{$name}\" создан");
-		return redirect()->route('fmptypes.index', ['sid' => session()->getId()]);
+		return redirect()->route('fmptypes.index');
     }
 
     /**
@@ -160,7 +160,7 @@ class FMPTypeController extends Controller
 		$fmptype->update($data);
 
 		session()->put('success', "Тип описания \"{$name}\" обновлён");
-		return redirect()->route('fmptypes.index', ['sid' => session()->getId()]);
+		return redirect()->route('fmptypes.index');
     }
 
 	/**

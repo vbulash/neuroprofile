@@ -44,9 +44,9 @@ class ContractController extends Controller
 			->editColumn('start', fn($contract) => $contract->start->format('d.m.Y'))
 			->editColumn('end', fn($contract) => $contract->end->format('d.m.Y'))
 			->addColumn('action', function ($contract) {
-				$editRoute = route('contracts.edit', ['contract' => $contract->getKey(), 'sid' => session()->getId()]);
-				$showRoute = route('contracts.show', ['contract' => $contract->getKey(), 'sid' => session()->getId()]);
-				$selectRoute = route('contracts.select', ['contract' => $contract->getKey(), 'sid' => session()->getId()]);
+				$editRoute = route('contracts.edit', ['contract' => $contract->getKey()]);
+				$showRoute = route('contracts.show', ['contract' => $contract->getKey()]);
+				$selectRoute = route('contracts.select', ['contract' => $contract->getKey()]);
 
 				$actions = "<a href=\"$editRoute\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
 					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
@@ -80,7 +80,7 @@ class ContractController extends Controller
 		$context['contract'] = $id;
 		session()->put('context', $context);
 
-		return redirect()->route('contracts.info', ['sid' => session()->getId()]);
+		return redirect()->route('contracts.info');
 	}
 
 	public function info(): Factory|View|Application
@@ -223,7 +223,7 @@ class ContractController extends Controller
 		$number = $contract->number;
 
 		session()->put('success', "Контракт № $number обновлён " . ($count > 0 ? "<br/>Сгенерированы дополнительные лицензии: $count" : ""));
-		return redirect()->route('contracts.index', ['sid' => session()->getId()]);
+		return redirect()->route('contracts.index');
 	}
 
 	/**

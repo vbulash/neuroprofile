@@ -13,7 +13,6 @@
           enctype="multipart/form-data"
           name="step-form" id="step-form">
         @csrf
-        <input type="hidden" name="sid" value="{{ $sid }}">
         <h4 class="mt-4 mb-4 text-center">Выберите одно изображение</h4>
         @php
             if(!isset($step)) return;

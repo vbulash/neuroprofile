@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
 
 			// Valery Bulash - intended гибко, но ненадежно - сброс сессии в неожиданных местах
             // return redirect()->intended();
-			return redirect()->route('dashboard', ['sid' => session()->getId]);
+			return redirect()->route('dashboard');
         } catch(Exception $exc) {
 			session()->put('error', $exc->getMessage());
             event(new ToastEvent('error', '', $exc->getMessage()));

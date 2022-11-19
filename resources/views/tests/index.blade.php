@@ -12,7 +12,7 @@
 
 @section('interior')
 	<div class="block-header block-header-default">
-		<a href="{{ route('tests.create', ['sid' => session()->getId()]) }}"
+		<a href="{{ route('tests.create') }}"
 		   class="btn btn-primary">Добавить тест</a>
 	</div>
 	<div class="block-content p-4">

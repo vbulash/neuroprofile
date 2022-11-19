@@ -27,7 +27,6 @@
 		$fields = [
 			['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 			['name' => 'test', 'type' => 'hidden', 'value' => $test],
-			['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
 			['name' => 'step-branding', 'type' => 'hidden', 'value' => true]
 		];
 	@endphp

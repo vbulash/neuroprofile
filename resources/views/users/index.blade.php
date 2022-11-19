@@ -13,7 +13,7 @@
 @section('interior')
     <div class="block-header block-header-default">
         @hasrole('Администратор')
-        <a href="{{ route('users.create', ['sid' => session()->getId()]) }}"
+        <a href="{{ route('users.create') }}"
            class="btn btn-primary">Добавить пользователя</a>
         @endhasrole
     </div>

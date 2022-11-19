@@ -39,7 +39,7 @@
 						   href="javascript:void(0)"
 						   data-bs-toggle="modal" data-bs-target="#{{ $item['modal'] }}"
 					   @else
-						   href="{{ route($item['route'], ['sid' => session()->getId()]) }}"
+						   href="{{ route($item['route']) }}"
 					   @endif
 					>
 						<i class="nav-main-link-icon {{ $item['icon'] }}"></i>

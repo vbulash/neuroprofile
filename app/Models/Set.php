@@ -34,8 +34,8 @@ class Set extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'set-create',
 			'name' => 'set-create',
-			'action' => route('sets.store', ['sid' => session()->getId()]),
-			'close' => route('sets.index', ['sid' => session()->getId()]),
+			'action' => route('sets.store'),
+			'close' => route('sets.index'),
 		];
 	}
 
@@ -44,8 +44,8 @@ class Set extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'set-edit',
 			'name' => 'set-edit',
-			'action' => route('sets.update', ['set' => $this->getKey(), 'sid' => session()->getId()]),
-			'close' => route('sets.index', ['sid' => session()->getId()]),
+			'action' => route('sets.update', ['set' => $this->getKey()]),
+			'close' => route('sets.index'),
 		];
 	}
 }

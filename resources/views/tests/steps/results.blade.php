@@ -49,7 +49,6 @@
 		    }
 		    $fields[] = ['name' => 'mode', 'type' => 'hidden', 'value' => $mode];
 		    $fields[] = ['name' => 'test', 'type' => 'hidden', 'value' => $test];
-		    $fields[] = ['name' => 'sid', 'type' => 'hidden', 'value' => $sid];
 		    $fields[] = ['name' => 'step-results', 'type' => 'hidden', 'value' => true];
 		} else {
 		    $fields[] = ['title' => 'Показ результата тестирования на экране', 'type' => 'heading'];
@@ -75,7 +74,6 @@
 		    }
 		    $fields[] = ['name' => 'mode', 'type' => 'hidden', 'value' => $mode];
 		    $fields[] = ['name' => 'test', 'type' => 'hidden', 'value' => $test];
-		    $fields[] = ['name' => 'sid', 'type' => 'hidden', 'value' => $sid];
 		    $fields[] = ['name' => 'step-results', 'type' => 'hidden', 'value' => true];
 		}
 	@endphp

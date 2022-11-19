@@ -17,7 +17,7 @@
 @section('interior')
     <div class="block-header block-header-default">
 		<div>
-			<a href="{{ route('fmptypes.create', ['sid' => $sid]) }}" class="btn btn-primary mb-2">Добавить тип описания</a><br/>
+			<a href="{{ route('fmptypes.create') }}" class="btn btn-primary mb-2">Добавить тип описания</a><br/>
 			<small>Жирным шрифтом выделен эталонный тип описания - предпочтительный источник блоков для других типов описаний</small>
 		</div>
     </div>
@@ -85,7 +85,7 @@
                     },
                     processing: true,
                     serverSide: true,
-                    ajax: '{!! route('fmptypes.index.data', ['sid' => session()->getId()]) !!}',
+                    ajax: '{!! route('fmptypes.index.data') !!}',
                     responsive: true,
 					createdRow: function( row, data, dataIndex ) {
 						if (data.ethalon == 1)

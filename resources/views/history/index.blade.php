@@ -195,7 +195,7 @@
 						case 'mail':
 							$.ajax({
 								method: 'GET',
-								url: "{{ route('history.mail', ['sid' => $sid]) }}",
+								url: "{{ route('history.mail') }}",
 								data: {
 									history: event.target.dataset.id,
 								},

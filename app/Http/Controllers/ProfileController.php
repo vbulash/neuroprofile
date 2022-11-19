@@ -34,9 +34,9 @@ class ProfileController extends Controller
 		return Datatables::of($profiles)
 			->addColumn('fact', fn($profile) => $profile->blocks->count())
 			->addColumn('action', function ($profile) {
-				$editRoute = route('profiles.edit', ['profile' => $profile->getKey(), 'sid' => session()->getId()]);
-				$showRoute = route('profiles.show', ['profile' => $profile->getKey(), 'sid' => session()->getId()]);
-				$selectRoute = route('profiles.select', ['profile' => $profile->getKey(), 'sid' => session()->getId()]);
+				$editRoute = route('profiles.edit', ['profile' => $profile->getKey()]);
+				$showRoute = route('profiles.show', ['profile' => $profile->getKey()]);
+				$selectRoute = route('profiles.select', ['profile' => $profile->getKey()]);
 				$actions = '';
 
 				$actions .=
@@ -71,7 +71,7 @@ class ProfileController extends Controller
 		$context['profile'] = $id;
 		session()->put('context', $context);
 
-		return redirect()->route('blocks.index', ['sid' => session()->getId()]);
+		return redirect()->route('blocks.index');
 	}
 
 	/**
@@ -131,7 +131,7 @@ class ProfileController extends Controller
 		});
 
 		session()->put('success', "Нейропрофиль \"{$name}\" создан");
-		return redirect()->route('profiles.index', ['sid' => session()->getId()]);
+		return redirect()->route('profiles.index');
 	}
 
 	/**
@@ -175,7 +175,7 @@ class ProfileController extends Controller
 		$profile->update($request->except('_token'));
 
 		session()->put('success', "Нейропрофиль \"{$name}\" обновлён");
-		return redirect()->route('profiles.index', ['sid' => session()->getId()]);
+		return redirect()->route('profiles.index');
 	}
 
 	/**

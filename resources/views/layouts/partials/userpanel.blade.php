@@ -1,10 +1,13 @@
 <!-- User Dropdown -->
 <div class="dropdown d-inline-block">
 	@php
-		$roles = auth()->user()->getRoleNames()->join(" / ");
+		$roles = auth()
+		    ->user()
+		    ->getRoleNames()
+		    ->join(' / ');
 	@endphp
 	<button type="button" class="btn btn-alt-secondary" id="page-header-user-dropdown" data-bs-toggle="dropdown"
-			aria-haspopup="true" aria-expanded="false">
+		aria-haspopup="true" aria-expanded="false">
 		<i class="fa fa-fw fa-user d-sm-none"></i>
 		<span class="d-none d-sm-inline-block">
 			{{ auth()->user()->name }} ({{ $roles }})
@@ -20,11 +23,10 @@
 		</div>
 		<div class="p-2">
 			<a class="dropdown-item"
-			   href="{{ route('users.edit', [
-    'user' => auth()->user()->getKey(),
-    'sid' => session()->getId(),
-    'profile' => true
-    ]) }}">
+				href="{{ route('users.edit', [
+				    'user' => auth()->user()->getKey(),
+				    'profile' => true,
+				]) }}">
 				<i class="far fa-fw fa-user me-1"></i> Профиль
 			</a>
 

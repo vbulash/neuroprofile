@@ -7,7 +7,7 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Ссылочный блок', 'active' => true, 'context' => 'alias', 'link' => route('aliaslists.index', ['sid' => session()->getId()])],
+			['title' => 'Ссылочный блок', 'active' => true, 'context' => 'alias', 'link' => route('aliaslists.index')],
 			['title' => 'Блок-предок', 'active' => false, 'context' => 'parent'],
 		];
 	@endphp
@@ -76,7 +76,7 @@
 
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('aliaslists.index.data', ['sid' => session()->getId()]) !!}',
+					ajax: '{!! route('aliaslists.index.data') !!}',
 					responsive: true,
 					pageLength: 100,
 					columns: [

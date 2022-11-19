@@ -36,7 +36,7 @@ class KidController extends Controller
 			->editColumn('profile', fn ($block) => $block->profile->getTitle())
 			->addColumn('type', fn ($block) => BlockType::getName($block->type))
 			->addColumn('action', function ($block) {
-				$editRoute = route('kids.edit', ['kid' => $block->getKey(), 'sid' => session()->getId()]);
+				$editRoute = route('kids.edit', ['kid' => $block->getKey()]);
 				$actions = '';
 
 				$actions .=
@@ -109,8 +109,7 @@ class KidController extends Controller
 		$block = Block::findOrFail($id);
 		return redirect()->route('blocks.edit', [
 			'block' => $block->getKey(),
-			'kind' => BlockKind::Kid->value,
-			'sid' => session()->getId()
+			'kind' => BlockKind::Kid->value
 		]);
 	}
 
@@ -125,8 +124,7 @@ class KidController extends Controller
 
 		return redirect()->route('blocks.edit', [
 			'block' => $block->getKey(),
-			'kind' => BlockKind::Block->value,
-			'sid' => session()->getId()
+			'kind' => BlockKind::Block->value
 		]);
 	}
 }

@@ -21,17 +21,17 @@
 		$steps = match (strval($kind)) {
             \App\Models\BlockKind::Parent->value,
             \App\Models\BlockKind::Kid->value => [
-                ['title' => 'Блок-предок', 'active' => true, 'context' => 'parent', 'link' => route('parents.index', ['sid' => session()->getId()])],
+                ['title' => 'Блок-предок', 'active' => true, 'context' => 'parent', 'link' => route('parents.index')],
 				['title' => 'Блок-потомок', 'active' => false, 'context' => 'profile', 'link' => '#'],
 			],
 			\App\Models\BlockKind::Block->value => [
-				['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
-				['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
-				['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index', ['sid' => session()->getId()])],
+				['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
+				['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')],
+				['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index')],
 			]
 		};
         $close = match (strval($kind)) {
-            \App\Models\BlockKind::Parent->value => route('parents.index', ['sid' => session()->getId()]),
+            \App\Models\BlockKind::Parent->value => route('parents.index'),
             \App\Models\BlockKind::Block->value => form($block, $mode, 'close'),
             //\App\Models\BlockKind::Kid->value =>
         };

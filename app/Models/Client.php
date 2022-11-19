@@ -35,8 +35,8 @@ class Client extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'client-create',
 			'name' => 'client-create',
-			'action' => route('clients.store', ['sid' => session()->getId()]),
-			'close' => route('clients.index', ['sid' => session()->getId()]),
+			'action' => route('clients.store'),
+			'close' => route('clients.index'),
 		];
 	}
 
@@ -45,8 +45,8 @@ class Client extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'client-edit',
 			'name' => 'client-edit',
-			'action' => route('clients.update', ['client' => $this->getKey(), 'sid' => session()->getId()]),
-			'close' => route('clients.index', ['sid' => session()->getId()]),
+			'action' => route('clients.update', ['client' => $this->getKey()]),
+			'close' => route('clients.index'),
 		];
 	}
 }

@@ -212,14 +212,14 @@ class StepController extends Controller
 		}
 
 		session()->forget('heap');
-		return redirect()->route('tests.index', ['sid' => session()->getId()]);
+		return redirect()->route('tests.index');
 	}
 
 	public function close(Request $request)
 	{
 		self::clearCurrentStep();
 		session()->forget('heap');
-		return redirect()->route('tests.index', ['sid' => session()->getId()]);
+		return redirect()->route('tests.index');
 	}
 
 	/**

@@ -12,12 +12,12 @@
 	@php
 		if ($parent) {
             $steps = [
-				['title' => 'Ссылочный блок', 'active' => false, 'context' => 'alias', 'link' => route('aliaslists.index', ['sid' => session()->getId()])],
+				['title' => 'Ссылочный блок', 'active' => false, 'context' => 'alias', 'link' => route('aliaslists.index')],
 				['title' => 'Блок-предок', 'active' => true, 'context' => 'parent'],
 			];
         } else {
 			$steps = [
-				['title' => 'Ссылочный блок', 'active' => true, 'context' => 'alias', 'link' => route('aliaslists.index', ['sid' => session()->getId()])],
+				['title' => 'Ссылочный блок', 'active' => true, 'context' => 'alias', 'link' => route('aliaslists.index')],
 				['title' => 'Блок-предок', 'active' => false, 'context' => 'parent'],
 			];
         }
@@ -63,7 +63,7 @@
 @endsection
 
 @section('form.close')
-	{{ route('aliaslists.index', ['sid' => session()->getId()]) }}
+	{{ route('aliaslists.index') }}
 @endsection
 
 @push('css_after')

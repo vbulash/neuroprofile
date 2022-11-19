@@ -5,8 +5,8 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
-			['title' => 'Нейропрофиль', 'active' => true, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
+			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
+			['title' => 'Нейропрофиль', 'active' => true, 'context' => 'profile', 'link' => route('profiles.index')],
 			['title' => 'Блок описания', 'active' => false, 'context' => 'block'],
 		];
 	@endphp

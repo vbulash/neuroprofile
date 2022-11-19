@@ -37,8 +37,8 @@ class FMPType extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'fmptype-create',
 			'name' => 'fmptype-create',
-			'action' => route('fmptypes.store', ['sid' => session()->getId()]),
-			'close' => route('fmptypes.index', ['sid' => session()->getId()]),
+			'action' => route('fmptypes.store'),
+			'close' => route('fmptypes.index'),
 		];
 	}
 
@@ -47,8 +47,8 @@ class FMPType extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'fmptype-edit',
 			'name' => 'fmptype-edit',
-			'action' => route('fmptypes.update', ['fmptype' => $this->getKey(), 'sid' => session()->getId()]),
-			'close' => route('fmptypes.index', ['sid' => session()->getId()]),
+			'action' => route('fmptypes.update', ['fmptype' => $this->getKey()]),
+			'close' => route('fmptypes.index'),
 		];
 	}
 }

@@ -7,10 +7,10 @@
 @section('steps')
 	@php
 		$steps = [
-            ['title' => 'Блок-предок', 'active' => false, 'context' => 'parent', 'link' => route('parents.index', ['sid' => session()->getId()])],
-			['title' => 'Блок-потомок', 'active' => true, 'context' => 'profile', 'link' => route('kids.index', ['sid' => session()->getId()])],
+            ['title' => 'Блок-предок', 'active' => false, 'context' => 'parent', 'link' => route('parents.index')],
+			['title' => 'Блок-потомок', 'active' => true, 'context' => 'profile', 'link' => route('kids.index')],
 		];
-        $close = route('kids.index', ['sid' => session()->getId()]);
+        $close = route('kids.index');
 	@endphp
 @endsection
 

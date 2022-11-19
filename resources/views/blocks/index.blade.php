@@ -7,8 +7,8 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
-			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
+			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
+			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')],
 			['title' => 'Блок описания', 'active' => true, 'context' => 'block'],
 		];
 	@endphp
@@ -27,19 +27,19 @@
 						$buttons = [
 							[
 								'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Text->value),
-								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Text->value, 'sid' => $sid])
+								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Text->value])
 							],
 							[
 								'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Alias->value),
-								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Alias->value, 'sid' => $sid])
+								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Alias->value])
 							],
 							[
 								'title' => \App\Models\BlockType::getName(\App\Models\BlockType::Image->value),
-								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Image->value, 'sid' => $sid])
+								'action' => route('blocks.create', ['type' => \App\Models\BlockType::Image->value])
 							],
 							[
 								'title' => 'Клонирование существующего блока',
-								'action' => route('clones.index', ['sid' => $sid])
+								'action' => route('clones.index')
 							],
 						];
 					@endphp
@@ -83,7 +83,7 @@
 		<script>
 			function clickUp(id) {
 				$.post({
-					url: "{{ route('blocks.up', ['sid' => $sid]) }}",
+					url: "{{ route('blocks.up') }}",
 					data: {
 						id: id,
 					},
@@ -96,7 +96,7 @@
 
 			function clickDown(id) {
 				$.post({
-					url: "{{ route('blocks.down', ['sid' => $sid]) }}",
+					url: "{{ route('blocks.down') }}",
 					data: {
 						id: id,
 					},
@@ -165,7 +165,7 @@
 					},
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('blocks.index.data', ['sid' => session()->getId()]) !!}',
+					ajax: '{!! route('blocks.index.data') !!}',
 					responsive: true,
 					columns: [
 						{data: 'sort_no', name: 'sort_no', responsivePriority: 1},

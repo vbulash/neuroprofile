@@ -47,8 +47,8 @@ class BlockController extends Controller
 		return Datatables::of($blocks)
 			->addColumn('type', fn($block) => BlockType::getName($block->type))
 			->addColumn('action', function ($block) use ($first, $last, $count) {
-				$editRoute = route('blocks.edit', ['block' => $block->getKey(), 'sid' => session()->getId()]);
-				$showRoute = route('blocks.show', ['block' => $block->getKey(), 'sid' => session()->getId()]);
+				$editRoute = route('blocks.edit', ['block' => $block->getKey()]);
+				$showRoute = route('blocks.show', ['block' => $block->getKey()]);
 				$actions = '';
 
 				$actions .=
@@ -118,9 +118,9 @@ class BlockController extends Controller
 	public function create(Request $request)
 	{
 		return match (intval($request->type)) {
-			BlockType::Text->value => redirect()->route('texts.create', ['sid' => session()->getId()]),
-			BlockType::Image->value => redirect()->route('images.create', ['sid' => session()->getId()]),
-			BlockType::Alias->value => redirect()->route('aliases.create', ['sid' => session()->getId()]),
+			BlockType::Text->value => redirect()->route('texts.create'),
+			BlockType::Image->value => redirect()->route('images.create'),
+			BlockType::Alias->value => redirect()->route('aliases.create'),
 		};
 	}
 
@@ -148,7 +148,7 @@ class BlockController extends Controller
 		session()->put('success',
 			BlockType::getName($block->type) .
 			" &laquo;{$name}&raquo; создан.<br/>Блоки перенумерованы");
-		return redirect()->route('blocks.index', ['sid' => session()->getId()]);
+		return redirect()->route('blocks.index');
 	}
 
 	/**
@@ -179,20 +179,17 @@ class BlockController extends Controller
 			BlockType::Text->value => redirect()->route('texts.edit', [
 				'text' => $block->getKey(),
 				'kind' => $request->has('kind') ? $request->kind : BlockKind::Block->value,
-				'mode' => $mode,
-				'sid' => session()->getId()
+				'mode' => $mode
 			]),
 			BlockType::Image->value => redirect()->route('images.edit', [
 				'image' => $block->getKey(),
 				'kind' => $request->has('kind') ? $request->kind : BlockKind::Block->value,
-				'mode' => $mode,
-				'sid' => session()->getId()
+				'mode' => $mode
 			]),
 			BlockType::Alias->value => redirect()->route('aliases.edit', [
 				'alias' => $block->getKey(),
 				'kind' => $request->has('kind') ? $request->kind : BlockKind::Block->value,
-				'mode' => $mode,
-				'sid' => session()->getId()
+				'mode' => $mode
 			]),
 		};
 	}
@@ -231,7 +228,7 @@ class BlockController extends Controller
 			BlockKind::Kid->value => 'kids.index',
 			default => 'dashboard'
 		};
-		return redirect()->route($route, ['sid' => session()->getId()]);
+		return redirect()->route($route);
 	}
 
 	/**

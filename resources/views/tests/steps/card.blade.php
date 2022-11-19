@@ -23,7 +23,6 @@
         $fields = [
 			['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 			['name' => 'test', 'type' => 'hidden', 'value' => $test],
-			['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
 			['name' => 'step-card', 'type' => 'hidden', 'value' => true]
 		];
         if (($auth & \App\Models\TestOptions::AUTH_FULL->value) ||

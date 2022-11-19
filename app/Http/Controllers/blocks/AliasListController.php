@@ -36,14 +36,12 @@ class AliasListController extends Controller
 			->addColumn('action', function ($block) {
 				$showRoute = route('aliaslists.show', [
 					'alias' => $block->getKey(),
-					'parent' => false,
-					'sid' => session()->getId()
+					'parent' => false
 				]);
 				$selectRoute = route('aliaslists.show', [
 					'alias' => $block->parent->getKey(),
 					'parent' => true,
-					'kid' => $block->getKey(),
-					'sid' => session()->getId()
+					'kid' => $block->getKey()
 				]);
 				$actions = '';
 

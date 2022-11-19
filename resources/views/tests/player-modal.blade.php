@@ -17,7 +17,7 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <form role="form" method="get" action="{{ route('player.play', ['sid' => $sid]) }}"
+                <form role="form" method="get" action="{{ route('player.play') }}"
                       id="start-player">
                     @csrf
                     <input type="hidden" name="mkey-modal" id="mkey-modal">
@@ -45,7 +45,7 @@
 
         $(function () {
             $.get({
-                url: "{{ route('tests.list', ['sid' => $sid]) }}",
+                url: "{{ route('tests.list') }}",
                 method: 'GET',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: (data) => {

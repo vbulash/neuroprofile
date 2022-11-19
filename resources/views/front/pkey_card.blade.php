@@ -7,7 +7,6 @@
 @section('content')
     <form method="get" action="{{ route('player.pkey') }}">
         @csrf
-        <input type="hidden" name="sid" value="{{ $sid }}">
         <div class="form-group">
             <label for="pkey">Введите персональный ключ для начала тестирования</label>
             <input type="text" name="pkey" id="pkey"

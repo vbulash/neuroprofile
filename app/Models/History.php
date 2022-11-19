@@ -121,8 +121,8 @@ class History extends Model implements FormTemplate {
 		return [
 			'id' => 'history-edit',
 			'name' => 'history-edit',
-			'action' => route('history.update', ['history' => $this->getKey(), 'sid' => session()->getId()]),
-			'close' => route('history.index', ['sid' => session()->getId()]),
+			'action' => route('history.update', ['history' => $this->getKey()]),
+			'close' => route('history.index'),
 		];
 	}
 

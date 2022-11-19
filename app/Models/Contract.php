@@ -114,8 +114,8 @@ class Contract extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'contract-create',
 			'name' => 'contract-create',
-			'action' => route('contracts.store', ['sid' => session()->getId()]),
-			'close' => route('contracts.index', ['sid' => session()->getId()]),
+			'action' => route('contracts.store'),
+			'close' => route('contracts.index'),
 		];
 	}
 
@@ -124,8 +124,8 @@ class Contract extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'contract-edit',
 			'name' => 'contract-edit',
-			'action' => route('contracts.update', ['contract' => $this->getKey(), 'sid' => session()->getId()]),
-			'close' => route('contracts.index', ['sid' => session()->getId()]),
+			'action' => route('contracts.update', ['contract' => $this->getKey()]),
+			'close' => route('contracts.index'),
 		];
 	}
 }

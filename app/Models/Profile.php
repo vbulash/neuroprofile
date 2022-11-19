@@ -41,8 +41,8 @@ class Profile extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'profile-create',
 			'name' => 'profile-create',
-			'action' => route('profiles.store', ['sid' => session()->getId()]),
-			'close' => route('profiles.index', ['sid' => session()->getId()]),
+			'action' => route('profiles.store'),
+			'close' => route('profiles.index'),
 		];
 	}
 
@@ -51,8 +51,8 @@ class Profile extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'profile-edit',
 			'name' => 'profile-edit',
-			'action' => route('profiles.update', ['profile' => $this->getKey(), 'sid' => session()->getId()]),
-			'close' => route('profiles.index', ['sid' => session()->getId()]),
+			'action' => route('profiles.update', ['profile' => $this->getKey()]),
+			'close' => route('profiles.index'),
 		];
 	}
 

@@ -94,7 +94,7 @@ class PlayerController extends Controller {
 		$test = $test ?: $request->test;
 		if (!$this->check($request, $mkey, $test)) {
 			//Log::debug('player.play: ' . __METHOD__ . ':' . __LINE__);
-			return redirect()->route('player.index', ['sid' => session()->getId()])->with('error', session('error'));
+			return redirect()->route('player.index');
 		} else {
 			$test = session('test');
 			$content = json_decode($test->content, true);
@@ -122,13 +122,13 @@ class PlayerController extends Controller {
 	public function card(Request $request): View|Factory|bool|RedirectResponse|Application {
 		if (!$this->check($request)) {
 			//Log::debug('player.card: ' . __METHOD__ . ':' . __LINE__);
-			return redirect()->route('player.index', ['sid' => session()->getId()]);
+			return redirect()->route('player.index');
 		} else {
 			session()->forget('pkey');
 			$test = session('test');
 
 			if ($test->options & TestOptions::AUTH_GUEST->value) {
-				//return redirect()->route('player.body', ['question' => 0, 'sid' => session()->getId()]);
+				//return redirect()->route('player.body', ['question' => 0]);
 				return redirect()->route('player.body2');
 			} elseif ($test->options & (TestOptions::AUTH_FULL->value | TestOptions::AUTH_MIX->value)) {
 				$content = json_decode($test->content, true);
@@ -145,11 +145,11 @@ class PlayerController extends Controller {
 	public function store_pkey(PKeyRequest $request) {
 		session()->forget('pkey');
 		session()->put('pkey', $request->pkey);
-		return redirect()->route('player.body2', ['question' => 0, 'sid' => session()->getId()]);
+		return redirect()->route('player.body2', ['question' => 0]);
 	}
 
 	public function store_full_card(Request $request) {
-		$data = $request->except(['sid', 'privacy_policy', 'privacy_personal', '_token']);
+		$data = $request->except(['privacy_policy', 'privacy_personal', '_token']);
 
 		session()->forget('pkey');
 		if ($request->has('pkey'))
@@ -157,8 +157,8 @@ class PlayerController extends Controller {
 		;
 		session()->put('card', $data);
 
-		//return redirect()->route('player.body', ['question' => 0, 'sid' => session()->getId()]);
-		return redirect()->route('player.body2', ['sid' => session()->getId()]);
+		//return redirect()->route('player.body', ['question' => 0]);
+		return redirect()->route('player.body2');
 	}
 
 	public function body2(Request $request) {
@@ -169,7 +169,7 @@ class PlayerController extends Controller {
 		}
 
 		$test = session('test');
-		$questions = $test->set->questions;
+		$questions = $test->set->questions->sortBy('sort_no');
 
 		// Блокировка лицензии для прохождения теста
 		$license = null;
@@ -280,7 +280,7 @@ class PlayerController extends Controller {
 				if ($blocks)
 					return view('front.show', compact('card', 'blocks', 'profile', 'history'));
 			} else
-				return redirect()->route('player.index', ['sid' => session()->getId()]);
+				return redirect()->route('player.index');
 		}
 
 		return response(content: 'OK' . $history_id, status: 200);
@@ -348,7 +348,6 @@ class PlayerController extends Controller {
 	 * @return void
 	 */
 	private function mailClient(History $history, array $maildata, bool $historyMode): void {
-		//  TODO Уточнить - нужно ли клиентское письмо в ходе повтора из истории
 		if ($historyMode)
 			return;
 

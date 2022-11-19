@@ -10,9 +10,8 @@
 
 @section('content')
 	<form role="form" method="get"
-		  action="{{ route('player.card', ['sid' => $sid]) }}">
+		  action="{{ route('player.card') }}">
 		@csrf
-		<input type="hidden" name="sid" value="{{ $sid }}">
 		<input type="hidden" name="nextblock" value="card">
 		<div id="safari" style="display: none">
 			<div id="mac" class="mb-4">

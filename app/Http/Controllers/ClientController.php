@@ -39,9 +39,9 @@ class ClientController extends Controller
 				}
 			})
 			->addColumn('action', function ($client) {
-				$editRoute = route('clients.edit', ['client' => $client->getKey(), 'sid' => session()->getId()]);
-				$showRoute = route('clients.show', ['client' => $client->getKey(), 'sid' => session()->getId()]);
-				$selectRoute = route('clients.select', ['client' => $client->getKey(), 'sid' => session()->getId()]);
+				$editRoute = route('clients.edit', ['client' => $client->getKey()]);
+				$showRoute = route('clients.show', ['client' => $client->getKey()]);
+				$selectRoute = route('clients.select', ['client' => $client->getKey()]);
 				$actions = '';
 
 				$actions .=
@@ -75,7 +75,7 @@ class ClientController extends Controller
 		session()->forget('context');
 		session()->put('context', ['client' => $id]);
 
-		return redirect()->route('contracts.index', ['sid' => session()->getId()]);
+		return redirect()->route('contracts.index');
 	}
 
 	/**
@@ -114,7 +114,7 @@ class ClientController extends Controller
 		$name = $client->name;
 
 		session()->put('success', "Клиент \"{$name}\" создан");
-		return redirect()->route('clients.index', ['sid' => session()->getId()]);
+		return redirect()->route('clients.index');
     }
 
     /**
@@ -155,7 +155,7 @@ class ClientController extends Controller
 		$client->update($request->all());
 
 		session()->put('success', "Клиент \"{$name}\" обновлён");
-		return redirect()->route('clients.index', ['sid' => session()->getId()]);
+		return redirect()->route('clients.index');
     }
 
 	/**

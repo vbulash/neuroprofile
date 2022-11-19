@@ -171,7 +171,7 @@ EOS
 			session()->put('success', "Запись истории тестирования № {$history->getKey()} обновлена");
 		}
 
-		return redirect()->route('history.index', ['sid' => session()->getId()]);
+		return redirect()->route('history.index');
 	}
 
 	/**

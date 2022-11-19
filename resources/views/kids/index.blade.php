@@ -7,7 +7,7 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Блок-предок', 'active' => false, 'context' => 'parent', 'link' => route('parents.index', ['sid' => session()->getId()])],
+			['title' => 'Блок-предок', 'active' => false, 'context' => 'parent', 'link' => route('parents.index')],
 			['title' => 'Блок-потомок', 'active' => true, 'context' => 'profile'],
 		];
 	@endphp
@@ -80,7 +80,7 @@
 
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('kids.index.data', ['sid' => session()->getId()]) !!}',
+					ajax: '{!! route('kids.index.data') !!}',
 					responsive: true,
 					pageLength: 100,
 					columns: [

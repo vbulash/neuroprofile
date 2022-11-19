@@ -65,7 +65,7 @@ class RegisteredUserController extends Controller
 			session()->put('success',
 				"Зарегистрирован новый пользователь \"{$name}\" с ролью \"{$role}\"");
 
-			return redirect()->route('dashboard', ['sid' => session()->getId()]);
+			return redirect()->route('dashboard');
 		} catch (Exception $exc) {
 			session()->put('error',
 				"Ошибка регистрации нового пользователя: {$exc->getMessage()}");

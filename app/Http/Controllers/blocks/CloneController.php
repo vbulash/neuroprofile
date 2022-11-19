@@ -37,12 +37,10 @@ class CloneController extends Controller
 			->addColumn('action', function ($block) {
 				$showRoute = route('clones.show', [
 					'mode' => config('global.show'),
-					'block' => $block->getKey(),
-					'sid' => session()->getId()
+					'block' => $block->getKey()
 				]);
 				$cloneRoute = route('clones.clone', [
-					'source' => $block->getKey(),
-					'sid' => session()->getId()
+					'source' => $block->getKey()
 				]);
 				$actions = '';
 
@@ -117,7 +115,7 @@ class CloneController extends Controller
 		session()->put('success',
 			BlockType::getName($to->type) .
 			" &laquo;{$name}&raquo; создан клонированием.<br/>Блоки перенумерованы");
-		return redirect()->route('blocks.edit', ['block' => $to->getKey(), 'sid' => session()->getId()]);
+		return redirect()->route('blocks.edit', ['block' => $to->getKey()]);
 	}
 
 	private function reorder(array $ids): void

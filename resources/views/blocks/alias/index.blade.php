@@ -7,9 +7,9 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
-			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
-			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index', ['sid' => session()->getId()])],
+			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
+			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')],
+			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index')],
 		];
 	@endphp
 @endsection
@@ -62,7 +62,7 @@
 
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('aliases.index.data', ['sid' => session()->getId()]) !!}',
+					ajax: '{!! route('aliases.index.data') !!}',
 					responsive: true,
 					pageLength: 50,
 					order: [[5, 'desc'], [3, 'asc'], [4, 'asc'], [1, 'asc']],

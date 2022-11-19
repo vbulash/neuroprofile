@@ -34,7 +34,6 @@
 				['name' => 'options', 'type' => 'hidden', 'value' => 0],
 				['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 				['name' => 'test', 'type' => 'hidden', 'value' => $test],
-				['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
 				['name' => 'step-core', 'type' => 'hidden', 'value' => true]
 			];
         } else {
@@ -53,7 +52,6 @@
 				['name' => 'options', 'type' => 'hidden', 'value' => $heap['options']],
 				['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 				['name' => 'test', 'type' => 'hidden', 'value' => $test],
-				['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
 				['name' => 'step-core', 'type' => 'hidden', 'value' => true]
 			];
             if ($mode != config('global.create')) {

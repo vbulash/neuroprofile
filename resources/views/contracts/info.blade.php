@@ -7,8 +7,8 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index', ['sid' => session()->getId()])],
-			['title' => 'Контракт', 'active' => false, 'context' => 'contract', 'link' => route('contracts.index', ['sid' => session()->getId()])],
+			['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index')],
+			['title' => 'Контракт', 'active' => false, 'context' => 'contract', 'link' => route('contracts.index')],
 			['title' => 'Информация о контракте', 'active' => true, 'context' => 'info'],
 		];
 	@endphp
@@ -31,7 +31,7 @@
 						</tr>
 					@endforeach
 				</table>
-				<a href="{{ route('contracts.licenses.export', ['contract' => $contract->getKey(), 'sid' => session()->getId()]) }}"
+				<a href="{{ route('contracts.licenses.export', ['contract' => $contract->getKey()]) }}"
 				   type="button" class="btn btn-primary">Экспорт лицензий</a>
 			</div>
 			{{--			<div class="block-content block-content-full block-content-sm bg-body-light fs-sm">--}}

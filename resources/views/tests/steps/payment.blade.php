@@ -30,7 +30,6 @@
 				['name' => 'sum', 'title' => 'Сумма оплаты за платный результат тестирования Robokassa', 'required' => true, 'type' => 'number', 'min' => 1, 'value' => 500],
 				['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 				['name' => 'test', 'type' => 'hidden', 'value' => $test],
-				['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
 				['name' => 'step-payment', 'type' => 'hidden', 'value' => true]
 			];
         } else {
@@ -41,7 +40,6 @@
 				['name' => 'sum', 'title' => 'Сумма оплаты за платный результат тестирования Robokassa', 'required' => true, 'type' => 'number', 'value' => $heap['robokassa']['sum'] ?? '', 'min' => 1],
 				['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 				['name' => 'test', 'type' => 'hidden', 'value' => $test],
-				['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
 				['name' => 'step-payment', 'type' => 'hidden', 'value' => true]
 			];
         }

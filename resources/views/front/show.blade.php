@@ -16,7 +16,7 @@
 	{{--	@if(auth()->check())--}}
 	{{--		<h3>--}}
 	{{--			Проверка теста завершена, можете вернуться в Платформу--}}
-	{{--			<a href="{{ route('admin.index', ['sid' => session()->getId()]) }}" class="btn btn-primary">Возврат на главную страницу</a>--}}
+	{{--			<a href="{{ route('admin.index') }}" class="btn btn-primary">Возврат на главную страницу</a>--}}
 	{{--		</h3>--}}
 	{{--	@endif--}}
 

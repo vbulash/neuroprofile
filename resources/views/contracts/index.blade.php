@@ -7,7 +7,7 @@
 @section('steps')
     @php
         $steps = [
-            ['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index', ['sid' => session()->getId()])],
+            ['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index')],
             ['title' => 'Контракт', 'active' => true, 'context' => 'contract'],
             ['title' => 'Информация о контракте', 'active' => false, 'context' => 'info'],
         ];
@@ -16,7 +16,7 @@
 
 @section('interior')
     <div class="block-header block-header-default">
-        <a href="{{ route('contracts.create', ['sid' => $sid]) }}" class="btn btn-primary">Добавить контракт</a>
+        <a href="{{ route('contracts.create') }}" class="btn btn-primary">Добавить контракт</a>
     </div>
     <div class="block-content p-4">
         @if ($count)

@@ -16,7 +16,7 @@ class StepMechanics implements Step
 
     public function store(Request $request): bool
 	{
-		$data = $request->except(['_token', '_method', 'mode', 'sid', 'test']);
+		$data = $request->except(['_token', '_method', 'mode', 'test']);
 		$heap = session('heap') ?? [];
 		$heap['set_id'] = $data['set_id'];
 		$heap['step-mechanics'] = $data['step-mechanics'];

@@ -17,7 +17,7 @@ class StepCard implements Step
 
     public function store(Request $request): bool
 	{
-		$data = $request->except(['_token', '_method', 'mode', 'sid', 'test']);
+		$data = $request->except(['_token', '_method', 'mode', 'test']);
 		$heap = session('heap') ?? [];
 		$heap['step-card'] = $data['step-card'];
 		$heap['card'] = $data;

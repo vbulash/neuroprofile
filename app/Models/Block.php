@@ -34,8 +34,8 @@ class Block extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'block-create',
 			'name' => 'block-create',
-			'action' => route('blocks.store', ['sid' => session()->getId()]),
-			'close' => route('blocks.index', ['sid' => session()->getId()]),
+			'action' => route('blocks.store'),
+			'close' => route('blocks.index'),
 		];
 	}
 
@@ -44,8 +44,8 @@ class Block extends Model implements FormTemplate, Titleable
 		return [
 			'id' => 'block-edit',
 			'name' => 'block-edit',
-			'action' => route('blocks.update', ['block' => $this->getKey(), 'sid' => session()->getId()]),
-			'close' => route('blocks.index', ['sid' => session()->getId()]),
+			'action' => route('blocks.update', ['block' => $this->getKey()]),
+			'close' => route('blocks.index'),
 		];
 	}
 

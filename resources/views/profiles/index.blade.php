@@ -7,7 +7,7 @@
 @section('steps')
     @php
         $steps = [
-            ['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
+            ['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
             ['title' => 'Нейропрофиль', 'active' => true, 'context' => 'profile'],
             ['title' => 'Блок описания', 'active' => false, 'context' => 'block'],
         ];
@@ -19,7 +19,7 @@
         @if ($codeCount == 0)
             Полный комплект нейропрофилей (все коды введены), добавление нового нейропрофиля невозможно
         @else
-            <a href="{{ route('profiles.create', ['sid' => $sid]) }}" class="btn btn-primary">Добавить
+            <a href="{{ route('profiles.create') }}" class="btn btn-primary">Добавить
                 нейропрофиль</a>
         @endif
     </div>
@@ -84,7 +84,7 @@
                     },
                     processing: true,
                     serverSide: true,
-                    ajax: '{!! route('profiles.index.data', ['sid' => session()->getId()]) !!}',
+                    ajax: '{!! route('profiles.index.data') !!}',
                     responsive: true,
                     pageLength: 25,
                     columns: [

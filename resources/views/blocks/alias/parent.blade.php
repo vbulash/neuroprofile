@@ -11,9 +11,9 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index', ['sid' => session()->getId()])],
-			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index', ['sid' => session()->getId()])],
-			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index', ['sid' => session()->getId()])],
+			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
+			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')],
+			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index')],
 		];
 	@endphp
 @endsection
@@ -40,7 +40,7 @@
 @endsection
 
 @section('form.close')
-	{{ route('aliases.create', ['sid' => session()->getId()]) }}
+	{{ route('aliases.create') }}
 @endsection
 
 @push('css_after')

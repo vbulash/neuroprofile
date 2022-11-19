@@ -55,16 +55,13 @@ SQL);
 			->addColumn('updated_at', fn ($block) => $block->model->updated_at->format('d.m.Y H:i:s'))
 			->addColumn('action', function ($block) {
 				$editRoute = route('parents.edit', [
-					'parent' => $block->model->getKey(),
-					'sid' => session()->getId()
+					'parent' => $block->model->getKey()
 				]);
 				$showRoute = route('parents.show', [
-					'parent' => $block->model->getKey(),
-					'sid' => session()->getId()
+					'parent' => $block->model->getKey()
 				]);
 				$selectRoute = route('parents.select', [
-					'parent' => $block->model->getKey(),
-					'sid' => session()->getId()
+					'parent' => $block->model->getKey()
 				]);
 				$actions = '';
 
@@ -94,7 +91,7 @@ SQL);
 		session()->forget('context');
 		session()->put('context', ['parent' => $id]);
 
-		return redirect()->route('kids.index', ['sid' => session()->getId()]);
+		return redirect()->route('kids.index');
 	}
 
 	/**
@@ -120,9 +117,8 @@ SQL);
 		$block = Block::findOrFail($id);
 		return redirect()->route('blocks.show', [
 			'block' => $block->getKey(),
-			'kind' => BlockKind::Parent->value,
-			'sid' => session()->getId()]
-		);
+			'kind' => BlockKind::Parent->value
+		]);
 	}
 
 	/**
@@ -137,8 +133,7 @@ SQL);
 		$block = Block::findOrFail($id);
 		return redirect()->route('blocks.edit', [
 			'block' => $block->getKey(),
-			'kind' => BlockKind::Parent->value,
-			'sid' => session()->getId()
+			'kind' => BlockKind::Parent->value
 		]);
 	}
 }

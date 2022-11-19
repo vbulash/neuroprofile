@@ -54,12 +54,10 @@ SQL,
 				$showRoute = route('aliases.edit', [
 					'mode' => config('global.show'),
 					'alias' => $block->id,
-					'block_id' => $block->id,
-					'sid' => session()->getId()
+					'block_id' => $block->id
 				]);
 				$linkRoute = route('aliases.create', [
-					'block_id' => $block->id,
-					'sid' => session()->getId()
+					'block_id' => $block->id
 				]);
 				$actions = '';
 

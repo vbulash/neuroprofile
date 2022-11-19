@@ -53,8 +53,8 @@ class User extends Authenticatable implements FormTemplate, Titleable
 		return [
 			'id' => 'user-create',
 			'name' => 'user-create',
-			'action' => route('users.store', ['sid' => session()->getId()]),
-			'close' => route('users.index', ['sid' => session()->getId()]),
+			'action' => route('users.store'),
+			'close' => route('users.index'),
 		];
 	}
 
@@ -63,8 +63,8 @@ class User extends Authenticatable implements FormTemplate, Titleable
 		return [
 			'id' => 'user-edit',
 			'name' => 'user-edit',
-			'action' => route('users.update', ['user' => $this->getKey(), 'sid' => session()->getId()]),
-			'close' => route('users.index', ['sid' => session()->getId()]),
+			'action' => route('users.update', ['user' => $this->getKey()]),
+			'close' => route('users.index'),
 		];
 	}
 

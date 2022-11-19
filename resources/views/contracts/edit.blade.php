@@ -5,8 +5,8 @@
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index', ['sid' => session()->getId()])],
-			['title' => 'Контракт', 'active' => true, 'context' => 'contract', 'link' => route('clients.index', ['sid' => session()->getId()])],
+			['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index')],
+			['title' => 'Контракт', 'active' => true, 'context' => 'contract', 'link' => route('clients.index')],
 			['title' => 'Информация о контракте', 'active' => false, 'context' => 'info'],
 		];
 	@endphp

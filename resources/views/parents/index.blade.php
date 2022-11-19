@@ -61,7 +61,7 @@
 
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('parents.index.data', ['sid' => session()->getId()]) !!}',
+					ajax: '{!! route('parents.index.data') !!}',
 					responsive: true,
 					pageLength: 100,
 					columns: [

@@ -31,7 +31,6 @@
 				['name' => 'mouse', 'title' => 'Mouse-tracking (отслеживание движения курсора мыши)', 'required' => false, 'type' => 'checkbox'],
 				['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 				['name' => 'test', 'type' => 'hidden', 'value' => $test],
-				['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
 				['name' => 'step-mechanics', 'type' => 'hidden', 'value' => true]
 			];
         } else {
@@ -44,7 +43,6 @@
 				['name' => 'mouse', 'title' => 'Mouse-tracking (отслеживание движения курсора мыши)', 'required' => false, 'type' => 'checkbox', 'value' => $options & \App\Models\TestOptions::MOUSE_TRACKING->value],
 				['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
 				['name' => 'test', 'type' => 'hidden', 'value' => $test],
-				['name' => 'sid', 'type' => 'hidden', 'value' => $sid],
 				['name' => 'step-mechanics', 'type' => 'hidden', 'value' => true]
 			];
         }

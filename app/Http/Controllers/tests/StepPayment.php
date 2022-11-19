@@ -17,7 +17,7 @@ class StepPayment implements Step
 
     public function store(Request $request): bool
 	{
-		$data = $request->except(['_token', '_method', 'mode', 'sid', 'test']);
+		$data = $request->except(['_token', '_method', 'mode', 'test']);
 		$heap = session('heap') ?? [];
 		$heap['step-payment'] = $data['step-payment'];
 		$options = intval($heap['options'] ?? 0);

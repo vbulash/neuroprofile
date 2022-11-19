@@ -21,7 +21,6 @@
 	<form method="post" action="{{ route('player.body2.store') }}" enctype="multipart/form-data" name="play-form"
 		id="play-form">
 		@csrf
-		<input type="hidden" name="sid" value="{{ $sid }}">
 
 		<!-- Preloader -->
 		{{--        <div class="preloader"> --}}

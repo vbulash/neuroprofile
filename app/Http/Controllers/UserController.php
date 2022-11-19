@@ -32,8 +32,8 @@ class UserController extends Controller
 		return Datatables::of(User::all())
 			->editColumn('role', fn ($user) => $user->getRoleNames()->toArray())
 			->addColumn('action', function ($user) {
-				$editRoute = route('users.edit', ['user' => $user->id, 'sid' => session()->getId()]);
-				$showRoute = route('users.show', ['user' => $user->id, 'sid' => session()->getId()]);
+				$editRoute = route('users.edit', ['user' => $user->id]);
+				$showRoute = route('users.show', ['user' => $user->id]);
 				$actions = '';
 
 				if (auth()->user()->can('users.edit'))
@@ -101,7 +101,7 @@ class UserController extends Controller
 
 		session()->put('success',
 			"Зарегистрирован новый пользователь \"{$name}\"");
-		return redirect()->route('users.index', ['sid' => session()->getId()]);
+		return redirect()->route('users.index');
 	}
 
 	/**
@@ -153,7 +153,7 @@ class UserController extends Controller
 		session()->put('success',
 			"Пользователь \"{$name}\" обновлён");
 
-		return redirect()->route('users.index', ['sid' => session()->getId()]);
+		return redirect()->route('users.index');
 	}
 
 	/**

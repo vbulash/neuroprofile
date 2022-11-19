@@ -5,7 +5,7 @@
 @section('steps')
 	@php
 		$steps = [
-            ['title' => 'История', 'active' => true, 'context' => 'history', 'link' => route('history.index', ['sid' => session()->getId()])],
+            ['title' => 'История', 'active' => true, 'context' => 'history', 'link' => route('history.index')],
 		];
 	@endphp
 @endsection

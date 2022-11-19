@@ -25,7 +25,7 @@
 @endsection
 
 @section('form.close')
-	{{ route('steps.close', ['sid' => session()->getId()]) }}
+	{{ route('steps.close') }}
 @endsection
 
 @section('form.back')
@@ -33,7 +33,6 @@
 		$params = [
 			'mode' => $mode,
 			'test' => $test,
-			'sid' => $sid
 		];
         if (isset($test))
             $params['test'] = $test;

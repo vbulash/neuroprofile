@@ -21,7 +21,7 @@
 					<div class="block-content row">
 						<!-- Всего тестов пройдено -->
 						<div class="col-md-6 col-xl-3">
-							<a class="block block-rounded block-link-shadow bg-success" href="{{ route('history.index', ['sid' => $sid]) }}">
+							<a class="block block-rounded block-link-shadow bg-success" href="{{ route('history.index') }}">
 								<div class="block-content block-content-full d-flex align-items-center justify-content-between">
 									<div>
 										<i class="fa fa-2x fa-chart-line text-white"></i>
@@ -38,7 +38,7 @@
 						<!-- /.Всего тестов пройдено -->
 						<!-- Всего тестов оплачено -->
 						<div class="col-md-6 col-xl-3">
-							<a class="block block-rounded block-link-shadow bg-warning" href="{{ route('history.index', ['sid' => $sid]) }}">
+							<a class="block block-rounded block-link-shadow bg-warning" href="{{ route('history.index') }}">
 								<div class="block-content block-content-full d-flex align-items-center justify-content-between">
 									<div>
 										<i class="fa fa-2x fa-coins text-white"></i>
