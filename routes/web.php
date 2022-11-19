@@ -40,6 +40,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::get('/questions.select/{question}', 'QuestionController@select')->name('questions.select');
 	Route::post('/questions.up', 'QuestionController@up')->name('questions.up');
 	Route::post('/questions.down', 'QuestionController@down')->name('questions.down');
+	Route::post('/questions.duplicate', 'QuestionController@duplicate')->name('questions.duplicate');
 	// Изображения
 	Route::resource('/parts', 'PartController');
 	Route::get('/parts.data', 'PartController@getData')->name('parts.index.data');

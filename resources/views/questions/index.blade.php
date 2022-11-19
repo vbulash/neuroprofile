@@ -85,6 +85,19 @@
 				});
 			}
 
+			function clickDuplicate(id) {
+				$.post({
+					url: "{{ route('questions.duplicate') }}",
+					data: {
+						id: id,
+					},
+					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+					success: () => {
+						window.datatable.ajax.reload();
+					}
+				});
+			}
+
 			document.getElementById('confirm-yes').addEventListener('click', (event) => {
 				$.ajax({
 					method: 'DELETE',
@@ -101,7 +114,7 @@
 
 			function clickDelete(id, name) {
 				document.getElementById('confirm-title').innerText = "Подтвердите удаление";
-				document.getElementById('confirm-body').innerHTML = "Удалить вопроса № " + name + " ?";
+				document.getElementById('confirm-body').innerHTML = "Удалить вопрос № " + name + " ?";
 				document.getElementById('confirm-yes').dataset.id = id;
 				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
 				confirmDialog.show();

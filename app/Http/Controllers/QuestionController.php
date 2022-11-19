@@ -7,6 +7,7 @@ use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\FileLink;
 use App\Models\Kind;
+use App\Models\Part;
 use App\Models\Question;
 use App\Models\QuestionKind;
 use App\Models\Set;
@@ -67,9 +68,14 @@ class QuestionController extends Controller {
 			    	"<i class=\"fas fa-eye\"></i>\n" .
 			    	"</a>\n";
 			    $actions .=
-			    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
+			    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-1\" " .
 			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$question->getKey()}, '{$question->sort_no}')\">\n" .
 			    	"<i class=\"fas fa-trash-alt\"></i>\n" .
+			    	"</a>\n";
+			    $actions .=
+			    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
+			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Дублирование\" onclick=\"clickDuplicate({$question->getKey()})\">\n" .
+			    	"<i class=\"fas fa-clone\"></i>\n" .
 			    	"</a>\n";
 			    $actions .=
 			    	"<a href=\"{$selectRoute}\" class=\"btn btn-primary btn-sm float-left me-5\" " .
@@ -251,7 +257,7 @@ class QuestionController extends Controller {
 			$id = $question;
 
 		$question = Question::findOrFail($id);
-		$number = $question->number;
+		$number = $question->sort_no;
 		$name = $question->set->name;
 		$question->delete();
 
@@ -263,6 +269,49 @@ class QuestionController extends Controller {
 		$this->reorder($questions);
 
 		event(new ToastEvent('success', '', "Вопрос № {$number} из набора вопросов &laquo;{$name}&raquo; удалён.<br/>Список вопросов перенумерован"));
+		return true;
+	}
+
+	/**
+	 * Дублирование вопроса
+	 *
+	 * @param Request $request
+	 * @return bool
+	 */
+	public function duplicate(Request $request) {
+		$context = session('context');
+		$set = Set::findOrFail($context['set']);
+		$source = Question::findOrFail($request->id);
+
+		$sort_no = $source->sort_no;
+		$name = $set->name;
+
+		$target = new Question();
+		$target->sort_no = $set->questions->count() + 1;
+		$target->learning = $source->learning;
+		$target->timeout = $source->timeout;
+		$target->cue = $source->cue;
+		$target->set()->associate($set->getKey());
+		$target->kind()->associate($source->kind);
+		$target->save();
+
+		foreach ($source->parts as $source_part) {
+			$part = new Part();
+			$part->image = $source_part->image;
+			FileLink::link($part->image);
+			$part->key = $source_part->key;
+			$part->question()->associate($target);
+			$part->save();
+		}
+
+		// Перенумеровать по порядку после создания
+		$questions = $target->set->questions
+			->sortBy('sort_no')
+			->pluck('id')
+			->toArray();
+		$this->reorder($questions);
+
+		event(new ToastEvent('success', '', "Создан дубль вопроса № {$sort_no} из набора вопросов &laquo;{$name}&raquo;.<br/>Список вопросов перенумерован"));
 		return true;
 	}
 }

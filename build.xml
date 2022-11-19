@@ -3,9 +3,6 @@
 <project name="needful" default="deploy">
 
 	<target name="init">
-		<tstamp>
-			<format property="TSTAMP" pattern="%c" locale="ru_RU"/>
-		</tstamp>
 		<property name="ftp.server" value="bulash.site"/>
 		<property name="ftp.port" value="22"/>
 		<property name="ftp.username" value="vbulash"/>
@@ -14,7 +11,17 @@
 		<property name="project.folder" value="neurotest"/>
 	</target>
 
+	<target name="init.local">
+		<property name="sites.folder" value="/Users/vbulash/Sites"/>
+		<property name="project.folder" value="neurotest"/>
+		<property name="target.folder" value="${sites.folder}/${project.folder}"/>
+	</target>
+
 	<target name="deploy" depends="init,modify.env,copy,compile">
+		<echo message="Работа скрипта завершена" />
+	</target>
+
+	<target name="deploy.local" depends="init.local,modify.env,copy.local,compile.local">
 		<echo message="Работа скрипта завершена" />
 	</target>
 
@@ -42,6 +49,44 @@
 		<delete file="tmp.sh" />
 		<ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" display="yes" command="source /etc/profile; sh ./tmp.sh" />
 		<ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" display="yes" command="rm tmp.sh" />
+	</target>
+
+	<target name="compile.local">
+		<echo message="Компиляция пакетов node.js и composer..."/>
+
+		<move file="${target.folder}/.env.temp" tofile="${target.folder}/.env"/>
+		<exec dir="${target.folder}" executable="composer">
+			<arg value="install"/>
+			<arg value="--optimize-autoloader"/>
+			<arg value="--no-dev"/>
+		</exec>
+		<exec dir="${target.folder}" executable="npm">
+			<arg value="update"/>
+		</exec>
+		<exec dir="${target.folder}" executable="npm">
+			<arg value="run"/>
+			<arg value="dev"/>
+		</exec>
+		<exec dir="${target.folder}" executable="php">
+			<arg value="artisan"/>
+			<arg value="optimize:clear"/>
+		</exec>
+		<exec dir="${target.folder}" executable="php">
+			<arg value="artisan"/>
+			<arg value="route:cache"/>
+		</exec>
+		<exec dir="${target.folder}" executable="php">
+			<arg value="artisan"/>
+			<arg value="view:cache"/>
+		</exec>
+
+		<delete>
+			<fileset dir="${target.folder}">
+				<include name="composer.*"/>
+				<include name="package*.*"/>
+				<include name="webpack.mix.js"/>
+			</fileset>
+		</delete>
 	</target>
 
 	<target name="copy">
@@ -72,6 +117,40 @@
 		<scp username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" file=".tmp.zip" todir="${ftp.dir}/${project.folder}" level="info" />
 		<delete file=".env.temp" />
 		<delete file=".tmp.zip" />
+	</target>
+
+	<target name="copy.local">
+		<echo message="Развёртывание платформы..."/>
+
+		<delete quiet="true">
+			<fileset dir="${target.folder}">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+
+		<copy todir="${target.folder}">
+			<fileset dir=".">
+				<patternset>
+					<exclude name="**/.DS_Store"/>
+					<exclude name="storage/logs/*"/>
+					<include name=".env.temp"/>
+					<include name="artisan"/>
+					<include name="composer.json"/>
+					<include name="package.json"/>
+					<include name="webpack.mix.js"/>
+					<include name="app/**/*"/>
+					<include name="bootstrap/**/*"/>
+					<include name="config/**/*"/>
+					<include name="database/data/**/*"/>
+					<include name="database/factories/**/*"/>
+					<include name="public/**/*"/>
+					<include name="resources/**/*"/>
+					<include name="routes/**/*"/>
+					<include name="storage/**/*"/>
+				</patternset>
+			</fileset>
+		</copy>
+		<delete file=".env.temp" />
 	</target>
 
 	<target name="modify.env">
