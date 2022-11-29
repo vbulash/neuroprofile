@@ -128,8 +128,8 @@ class PlayerController extends Controller {
 			$test = session('test');
 
 			if ($test->options & TestOptions::AUTH_GUEST->value) {
-				//return redirect()->route('player.body', ['question' => 0]);
-				return redirect()->route('player.body2');
+				$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
+				return redirect()->route($route);
 			} elseif ($test->options & (TestOptions::AUTH_FULL->value | TestOptions::AUTH_MIX->value)) {
 				$content = json_decode($test->content, true);
 				$card = $content['card'];
@@ -145,7 +145,9 @@ class PlayerController extends Controller {
 	public function store_pkey(PKeyRequest $request) {
 		session()->forget('pkey');
 		session()->put('pkey', $request->pkey);
-		return redirect()->route('player.body2', ['question' => 0]);
+		$test = session('test');
+		$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
+		return redirect()->route($route);
 	}
 
 	public function store_full_card(Request $request) {
@@ -157,14 +159,18 @@ class PlayerController extends Controller {
 		;
 		session()->put('card', $data);
 
-		//return redirect()->route('player.body', ['question' => 0]);
-		return redirect()->route('player.body2');
+		$test = session('test');
+		$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
+		return redirect()->route($route);
+	}
+
+	public function face(Request $request) {
+		return view('player.face');
 	}
 
 	public function body2(Request $request) {
 		if (!$this->check($request)) {
 			$test = session('test');
-			//Log::debug('player.body2: ' . __METHOD__ . ':' . __LINE__);
 			return redirect()->route('player.index');
 		}
 

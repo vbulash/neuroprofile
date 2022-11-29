@@ -128,10 +128,9 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.se
 	// Маршруты сохранения предварительной информации (из карточек)
 	Route::get('/player.pkey', 'PlayerController@store_pkey')->name('player.pkey');
 	Route::get('/player.full', 'PlayerController@store_full_card')->name('player.full');
+	// Фото лица
+	Route::get('/player.face', 'PlayerController@face')->name('player.face');
 
-	// TODO обменять body и body2 после полной отладки
-	//Route::get('/player.body/{question?}', 'PlayerController@body')->name('player.body');
-	//
 	Route::get('/player.body2', 'PlayerController@body2')->name('player.body2');
 	Route::post('/player/body2.store', 'PlayerController@body2_store')->name('player.body2.store');
 	Route::get('/player.calculate/{history_id}', 'PlayerController@calculate')->name('player.calculate');
