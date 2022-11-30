@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="neuroprofile" default="deploy">
+<project name="neuroprofile" default="deploy.persona">
 
 	<target name="init">
 		<property name="ftp.server" value="bulash.site"/>
@@ -11,6 +11,15 @@
 		<property name="project.folder" value="neurotest"/>
 	</target>
 
+	<target name="init.persona">
+		<property name="ftp.server" value="109.72.226.199"/>
+		<property name="ftp.port" value="822"/>
+		<property name="ftp.username" value="vbulash"/>
+		<property name="ftp.password" value="Kort7LW6"/>
+		<property name="ftp.dir" value="/usr/share/nginx/html"/>
+		<property name="project.folder" value="research"/>
+	</target>
+
 	<target name="init.local">
 		<property name="sites.folder" value="/Users/vbulash/Sites"/>
 		<property name="project.folder" value="neurotest"/>
@@ -18,6 +27,10 @@
 	</target>
 
 	<target name="deploy" depends="init,modify.env,copy,compile">
+		<echo message="Работа скрипта завершена" />
+	</target>
+
+	<target name="deploy.persona" depends="init.persona,modify.env,copy,compile">
 		<echo message="Работа скрипта завершена" />
 	</target>
 
@@ -154,6 +167,17 @@
 	</target>
 
 	<target name="modify.env">
+		<copy file=".env" tofile=".env.temp">
+			<filterchain>
+				<replaceregexp>
+					<regexp pattern="APP_ENV=local" replace="APP_ENV=production"/>
+					<regexp pattern="APP_DEBUG=true" replace="APP_DEBUG=false"/>
+				</replaceregexp>
+			</filterchain>
+		</copy>
+	</target>
+
+	<target name="modify.env.persona">
 		<copy file=".env" tofile=".env.temp">
 			<filterchain>
 				<replaceregexp>
