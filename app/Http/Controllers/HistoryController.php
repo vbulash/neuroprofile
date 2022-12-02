@@ -210,7 +210,8 @@ EOS
 		if (count($fieldList) == 0) {
 			foreach ($fields as $number => $field) {
 				$fieldList[] = $number;
-				$sql[] = $field['sql'];
+				if (isset($field['sql']))
+					$sql[] = $field['sql'];
 			}
 		} else {
 			$temp = (new ArrayObject($fieldList))->getArrayCopy();

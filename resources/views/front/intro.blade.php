@@ -9,19 +9,20 @@
 @endpush
 
 @section('content')
-	<form role="form" method="get"
-		  action="{{ route('player.card') }}">
+	<form role="form" method="get" action="{{ route('player.card') }}">
 		@csrf
 		<input type="hidden" name="nextblock" value="card">
 		<div id="safari" style="display: none">
 			<div id="mac" class="mb-4">
 				<p>Мы обнаружили, что вы запускаете тест на компьютере Mac в браузере Safari. Для прохождения теста без ошибки
-					вам необходимо переключить флажок, как показано на скриншоте ниже (на компьютере в меню Safari -> Настройки -> Конфиденциальность -> Отслеживание на веб-сайтах): </p>
+					вам необходимо переключить флажок, как показано на скриншоте ниже (на компьютере в меню Safari -> Настройки ->
+					Конфиденциальность -> Отслеживание на веб-сайтах): </p>
 				<img src="{{ asset('media/screenshots/mac-safari-cors.png') }}" alt="" class="img-fluid">
 			</div>
 			<div id="iphone" class="mb-4">
 				<p>Мы обнаружили, что вы запускаете тест на iPhone в браузере Safari. Для прохождения теста без ошибки
-					вам необходимо переключить флажок, как показано на скриншоте ниже (на телефоне Настройки -> Safari -> Без перекрестного отслеживания): </p>
+					вам необходимо переключить флажок, как показано на скриншоте ниже (на телефоне Настройки -> Safari -> Без
+					перекрестного отслеживания): </p>
 				<img src="{{ asset('media/screenshots/iphone-safari-cors.jpg') }}" alt="" class="img-fluid">
 			</div>
 			<div class="checkbox mt-2 mb-4">
@@ -32,28 +33,32 @@
 			</div>
 		</div>
 		<p>
-			В нейротесте нет правильных и неправильных ответов. Каждый ответ правильный!<br/>
-			<strong>Время на вопрос - 5 секунд.</strong><br/>
-			Выберите изображение, которое привлекло Ваше внимание первым!<br/>
-			После нажатия на картинку ждите переход на следующий вопрос.<br/>
+			В нейротесте нет правильных и неправильных ответов. Каждый ответ правильный!<br />
+			<strong>Время на вопрос - 5 секунд.</strong><br />
+			Выберите изображение, которое привлекло Ваше внимание первым!<br />
+			После нажатия на картинку ждите переход на следующий вопрос.<br />
 			Если Вы пропустили какой-либо вопрос, он будет показан повторно.
 		</p>
 
-		@php($branding = session('branding'))
+		@php
+			$branding = session('branding');
+			$label = ' ';
+			if ($test->options & \App\Models\TestOptions::FACE_NEURAL->value) {
+			    $label = 'Подготовка к тестированию: сделать снимок лица';
+			} elseif ($test->options & \App\Models\TestOptions::AUTH_GUEST->value) {
+			    $label = 'Начать тест';
+			} elseif ($test->options & \App\Models\TestOptions::AUTH_FULL->value) {
+			    $label = 'Перейти к анкете';
+			} elseif ($test->options & \App\Models\TestOptions::AUTH_PKEY->value) {
+			    $label = 'Ввести персональный ключ';
+			} elseif ($test->options & \App\Models\TestOptions::AUTH_MIX->value) {
+			    $label = 'Перейти к анкете и ввести персональный ключ';
+			}
+		@endphp
 
 		<button type="submit" id="start"
-				@if(isset($branding)) class="btn btn-lg" style="{{ $branding['buttonstyle'] }}"
-				@else class="btn btn-primary btn-lg" @endif>
-			@if($test->options & \App\Models\TestOptions::AUTH_GUEST->value)
-				Начать тест
-			@elseif($test->options & \App\Models\TestOptions::AUTH_FULL->value)
-				Перейти к анкете
-			@elseif($test->options & \App\Models\TestOptions::AUTH_PKEY->value)
-				Ввести персональный ключ
-			@elseif($test->options & \App\Models\TestOptions::AUTH_MIX->value)
-				Перейти к анкете и ввести персональный ключ
-			@endif
-		</button>
+			@if (isset($branding)) class="btn btn-lg" style="{{ $branding['buttonstyle'] }}"
+			@else class="btn btn-primary btn-lg" @endif>{{ $label }}</button>
 	</form>
 @endsection
 

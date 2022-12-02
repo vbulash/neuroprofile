@@ -166,7 +166,11 @@ class PlayerController extends Controller {
 	}
 
 	public function face(Request $request) {
-		return view('player.face');
+		return view('front.face', [
+			'sid' => session()->getId(),
+			'pkey' => session('pkey'),
+			'test' => session('test')
+		]);
 	}
 
 	public function body2(Request $request) {
@@ -213,7 +217,8 @@ class PlayerController extends Controller {
 
 		// Фиксация лицензии по завершению тестирования
 		$license = License::all()->where('pkey', session('pkey'))->first();
-		$license->done();
+		// TODO временное выключение
+		// $license->done();
 
 		// Зафиксировать историю теста и индивидуальные результаты прохождения вопросов
 
