@@ -218,7 +218,7 @@ class PlayerController extends Controller {
 		// Фиксация лицензии по завершению тестирования
 		$license = License::all()->where('pkey', session('pkey'))->first();
 		// TODO временное выключение
-		// $license->done();
+		$license->done();
 
 		// Зафиксировать историю теста и индивидуальные результаты прохождения вопросов
 
