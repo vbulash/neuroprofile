@@ -1,6 +1,7 @@
 @php
 	use App\Models\TestOptions;
 	$mousetracking = intval($test->options) & TestOptions::MOUSE_TRACKING->value;
+	$neural = intval($test->options) & TestOptions::FACE_NEURAL->value;
 @endphp
 
 @extends('front.layouts.layout')
@@ -85,6 +86,12 @@
 
 @push('scripts.injection')
 	<script>
+		function netUp() {
+			$.post({
+				url: "{{ route('neural.net.up') }}",
+			});
+		}
+
 		String.prototype.replaceAt = function(index, replacement) {
 			return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 		}
@@ -343,6 +350,9 @@
 		document.addEventListener("DOMContentLoaded", () => {
 			@if ($mousetracking)
 				window.moves = [];
+			@endif
+			@if ($neural)
+				netUp();
 			@endif
 			prepareQuestion();
 			window.submitted = false;

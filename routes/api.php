@@ -29,6 +29,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		abort(503);
 	}
 	)->name('api.down');
+	Route::post('/ping', fn() => 'pong')->name('api.ping');
 	// Оплата
 	Route::get('/payment.result', 'PlayerController@paymentResult')->name('payment.result');
 	Route::get('/payment.success', 'PlayerController@paymentSuccess')->name('payment.success');
@@ -40,5 +41,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 // Нейросеть
 Route::group(['namespace' => 'App\Http\Controllers\neural'], function () {
 	Route::post('/shot.done', 'NeuralController@shotDone')->name('neural.shot.done');
+	Route::post('/net.up', 'NeuralController@netUp')->name('neural.net.up');
 	Route::post('/net.done', 'NeuralController@netDone')->name('neural.net.done');
 });

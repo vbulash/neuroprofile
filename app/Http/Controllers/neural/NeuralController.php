@@ -86,6 +86,19 @@ class NeuralController extends Controller {
 	}
 
 	/**
+	 * Инициирование нейросети
+	 * @param Request $request
+	 * @return void
+	 */
+	public function netUp() {
+		//$uuid = session('pkey');
+		$uuid = 'pkey_628c8b6d245934.76213557';
+		$source = sprintf("neural/%s/%s_1.png", $uuid, $uuid);
+		$photo = Storage::get($source);
+		$sex = 'M';
+	}
+
+	/**
 	 * Приёмка результата работы нейросети
 	 *
 	 * @param Request $request
