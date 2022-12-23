@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\neural;
 
+use App\Events\ToastEvent;
 use App\Http\Controllers\Controller;
 use App\Models\History;
 use App\Models\License;
+use Illuminate\Console\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
+use Illuminate\Support\Facades\Http;
 
 use function PHPSTORM_META\type;
 
@@ -92,14 +95,25 @@ class NeuralController extends Controller {
 	/**
 	 * Инициирование нейросети
 	 * @param Request $request
-	 * @return void
+	 * @return bool
 	 */
 	public function netUp() {
 		//$uuid = session('pkey');
 		$uuid = 'pkey_628c8b6d245934.76213557';
 		$source = sprintf("neural/%s/%s_1.png", $uuid, $uuid);
-		$photo = Storage::get($source);
+		$photo = base64_encode(Storage::get($source));
 		$sex = 'M';
+		$res = Http::post('http://localhost:6000', [
+			'uuid' => $uuid,
+			'photo' => $photo,
+			'sex' => $sex,
+		]);
+		// Log::info('Ответ нейросети');
+		// Log::info($res);
+		$request = Request::create(route('neural.net.done'), 'POST', json_decode($res, true));
+		$response = app()->handle($request);
+
+		return true;
 	}
 
 	/**
@@ -136,19 +150,24 @@ class NeuralController extends Controller {
 			$neural[] = [
 				'code' => $codeMap[$item['code']],
 				'average' => $item['average'],
-				'meansquare' => $item['meansquare'],
+				'meansquare' => $item['mean-square'],
 			];
 
 		$license = License::where('pkey', $uuid)->first();
 		$history = $license->history;
-		if (!isset($history))
-			return response('Поврежден UUID', 204);
-
-		$card = json_decode($history->card, true);
-		$card['neural'] = $neural;
-		$history->update([
-			'card' => $card
-		]);
+		if (isset($history)) {	// История прохождения сохранена, можно добавлять результат работы нейросети
+			$card = json_decode($history->card, true);
+			$card['neural'] = $neural;
+			$history->update([
+				'card' => json_encode($card)
+			]);
+			Log::info('Результат работы нейросети: сохранён');
+			event(new ToastEvent('success', '', 'Результат работы нейросети: вычислен, сохранён'));
+		} else {	// Новое прохождение, пока не сохранено, нужно будет добавить данные нейросети позже при сохранении
+			session()->put('neural', $neural);
+			Log::info('Результат работы нейросети: отложен до сохранения');
+			event(new ToastEvent('success', '', 'Результат работы нейросети: вычислен, отложен до сохранения истории тестирования'));
+		}
 
 		return response('');
 	}

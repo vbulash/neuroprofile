@@ -58,10 +58,10 @@
 		<echo message="rm package*.* ${line.separator}" file="tmp.sh" append="true"/>
 		<echo message="rm webpack.mix.js ${line.separator}" file="tmp.sh" append="true"/>
 
-		<scp username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" todir="." file="tmp.sh" level="info" />
+		<scp username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" port="${ftp.port}" todir="." file="tmp.sh" level="info" />
 		<delete file="tmp.sh" />
-		<ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" display="yes" command="source /etc/profile; sh ./tmp.sh" />
-		<ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" display="yes" command="rm tmp.sh" />
+		<ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" port="${ftp.port}" display="yes" command="source /etc/profile; sh ./tmp.sh" />
+		<ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" port="${ftp.port}" display="yes" command="rm tmp.sh" />
 	</target>
 
 	<target name="compile.local">
@@ -127,7 +127,7 @@
 				</patternset>
 			</fileset>
 		</zip>
-		<scp username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" file=".tmp.zip" todir="${ftp.dir}/${project.folder}" level="info" />
+		<scp username="${ftp.username}" password="${ftp.password}" host="${ftp.server}" port="${ftp.port}" file=".tmp.zip" todir="${ftp.dir}/${project.folder}" level="info" />
 		<delete file=".env.temp" />
 		<delete file=".tmp.zip" />
 	</target>

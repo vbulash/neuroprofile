@@ -141,26 +141,36 @@
 			options: areaChartOptions
 		});
 
-// 		document.getElementById('form-net-done').addEventListener('submit', () => {
-// 			document.getElementById('result').value = `
-// [
-// 	{
-// 		"code": "A",
-// 		"average": 0.7,
-// 		"meansquare": 0.01
-// 	},
-// 	{
-// 		"code": "B",
-// 		"average": 0.1,
-// 		"meansquare": 0.2
-// 	},
-// 	{
-// 		"code": "C",
-// 		"average": 0.1,
-// 		"meansquare": 0.3
-// 	}
-// ]
-// 			`;
-// 		}, false);
+		// 		document.getElementById('form-net-done').addEventListener('submit', () => {
+		// 			document.getElementById('result').value = `
+	// [
+	// 	{
+	// 		"code": "A",
+	// 		"average": 0.7,
+	// 		"meansquare": 0.01
+	// 	},
+	// 	{
+	// 		"code": "B",
+	// 		"average": 0.1,
+	// 		"meansquare": 0.2
+	// 	},
+	// 	{
+	// 		"code": "C",
+	// 		"average": 0.1,
+	// 		"meansquare": 0.3
+	// 	}
+	// ]
+	// 			`;
+		// 		}, false);
+
+		function netUp() {
+			$.post({
+				url: "{{ route('neural.net.up') }}",
+			});
+		}
+
+		document.addEventListener("DOMContentLoaded", () => {
+			netUp();
+		}, false);
 	</script>
 @endpush
