@@ -166,6 +166,8 @@ class PlayerController extends Controller {
 	}
 
 	public function face(Request $request) {
+		$test = session('test');
+		$this->lockLicense($test);
 		return view('front.face', [
 			'sid' => session()->getId(),
 			'pkey' => session('pkey'),
@@ -182,29 +184,8 @@ class PlayerController extends Controller {
 		$test = session('test');
 		$questions = $test->set->questions->sortBy('sort_no');
 
-		// Блокировка лицензии для прохождения теста
-		$license = null;
-		if (session()->has('pkey')) { // Режим авторизации по персональному ключу или микс
-			// Найти и проверить лицензию по введенному персональному ключу
-			$license = License::where('pkey', session('pkey'))->first();
-			if (!$license) {
-				session()->put('error', 'Не найдена лицензия, соответствующая персональному ключу ' . session('pkey'));
-				return redirect()->route('player.index');
-			} elseif ($license->status != License::FREE) {
-				session()->put('error', 'Лицензия, соответствующая персональному ключу ' . session('pkey') . ', уже использована. Запросите новый персональный ключ');
-				return redirect()->route('player.index');
-			}
-		} else { // Найти любую свободную лицензию
-			$license = $test->contract->licenses->where('status', License::FREE)->first();
-			if ($license) {
-				session()->put('pkey', $license->pkey);
-			} else {
-				session()->put('error', 'Свободные лицензии закончились, обратитесь в Persona');
-				//Log::debug(__METHOD__ . ':' . __LINE__);
-				return redirect()->route('player.index');
-			}
-		}
-		$license->lock();
+		if (!($test->options & TestOptions::FACE_NEURAL->value))
+			$this->lockLicense($test);
 
 		return view('front.body2', compact('test', 'questions'));
 	}
@@ -458,5 +439,31 @@ class PlayerController extends Controller {
 	 */
 	public function mail(Request $request) {
 		return $this->calculate($request->history, true, true);
+	}
+
+	private function lockLicense(Test $test) {
+		// Блокировка лицензии для прохождения теста
+		$license = null;
+		if (session()->has('pkey')) { // Режим авторизации по персональному ключу или микс
+			// Найти и проверить лицензию по введенному персональному ключу
+			$license = License::where('pkey', session('pkey'))->first();
+			if (!$license) {
+				session()->put('error', 'Не найдена лицензия, соответствующая персональному ключу ' . session('pkey'));
+				return redirect()->route('player.index');
+			} elseif ($license->status != License::FREE) {
+				session()->put('error', 'Лицензия, соответствующая персональному ключу ' . session('pkey') . ', уже использована. Запросите новый персональный ключ');
+				return redirect()->route('player.index');
+			}
+		} else { // Найти любую свободную лицензию
+			$license = $test->contract->licenses->where('status', License::FREE)->first();
+			if ($license) {
+				session()->put('pkey', $license->pkey);
+			} else {
+				session()->put('error', 'Свободные лицензии закончились, обратитесь в Persona');
+				//Log::debug(__METHOD__ . ':' . __LINE__);
+				return redirect()->route('player.index');
+			}
+		}
+		$license->lock();
 	}
 }

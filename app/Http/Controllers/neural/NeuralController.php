@@ -43,11 +43,15 @@ class NeuralController extends Controller {
 	 */
 	public function shotDone(Request $request) {
 		// Декодировать запрос
-		$png = base64_decode($request->photo);
 		$uuid = $request->uuid;
 		// Сохранить временную картинку .png для анализа формата
 		$tmpimage = 'tmp/' . Str::uuid() . '.png';
-		Storage::put($tmpimage, $png);
+		$image_parts = explode(";base64,", $request->photo);
+		$image_type_aux = explode("image/", $image_parts[0]);
+		$image_type = $image_type_aux[1];
+		$image_base64 = base64_decode($image_parts[1]);
+		Storage::put($tmpimage, $image_base64);
+
 		// Анализ формата временной картинки
 		$status = 200;
 		$content = '';

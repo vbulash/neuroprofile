@@ -107,6 +107,9 @@ mix.copyDirectory('resources/assets/googlefonts', 'public/assets/front/fonts');
 mix.copy('resources/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map', 'public/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map');
 mix.copy('resources/assets/front/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css.map', 'public/assets/front/css/bootstrap-datepicker.css.map');
 
+// Webcam Easy
+mix.copy('resources/assets/front/plugins/webcam-easy/webcam-easy.min.js', 'public/js/webcam-easy.min.js')
+
 // Chart.js
 mix.copy('resources/plugins/chart.js/chart.min.js', 'public/js/chart.min.js');
 
