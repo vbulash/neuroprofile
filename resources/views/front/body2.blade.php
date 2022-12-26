@@ -86,12 +86,6 @@
 
 @push('scripts.injection')
 	<script>
-		function netUp() {
-			$.post({
-				url: "{{ route('neural.net.up') }}",
-			});
-		}
-
 		String.prototype.replaceAt = function(index, replacement) {
 			return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 		}
@@ -352,7 +346,7 @@
 				window.moves = [];
 			@endif
 			@if ($neural)
-				netUp();
+				// netUp();
 			@endif
 			prepareQuestion();
 			window.submitted = false;

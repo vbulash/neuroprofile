@@ -163,11 +163,11 @@
 	// 			`;
 		// 		}, false);
 
-		function netUp() {
-			$.post({
-				url: "{{ route('neural.net.up') }}",
-			});
-		}
+		// function netUp() {
+		// 	$.post({
+		// 		url: "{{ route('neural.net.up') }}",
+		// 	});
+		// }
 
 		document.addEventListener("DOMContentLoaded", () => {
 			netUp();

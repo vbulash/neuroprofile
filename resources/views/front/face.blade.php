@@ -21,13 +21,15 @@
 		{{-- <iframe src="https://faces.bulash.site?sid={{ session()->getId() }}&pkey={{ session('pkey') }}" width="80%" height="500px" frameborder="0" id="camera-frame"></iframe>
 		<div class="ms-2 mb-4"><strong><span id="message">&nbsp;</span></strong></div>
 		<button type="submit" class="btn btn-primary btn-lg" id="continue" disabled>Начать тестирование</button> --}}
-		<div class="d-flex flex-column col-lg-4">
-			<img src="" alt="" width="480" id='image' class='mb-4'>
+		<div class="d-flex flex-column">
+			<img src="" alt="Калибровка камеры..." id='image' class='img-fluid mb-4' style="max-width: 480;">
 			<div>
-				<button type="button" class="btn btn-primary btn-lg" id="continue">Сделать снимок</button>
+				<button type="submit" class="btn btn-primary btn-lg" id="continue">Сделать снимок</button>
 			</div>
-			<video id="webcam" autoplay playsinline width="480"></video>
-			<canvas id="canvas" width="480" class="mb-4"></canvas>
+			<div>
+				<video id="webcam" autoplay playsinline></video>
+			</div>
+			<canvas id="canvas" class="mb-4"></canvas>
 		</div>
 	</form>
 @endsection
@@ -51,22 +53,34 @@
 		let canvasElement = document.getElementById("canvas");
 		let context = canvasElement.getContext('2d');
 		let image = document.getElementById('image');
+		let ratio = 1;
 		let webcam = null;
 		let timerId = null;
 		const CROP = 480;
 
-		function syncCanvasDimensions() {
-			// canvasElement.clientWidth = canvasElement.width = webCamElement.width;
-			// canvasElement.clientWidth = canvasElement.height = webCamElement.height;
+		function syncDimensions() {
+			if (ratio == 1) return;
+
+			webCamElement.width =
+				canvasElement.width =
+				image.width = Math.min(CROP, image.parentElement.clientWidth);
+			webCamElement.height =
+				canvasElement.height =
+				image.height = image.width * ratio;
 		}
 
 		window.onresize = (event) => {
-			if (window.document.body.clientWidth < CROP)
-				syncCanvasDimensions();
+			syncDimensions();
 		};
 
+		webCamElement.onplaying = function() {
+			ratio = webCamElement.videoHeight / webCamElement.videoWidth;
+		}
+
 		function showFrame() {
-			syncCanvasDimensions();
+			if (ratio == 1) return;
+
+			syncDimensions();
 			// context.drawImage(webCamElement, 0, 0, webCamElement.width, webCamElement.height);
 			let picture = webcam.snap();
 
@@ -78,7 +92,7 @@
 		document.getElementById('continue').onclick = () => {
 			let picture = webcam.snap();
 			// console.log(picture);
-			syncCanvasDimensions();
+			syncDimensions();
 			let sex = 'M';
 
 			let response = fetch("{{ route('neural.shot.done') }}", {
@@ -92,24 +106,6 @@
 						photo: picture,
 					})
 				})
-				// .then(response => response.json())
-				.then(function(response) {
-					// alert("Работает!")
-					clearInterval(timerId);
-					webcam.stop();
-
-					let net = fetch("{{ route('neural.net.up') }}", {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json;charset=utf-8'
-						},
-						body: JSON.stringify({
-							uuid: "{{ $pkey }}",
-							sex: sex,
-							photo: picture,
-						})
-					})
-				})
 				.catch(error => console.log(error));
 		};
 
@@ -118,7 +114,7 @@
 			webCamElement.style.visibility = 'hidden';
 			canvasElement.style.visibility = 'hidden';
 			webcam.start();
-			window.dispatchEvent(new Event('resize'));
+			// window.dispatchEvent(new Event('resize'));
 			timerId = setInterval(showFrame, 0);
 		}, false);
 	</script>
