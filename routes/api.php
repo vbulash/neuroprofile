@@ -38,9 +38,3 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	Route::get('/phpinfo', fn() => phpinfo())->name('api.phpinfo');
 });
 
-// Нейросеть
-Route::group(['namespace' => 'App\Http\Controllers\neural'], function () {
-	Route::post('/shot.done', 'NeuralController@shotDone')->name('neural.shot.done');
-	// Route::post('/net.up', 'NeuralController@netUp')->name('neural.net.up');
-	Route::post('/net.done', 'NeuralController@netDone')->name('neural.net.done');
-});

@@ -118,7 +118,7 @@ Route::get('/optimize-clear', function () {
 });
 
 // Плеер
-Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.session'], function () {
+Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	// Проверка
 	Route::get('/player.iframe', 'PlayerController@iframe')->name('player.iframe');
 	//
@@ -137,6 +137,13 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.se
 	Route::get('/player.mail/{history_id}', 'PlayerController@mail')->name('player.mail');
 
 	Route::get('/player.policy/{document}/{mail?}', 'PlayerController@showDocument')->name('player.policy');
+});
+
+// Нейросеть
+Route::group(['namespace' => 'App\Http\Controllers\neural'], function () {
+	Route::post('/shot.done', 'NeuralController@shotDone')->name('neural.shot.done');
+	// Route::post('/net.up', 'NeuralController@netUp')->name('neural.net.up');
+	Route::post('/net.done', 'NeuralController@netDone')->name('neural.net.done');
 });
 
 require __DIR__.'/auth.php';
