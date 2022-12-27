@@ -102,11 +102,8 @@ class NeuralController extends Controller {
 		$uuid = $request->uuid;
 		$photo = $this->getClearBase64($request->photo);
 		$sex = $request->sex;
-		Log::info('uuid: ' . $uuid);
-		Log::info('sex: ' . $sex);
-		Log::info('photo digest: ' . substr($photo, 0, 100));
 		try {
-			$res = Http::post('http://localhost:6000', [
+			$res = Http::post(env('NEURAL_URL'), [
 				'uuid' => $uuid,
 				'photo' => $photo,
 				'sex' => $sex,
@@ -119,17 +116,19 @@ class NeuralController extends Controller {
 		// $request = Request::create(route('neural.net.done'), 'POST', json_decode($res, true));
 		// $response = app()->handle($request);
 
-		return $this->netDone($request);
+		return $this->netDone($res->json());
 	}
 
 	/**
 	 * Приёмка результата работы нейросети
 	 *
 	 */
-	public function netDone(Request $request) {
+	public function netDone(array $body) {
 		// Декодировать запрос
-		$result = $request->result;
-		$uuid = $request->uuid;
+		$result = $body['result'];
+		$uuid = $body['uuid'];
+		// TODO при необходимости анализировать здесь или в вызывателе code (обычно 200)
+		// TODO разобрать $body['attention'] (base64) по готовности в теле возврата из нейросети
 		$codeMap = [
 			'A' => 'BD',
 			'B' => 'BH',

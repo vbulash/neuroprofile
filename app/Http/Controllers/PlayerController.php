@@ -204,7 +204,15 @@ class PlayerController extends Controller {
 		// Зафиксировать историю теста и индивидуальные результаты прохождения вопросов
 
 		$history = new History();
-		$history->card = session()->has('card') ? json_encode(session('card')) : null;
+		$card = null;
+		if (session()->has('card'))
+			$card = session('card');
+		if (session()->has('neural')) {
+			if (!isset($card))
+				$card = [];
+			$card['neural'] = session('neural');
+		}
+		$history->card = isset($card) ? json_encode($card) : null;
 		$history->paid = false;
 		$history->test()->associate($test);
 		$history->license()->associate($license);

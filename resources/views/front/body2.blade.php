@@ -298,6 +298,7 @@
 				});
 
 				fixAnswer(id, key);
+				delete window.answers;
 			}, false);
 		});
 
