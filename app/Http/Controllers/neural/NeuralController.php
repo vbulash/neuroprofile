@@ -4,18 +4,21 @@ namespace App\Http\Controllers\neural;
 
 use App\Events\ToastEvent;
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessFaceShot;
 use App\Models\History;
 use App\Models\License;
 use Illuminate\Console\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 use Throwable;
-use Illuminate\Support\Facades\Http;
-use Exception;
 
 class NeuralController extends Controller {
+	public function run(Request $request) {
+
+	}
 	private static array $imagetypes = [
 	IMAGETYPE_GIF => 'GIF',
 	IMAGETYPE_JPEG => 'JPEG',
@@ -50,7 +53,8 @@ class NeuralController extends Controller {
 		$uuid = $request->uuid;
 		// Сохранить временную картинку .png для анализа формата
 		$tmpimage = 'tmp/' . Str::uuid() . '.png';
-		$image_base64 = base64_decode($this->getClearBase64($request->photo));
+		$clearPhoto = $this->getClearBase64($request->photo);
+		$image_base64 = base64_decode($clearPhoto);
 		Storage::put($tmpimage, $image_base64);
 
 		// Анализ формата временной картинки
@@ -90,88 +94,12 @@ class NeuralController extends Controller {
 			], $status);
 		}
 
-		return $this->netUp($request);
-	}
-
-	/**
-	 * Инициирование нейросети
-	 * @param Request $request
-	 * @return bool
-	 */
-	public function netUp(Request $request) {
-		$uuid = $request->uuid;
-		$photo = $this->getClearBase64($request->photo);
-		$sex = $request->sex;
-		try {
-			$res = Http::post(env('NEURAL_URL'), [
-				'uuid' => $uuid,
-				'photo' => $photo,
-				'sex' => $sex,
-			]);
-		} catch(Exception $exc) {
-			session()->put('error', 'Сервер нейросети недоступен, обработка нейросетью игнорируется');
-			// return response(content: $exc->getMessage(), status: 204);
-			return false;
-		}
-		// $request = Request::create(route('neural.net.done'), 'POST', json_decode($res, true));
-		// $response = app()->handle($request);
-
-		return $this->netDone($res->json());
-	}
-
-	/**
-	 * Приёмка результата работы нейросети
-	 *
-	 */
-	public function netDone(array $body) {
-		// Декодировать запрос
-		$result = $body['result'];
-		$uuid = $body['uuid'];
-		// TODO при необходимости анализировать здесь или в вызывателе code (обычно 200)
-		// TODO разобрать $body['attention'] (base64) по готовности в теле возврата из нейросети
-		$codeMap = [
-			'A' => 'BD',
-			'B' => 'BH',
-			'C' => 'BO',
-			'D' => 'BP',
-			'F' => 'CI',
-			'G' => 'CO',
-			'H' => 'CS',
-			'K' => 'CV',
-			'L' => 'OA',
-			'M' => 'OI',
-			'N' => 'OO',
-			'O' => 'OV',
-			'P' => 'PA',
-			'Q' => 'PK',
-			'R' => 'PP',
-			'S' => 'PR',
+		// Параллельное выполнение цикла тестирования респондентом и работы нейросети
+		$content = (object) [
+			'uuid' => $uuid,
+			'photo' => $clearPhoto,
+			'sex' => 'M',
 		];
-
-		$neural = [];
-		foreach ($result as $item)
-			$neural[] = [
-				'code' => $codeMap[$item['code']],
-				'average' => $item['average'],
-				'meansquare' => $item['mean-square'],
-			];
-
-		$license = License::where('pkey', $uuid)->first();
-		$history = $license->history;
-		if (isset($history)) { // История прохождения сохранена, можно добавлять результат работы нейросети
-			$card = json_decode($history->card, true);
-			$card['neural'] = $neural;
-			$history->update([
-				'card' => json_encode($card)
-			]);
-			Log::info('Результат работы нейросети: сохранён');
-			event(new ToastEvent('success', '', 'Результат работы нейросети: вычислен, сохранён'));
-		} else { // Новое прохождение, пока не сохранено, нужно будет добавить данные нейросети позже при сохранении
-			session()->put('neural', $neural);
-			Log::info('Результат работы нейросети: отложен до сохранения');
-			event(new ToastEvent('success', '', 'Результат работы нейросети: вычислен, отложен до сохранения истории тестирования'));
-		}
-
-		return true;
+		ProcessFaceShot::dispatch($content);
 	}
 }

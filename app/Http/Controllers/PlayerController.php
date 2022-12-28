@@ -27,6 +27,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 use DateTime;
 
@@ -207,10 +208,12 @@ class PlayerController extends Controller {
 		$card = null;
 		if (session()->has('card'))
 			$card = session('card');
-		if (session()->has('neural')) {
+		$neural = Redis::get(session('pkey'));
+		if (isset($neural)) {
 			if (!isset($card))
 				$card = [];
-			$card['neural'] = session('neural');
+			$card['neural'] = json_decode($neural);
+			Redis::delete(session('pkey'));
 		}
 		$history->card = isset($card) ? json_encode($card) : null;
 		$history->paid = false;
