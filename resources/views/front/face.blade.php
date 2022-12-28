@@ -95,6 +95,7 @@
 			syncDimensions();
 			let sex = 'M';
 
+			// fetch не умеет работать с localhost ((
 			let response = fetch("{{ route('neural.shot.done') }}", {
 					method: 'POST',
 					headers: {
@@ -107,6 +108,18 @@
 					})
 				})
 				.catch(error => console.log(error));
+			// $.ajax({
+			// 	method: 'POST',
+			// 	url: "{{ route('neural.shot.done') }}",
+			// 	data: {
+			// 		uuid: "{{ $pkey }}",
+			// 		sex: sex,
+			// 		photo: picture,
+			// 	},
+			// 	headers: {
+			// 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			// 	},
+			// });
 		};
 
 		document.addEventListener("DOMContentLoaded", () => {
