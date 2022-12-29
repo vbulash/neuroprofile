@@ -6414,8 +6414,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _modules_template__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/template */ "./resources/js/dashmix/modules/template.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
@@ -6505,9 +6507,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Helpers)
 /* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 /*
  *  Document   : helpers.js
  *  Author     : pixelcave
@@ -7708,9 +7713,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
 /* harmony import */ var simplebar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar */ "./node_modules/simplebar/dist/simplebar.esm.js");
 /* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "./resources/js/dashmix/modules/helpers.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 /*
  *  Document   : template.js
  *  Author     : pixelcave
@@ -8549,25 +8557,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
 
   var _e = function e() {
     return (_e = Object.assign || function (e) {
-      for (var n, t = 1, a = arguments.length; t < a; t++) {
-        for (var i in n = arguments[t]) {
-          Object.prototype.hasOwnProperty.call(n, i) && (e[i] = n[i]);
-        }
-      }
+      for (var n, t = 1, a = arguments.length; t < a; t++) for (var i in n = arguments[t]) Object.prototype.hasOwnProperty.call(n, i) && (e[i] = n[i]);
       return e;
     }).apply(this, arguments);
   };
   function n() {
-    for (var e = 0, n = 0, t = arguments.length; n < t; n++) {
-      e += arguments[n].length;
-    }
+    for (var e = 0, n = 0, t = arguments.length; n < t; n++) e += arguments[n].length;
     var a = Array(e),
       i = 0;
-    for (n = 0; n < t; n++) {
-      for (var o = arguments[n], r = 0, l = o.length; r < l; r++, i++) {
-        a[i] = o[r];
-      }
-    }
+    for (n = 0; n < t; n++) for (var o = arguments[n], r = 0, l = o.length; r < l; r++, i++) a[i] = o[r];
     return a;
   }
   var t = ["onChange", "onClose", "onDayCreate", "onDestroy", "onKeyDown", "onMonthChange", "onOpen", "onParseConfig", "onReady", "onValueUpdate", "onYearChange", "onPreCalendarPosition"],
@@ -8698,9 +8696,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
     return n = n || "", t = t || "", a.className = n, void 0 !== t && (a.textContent = t), a;
   }
   function u(e) {
-    for (; e.firstChild;) {
-      e.removeChild(e.firstChild);
-    }
+    for (; e.firstChild;) e.removeChild(e.firstChild);
   }
   function f(e, n) {
     return n(e) ? e : e.parentNode ? f(e.parentNode, n) : void 0;
@@ -8710,9 +8706,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
       a = d("input", "numInput " + e),
       i = d("span", "arrowUp"),
       o = d("span", "arrowDown");
-    if (-1 === navigator.userAgent.indexOf("MSIE 9.0") ? a.type = "number" : (a.type = "text", a.pattern = "\\d*"), void 0 !== n) for (var r in n) {
-      a.setAttribute(r, n[r]);
-    }
+    if (-1 === navigator.userAgent.indexOf("MSIE 9.0") ? a.type = "number" : (a.type = "text", a.pattern = "\\d*"), void 0 !== n) for (var r in n) a.setAttribute(r, n[r]);
     return t.appendChild(a), t.appendChild(i), t.appendChild(o), t;
   }
   function g(e) {
@@ -8971,9 +8965,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
     };
   }
   "function" != typeof Object.assign && (Object.assign = function (e) {
-    for (var n = [], t = 1; t < arguments.length; t++) {
-      n[t - 1] = arguments[t];
-    }
+    for (var n = [], t = 1; t < arguments.length; t++) n[t - 1] = arguments[t];
     if (!e) throw TypeError("Cannot convert undefined or null to object");
     for (var a = function a(n) {
         n && Object.keys(n).forEach(function (t) {
@@ -9126,11 +9118,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
       e.focus(), "range" === w.config.mode && oe(e);
     }
     function B(e) {
-      for (var n = e > 0 ? 0 : w.config.showMonths - 1, t = e > 0 ? w.config.showMonths : -1, a = n; a != t; a += e) {
-        for (var i = w.daysContainer.children[a], o = e > 0 ? 0 : i.children.length - 1, r = e > 0 ? i.children.length : -1, l = o; l != r; l += e) {
-          var c = i.children[l];
-          if (-1 === c.className.indexOf("hidden") && ne(c.dateObj)) return c;
-        }
+      for (var n = e > 0 ? 0 : w.config.showMonths - 1, t = e > 0 ? w.config.showMonths : -1, a = n; a != t; a += e) for (var i = w.daysContainer.children[a], o = e > 0 ? 0 : i.children.length - 1, r = e > 0 ? i.children.length : -1, l = o; l != r; l += e) {
+        var c = i.children[l];
+        if (-1 === c.className.indexOf("hidden") && ne(c.dateObj)) return c;
       }
     }
     function J(e, n) {
@@ -9138,25 +9128,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         a = te(t || document.body),
         i = void 0 !== e ? e : a ? t : void 0 !== w.selectedDateElem && te(w.selectedDateElem) ? w.selectedDateElem : void 0 !== w.todayDateElem && te(w.todayDateElem) ? w.todayDateElem : B(n > 0 ? 1 : -1);
       void 0 === i ? w._input.focus() : a ? function (e, n) {
-        for (var t = -1 === e.className.indexOf("Month") ? e.dateObj.getMonth() : w.currentMonth, a = n > 0 ? w.config.showMonths : -1, i = n > 0 ? 1 : -1, o = t - w.currentMonth; o != a; o += i) {
-          for (var r = w.daysContainer.children[o], l = t - w.currentMonth === o ? e.$i + n : n < 0 ? r.children.length - 1 : 0, c = r.children.length, s = l; s >= 0 && s < c && s != (n > 0 ? c : -1); s += i) {
-            var d = r.children[s];
-            if (-1 === d.className.indexOf("hidden") && ne(d.dateObj) && Math.abs(e.$i - s) >= Math.abs(n)) return W(d);
-          }
+        for (var t = -1 === e.className.indexOf("Month") ? e.dateObj.getMonth() : w.currentMonth, a = n > 0 ? w.config.showMonths : -1, i = n > 0 ? 1 : -1, o = t - w.currentMonth; o != a; o += i) for (var r = w.daysContainer.children[o], l = t - w.currentMonth === o ? e.$i + n : n < 0 ? r.children.length - 1 : 0, c = r.children.length, s = l; s >= 0 && s < c && s != (n > 0 ? c : -1); s += i) {
+          var d = r.children[s];
+          if (-1 === d.className.indexOf("hidden") && ne(d.dateObj) && Math.abs(e.$i - s) >= Math.abs(n)) return W(d);
         }
         w.changeMonth(i), J(B(i), 0);
       }(i, n) : W(i);
     }
     function K(e, n) {
-      for (var t = (new Date(e, n, 1).getDay() - w.l10n.firstDayOfWeek + 7) % 7, a = w.utils.getDaysInMonth((n - 1 + 12) % 12, e), i = w.utils.getDaysInMonth(n, e), o = window.document.createDocumentFragment(), r = w.config.showMonths > 1, l = r ? "prevMonthDay hidden" : "prevMonthDay", c = r ? "nextMonthDay hidden" : "nextMonthDay", s = a + 1 - t, u = 0; s <= a; s++, u++) {
-        o.appendChild(R("flatpickr-day " + l, new Date(e, n - 1, s), s, u));
-      }
-      for (s = 1; s <= i; s++, u++) {
-        o.appendChild(R("flatpickr-day", new Date(e, n, s), s, u));
-      }
-      for (var f = i + 1; f <= 42 - t && (1 === w.config.showMonths || u % 7 != 0); f++, u++) {
-        o.appendChild(R("flatpickr-day " + c, new Date(e, n + 1, f % i), f, u));
-      }
+      for (var t = (new Date(e, n, 1).getDay() - w.l10n.firstDayOfWeek + 7) % 7, a = w.utils.getDaysInMonth((n - 1 + 12) % 12, e), i = w.utils.getDaysInMonth(n, e), o = window.document.createDocumentFragment(), r = w.config.showMonths > 1, l = r ? "prevMonthDay hidden" : "prevMonthDay", c = r ? "nextMonthDay hidden" : "nextMonthDay", s = a + 1 - t, u = 0; s <= a; s++, u++) o.appendChild(R("flatpickr-day " + l, new Date(e, n - 1, s), s, u));
+      for (s = 1; s <= i; s++, u++) o.appendChild(R("flatpickr-day", new Date(e, n, s), s, u));
+      for (var f = i + 1; f <= 42 - t && (1 === w.config.showMonths || u % 7 != 0); f++, u++) o.appendChild(R("flatpickr-day " + c, new Date(e, n + 1, f % i), f, u));
       var m = d("div", "dayContainer");
       return m.appendChild(o), m;
     }
@@ -9176,11 +9158,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
           return !(void 0 !== w.config.minDate && w.currentYear === w.config.minDate.getFullYear() && _e2 < w.config.minDate.getMonth()) && !(void 0 !== w.config.maxDate && w.currentYear === w.config.maxDate.getFullYear() && _e2 > w.config.maxDate.getMonth());
         };
         w.monthsDropdownContainer.tabIndex = -1, w.monthsDropdownContainer.innerHTML = "";
-        for (var n = 0; n < 12; n++) {
-          if (e(n)) {
-            var t = d("option", "flatpickr-monthDropdown-month");
-            t.value = new Date(w.currentYear, n).getMonth().toString(), t.textContent = h(n, w.config.shorthandCurrentMonth, w.l10n), t.tabIndex = -1, w.currentMonth === n && (t.selected = !0), w.monthsDropdownContainer.appendChild(t);
-          }
+        for (var n = 0; n < 12; n++) if (e(n)) {
+          var t = d("option", "flatpickr-monthDropdown-month");
+          t.value = new Date(w.currentYear, n).getMonth().toString(), t.textContent = h(n, w.config.shorthandCurrentMonth, w.l10n), t.tabIndex = -1, w.currentMonth === n && (t.selected = !0), w.monthsDropdownContainer.appendChild(t);
         }
       }
     }
@@ -9226,9 +9206,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         var e = w.l10n.firstDayOfWeek,
           t = n(w.l10n.weekdays.shorthand);
         e > 0 && e < t.length && (t = n(t.splice(e, t.length), t.splice(0, e)));
-        for (var a = w.config.showMonths; a--;) {
-          w.weekdayContainer.children[a].innerHTML = "\n      <span class='flatpickr-weekday'>\n        " + t.join("</span><span class='flatpickr-weekday'>") + "\n      </span>\n      ";
-        }
+        for (var a = w.config.showMonths; a--;) w.weekdayContainer.children[a].innerHTML = "\n      <span class='flatpickr-weekday'>\n        " + t.join("</span><span class='flatpickr-weekday'>") + "\n      </span>\n      ";
       }
     }
     function Z(e, n) {
@@ -9346,9 +9324,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
     }
     function oe(e, n) {
       if (void 0 === n && (n = "flatpickr-day"), 1 === w.selectedDates.length && (!e || e.classList.contains(n) && !e.classList.contains("flatpickr-disabled"))) {
-        for (var t = e ? e.dateObj.getTime() : w.days.firstElementChild.dateObj.getTime(), a = w.parseDate(w.selectedDates[0], void 0, !0).getTime(), i = Math.min(t, w.selectedDates[0].getTime()), o = Math.max(t, w.selectedDates[0].getTime()), r = !1, l = 0, c = 0, s = i; s < o; s += x) {
-          ne(new Date(s), !0) || (r = r || s > i && s < o, s < a && (!l || s > l) ? l = s : s > a && (!c || s < c) && (c = s));
-        }
+        for (var t = e ? e.dateObj.getTime() : w.days.firstElementChild.dateObj.getTime(), a = w.parseDate(w.selectedDates[0], void 0, !0).getTime(), i = Math.min(t, w.selectedDates[0].getTime()), o = Math.max(t, w.selectedDates[0].getTime()), r = !1, l = 0, c = 0, s = i; s < o; s += x) ne(new Date(s), !0) || (r = r || s > i && s < o, s < a && (!l || s > l) ? l = s : s > a && (!c || s < c) && (c = s));
         Array.from(w.rContainer.querySelectorAll("*:nth-child(-n+" + w.config.showMonths + ") > ." + n)).forEach(function (n) {
           var i,
             o,
@@ -9494,15 +9470,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
       De("onClose");
     }, w.onMouseOver = oe, w._createElement = d, w.createDay = R, w.destroy = function () {
       void 0 !== w.config && De("onDestroy");
-      for (var e = w._handlers.length; e--;) {
-        w._handlers[e].remove();
-      }
+      for (var e = w._handlers.length; e--;) w._handlers[e].remove();
       if (w._handlers = [], w.mobileInput) w.mobileInput.parentNode && w.mobileInput.parentNode.removeChild(w.mobileInput), w.mobileInput = void 0;else if (w.calendarContainer && w.calendarContainer.parentNode) if (w.config["static"] && w.calendarContainer.parentNode) {
         var n = w.calendarContainer.parentNode;
         if (n.lastChild && n.removeChild(n.lastChild), n.parentNode) {
-          for (; n.firstChild;) {
-            n.parentNode.insertBefore(n.firstChild, n);
-          }
+          for (; n.firstChild;) n.parentNode.insertBefore(n.firstChild, n);
           n.parentNode.removeChild(n);
         }
       } else w.calendarContainer.parentNode.removeChild(w.calendarContainer);
@@ -9530,11 +9502,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         return w.hourElement.select();
       }, 50));
     }, w.redraw = ue, w.set = function (e, n) {
-      if (null !== e && "object" == _typeof(e)) for (var a in Object.assign(w.config, e), e) {
-        void 0 !== ge[a] && ge[a].forEach(function (e) {
-          return e();
-        });
-      } else w.config[e] = n, void 0 !== ge[e] ? ge[e].forEach(function (e) {
+      if (null !== e && "object" == _typeof(e)) for (var a in Object.assign(w.config, e), e) void 0 !== ge[a] && ge[a].forEach(function (e) {
+        return e();
+      });else w.config[e] = n, void 0 !== ge[e] ? ge[e].forEach(function (e) {
         return e();
       }) : t.indexOf(e) > -1 && (w.config[e] = c(n));
       w.redraw(), ye(!0);
@@ -9599,9 +9569,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
     function De(e, n) {
       if (void 0 !== w.config) {
         var t = w.config[e];
-        if (void 0 !== t && t.length > 0) for (var a = 0; t[a] && a < t.length; a++) {
-          t[a](w.selectedDates, w.input.value, w, n);
-        }
+        if (void 0 !== t && t.length > 0) for (var a = 0; t[a] && a < t.length; a++) t[a](w.selectedDates, w.input.value, w, n);
         "onChange" === e && (w.input.dispatchEvent(we("change")), w.input.dispatchEvent(we("input")));
       }
     }
@@ -9695,9 +9663,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
           set: d("max")
         }), "time" === i.mode && (w.config.noCalendar = !0, w.config.enableTime = !0);
         Object.assign(w.config, o, i);
-        for (var u = 0; u < n.length; u++) {
-          w.config[n[u]] = !0 === w.config[n[u]] || "true" === w.config[n[u]];
-        }
+        for (var u = 0; u < n.length; u++) w.config[n[u]] = !0 === w.config[n[u]] || "true" === w.config[n[u]];
         t.filter(function (e) {
           return void 0 !== w.config[e];
         }).forEach(function (e) {
@@ -9705,9 +9671,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         }), w.isMobile = !w.config.disableMobile && !w.config.inline && "single" === w.config.mode && !w.config.disable.length && !w.config.enable && !w.config.weekNumbers && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         for (u = 0; u < w.config.plugins.length; u++) {
           var f = w.config.plugins[u](w) || {};
-          for (var m in f) {
-            t.indexOf(m) > -1 ? w.config[m] = c(f[m]).map(T).concat(w.config[m]) : void 0 === i[m] && (w.config[m] = f[m]);
-          }
+          for (var m in f) t.indexOf(m) > -1 ? w.config[m] = c(f[m]).map(T).concat(w.config[m]) : void 0 === i[m] && (w.config[m] = f[m]);
         }
         i.altInputClass || (w.config.altInputClass = ce().className + " " + w.config.altInputClass);
         De("onParseConfig");
@@ -9985,11 +9949,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       if (n.r(r), Object.defineProperty(r, "default", {
         enumerable: !0,
         value: t
-      }), 2 & e && "string" != typeof t) for (var o in t) {
-        n.d(r, o, function (e) {
-          return t[e];
-        }.bind(null, o));
-      }
+      }), 2 & e && "string" != typeof t) for (var o in t) n.d(r, o, function (e) {
+        return t[e];
+      }.bind(null, o));
       return r;
     }, n.n = function (t) {
       var e = t && t.__esModule ? function () {
@@ -10011,9 +9973,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         } instanceof Array && function (t, e) {
           t.__proto__ = e;
         } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
-          }
+          for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
         })(t, e);
       }, function (t, e) {
         function n() {
@@ -10047,9 +10007,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return this.maxDecodedLength(t.length - this._getPaddingLength(t));
       }, t.prototype.decode = function (t) {
         if (0 === t.length) return new Uint8Array(0);
-        for (var e = this._getPaddingLength(t), n = t.length - e, r = new Uint8Array(this.maxDecodedLength(n)), o = 0, i = 0, s = 0, c = 0, a = 0, u = 0, h = 0; i < n - 4; i += 4) {
-          c = this._decodeChar(t.charCodeAt(i + 0)), a = this._decodeChar(t.charCodeAt(i + 1)), u = this._decodeChar(t.charCodeAt(i + 2)), h = this._decodeChar(t.charCodeAt(i + 3)), r[o++] = c << 2 | a >>> 4, r[o++] = a << 4 | u >>> 2, r[o++] = u << 6 | h, s |= 256 & c, s |= 256 & a, s |= 256 & u, s |= 256 & h;
-        }
+        for (var e = this._getPaddingLength(t), n = t.length - e, r = new Uint8Array(this.maxDecodedLength(n)), o = 0, i = 0, s = 0, c = 0, a = 0, u = 0, h = 0; i < n - 4; i += 4) c = this._decodeChar(t.charCodeAt(i + 0)), a = this._decodeChar(t.charCodeAt(i + 1)), u = this._decodeChar(t.charCodeAt(i + 2)), h = this._decodeChar(t.charCodeAt(i + 3)), r[o++] = c << 2 | a >>> 4, r[o++] = a << 4 | u >>> 2, r[o++] = u << 6 | h, s |= 256 & c, s |= 256 & a, s |= 256 & u, s |= 256 & h;
         if (i < n - 1 && (c = this._decodeChar(t.charCodeAt(i)), a = this._decodeChar(t.charCodeAt(i + 1)), r[o++] = c << 2 | a >>> 4, s |= 256 & c, s |= 256 & a), i < n - 2 && (u = this._decodeChar(t.charCodeAt(i + 2)), r[o++] = a << 4 | u >>> 2, s |= 256 & u), i < n - 3 && (h = this._decodeChar(t.charCodeAt(i + 3)), r[o++] = u << 6 | h, s |= 256 & h), 0 !== s) throw new Error("Base64Coder: incorrect characters for decoding");
         return r;
       }, t.prototype._encodeByte = function (t) {
@@ -10061,9 +10019,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }, t.prototype._getPaddingLength = function (t) {
         var e = 0;
         if (this._paddingCharacter) {
-          for (var n = t.length - 1; n >= 0 && t[n] === this._paddingCharacter; n--) {
-            e++;
-          }
+          for (var n = t.length - 1; n >= 0 && t[n] === this._paddingCharacter; n--) e++;
           if (t.length < 4 || e > 2) throw new Error("Base64Coder: incorrect padding");
         }
         return e;
@@ -10233,9 +10189,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                   delete r.loading[t];
                   for (var s = function s(t) {
                       t || o.cleanup();
-                    }, c = 0; c < n.length; c++) {
-                    n[c](e, s);
-                  }
+                    }, c = 0; c < n.length; c++) n[c](e, s);
                 }
               });
             o.send(i);
@@ -10290,9 +10244,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         } instanceof Array && function (t, e) {
           t.__proto__ = e;
         } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
-          }
+          for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
         })(t, e);
       }, function (t, e) {
         function n() {
@@ -10374,9 +10326,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }(Error),
       k = function k(t, e, n, o, i) {
         var s = Se.createXHR();
-        for (var c in s.open("POST", n.endpoint, !0), s.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"), n.headers) {
-          s.setRequestHeader(c, n.headers[c]);
-        }
+        for (var c in s.open("POST", n.endpoint, !0), s.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"), n.headers) s.setRequestHeader(c, n.headers[c]);
         return s.onreadystatechange = function () {
           if (4 === s.readyState) if (200 === s.status) {
             var t = void 0,
@@ -10400,9 +10350,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           }
         }, s.send(e), s;
       };
-    for (var C = String.fromCharCode, T = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", P = {}, O = 0, E = T.length; O < E; O++) {
-      P[T.charAt(O)] = O;
-    }
+    for (var C = String.fromCharCode, T = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", P = {}, O = 0, E = T.length; O < E; O++) P[T.charAt(O)] = O;
     var A = function A(t) {
         var e = t.charCodeAt(0);
         return e < 128 ? t : e < 2048 ? C(192 | e >>> 6) + C(128 | 63 & e) : C(224 | e >>> 12 & 15) + C(128 | e >>> 6 & 63) + C(128 | 63 & e);
@@ -10438,9 +10386,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -10480,9 +10426,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           return new H(0, t);
         },
         method: function method(t) {
-          for (var e = [], n = 1; n < arguments.length; n++) {
-            e[n - 1] = arguments[n];
-          }
+          for (var e = [], n = 1; n < arguments.length; n++) e[n - 1] = arguments[n];
           var r = Array.prototype.slice.call(arguments, 1);
           return function (e) {
             return e[t].apply(e, r.concat(arguments));
@@ -10490,36 +10434,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
       };
     function z(t) {
-      for (var e = [], n = 1; n < arguments.length; n++) {
-        e[n - 1] = arguments[n];
-      }
+      for (var e = [], n = 1; n < arguments.length; n++) e[n - 1] = arguments[n];
       for (var r = 0; r < e.length; r++) {
         var o = e[r];
-        for (var i in o) {
-          o[i] && o[i].constructor && o[i].constructor === Object ? t[i] = z(t[i] || {}, o[i]) : t[i] = o[i];
-        }
+        for (var i in o) o[i] && o[i].constructor && o[i].constructor === Object ? t[i] = z(t[i] || {}, o[i]) : t[i] = o[i];
       }
       return t;
     }
     function q() {
-      for (var t = ["Pusher"], e = 0; e < arguments.length; e++) {
-        "string" == typeof arguments[e] ? t.push(arguments[e]) : t.push(K(arguments[e]));
-      }
+      for (var t = ["Pusher"], e = 0; e < arguments.length; e++) "string" == typeof arguments[e] ? t.push(arguments[e]) : t.push(K(arguments[e]));
       return t.join(" : ");
     }
     function B(t, e) {
       var n = Array.prototype.indexOf;
       if (null === t) return -1;
       if (n && t.indexOf === n) return t.indexOf(e);
-      for (var r = 0, o = t.length; r < o; r++) {
-        if (t[r] === e) return r;
-      }
+      for (var r = 0, o = t.length; r < o; r++) if (t[r] === e) return r;
       return -1;
     }
     function F(t, e) {
-      for (var n in t) {
-        Object.prototype.hasOwnProperty.call(t, n) && e(t[n], n, t);
-      }
+      for (var n in t) Object.prototype.hasOwnProperty.call(t, n) && e(t[n], n, t);
     }
     function X(t) {
       var e = [];
@@ -10528,23 +10462,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }), e;
     }
     function J(t, e, n) {
-      for (var r = 0; r < t.length; r++) {
-        e.call(n || window, t[r], r, t);
-      }
+      for (var r = 0; r < t.length; r++) e.call(n || window, t[r], r, t);
     }
     function W(t, e) {
-      for (var n = [], r = 0; r < t.length; r++) {
-        n.push(e(t[r], r, t, n));
-      }
+      for (var n = [], r = 0; r < t.length; r++) n.push(e(t[r], r, t, n));
       return n;
     }
     function G(t, e) {
       e = e || function (t) {
         return !!t;
       };
-      for (var n = [], r = 0; r < t.length; r++) {
-        e(t[r], r, t, n) && n.push(t[r]);
-      }
+      for (var n = [], r = 0; r < t.length; r++) e(t[r], r, t, n) && n.push(t[r]);
       return n;
     }
     function V(t, e) {
@@ -10554,9 +10482,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }), n;
     }
     function Q(t, e) {
-      for (var n = 0; n < t.length; n++) {
-        if (e(t[n], n, t)) return !0;
-      }
+      for (var n = 0; n < t.length; n++) if (e(t[n], n, t)) return !0;
       return !1;
     }
     function Y(t) {
@@ -10587,16 +10513,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           switch (_typeof(r)) {
             case "object":
               if (!r) return null;
-              for (i = 0; i < e.length; i += 1) {
-                if (e[i] === r) return {
-                  $ref: n[i]
-                };
-              }
-              if (e.push(r), n.push(o), "[object Array]" === Object.prototype.toString.apply(r)) for (c = [], i = 0; i < r.length; i += 1) {
-                c[i] = t(r[i], o + "[" + i + "]");
-              } else for (s in c = {}, r) {
-                Object.prototype.hasOwnProperty.call(r, s) && (c[s] = t(r[s], o + "[" + JSON.stringify(s) + "]"));
-              }
+              for (i = 0; i < e.length; i += 1) if (e[i] === r) return {
+                $ref: n[i]
+              };
+              if (e.push(r), n.push(o), "[object Array]" === Object.prototype.toString.apply(r)) for (c = [], i = 0; i < r.length; i += 1) c[i] = t(r[i], o + "[" + i + "]");else for (s in c = {}, r) Object.prototype.hasOwnProperty.call(r, s) && (c[s] = t(r[s], o + "[" + JSON.stringify(s) + "]"));
               return c;
             case "number":
             case "string":
@@ -10614,28 +10534,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           };
         }
         return t.prototype.debug = function () {
-          for (var t = [], e = 0; e < arguments.length; e++) {
-            t[e] = arguments[e];
-          }
+          for (var t = [], e = 0; e < arguments.length; e++) t[e] = arguments[e];
           this.log(this.globalLog, t);
         }, t.prototype.warn = function () {
-          for (var t = [], e = 0; e < arguments.length; e++) {
-            t[e] = arguments[e];
-          }
+          for (var t = [], e = 0; e < arguments.length; e++) t[e] = arguments[e];
           this.log(this.globalLogWarn, t);
         }, t.prototype.error = function () {
-          for (var t = [], e = 0; e < arguments.length; e++) {
-            t[e] = arguments[e];
-          }
+          for (var t = [], e = 0; e < arguments.length; e++) t[e] = arguments[e];
           this.log(this.globalLogError, t);
         }, t.prototype.globalLogWarn = function (t) {
           window.console && window.console.warn ? window.console.warn(t) : this.globalLog(t);
         }, t.prototype.globalLogError = function (t) {
           window.console && window.console.error ? window.console.error(t) : this.globalLogWarn(t);
         }, t.prototype.log = function (t) {
-          for (var e = [], n = 1; n < arguments.length; n++) {
-            e[n - 1] = arguments[n];
-          }
+          for (var e = [], n = 1; n < arguments.length; n++) e[n - 1] = arguments[n];
           var r = q.apply(this, arguments);
           if (Fe.log) Fe.log(r);else if (Fe.logToConsole) {
             var o = t.bind(this);
@@ -10777,14 +10689,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }, t.prototype.unbind_all = function () {
           return this.unbind(), this.unbind_global(), this;
         }, t.prototype.emit = function (t, e, n) {
-          for (var r = 0; r < this.global_callbacks.length; r++) {
-            this.global_callbacks[r](t, e);
-          }
+          for (var r = 0; r < this.global_callbacks.length; r++) this.global_callbacks[r](t, e);
           var o = this.callbacks.get(t),
             i = [];
-          if (n ? i.push(e, n) : e && i.push(e), o && o.length > 0) for (r = 0; r < o.length; r++) {
-            o[r].fn.apply(o[r].context || window, i);
-          } else this.failThrough && this.failThrough(t, e);
+          if (n ? i.push(e, n) : e && i.push(e), o && o.length > 0) for (r = 0; r < o.length; r++) o[r].fn.apply(o[r].context || window, i);else this.failThrough && this.failThrough(t, e);
           return this;
         }, t;
       }(),
@@ -10795,9 +10703,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -10978,9 +10884,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -11091,9 +10995,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -11236,9 +11138,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -11309,9 +11209,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -11366,9 +11264,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -11436,9 +11332,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -11500,9 +11394,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -11642,15 +11534,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             })
           };
         }, e.prototype.setConnection = function (t) {
-          for (var e in this.connection = t, this.connectionCallbacks) {
-            this.connection.bind(e, this.connectionCallbacks[e]);
-          }
+          for (var e in this.connection = t, this.connectionCallbacks) this.connection.bind(e, this.connectionCallbacks[e]);
           this.resetActivityCheck();
         }, e.prototype.abandonConnection = function () {
           if (this.connection) {
-            for (var t in this.stopActivityCheck(), this.connectionCallbacks) {
-              this.connection.unbind(t, this.connectionCallbacks[t]);
-            }
+            for (var t in this.stopActivityCheck(), this.connectionCallbacks) this.connection.unbind(t, this.connectionCallbacks[t]);
             var e = this.connection;
             return this.connection = null, e;
           }
@@ -11819,9 +11707,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             return function (r, o) {
               n[t].error = r, r ? function (t) {
                 return function (t, e) {
-                  for (var n = 0; n < t.length; n++) {
-                    if (!e(t[n], n, t)) return !1;
-                  }
+                  for (var n = 0; n < t.length; n++) if (!e(t[n], n, t)) return !1;
                   return !0;
                 }(t, function (t) {
                   return Boolean(t.error);
@@ -12039,9 +11925,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -12097,9 +11981,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       ve = function () {
         function t(t, e) {
           this.hooks = t, this.session = ye(1e3) + "/" + function (t) {
-            for (var e = [], n = 0; n < t; n++) {
-              e.push(ye(32).toString(32));
-            }
+            for (var e = [], n = 0; n < t; n++) e.push(ye(32).toString(32));
             return e.join("");
           }(8), this.location = function (t) {
             var e = /([^\?]*)\/*(\??.*)/.exec(t);
@@ -12139,9 +12021,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               break;
             case "a":
               e = JSON.parse(t.data.slice(1) || "[]");
-              for (var n = 0; n < e.length; n++) {
-                this.onEvent(e[n]);
-              }
+              for (var n = 0; n < e.length; n++) this.onEvent(e[n]);
               break;
             case "m":
               e = JSON.parse(t.data.slice(1) || "null"), this.onEvent(e);
@@ -12466,9 +12346,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return function (e, n) {
           var o = function (t, e) {
             var n = "socket_id=" + encodeURIComponent(t.socketId);
-            for (var r in e.params) {
-              n += "&" + encodeURIComponent(r) + "=" + encodeURIComponent(e.params[r]);
-            }
+            for (var r in e.params) n += "&" + encodeURIComponent(r) + "=" + encodeURIComponent(e.params[r]);
             return n;
           }(e, t);
           Se.getAuthorizers()[t.transport](Se, o, t, r.UserAuthentication, n);
@@ -12479,9 +12357,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return function (e, n) {
           var o = function (t, e) {
             var n = "socket_id=" + encodeURIComponent(t.socketId);
-            for (var r in n += "&channel_name=" + encodeURIComponent(t.channelName), e.params) {
-              n += "&" + encodeURIComponent(r) + "=" + encodeURIComponent(e.params[r]);
-            }
+            for (var r in n += "&channel_name=" + encodeURIComponent(t.channelName), e.params) n += "&" + encodeURIComponent(r) + "=" + encodeURIComponent(e.params[r]);
             return n;
           }(e, t);
           Se.getAuthorizers()[t.transport](Se, o, t, r.ChannelAuthorization, n);
@@ -12489,11 +12365,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       _Re = function Re() {
         return (_Re = Object.assign || function (t) {
-          for (var e, n = 1, r = arguments.length; n < r; n++) {
-            for (var o in e = arguments[n]) {
-              Object.prototype.hasOwnProperty.call(e, o) && (t[o] = e[o]);
-            }
-          }
+          for (var e, n = 1, r = arguments.length; n < r; n++) for (var o in e = arguments[n]) Object.prototype.hasOwnProperty.call(e, o) && (t[o] = e[o]);
           return t;
         }).apply(this, arguments);
       };
@@ -12546,9 +12418,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } instanceof Array && function (t, e) {
             t.__proto__ = e;
           } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
+            for (var n in e) e.hasOwnProperty(n) && (t[n] = e[n]);
           })(e, n);
         };
         return function (e, n) {
@@ -12675,9 +12545,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
         return t.ready = function () {
           t.isReady = !0;
-          for (var e = 0, n = t.instances.length; e < n; e++) {
-            t.instances[e].connect();
-          }
+          for (var e = 0, n = t.instances.length; e < n; e++) t.instances[e].connect();
         }, t.getClientFeatures = function () {
           return X(V({
             ws: Se.Transports.ws
@@ -12710,9 +12578,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           return this.global_emitter.unbind_all(), this;
         }, t.prototype.subscribeAll = function () {
           var t;
-          for (t in this.channels.channels) {
-            this.channels.channels.hasOwnProperty(t) && this.subscribe(t);
-          }
+          for (t in this.channels.channels) this.channels.channels.hasOwnProperty(t) && this.subscribe(t);
         }, t.prototype.subscribe = function (t) {
           var e = this.channels.add(t, this);
           return e.subscriptionPending && e.subscriptionCancelled ? e.reinstateSubscription() : e.subscriptionPending || "connected" !== this.connection.state || e.subscribe(), e;
@@ -13119,7 +12985,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _popperjs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @popperjs/core */ "./node_modules/@popperjs/core/lib/index.js");
 /* harmony import */ var _popperjs_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @popperjs/core */ "./node_modules/@popperjs/core/lib/popper.js");
 /*!
-  * Bootstrap v5.2.2 (https://getbootstrap.com/)
+  * Bootstrap v5.2.3 (https://getbootstrap.com/)
   * Copyright 2011-2022 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
@@ -13127,7 +12993,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/index.js
+ * Bootstrap (v5.2.3): util/index.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -13442,7 +13308,7 @@ const getNextActiveElement = (list, activeElement, shouldGetNext, isCycleAllowed
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dom/event-handler.js
+ * Bootstrap (v5.2.3): dom/event-handler.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -13711,7 +13577,7 @@ function hydrateObj(obj, meta) {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dom/data.js
+ * Bootstrap (v5.2.3): dom/data.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -13763,7 +13629,7 @@ const Data = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dom/manipulator.js
+ * Bootstrap (v5.2.3): dom/manipulator.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -13833,7 +13699,7 @@ const Manipulator = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/config.js
+ * Bootstrap (v5.2.3): util/config.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -13894,7 +13760,7 @@ class Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): base-component.js
+ * Bootstrap (v5.2.3): base-component.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -13902,7 +13768,7 @@ class Config {
  * Constants
  */
 
-const VERSION = '5.2.2';
+const VERSION = '5.2.3';
 /**
  * Class definition
  */
@@ -13973,7 +13839,7 @@ class BaseComponent extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/component-functions.js
+ * Bootstrap (v5.2.3): util/component-functions.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -13999,7 +13865,7 @@ const enableDismissTrigger = (component, method = 'hide') => {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): alert.js
+ * Bootstrap (v5.2.3): alert.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14079,7 +13945,7 @@ defineJQueryPlugin(Alert);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): button.js
+ * Bootstrap (v5.2.3): button.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14141,7 +14007,7 @@ defineJQueryPlugin(Button);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dom/selector-engine.js
+ * Bootstrap (v5.2.3): dom/selector-engine.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14212,7 +14078,7 @@ const SelectorEngine = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/swipe.js
+ * Bootstrap (v5.2.3): util/swipe.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14348,7 +14214,7 @@ class Swipe extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): carousel.js
+ * Bootstrap (v5.2.3): carousel.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14796,7 +14662,7 @@ defineJQueryPlugin(Carousel);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): collapse.js
+ * Bootstrap (v5.2.3): collapse.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -15086,7 +14952,7 @@ defineJQueryPlugin(Collapse);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dropdown.js
+ * Bootstrap (v5.2.3): dropdown.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -15518,7 +15384,7 @@ defineJQueryPlugin(Dropdown);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/scrollBar.js
+ * Bootstrap (v5.2.3): util/scrollBar.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -15637,7 +15503,7 @@ class ScrollBarHelper {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/backdrop.js
+ * Bootstrap (v5.2.3): util/backdrop.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -15783,7 +15649,7 @@ class Backdrop extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/focustrap.js
+ * Bootstrap (v5.2.3): util/focustrap.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -15892,7 +15758,7 @@ class FocusTrap extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): modal.js
+ * Bootstrap (v5.2.3): modal.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16268,7 +16134,7 @@ defineJQueryPlugin(Modal);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): offcanvas.js
+ * Bootstrap (v5.2.3): offcanvas.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16542,7 +16408,7 @@ defineJQueryPlugin(Offcanvas);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/sanitizer.js
+ * Bootstrap (v5.2.3): util/sanitizer.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16647,7 +16513,7 @@ function sanitizeHtml(unsafeHtml, allowList, sanitizeFunction) {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/template-factory.js
+ * Bootstrap (v5.2.3): util/template-factory.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16805,7 +16671,7 @@ class TemplateFactory extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): tooltip.js
+ * Bootstrap (v5.2.3): tooltip.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16955,10 +16821,6 @@ class Tooltip extends BaseComponent {
     clearTimeout(this._timeout);
     EventHandler.off(this._element.closest(SELECTOR_MODAL), EVENT_MODAL_HIDE, this._hideModalHandler);
 
-    if (this.tip) {
-      this.tip.remove();
-    }
-
     if (this._element.getAttribute('data-bs-original-title')) {
       this._element.setAttribute('title', this._element.getAttribute('data-bs-original-title'));
     }
@@ -16987,10 +16849,7 @@ class Tooltip extends BaseComponent {
     } // todo v6 remove this OR make it optional
 
 
-    if (this.tip) {
-      this.tip.remove();
-      this.tip = null;
-    }
+    this._disposePopper();
 
     const tip = this._getTipElement();
 
@@ -17005,12 +16864,7 @@ class Tooltip extends BaseComponent {
       EventHandler.trigger(this._element, this.constructor.eventName(EVENT_INSERTED));
     }
 
-    if (this._popper) {
-      this._popper.update();
-    } else {
-      this._popper = this._createPopper(tip);
-    }
-
+    this._popper = this._createPopper(tip);
     tip.classList.add(CLASS_NAME_SHOW$2); // If this is a touch-enabled device we add extra
     // empty mouseover listeners to the body's immediate children;
     // only needed because of broken event delegation on iOS
@@ -17068,14 +16922,12 @@ class Tooltip extends BaseComponent {
       }
 
       if (!this._isHovered) {
-        tip.remove();
+        this._disposePopper();
       }
 
       this._element.removeAttribute('aria-describedby');
 
       EventHandler.trigger(this._element, this.constructor.eventName(EVENT_HIDDEN$2));
-
-      this._disposePopper();
     };
 
     this._queueCallback(complete, this.tip, this._isAnimated());
@@ -17392,6 +17244,11 @@ class Tooltip extends BaseComponent {
 
       this._popper = null;
     }
+
+    if (this.tip) {
+      this.tip.remove();
+      this.tip = null;
+    }
   } // Static
 
 
@@ -17421,7 +17278,7 @@ defineJQueryPlugin(Tooltip);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): popover.js
+ * Bootstrap (v5.2.3): popover.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -17504,7 +17361,7 @@ defineJQueryPlugin(Popover);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): scrollspy.js
+ * Bootstrap (v5.2.3): scrollspy.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -17795,7 +17652,7 @@ defineJQueryPlugin(ScrollSpy);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): tab.js
+ * Bootstrap (v5.2.3): tab.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -18108,7 +17965,7 @@ defineJQueryPlugin(Tab);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): toast.js
+ * Bootstrap (v5.2.3): toast.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -18874,10 +18731,10 @@ module.exports = function (exec, SKIP_CLOSING) {
   \*******************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var uncurryThisRaw = __webpack_require__(/*! ../internals/function-uncurry-this-raw */ "./node_modules/core-js/internals/function-uncurry-this-raw.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
 
-var toString = uncurryThisRaw({}.toString);
-var stringSlice = uncurryThisRaw(''.slice);
+var toString = uncurryThis({}.toString);
+var stringSlice = uncurryThis(''.slice);
 
 module.exports = function (it) {
   return stringSlice(toString(it), 8, -1);
@@ -19670,7 +19527,7 @@ module.exports = function (exec) {
 
 // TODO: Remove from `core-js@4` since it's moved to entry points
 __webpack_require__(/*! ../modules/es.regexp.exec */ "./node_modules/core-js/modules/es.regexp.exec.js");
-var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this-clause */ "./node_modules/core-js/internals/function-uncurry-this-clause.js");
 var defineBuiltIn = __webpack_require__(/*! ../internals/define-built-in */ "./node_modules/core-js/internals/define-built-in.js");
 var regexpExec = __webpack_require__(/*! ../internals/regexp-exec */ "./node_modules/core-js/internals/regexp-exec.js");
 var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
@@ -19787,7 +19644,7 @@ module.exports = typeof Reflect == 'object' && Reflect.apply || (NATIVE_BIND ? c
   \*****************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this-clause */ "./node_modules/core-js/internals/function-uncurry-this-clause.js");
 var aCallable = __webpack_require__(/*! ../internals/a-callable */ "./node_modules/core-js/internals/a-callable.js");
 var NATIVE_BIND = __webpack_require__(/*! ../internals/function-bind-native */ "./node_modules/core-js/internals/function-bind-native.js");
 
@@ -19866,10 +19723,29 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/function-uncurry-this-raw.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/core-js/internals/function-uncurry-this-raw.js ***!
-  \*********************************************************************/
+/***/ "./node_modules/core-js/internals/function-uncurry-this-clause.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/core-js/internals/function-uncurry-this-clause.js ***!
+  \************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var classofRaw = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
+
+module.exports = function (fn) {
+  // Nashorn bug:
+  //   https://github.com/zloirock/core-js/issues/1128
+  //   https://github.com/zloirock/core-js/issues/1130
+  if (classofRaw(fn) === 'Function') return uncurryThis(fn);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/function-uncurry-this.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/core-js/internals/function-uncurry-this.js ***!
+  \*****************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var NATIVE_BIND = __webpack_require__(/*! ../internals/function-bind-native */ "./node_modules/core-js/internals/function-bind-native.js");
@@ -19882,25 +19758,6 @@ module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
   return function () {
     return call.apply(fn, arguments);
   };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/function-uncurry-this.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/core-js/internals/function-uncurry-this.js ***!
-  \*****************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var classofRaw = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
-var uncurryThisRaw = __webpack_require__(/*! ../internals/function-uncurry-this-raw */ "./node_modules/core-js/internals/function-uncurry-this-raw.js");
-
-module.exports = function (fn) {
-  // Nashorn bug:
-  //   https://github.com/zloirock/core-js/issues/1128
-  //   https://github.com/zloirock/core-js/issues/1130
-  if (classofRaw(fn) === 'Function') return uncurryThisRaw(fn);
 };
 
 
@@ -22009,10 +21866,10 @@ var store = __webpack_require__(/*! ../internals/shared-store */ "./node_modules
 (module.exports = function (key, value) {
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.26.0',
+  version: '3.26.1',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2014-2022 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.26.0/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.26.1/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
@@ -23122,7 +22979,7 @@ handlePrototype(DOMTokenListPrototype, 'DOMTokenList');
 /***/ (function(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery JavaScript Library v3.6.1
+ * jQuery JavaScript Library v3.6.3
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -23132,7 +22989,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2022-08-26T17:52Z
+ * Date: 2022-12-20T21:28Z
  */
 ( function( global, factory ) {
 
@@ -23274,7 +23131,7 @@ function toType( obj ) {
 
 
 var
-	version = "3.6.1",
+	version = "3.6.3",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -23645,14 +23502,14 @@ function isArrayLike( obj ) {
 }
 var Sizzle =
 /*!
- * Sizzle CSS Selector Engine v2.3.6
+ * Sizzle CSS Selector Engine v2.3.9
  * https://sizzlejs.com/
  *
  * Copyright JS Foundation and other contributors
  * Released under the MIT license
  * https://js.foundation/
  *
- * Date: 2021-02-16
+ * Date: 2022-12-19
  */
 ( function( window ) {
 var i,
@@ -24002,6 +23859,27 @@ function Sizzle( selector, context, results, seed ) {
 				}
 
 				try {
+
+					// `qSA` may not throw for unrecognized parts using forgiving parsing:
+					// https://drafts.csswg.org/selectors/#forgiving-selector
+					// like the `:has()` pseudo-class:
+					// https://drafts.csswg.org/selectors/#relational
+					// `CSS.supports` is still expected to return `false` then:
+					// https://drafts.csswg.org/css-conditional-4/#typedef-supports-selector-fn
+					// https://drafts.csswg.org/css-conditional-4/#dfn-support-selector
+					if ( support.cssSupportsSelector &&
+
+						// eslint-disable-next-line no-undef
+						!CSS.supports( "selector(:is(" + newSelector + "))" ) ) {
+
+						// Support: IE 11+
+						// Throw to get to the same code path as an error directly in qSA.
+						// Note: once we only support browser supporting
+						// `CSS.supports('selector(...)')`, we can most likely drop
+						// the `try-catch`. IE doesn't implement the API.
+						throw new Error();
+					}
+
 					push.apply( results,
 						newContext.querySelectorAll( newSelector )
 					);
@@ -24297,6 +24175,31 @@ setDocument = Sizzle.setDocument = function( node ) {
 			!el.querySelectorAll( ":scope fieldset div" ).length;
 	} );
 
+	// Support: Chrome 105+, Firefox 104+, Safari 15.4+
+	// Make sure forgiving mode is not used in `CSS.supports( "selector(...)" )`.
+	//
+	// `:is()` uses a forgiving selector list as an argument and is widely
+	// implemented, so it's a good one to test against.
+	support.cssSupportsSelector = assert( function() {
+		/* eslint-disable no-undef */
+
+		return CSS.supports( "selector(*)" ) &&
+
+			// Support: Firefox 78-81 only
+			// In old Firefox, `:is()` didn't use forgiving parsing. In that case,
+			// fail this test as there's no selector to test against that.
+			// `CSS.supports` uses unforgiving parsing
+			document.querySelectorAll( ":is(:jqfake)" ) &&
+
+			// `*` is needed as Safari & newer Chrome implemented something in between
+			// for `:has()` - it throws in `qSA` if it only contains an unsupported
+			// argument but multiple ones, one of which is supported, are fine.
+			// We want to play safe in case `:is()` gets the same treatment.
+			!CSS.supports( "selector(:is(*,:jqfake))" );
+
+		/* eslint-enable */
+	} );
+
 	/* Attributes
 	---------------------------------------------------------------------- */
 
@@ -24563,6 +24466,17 @@ setDocument = Sizzle.setDocument = function( node ) {
 		} );
 	}
 
+	if ( !support.cssSupportsSelector ) {
+
+		// Support: Chrome 105+, Safari 15.4+
+		// `:has()` uses a forgiving selector list as an argument so our regular
+		// `try-catch` mechanism fails to catch `:has()` with arguments not supported
+		// natively like `:has(:contains("Foo"))`. Where supported & spec-compliant,
+		// we now use `CSS.supports("selector(:is(SELECTOR_TO_BE_TESTED))")`, but
+		// outside that we mark `:has` as buggy.
+		rbuggyQSA.push( ":has" );
+	}
+
 	rbuggyQSA = rbuggyQSA.length && new RegExp( rbuggyQSA.join( "|" ) );
 	rbuggyMatches = rbuggyMatches.length && new RegExp( rbuggyMatches.join( "|" ) );
 
@@ -24575,7 +24489,14 @@ setDocument = Sizzle.setDocument = function( node ) {
 	// As in, an element does not contain itself
 	contains = hasCompare || rnative.test( docElem.contains ) ?
 		function( a, b ) {
-			var adown = a.nodeType === 9 ? a.documentElement : a,
+
+			// Support: IE <9 only
+			// IE doesn't have `contains` on `document` so we need to check for
+			// `documentElement` presence.
+			// We need to fall back to `a` when `documentElement` is missing
+			// as `ownerDocument` of elements within `<template/>` may have
+			// a null one - a default behavior of all modern browsers.
+			var adown = a.nodeType === 9 && a.documentElement || a,
 				bup = b && b.parentNode;
 			return a === bup || !!( bup && bup.nodeType === 1 && (
 				adown.contains ?
@@ -25365,7 +25286,7 @@ Expr = Sizzle.selectors = {
 			return elem.nodeName.toLowerCase() === "input" &&
 				elem.type === "text" &&
 
-				// Support: IE<8
+				// Support: IE <10 only
 				// New HTML5 attribute values (e.g., "search") appear with elem.type === "text"
 				( ( attr = elem.getAttribute( "type" ) ) == null ||
 					attr.toLowerCase() === "text" );
@@ -29731,17 +29652,37 @@ function curCSS( elem, name, computed ) {
 	//   .css('filter') (IE 9 only, trac-12537)
 	//   .css('--customProperty) (gh-3144)
 	if ( computed ) {
+
+		// Support: IE <=9 - 11+
+		// IE only supports `"float"` in `getPropertyValue`; in computed styles
+		// it's only available as `"cssFloat"`. We no longer modify properties
+		// sent to `.css()` apart from camelCasing, so we need to check both.
+		// Normally, this would create difference in behavior: if
+		// `getPropertyValue` returns an empty string, the value returned
+		// by `.css()` would be `undefined`. This is usually the case for
+		// disconnected elements. However, in IE even disconnected elements
+		// with no styles return `"none"` for `getPropertyValue( "float" )`
 		ret = computed.getPropertyValue( name ) || computed[ name ];
 
-		// trim whitespace for custom property (issue gh-4926)
-		if ( isCustomProp ) {
+		if ( isCustomProp && ret ) {
 
-			// rtrim treats U+000D CARRIAGE RETURN and U+000C FORM FEED
+			// Support: Firefox 105+, Chrome <=105+
+			// Spec requires trimming whitespace for custom properties (gh-4926).
+			// Firefox only trims leading whitespace. Chrome just collapses
+			// both leading & trailing whitespace to a single space.
+			//
+			// Fall back to `undefined` if empty string returned.
+			// This collapses a missing definition with property defined
+			// and set to an empty string but there's no standard API
+			// allowing us to differentiate them without a performance penalty
+			// and returning `undefined` aligns with older jQuery.
+			//
+			// rtrimCSS treats U+000D CARRIAGE RETURN and U+000C FORM FEED
 			// as whitespace while CSS does not, but this is not a problem
 			// because CSS preprocessing replaces them with U+000A LINE FEED
 			// (which *is* CSS whitespace)
 			// https://www.w3.org/TR/css-syntax-3/#input-preprocessing
-			ret = ret.replace( rtrimCSS, "$1" );
+			ret = ret.replace( rtrimCSS, "$1" ) || undefined;
 		}
 
 		if ( ret === "" && !isAttached( elem ) ) {

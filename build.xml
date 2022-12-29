@@ -18,12 +18,14 @@
 		<property name="ftp.password" value="Kort7LW6"/>
 		<property name="ftp.dir" value="/usr/share/nginx/html"/>
 		<property name="project.folder" value="research"/>
+		<property name="platform" value=".research"/>
 	</target>
 
 	<target name="init.local">
 		<property name="sites.folder" value="/Users/vbulash/Sites"/>
 		<property name="project.folder" value="neurotest"/>
 		<property name="target.folder" value="${sites.folder}/${project.folder}"/>
+		<property name="platform" value=""/>
 	</target>
 
 	<target name="deploy" depends="init,modify.env,copy,compile">
@@ -178,7 +180,7 @@
 	</target>
 
 	<target name="modify.env.persona">
-		<copy file=".env" tofile=".env.temp">
+		<copy file=".env${platform}" tofile=".env.temp">
 			<filterchain>
 				<replaceregexp>
 					<regexp pattern="APP_ENV=local" replace="APP_ENV=production"/>
