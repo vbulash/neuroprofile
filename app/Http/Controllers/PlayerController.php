@@ -213,7 +213,7 @@ class PlayerController extends Controller {
 			if (!isset($card))
 				$card = [];
 			$card['neural'] = json_decode($neural);
-			Redis::delete(session('pkey'));
+			Redis::del(session('pkey'));
 		}
 		$history->card = isset($card) ? json_encode($card) : null;
 		$history->paid = false;

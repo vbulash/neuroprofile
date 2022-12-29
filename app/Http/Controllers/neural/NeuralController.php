@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\neural;
 
-use App\Events\ToastEvent;
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessFaceShot;
-use App\Models\History;
-use App\Models\License;
-use Illuminate\Console\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 use Throwable;
 
