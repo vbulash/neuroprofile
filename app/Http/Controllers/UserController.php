@@ -94,9 +94,10 @@ class UserController extends Controller
 			'email' => $request->email,
 			'password' => Hash::make($request->password),
 		]);
+		$user->assignRole('Администратор');
 
 		event(new Registered($user));
-		$user->notify(new NewUser($user));
+		$user->notify(new NewUser());
 		$name = $user->name;
 
 		session()->put('success',
