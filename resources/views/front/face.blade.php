@@ -8,6 +8,10 @@
 	Тест &laquo;{{ $test->name }}&raquo;
 @endpush
 
+@push('step_description')
+	Снимок будет сделан:
+@endpush
+
 @section('content')
 	<div class="mt-4 mb-4">
 		Лицо должно быть размещено ровно, полностью видно с достаточным освещением.<br />
@@ -19,7 +23,9 @@
 	<form method="get" action="{{ route('player.body2') }}">
 		@csrf
 		<div class="d-flex flex-column">
-			<canvas class="output_canvas"></canvas>
+			<div>
+				<canvas class="output_canvas"></canvas>
+			</div>
 			<p id="message" class="mt-2 mb-2"></p>
 			<div>
 				<button type="submit" class="btn btn-primary btn-lg mt-4" id="continue" disabled>Начать тестирование</button>
@@ -31,10 +37,8 @@
 
 @push('styles')
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
-		crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
 @endpush
 
@@ -186,7 +190,7 @@ export default class FaceIllumination {
 		let stableIntervalId = null;
 		let frozen = false;
 		let saved = false;
-		const COUNTDOWN = 20;
+		const COUNTDOWN = 5;
 		let countdown = 0;
 
 		function save(canvas) {
@@ -309,6 +313,9 @@ export default class FaceIllumination {
 						clearInterval(stableIntervalId);
 						stableIntervalId = null;
 						frozen = false;
+						document.querySelectorAll('.step-countdown').forEach((counter) => {
+							counter.innerText = 'нет';
+						});
 						document.getElementById('message').innerHTML = messages.join('<br/>');
 					} else if (frozen) {	// Идеальная картинка, только что сработал таймер
 						saved = true;
@@ -317,12 +324,17 @@ export default class FaceIllumination {
 						frozen = false;
 						save(results.image);	// Без AR-элементов
 						document.getElementById('message').innerHTML = 'Снимок сделан и сохранён';
+						document.querySelectorAll('.step-countdown').forEach((counter) => {
+							counter.innerText = '-';
+						});
 					} else {	// Идеальная картинка, запускаем 3-секундный таймер
 						document.getElementById('message').innerHTML = '';
 						if (stableIntervalId == null) {
 							countdown = COUNTDOWN;
 							stableIntervalId = setInterval(() => {
-								console.log('Снимок будет сделан через: ' + countdown.toString());
+								document.querySelectorAll('.step-countdown').forEach((counter) => {
+									counter.innerText = countdown;
+								});
 								document.getElementById('message').innerHTML = 'Снимок будет сделан через: ' + countdown.toString();
 								if (countdown-- <= 0) {
 									clearInterval(stableIntervalId);

@@ -6409,8 +6409,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _modules_template__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/template */ "./resources/js/dashmix/modules/template.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
@@ -6509,10 +6512,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Helpers)
 /* harmony export */ });
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
 /*
  *  Document   : helpers.js
  *  Author     : pixelcave
@@ -7677,10 +7682,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
 /* harmony import */ var simplebar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar */ "./node_modules/simplebar/dist/simplebar.esm.js");
 /* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "./resources/js/dashmix/modules/helpers.js");
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
 /*
  *  Document   : template.js
  *  Author     : pixelcave
@@ -8541,6 +8548,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
           Object.prototype.hasOwnProperty.call(n, i) && (e[i] = n[i]);
         }
       }
+
       return e;
     }).apply(this, arguments);
   };
@@ -8549,13 +8557,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
     for (var e = 0, n = 0, t = arguments.length; n < t; n++) {
       e += arguments[n].length;
     }
+
     var a = Array(e),
-      i = 0;
+        i = 0;
+
     for (n = 0; n < t; n++) {
       for (var o = arguments[n], r = 0, l = o.length; r < l; r++, i++) {
         a[i] = o[r];
       }
     }
+
     return a;
   }
 
@@ -8700,15 +8711,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
       e.removeChild(e.firstChild);
     }
   }
+
   function f(e, n) {
     return n(e) ? e : e.parentNode ? f(e.parentNode, n) : void 0;
   }
 
   function m(e, n) {
     var t = d("div", "numInputWrapper"),
-      a = d("input", "numInput " + e),
-      i = d("span", "arrowUp"),
-      o = d("span", "arrowDown");
+        a = d("input", "numInput " + e),
+        i = d("span", "arrowUp"),
+        o = d("span", "arrowDown");
     if (-1 === navigator.userAgent.indexOf("MSIE 9.0") ? a.type = "number" : (a.type = "text", a.pattern = "\\d*"), void 0 !== n) for (var r in n) {
       a.setAttribute(r, n[r]);
     }
@@ -8984,6 +8996,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
     for (var n = [], t = 1; t < arguments.length; t++) {
       n[t - 1] = arguments[t];
     }
+
     if (!e) throw TypeError("Cannot convert undefined or null to object");
 
     for (var a = function a(n) {
@@ -9171,6 +9184,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         }
       }
     }
+
     function J(e, n) {
       var t = k(),
           a = te(t || document.body),
@@ -9182,6 +9196,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
             if (-1 === d.className.indexOf("hidden") && ne(d.dateObj) && Math.abs(e.$i - s) >= Math.abs(n)) return W(d);
           }
         }
+
         w.changeMonth(i), J(B(i), 0);
       }(i, n) : W(i);
     }
@@ -9190,12 +9205,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
       for (var t = (new Date(e, n, 1).getDay() - w.l10n.firstDayOfWeek + 7) % 7, a = w.utils.getDaysInMonth((n - 1 + 12) % 12, e), i = w.utils.getDaysInMonth(n, e), o = window.document.createDocumentFragment(), r = w.config.showMonths > 1, l = r ? "prevMonthDay hidden" : "prevMonthDay", c = r ? "nextMonthDay hidden" : "nextMonthDay", s = a + 1 - t, u = 0; s <= a; s++, u++) {
         o.appendChild(R("flatpickr-day " + l, new Date(e, n - 1, s), s, u));
       }
+
       for (s = 1; s <= i; s++, u++) {
         o.appendChild(R("flatpickr-day", new Date(e, n, s), s, u));
       }
+
       for (var f = i + 1; f <= 42 - t && (1 === w.config.showMonths || u % 7 != 0); f++, u++) {
         o.appendChild(R("flatpickr-day " + c, new Date(e, n + 1, f % i), f, u));
       }
+
       var m = d("div", "dayContainer");
       return m.appendChild(o), m;
     }
@@ -9220,6 +9238,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         };
 
         w.monthsDropdownContainer.tabIndex = -1, w.monthsDropdownContainer.innerHTML = "";
+
         for (var n = 0; n < 12; n++) {
           if (e(n)) {
             var t = d("option", "flatpickr-monthDropdown-month");
@@ -9228,6 +9247,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         }
       }
     }
+
     function $() {
       var e,
           n = d("div", "flatpickr-month"),
@@ -9277,11 +9297,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         var e = w.l10n.firstDayOfWeek,
             t = n(w.l10n.weekdays.shorthand);
         e > 0 && e < t.length && (t = n(t.splice(e, t.length), t.splice(0, e)));
+
         for (var a = w.config.showMonths; a--;) {
           w.weekdayContainer.children[a].innerHTML = "\n      <span class='flatpickr-weekday'>\n        " + t.join("</span><span class='flatpickr-weekday'>") + "\n      </span>\n      ";
         }
       }
     }
+
     function Z(e, n) {
       void 0 === n && (n = !0);
       var t = n ? e : e - w.currentMonth;
@@ -9424,6 +9446,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         for (var t = e ? e.dateObj.getTime() : w.days.firstElementChild.dateObj.getTime(), a = w.parseDate(w.selectedDates[0], void 0, !0).getTime(), i = Math.min(t, w.selectedDates[0].getTime()), o = Math.max(t, w.selectedDates[0].getTime()), r = !1, l = 0, c = 0, s = i; s < o; s += x) {
           ne(new Date(s), !0) || (r = r || s > i && s < o, s < a && (!l || s > l) ? l = s : s > a && (!c || s < c) && (c = s));
         }
+
         Array.from(w.rContainer.querySelectorAll("*:nth-child(-n+" + w.config.showMonths + ") > ." + n)).forEach(function (n) {
           var i,
               o,
@@ -9589,9 +9612,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
       De("onClose");
     }, w.onMouseOver = oe, w._createElement = d, w.createDay = R, w.destroy = function () {
       void 0 !== w.config && De("onDestroy");
+
       for (var e = w._handlers.length; e--;) {
         w._handlers[e].remove();
       }
+
       if (w._handlers = [], w.mobileInput) w.mobileInput.parentNode && w.mobileInput.parentNode.removeChild(w.mobileInput), w.mobileInput = void 0;else if (w.calendarContainer && w.calendarContainer.parentNode) if (w.config["static"] && w.calendarContainer.parentNode) {
         var n = w.calendarContainer.parentNode;
 
@@ -9599,6 +9624,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
           for (; n.firstChild;) {
             n.parentNode.insertBefore(n.firstChild, n);
           }
+
           n.parentNode.removeChild(n);
         }
       } else w.calendarContainer.parentNode.removeChild(w.calendarContainer);
@@ -9629,9 +9655,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
         return w.hourElement.select();
       }, 50));
     }, w.redraw = ue, w.set = function (e, n) {
-      if (null !== e && "object" == _typeof(e)) for (var a in Object.assign(w.config, e), e) void 0 !== ge[a] && ge[a].forEach(function (e) {
-        return e();
-      });else w.config[e] = n, void 0 !== ge[e] ? ge[e].forEach(function (e) {
+      if (null !== e && "object" == _typeof(e)) for (var a in Object.assign(w.config, e), e) {
+        void 0 !== ge[a] && ge[a].forEach(function (e) {
+          return e();
+        });
+      } else w.config[e] = n, void 0 !== ge[e] ? ge[e].forEach(function (e) {
         return e();
       }) : t.indexOf(e) > -1 && (w.config[e] = c(n));
       w.redraw(), ye(!0);
@@ -9702,7 +9730,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
     function De(e, n) {
       if (void 0 !== w.config) {
         var t = w.config[e];
-        if (void 0 !== t && t.length > 0) for (var a = 0; t[a] && a < t.length; a++) t[a](w.selectedDates, w.input.value, w, n);
+        if (void 0 !== t && t.length > 0) for (var a = 0; t[a] && a < t.length; a++) {
+          t[a](w.selectedDates, w.input.value, w, n);
+        }
         "onChange" === e && (w.input.dispatchEvent(we("change")), w.input.dispatchEvent(we("input")));
       }
     }
@@ -9810,9 +9840,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
           set: d("max")
         }), "time" === i.mode && (w.config.noCalendar = !0, w.config.enableTime = !0);
         Object.assign(w.config, o, i);
+
         for (var u = 0; u < n.length; u++) {
           w.config[n[u]] = !0 === w.config[n[u]] || "true" === w.config[n[u]];
         }
+
         t.filter(function (e) {
           return void 0 !== w.config[e];
         }).forEach(function (e) {
@@ -9821,10 +9853,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
 
         for (u = 0; u < w.config.plugins.length; u++) {
           var f = w.config.plugins[u](w) || {};
+
           for (var m in f) {
             t.indexOf(m) > -1 ? w.config[m] = c(f[m]).map(T).concat(w.config[m]) : void 0 === i[m] && (w.config[m] = f[m]);
           }
         }
+
         i.altInputClass || (w.config.altInputClass = ce().className + " " + w.config.altInputClass);
         De("onParseConfig");
       }(), se(), function () {
@@ -10125,9 +10159,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       if (n.r(r), Object.defineProperty(r, "default", {
         enumerable: !0,
         value: t
-      }), 2 & e && "string" != typeof t) for (var o in t) n.d(r, o, function (e) {
-        return t[e];
-      }.bind(null, o));
+      }), 2 & e && "string" != typeof t) for (var o in t) {
+        n.d(r, o, function (e) {
+          return t[e];
+        }.bind(null, o));
+      }
       return r;
     }, n.n = function (t) {
       var e = t && t.__esModule ? function () {
@@ -10143,22 +10179,24 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     "use strict";
 
     var _r,
-      o = this && this.__extends || (_r = function r(t, e) {
-        return (_r = Object.setPrototypeOf || {
-          __proto__: []
-        } instanceof Array && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
-          }
-        })(t, e);
-      }, function (t, e) {
-        function n() {
-          this.constructor = t;
+        o = this && this.__extends || (_r = function r(t, e) {
+      return (_r = Object.setPrototypeOf || {
+        __proto__: []
+      } instanceof Array && function (t, e) {
+        t.__proto__ = e;
+      } || function (t, e) {
+        for (var n in e) {
+          e.hasOwnProperty(n) && (t[n] = e[n]);
         }
-        _r(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n());
-      });
+      })(t, e);
+    }, function (t, e) {
+      function n() {
+        this.constructor = t;
+      }
+
+      _r(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n());
+    });
+
     Object.defineProperty(e, "__esModule", {
       value: !0
     });
@@ -10190,9 +10228,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return this.maxDecodedLength(t.length - this._getPaddingLength(t));
       }, t.prototype.decode = function (t) {
         if (0 === t.length) return new Uint8Array(0);
+
         for (var e = this._getPaddingLength(t), n = t.length - e, r = new Uint8Array(this.maxDecodedLength(n)), o = 0, i = 0, s = 0, c = 0, a = 0, u = 0, h = 0; i < n - 4; i += 4) {
           c = this._decodeChar(t.charCodeAt(i + 0)), a = this._decodeChar(t.charCodeAt(i + 1)), u = this._decodeChar(t.charCodeAt(i + 2)), h = this._decodeChar(t.charCodeAt(i + 3)), r[o++] = c << 2 | a >>> 4, r[o++] = a << 4 | u >>> 2, r[o++] = u << 6 | h, s |= 256 & c, s |= 256 & a, s |= 256 & u, s |= 256 & h;
         }
+
         if (i < n - 1 && (c = this._decodeChar(t.charCodeAt(i)), a = this._decodeChar(t.charCodeAt(i + 1)), r[o++] = c << 2 | a >>> 4, s |= 256 & c, s |= 256 & a), i < n - 2 && (u = this._decodeChar(t.charCodeAt(i + 2)), r[o++] = a << 4 | u >>> 2, s |= 256 & u), i < n - 3 && (h = this._decodeChar(t.charCodeAt(i + 3)), r[o++] = u << 6 | h, s |= 256 & h), 0 !== s) throw new Error("Base64Coder: incorrect characters for decoding");
         return r;
       }, t.prototype._encodeByte = function (t) {
@@ -10208,6 +10248,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           for (var n = t.length - 1; n >= 0 && t[n] === this._paddingCharacter; n--) {
             e++;
           }
+
           if (t.length < 4 || e > 2) throw new Error("Base64Coder: incorrect padding");
         }
 
@@ -10392,55 +10433,56 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           r.loading[t] = [n];
           var o = Se.createScriptRequest(r.getPath(t, e)),
               i = r.receivers.create(function (e) {
-                if (r.receivers.remove(i), r.loading[t]) {
-                  var n = r.loading[t];
-                  delete r.loading[t];
-                  for (var s = function s(t) {
-                      t || o.cleanup();
-                    }, c = 0; c < n.length; c++) {
-                    n[c](e, s);
-                  }
-                }
-              });
-            o.send(i);
-          }
-        }, t.prototype.getRoot = function (t) {
-          var e = Se.getDocument().location.protocol;
-          return (t && t.useTLS || "https:" === e ? this.options.cdn_https : this.options.cdn_http).replace(/\/*$/, "") + "/" + this.options.version;
-        }, t.prototype.getPath = function (t, e) {
-          return this.getRoot(e) + "/" + t + this.options.suffix + ".js";
-        }, t;
-      }(),
-      a = new o("_pusher_dependencies", "Pusher.DependenciesReceivers"),
-      u = new c({
-        cdn_http: s.cdn_http,
-        cdn_https: s.cdn_https,
-        version: s.VERSION,
-        suffix: s.dependency_suffix,
-        receivers: a
-      }),
-      h = {
-        baseUrl: "https://pusher.com",
-        urls: {
-          authenticationEndpoint: {
-            path: "/docs/channels/server_api/authenticating_users"
-          },
-          authorizationEndpoint: {
-            path: "/docs/channels/server_api/authorizing-users/"
-          },
-          javascriptQuickStart: {
-            path: "/docs/javascript_quick_start"
-          },
-          triggeringClientEvents: {
-            path: "/docs/client_api_guide/client_events#trigger-events"
-          },
-          encryptedChannelSupport: {
-            fullUrl: "https://github.com/pusher/pusher-js/tree/cc491015371a4bde5743d1c87a0fbac0feb53195#encrypted-channel-support"
-          }
+            if (r.receivers.remove(i), r.loading[t]) {
+              var n = r.loading[t];
+              delete r.loading[t];
+
+              for (var s = function s(t) {
+                t || o.cleanup();
+              }, c = 0; c < n.length; c++) {
+                n[c](e, s);
+              }
+            }
+          });
+          o.send(i);
         }
-      },
-      p = function p(t) {
-        var e,
+      }, t.prototype.getRoot = function (t) {
+        var e = Se.getDocument().location.protocol;
+        return (t && t.useTLS || "https:" === e ? this.options.cdn_https : this.options.cdn_http).replace(/\/*$/, "") + "/" + this.options.version;
+      }, t.prototype.getPath = function (t, e) {
+        return this.getRoot(e) + "/" + t + this.options.suffix + ".js";
+      }, t;
+    }(),
+        a = new o("_pusher_dependencies", "Pusher.DependenciesReceivers"),
+        u = new c({
+      cdn_http: s.cdn_http,
+      cdn_https: s.cdn_https,
+      version: s.VERSION,
+      suffix: s.dependency_suffix,
+      receivers: a
+    }),
+        h = {
+      baseUrl: "https://pusher.com",
+      urls: {
+        authenticationEndpoint: {
+          path: "/docs/channels/server_api/authenticating_users"
+        },
+        authorizationEndpoint: {
+          path: "/docs/channels/server_api/authorizing-users/"
+        },
+        javascriptQuickStart: {
+          path: "/docs/javascript_quick_start"
+        },
+        triggeringClientEvents: {
+          path: "/docs/client_api_guide/client_events#trigger-events"
+        },
+        encryptedChannelSupport: {
+          fullUrl: "https://github.com/pusher/pusher-js/tree/cc491015371a4bde5743d1c87a0fbac0feb53195#encrypted-channel-support"
+        }
+      }
+    },
+        p = function p(t) {
+      var e,
           n = h.urls[t];
       return n ? (n.fullUrl ? e = n.fullUrl : n.path && (e = h.baseUrl + n.path), e ? "See: " + e : "") : "";
     };
@@ -10450,25 +10492,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }(r || (r = {}));
 
     var _l,
-      f = (_l = function l(t, e) {
-        return (_l = Object.setPrototypeOf || {
-          __proto__: []
-        } instanceof Array && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
-          }
-        })(t, e);
-      }, function (t, e) {
-        function n() {
-          this.constructor = t;
+        f = (_l = function l(t, e) {
+      return (_l = Object.setPrototypeOf || {
+        __proto__: []
+      } instanceof Array && function (t, e) {
+        t.__proto__ = e;
+      } || function (t, e) {
+        for (var n in e) {
+          e.hasOwnProperty(n) && (t[n] = e[n]);
         }
-        _l(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n());
-      }),
-      d = function (t) {
-        function e(e) {
-          var n = this.constructor,
+      })(t, e);
+    }, function (t, e) {
+      function n() {
+        this.constructor = t;
+      }
+
+      _l(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n());
+    }),
+        d = function (t) {
+      function e(e) {
+        var n = this.constructor,
             r = t.call(this, e) || this;
         return Object.setPrototypeOf(r, n.prototype), r;
       }
@@ -10542,41 +10585,51 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       function e(e, n) {
         var r = this.constructor,
             o = t.call(this, n) || this;
-          return o.status = e, Object.setPrototypeOf(o, r.prototype), o;
-        }
-        return f(e, t), e;
-      }(Error),
-      k = function k(t, e, n, o, i) {
-        var s = Se.createXHR();
-        for (var c in s.open("POST", n.endpoint, !0), s.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"), n.headers) {
-          s.setRequestHeader(c, n.headers[c]);
-        }
-        return s.onreadystatechange = function () {
-          if (4 === s.readyState) if (200 === s.status) {
-            var t = void 0,
+        return o.status = e, Object.setPrototypeOf(o, r.prototype), o;
+      }
+
+      return f(e, t), e;
+    }(Error),
+        k = function k(t, e, n, o, i) {
+      var s = Se.createXHR();
+
+      for (var c in s.open("POST", n.endpoint, !0), s.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"), n.headers) {
+        s.setRequestHeader(c, n.headers[c]);
+      }
+
+      return s.onreadystatechange = function () {
+        if (4 === s.readyState) if (200 === s.status) {
+          var t = void 0,
               e = !1;
-            try {
-              t = JSON.parse(s.responseText), e = !0;
-            } catch (t) {
-              i(new S(200, "JSON returned from " + o.toString() + " endpoint was invalid, yet status code was 200. Data was: " + s.responseText), null);
-            }
-            e && i(null, t);
-          } else {
-            var c = "";
-            switch (o) {
-              case r.UserAuthentication:
-                c = p("authenticationEndpoint");
-                break;
-              case r.ChannelAuthorization:
-                c = "Clients must be authenticated to join private or presence channels. " + p("authorizationEndpoint");
-            }
-            i(new S(s.status, "Unable to retrieve auth string from " + o.toString() + " endpoint - received status: " + s.status + " from " + n.endpoint + ". " + c), null);
+
+          try {
+            t = JSON.parse(s.responseText), e = !0;
+          } catch (t) {
+            i(new S(200, "JSON returned from " + o.toString() + " endpoint was invalid, yet status code was 200. Data was: " + s.responseText), null);
           }
-        }, s.send(e), s;
-      };
+
+          e && i(null, t);
+        } else {
+          var c = "";
+
+          switch (o) {
+            case r.UserAuthentication:
+              c = p("authenticationEndpoint");
+              break;
+
+            case r.ChannelAuthorization:
+              c = "Clients must be authenticated to join private or presence channels. " + p("authorizationEndpoint");
+          }
+
+          i(new S(s.status, "Unable to retrieve auth string from " + o.toString() + " endpoint - received status: " + s.status + " from " + n.endpoint + ". " + c), null);
+        }
+      }, s.send(e), s;
+    };
+
     for (var C = String.fromCharCode, T = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", P = {}, O = 0, E = T.length; O < E; O++) {
       P[T.charAt(O)] = O;
     }
+
     var A = function A(t) {
       var e = t.charCodeAt(0);
       return e < 128 ? t : e < 2048 ? C(192 | e >>> 6) + C(128 | 63 & e) : C(224 | e >>> 12 & 15) + C(128 | e >>> 6 & 63) + C(128 | 63 & e);
@@ -10587,43 +10640,47 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         x = function x(t) {
       var e = [0, 2, 1][t.length % 3],
           n = t.charCodeAt(0) << 16 | (t.length > 1 ? t.charCodeAt(1) : 0) << 8 | (t.length > 2 ? t.charCodeAt(2) : 0);
-        return [T.charAt(n >>> 18), T.charAt(n >>> 12 & 63), e >= 2 ? "=" : T.charAt(n >>> 6 & 63), e >= 1 ? "=" : T.charAt(63 & n)].join("");
-      },
-      R = window.btoa || function (t) {
-        return t.replace(/[\s\S]{1,3}/g, x);
-      },
-      j = function () {
-        function t(t, e, n, r) {
-          var o = this;
-          this.clear = e, this.timer = t(function () {
-            o.timer && (o.timer = r(o.timer));
-          }, n);
-        }
-        return t.prototype.isRunning = function () {
-          return null !== this.timer;
-        }, t.prototype.ensureAborted = function () {
-          this.timer && (this.clear(this.timer), this.timer = null);
-        }, t;
-      }(),
-      I = function () {
-        var _t2 = function t(e, n) {
-          return (_t2 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
+      return [T.charAt(n >>> 18), T.charAt(n >>> 12 & 63), e >= 2 ? "=" : T.charAt(n >>> 6 & 63), e >= 1 ? "=" : T.charAt(63 & n)].join("");
+    },
+        R = window.btoa || function (t) {
+      return t.replace(/[\s\S]{1,3}/g, x);
+    },
+        j = function () {
+      function t(t, e, n, r) {
+        var o = this;
+        this.clear = e, this.timer = t(function () {
+          o.timer && (o.timer = r(o.timer));
+        }, n);
+      }
+
+      return t.prototype.isRunning = function () {
+        return null !== this.timer;
+      }, t.prototype.ensureAborted = function () {
+        this.timer && (this.clear(this.timer), this.timer = null);
+      }, t;
+    }(),
+        I = function () {
+      var _t2 = function t(e, n) {
+        return (_t2 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
           }
-          _t2(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }();
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
+        }
+
+        _t2(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }();
+
     function D(t) {
       window.clearTimeout(t);
     }
@@ -10633,48 +10690,55 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     var H = function (t) {
-        function e(e, n) {
-          return t.call(this, setTimeout, D, e, function (t) {
-            return n(), null;
-          }) || this;
+      function e(e, n) {
+        return t.call(this, setTimeout, D, e, function (t) {
+          return n(), null;
+        }) || this;
+      }
+
+      return I(e, t), e;
+    }(j),
+        M = function (t) {
+      function e(e, n) {
+        return t.call(this, setInterval, N, e, function (t) {
+          return n(), t;
+        }) || this;
+      }
+
+      return I(e, t), e;
+    }(j),
+        U = {
+      now: function now() {
+        return Date.now ? Date.now() : new Date().valueOf();
+      },
+      defer: function defer(t) {
+        return new H(0, t);
+      },
+      method: function method(t) {
+        for (var e = [], n = 1; n < arguments.length; n++) {
+          e[n - 1] = arguments[n];
         }
-        return I(e, t), e;
-      }(j),
-      M = function (t) {
-        function e(e, n) {
-          return t.call(this, setInterval, N, e, function (t) {
-            return n(), t;
-          }) || this;
-        }
-        return I(e, t), e;
-      }(j),
-      U = {
-        now: function now() {
-          return Date.now ? Date.now() : new Date().valueOf();
-        },
-        defer: function defer(t) {
-          return new H(0, t);
-        },
-        method: function method(t) {
-          for (var e = [], n = 1; n < arguments.length; n++) {
-            e[n - 1] = arguments[n];
-          }
-          var r = Array.prototype.slice.call(arguments, 1);
-          return function (e) {
-            return e[t].apply(e, r.concat(arguments));
-          };
-        }
-      };
+
+        var r = Array.prototype.slice.call(arguments, 1);
+        return function (e) {
+          return e[t].apply(e, r.concat(arguments));
+        };
+      }
+    };
+
     function z(t) {
       for (var e = [], n = 1; n < arguments.length; n++) {
         e[n - 1] = arguments[n];
       }
+
       for (var r = 0; r < e.length; r++) {
         var o = e[r];
+
         for (var i in o) {
           o[i] && o[i].constructor && o[i].constructor === Object ? t[i] = z(t[i] || {}, o[i]) : t[i] = o[i];
         }
       }
+
       return t;
     }
 
@@ -10682,6 +10746,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       for (var t = ["Pusher"], e = 0; e < arguments.length; e++) {
         "string" == typeof arguments[e] ? t.push(arguments[e]) : t.push(K(arguments[e]));
       }
+
       return t.join(" : ");
     }
 
@@ -10689,9 +10754,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       var n = Array.prototype.indexOf;
       if (null === t) return -1;
       if (n && t.indexOf === n) return t.indexOf(e);
+
       for (var r = 0, o = t.length; r < o; r++) {
         if (t[r] === e) return r;
       }
+
       return -1;
     }
 
@@ -10700,6 +10767,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         Object.prototype.hasOwnProperty.call(t, n) && e(t[n], n, t);
       }
     }
+
     function X(t) {
       var e = [];
       return F(t, function (t, n) {
@@ -10712,10 +10780,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         e.call(n || window, t[r], r, t);
       }
     }
+
     function W(t, e) {
       for (var n = [], r = 0; r < t.length; r++) {
         n.push(e(t[r], r, t, n));
       }
+
       return n;
     }
 
@@ -10723,9 +10793,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       e = e || function (t) {
         return !!t;
       };
+
       for (var n = [], r = 0; r < t.length; r++) {
         e(t[r], r, t, n) && n.push(t[r]);
       }
+
       return n;
     }
 
@@ -10740,6 +10812,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       for (var n = 0; n < t.length; n++) {
         if (e(t[n], n, t)) return !0;
       }
+
       return !1;
     }
 
@@ -10774,11 +10847,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           switch (_typeof(r)) {
             case "object":
               if (!r) return null;
+
               for (i = 0; i < e.length; i += 1) {
                 if (e[i] === r) return {
                   $ref: n[i]
                 };
               }
+
               if (e.push(r), n.push(o), "[object Array]" === Object.prototype.toString.apply(r)) for (c = [], i = 0; i < r.length; i += 1) {
                 c[i] = t(r[i], o + "[" + i + "]");
               } else for (s in c = {}, r) {
@@ -10798,46 +10873,51 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     var Z = new (function () {
-        function t() {
-          this.globalLog = function (t) {
-            window.console && window.console.log && window.console.log(t);
-          };
+      function t() {
+        this.globalLog = function (t) {
+          window.console && window.console.log && window.console.log(t);
+        };
+      }
+
+      return t.prototype.debug = function () {
+        for (var t = [], e = 0; e < arguments.length; e++) {
+          t[e] = arguments[e];
         }
-        return t.prototype.debug = function () {
-          for (var t = [], e = 0; e < arguments.length; e++) {
-            t[e] = arguments[e];
-          }
-          this.log(this.globalLog, t);
-        }, t.prototype.warn = function () {
-          for (var t = [], e = 0; e < arguments.length; e++) {
-            t[e] = arguments[e];
-          }
-          this.log(this.globalLogWarn, t);
-        }, t.prototype.error = function () {
-          for (var t = [], e = 0; e < arguments.length; e++) {
-            t[e] = arguments[e];
-          }
-          this.log(this.globalLogError, t);
-        }, t.prototype.globalLogWarn = function (t) {
-          window.console && window.console.warn ? window.console.warn(t) : this.globalLog(t);
-        }, t.prototype.globalLogError = function (t) {
-          window.console && window.console.error ? window.console.error(t) : this.globalLogWarn(t);
-        }, t.prototype.log = function (t) {
-          for (var e = [], n = 1; n < arguments.length; n++) {
-            e[n - 1] = arguments[n];
-          }
-          var r = q.apply(this, arguments);
-          if (Fe.log) Fe.log(r);else if (Fe.logToConsole) {
-            var o = t.bind(this);
-            o(r);
-          }
-        }, t;
-      }())(),
-      tt = function tt(t, e, n, r, o) {
-        void 0 !== n.headers && Z.warn("To send headers with the " + r.toString() + " request, you must use AJAX, rather than JSONP.");
-        var i = t.nextAuthCallbackID.toString();
-        t.nextAuthCallbackID++;
-        var s = t.getDocument(),
+
+        this.log(this.globalLog, t);
+      }, t.prototype.warn = function () {
+        for (var t = [], e = 0; e < arguments.length; e++) {
+          t[e] = arguments[e];
+        }
+
+        this.log(this.globalLogWarn, t);
+      }, t.prototype.error = function () {
+        for (var t = [], e = 0; e < arguments.length; e++) {
+          t[e] = arguments[e];
+        }
+
+        this.log(this.globalLogError, t);
+      }, t.prototype.globalLogWarn = function (t) {
+        window.console && window.console.warn ? window.console.warn(t) : this.globalLog(t);
+      }, t.prototype.globalLogError = function (t) {
+        window.console && window.console.error ? window.console.error(t) : this.globalLogWarn(t);
+      }, t.prototype.log = function (t) {
+        for (var e = [], n = 1; n < arguments.length; n++) {
+          e[n - 1] = arguments[n];
+        }
+
+        var r = q.apply(this, arguments);
+        if (Fe.log) Fe.log(r);else if (Fe.logToConsole) {
+          var o = t.bind(this);
+          o(r);
+        }
+      }, t;
+    }())(),
+        tt = function tt(t, e, n, r, o) {
+      void 0 !== n.headers && Z.warn("To send headers with the " + r.toString() + " request, you must use AJAX, rather than JSONP.");
+      var i = t.nextAuthCallbackID.toString();
+      t.nextAuthCallbackID++;
+      var s = t.getDocument(),
           c = s.createElement("script");
 
       t.auth_callbacks[i] = function (t) {
@@ -10961,239 +11041,250 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     var pt = function () {
-        function t(t) {
-          this.callbacks = new ut(), this.global_callbacks = [], this.failThrough = t;
+      function t(t) {
+        this.callbacks = new ut(), this.global_callbacks = [], this.failThrough = t;
+      }
+
+      return t.prototype.bind = function (t, e, n) {
+        return this.callbacks.add(t, e, n), this;
+      }, t.prototype.bind_global = function (t) {
+        return this.global_callbacks.push(t), this;
+      }, t.prototype.unbind = function (t, e, n) {
+        return this.callbacks.remove(t, e, n), this;
+      }, t.prototype.unbind_global = function (t) {
+        return t ? (this.global_callbacks = G(this.global_callbacks || [], function (e) {
+          return e !== t;
+        }), this) : (this.global_callbacks = [], this);
+      }, t.prototype.unbind_all = function () {
+        return this.unbind(), this.unbind_global(), this;
+      }, t.prototype.emit = function (t, e, n) {
+        for (var r = 0; r < this.global_callbacks.length; r++) {
+          this.global_callbacks[r](t, e);
         }
-        return t.prototype.bind = function (t, e, n) {
-          return this.callbacks.add(t, e, n), this;
-        }, t.prototype.bind_global = function (t) {
-          return this.global_callbacks.push(t), this;
-        }, t.prototype.unbind = function (t, e, n) {
-          return this.callbacks.remove(t, e, n), this;
-        }, t.prototype.unbind_global = function (t) {
-          return t ? (this.global_callbacks = G(this.global_callbacks || [], function (e) {
-            return e !== t;
-          }), this) : (this.global_callbacks = [], this);
-        }, t.prototype.unbind_all = function () {
-          return this.unbind(), this.unbind_global(), this;
-        }, t.prototype.emit = function (t, e, n) {
-          for (var r = 0; r < this.global_callbacks.length; r++) {
-            this.global_callbacks[r](t, e);
-          }
-          var o = this.callbacks.get(t),
+
+        var o = this.callbacks.get(t),
             i = [];
-          if (n ? i.push(e, n) : e && i.push(e), o && o.length > 0) for (r = 0; r < o.length; r++) {
-            o[r].fn.apply(o[r].context || window, i);
-          } else this.failThrough && this.failThrough(t, e);
-          return this;
-        }, t;
-      }(),
-      lt = function () {
-        var _t3 = function t(e, n) {
-          return (_t3 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
+        if (n ? i.push(e, n) : e && i.push(e), o && o.length > 0) for (r = 0; r < o.length; r++) {
+          o[r].fn.apply(o[r].context || window, i);
+        } else this.failThrough && this.failThrough(t, e);
+        return this;
+      }, t;
+    }(),
+        lt = function () {
+      var _t3 = function t(e, n) {
+        return (_t3 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
           }
-          _t3(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      ft = function (t) {
-        function e(e, n, r, o, i) {
-          var s = t.call(this) || this;
-          return s.initialize = Se.transportConnectionInitializer, s.hooks = e, s.name = n, s.priority = r, s.key = o, s.options = i, s.state = "new", s.timeline = i.timeline, s.activityTimeout = i.activityTimeout, s.id = s.timeline.generateUniqueID(), s;
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
         }
-        return lt(e, t), e.prototype.handlesActivityChecks = function () {
-          return Boolean(this.hooks.handlesActivityChecks);
-        }, e.prototype.supportsPing = function () {
-          return Boolean(this.hooks.supportsPing);
-        }, e.prototype.connect = function () {
-          var t = this;
-          if (this.socket || "initialized" !== this.state) return !1;
-          var e = this.hooks.urls.getInitial(this.key, this.options);
-          try {
-            this.socket = this.hooks.getSocket(e, this.options);
-          } catch (e) {
-            return U.defer(function () {
-              t.onError(e), t.changeState("closed");
-            }), !1;
-          }
-          return this.bindListeners(), Z.debug("Connecting", {
-            transport: this.name,
-            url: e
-          }), this.changeState("connecting"), !0;
-        }, e.prototype.close = function () {
-          return !!this.socket && (this.socket.close(), !0);
-        }, e.prototype.send = function (t) {
-          var e = this;
-          return "open" === this.state && (U.defer(function () {
-            e.socket && e.socket.send(t);
-          }), !0);
-        }, e.prototype.ping = function () {
-          "open" === this.state && this.supportsPing() && this.socket.ping();
-        }, e.prototype.onOpen = function () {
-          this.hooks.beforeOpen && this.hooks.beforeOpen(this.socket, this.hooks.urls.getPath(this.key, this.options)), this.changeState("open"), this.socket.onopen = void 0;
-        }, e.prototype.onError = function (t) {
-          this.emit("error", {
-            type: "WebSocketError",
-            error: t
-          }), this.timeline.error(this.buildTimelineMessage({
-            error: t.toString()
-          }));
-        }, e.prototype.onClose = function (t) {
-          t ? this.changeState("closed", {
-            code: t.code,
-            reason: t.reason,
-            wasClean: t.wasClean
-          }) : this.changeState("closed"), this.unbindListeners(), this.socket = void 0;
-        }, e.prototype.onMessage = function (t) {
-          this.emit("message", t);
-        }, e.prototype.onActivity = function () {
-          this.emit("activity");
-        }, e.prototype.bindListeners = function () {
-          var t = this;
-          this.socket.onopen = function () {
-            t.onOpen();
-          }, this.socket.onerror = function (e) {
-            t.onError(e);
-          }, this.socket.onclose = function (e) {
-            t.onClose(e);
-          }, this.socket.onmessage = function (e) {
-            t.onMessage(e);
-          }, this.supportsPing() && (this.socket.onactivity = function () {
-            t.onActivity();
-          });
-        }, e.prototype.unbindListeners = function () {
-          this.socket && (this.socket.onopen = void 0, this.socket.onerror = void 0, this.socket.onclose = void 0, this.socket.onmessage = void 0, this.supportsPing() && (this.socket.onactivity = void 0));
-        }, e.prototype.changeState = function (t, e) {
-          this.state = t, this.timeline.info(this.buildTimelineMessage({
-            state: t,
-            params: e
-          })), this.emit(t, e);
-        }, e.prototype.buildTimelineMessage = function (t) {
-          return z({
-            cid: this.id
-          }, t);
-        }, e;
-      }(pt),
-      dt = function () {
-        function t(t) {
-          this.hooks = t;
+
+        _t3(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        ft = function (t) {
+      function e(e, n, r, o, i) {
+        var s = t.call(this) || this;
+        return s.initialize = Se.transportConnectionInitializer, s.hooks = e, s.name = n, s.priority = r, s.key = o, s.options = i, s.state = "new", s.timeline = i.timeline, s.activityTimeout = i.activityTimeout, s.id = s.timeline.generateUniqueID(), s;
+      }
+
+      return lt(e, t), e.prototype.handlesActivityChecks = function () {
+        return Boolean(this.hooks.handlesActivityChecks);
+      }, e.prototype.supportsPing = function () {
+        return Boolean(this.hooks.supportsPing);
+      }, e.prototype.connect = function () {
+        var t = this;
+        if (this.socket || "initialized" !== this.state) return !1;
+        var e = this.hooks.urls.getInitial(this.key, this.options);
+
+        try {
+          this.socket = this.hooks.getSocket(e, this.options);
+        } catch (e) {
+          return U.defer(function () {
+            t.onError(e), t.changeState("closed");
+          }), !1;
         }
-        return t.prototype.isSupported = function (t) {
-          return this.hooks.isSupported(t);
-        }, t.prototype.createConnection = function (t, e, n, r) {
-          return new ft(this.hooks, t, e, n, r);
-        }, t;
-      }(),
-      yt = new dt({
-        urls: st,
-        handlesActivityChecks: !1,
-        supportsPing: !1,
-        isInitialized: function isInitialized() {
-          return Boolean(Se.getWebSocketAPI());
-        },
-        isSupported: function isSupported() {
-          return Boolean(Se.getWebSocketAPI());
-        },
-        getSocket: function getSocket(t) {
-          return Se.createWebSocket(t);
-        }
-      }),
-      gt = {
-        urls: ct,
-        handlesActivityChecks: !1,
-        supportsPing: !0,
-        isInitialized: function isInitialized() {
-          return !0;
-        }
+
+        return this.bindListeners(), Z.debug("Connecting", {
+          transport: this.name,
+          url: e
+        }), this.changeState("connecting"), !0;
+      }, e.prototype.close = function () {
+        return !!this.socket && (this.socket.close(), !0);
+      }, e.prototype.send = function (t) {
+        var e = this;
+        return "open" === this.state && (U.defer(function () {
+          e.socket && e.socket.send(t);
+        }), !0);
+      }, e.prototype.ping = function () {
+        "open" === this.state && this.supportsPing() && this.socket.ping();
+      }, e.prototype.onOpen = function () {
+        this.hooks.beforeOpen && this.hooks.beforeOpen(this.socket, this.hooks.urls.getPath(this.key, this.options)), this.changeState("open"), this.socket.onopen = void 0;
+      }, e.prototype.onError = function (t) {
+        this.emit("error", {
+          type: "WebSocketError",
+          error: t
+        }), this.timeline.error(this.buildTimelineMessage({
+          error: t.toString()
+        }));
+      }, e.prototype.onClose = function (t) {
+        t ? this.changeState("closed", {
+          code: t.code,
+          reason: t.reason,
+          wasClean: t.wasClean
+        }) : this.changeState("closed"), this.unbindListeners(), this.socket = void 0;
+      }, e.prototype.onMessage = function (t) {
+        this.emit("message", t);
+      }, e.prototype.onActivity = function () {
+        this.emit("activity");
+      }, e.prototype.bindListeners = function () {
+        var t = this;
+        this.socket.onopen = function () {
+          t.onOpen();
+        }, this.socket.onerror = function (e) {
+          t.onError(e);
+        }, this.socket.onclose = function (e) {
+          t.onClose(e);
+        }, this.socket.onmessage = function (e) {
+          t.onMessage(e);
+        }, this.supportsPing() && (this.socket.onactivity = function () {
+          t.onActivity();
+        });
+      }, e.prototype.unbindListeners = function () {
+        this.socket && (this.socket.onopen = void 0, this.socket.onerror = void 0, this.socket.onclose = void 0, this.socket.onmessage = void 0, this.supportsPing() && (this.socket.onactivity = void 0));
+      }, e.prototype.changeState = function (t, e) {
+        this.state = t, this.timeline.info(this.buildTimelineMessage({
+          state: t,
+          params: e
+        })), this.emit(t, e);
+      }, e.prototype.buildTimelineMessage = function (t) {
+        return z({
+          cid: this.id
+        }, t);
+      }, e;
+    }(pt),
+        dt = function () {
+      function t(t) {
+        this.hooks = t;
+      }
+
+      return t.prototype.isSupported = function (t) {
+        return this.hooks.isSupported(t);
+      }, t.prototype.createConnection = function (t, e, n, r) {
+        return new ft(this.hooks, t, e, n, r);
+      }, t;
+    }(),
+        yt = new dt({
+      urls: st,
+      handlesActivityChecks: !1,
+      supportsPing: !1,
+      isInitialized: function isInitialized() {
+        return Boolean(Se.getWebSocketAPI());
       },
-      vt = z({
-        getSocket: function getSocket(t) {
-          return Se.HTTPFactory.createStreamingSocket(t);
-        }
-      }, gt),
-      bt = z({
-        getSocket: function getSocket(t) {
-          return Se.HTTPFactory.createPollingSocket(t);
-        }
-      }, gt),
-      mt = {
-        isSupported: function isSupported() {
-          return Se.isXHRSupported();
-        }
+      isSupported: function isSupported() {
+        return Boolean(Se.getWebSocketAPI());
       },
-      _t = {
-        ws: yt,
-        xhr_streaming: new dt(z({}, vt, mt)),
-        xhr_polling: new dt(z({}, bt, mt))
+      getSocket: function getSocket(t) {
+        return Se.createWebSocket(t);
+      }
+    }),
+        gt = {
+      urls: ct,
+      handlesActivityChecks: !1,
+      supportsPing: !0,
+      isInitialized: function isInitialized() {
+        return !0;
+      }
+    },
+        vt = z({
+      getSocket: function getSocket(t) {
+        return Se.HTTPFactory.createStreamingSocket(t);
+      }
+    }, gt),
+        bt = z({
+      getSocket: function getSocket(t) {
+        return Se.HTTPFactory.createPollingSocket(t);
+      }
+    }, gt),
+        mt = {
+      isSupported: function isSupported() {
+        return Se.isXHRSupported();
+      }
+    },
+        _t = {
+      ws: yt,
+      xhr_streaming: new dt(z({}, vt, mt)),
+      xhr_polling: new dt(z({}, bt, mt))
+    },
+        wt = new dt({
+      file: "sockjs",
+      urls: at,
+      handlesActivityChecks: !0,
+      supportsPing: !1,
+      isSupported: function isSupported() {
+        return !0;
       },
-      wt = new dt({
-        file: "sockjs",
-        urls: at,
-        handlesActivityChecks: !0,
-        supportsPing: !1,
-        isSupported: function isSupported() {
-          return !0;
-        },
-        isInitialized: function isInitialized() {
-          return void 0 !== window.SockJS;
-        },
-        getSocket: function getSocket(t, e) {
-          return new window.SockJS(t, null, {
-            js_path: u.getPath("sockjs", {
-              useTLS: e.useTLS
-            }),
-            ignore_null_origin: e.ignoreNullOrigin
-          });
-        },
-        beforeOpen: function beforeOpen(t, e) {
-          t.send(JSON.stringify({
-            path: e
-          }));
-        }
-      }),
-      St = {
-        isSupported: function isSupported(t) {
-          return Se.isXDRSupported(t.useTLS);
-        }
+      isInitialized: function isInitialized() {
+        return void 0 !== window.SockJS;
       },
-      kt = new dt(z({}, vt, St)),
-      Ct = new dt(z({}, bt, St));
+      getSocket: function getSocket(t, e) {
+        return new window.SockJS(t, null, {
+          js_path: u.getPath("sockjs", {
+            useTLS: e.useTLS
+          }),
+          ignore_null_origin: e.ignoreNullOrigin
+        });
+      },
+      beforeOpen: function beforeOpen(t, e) {
+        t.send(JSON.stringify({
+          path: e
+        }));
+      }
+    }),
+        St = {
+      isSupported: function isSupported(t) {
+        return Se.isXDRSupported(t.useTLS);
+      }
+    },
+        kt = new dt(z({}, vt, St)),
+        Ct = new dt(z({}, bt, St));
+
     _t.xdr_streaming = kt, _t.xdr_polling = Ct, _t.sockjs = wt;
 
     var Tt = _t,
-      Pt = function () {
-        var _t4 = function t(e, n) {
-          return (_t4 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
+        Pt = function () {
+      var _t4 = function t(e, n) {
+        return (_t4 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
           }
-          _t4(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      Ot = new (function (t) {
-        function e() {
-          var e = t.call(this) || this,
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
+        }
+
+        _t4(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        Ot = new (function (t) {
+      function e() {
+        var e = t.call(this) || this,
             n = e;
         return void 0 !== window.addEventListener && (window.addEventListener("online", function () {
           n.emit("online");
@@ -11239,96 +11330,101 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         try {
           var e = JSON.parse(t.data),
               n = e.data;
-            if ("string" == typeof n) try {
-              n = JSON.parse(e.data);
-            } catch (t) {}
-            var r = {
-              event: e.event,
-              channel: e.channel,
-              data: n
-            };
-            return e.user_id && (r.user_id = e.user_id), r;
-          } catch (e) {
-            throw {
-              type: "MessageParseError",
-              error: e,
-              data: t.data
-            };
-          }
-        },
-        encodeMessage: function encodeMessage(t) {
-          return JSON.stringify(t);
-        },
-        processHandshake: function processHandshake(t) {
-          var e = At.decodeMessage(t);
-          if ("pusher:connection_established" === e.event) {
-            if (!e.data.activity_timeout) throw "No activity timeout specified in handshake";
-            return {
-              action: "connected",
-              id: e.data.socket_id,
-              activityTimeout: 1e3 * e.data.activity_timeout
-            };
-          }
-          if ("pusher:error" === e.event) return {
-            action: this.getCloseAction(e.data),
-            error: this.getCloseError(e.data)
+          if ("string" == typeof n) try {
+            n = JSON.parse(e.data);
+          } catch (t) {}
+          var r = {
+            event: e.event,
+            channel: e.channel,
+            data: n
           };
-          throw "Invalid handshake";
-        },
-        getCloseAction: function getCloseAction(t) {
-          return t.code < 4e3 ? t.code >= 1002 && t.code <= 1004 ? "backoff" : null : 4e3 === t.code ? "tls_only" : t.code < 4100 ? "refused" : t.code < 4200 ? "backoff" : t.code < 4300 ? "retry" : "refused";
-        },
-        getCloseError: function getCloseError(t) {
-          return 1e3 !== t.code && 1001 !== t.code ? {
-            type: "PusherError",
-            data: {
-              code: t.code,
-              message: t.reason || t.message
-            }
-          } : null;
+          return e.user_id && (r.user_id = e.user_id), r;
+        } catch (e) {
+          throw {
+            type: "MessageParseError",
+            error: e,
+            data: t.data
+          };
         }
       },
-      Lt = At,
-      xt = function () {
-        var _t5 = function t(e, n) {
-          return (_t5 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
-          }
-          _t5(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      Rt = function (t) {
-        function e(e, n) {
-          var r = t.call(this) || this;
-          return r.id = e, r.transport = n, r.activityTimeout = n.activityTimeout, r.bindListeners(), r;
-        }
-        return xt(e, t), e.prototype.handlesActivityChecks = function () {
-          return this.transport.handlesActivityChecks();
-        }, e.prototype.send = function (t) {
-          return this.transport.send(t);
-        }, e.prototype.send_event = function (t, e, n) {
-          var r = {
-            event: t,
-            data: e
+      encodeMessage: function encodeMessage(t) {
+        return JSON.stringify(t);
+      },
+      processHandshake: function processHandshake(t) {
+        var e = At.decodeMessage(t);
+
+        if ("pusher:connection_established" === e.event) {
+          if (!e.data.activity_timeout) throw "No activity timeout specified in handshake";
+          return {
+            action: "connected",
+            id: e.data.socket_id,
+            activityTimeout: 1e3 * e.data.activity_timeout
           };
-          return n && (r.channel = n), Z.debug("Event sent", r), this.send(Lt.encodeMessage(r));
-        }, e.prototype.ping = function () {
-          this.transport.supportsPing() ? this.transport.ping() : this.send_event("pusher:ping", {});
-        }, e.prototype.close = function () {
-          this.transport.close();
-        }, e.prototype.bindListeners = function () {
-          var t = this,
+        }
+
+        if ("pusher:error" === e.event) return {
+          action: this.getCloseAction(e.data),
+          error: this.getCloseError(e.data)
+        };
+        throw "Invalid handshake";
+      },
+      getCloseAction: function getCloseAction(t) {
+        return t.code < 4e3 ? t.code >= 1002 && t.code <= 1004 ? "backoff" : null : 4e3 === t.code ? "tls_only" : t.code < 4100 ? "refused" : t.code < 4200 ? "backoff" : t.code < 4300 ? "retry" : "refused";
+      },
+      getCloseError: function getCloseError(t) {
+        return 1e3 !== t.code && 1001 !== t.code ? {
+          type: "PusherError",
+          data: {
+            code: t.code,
+            message: t.reason || t.message
+          }
+        } : null;
+      }
+    },
+        Lt = At,
+        xt = function () {
+      var _t5 = function t(e, n) {
+        return (_t5 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
+          }
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
+        }
+
+        _t5(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        Rt = function (t) {
+      function e(e, n) {
+        var r = t.call(this) || this;
+        return r.id = e, r.transport = n, r.activityTimeout = n.activityTimeout, r.bindListeners(), r;
+      }
+
+      return xt(e, t), e.prototype.handlesActivityChecks = function () {
+        return this.transport.handlesActivityChecks();
+      }, e.prototype.send = function (t) {
+        return this.transport.send(t);
+      }, e.prototype.send_event = function (t, e, n) {
+        var r = {
+          event: t,
+          data: e
+        };
+        return n && (r.channel = n), Z.debug("Event sent", r), this.send(Lt.encodeMessage(r));
+      }, e.prototype.ping = function () {
+        this.transport.supportsPing() ? this.transport.ping() : this.send_event("pusher:ping", {});
+      }, e.prototype.close = function () {
+        this.transport.close();
+      }, e.prototype.bindListeners = function () {
+        var t = this,
             e = {
           message: function message(e) {
             var n;
@@ -11422,337 +11518,363 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           t.unbindListeners();
           var n = Lt.getCloseAction(e) || "backoff",
               r = Lt.getCloseError(e);
-            t.finish(n, {
-              error: r
-            });
-          }, this.transport.bind("message", this.onMessage), this.transport.bind("closed", this.onClosed);
-        }, t.prototype.unbindListeners = function () {
-          this.transport.unbind("message", this.onMessage), this.transport.unbind("closed", this.onClosed);
-        }, t.prototype.finish = function (t, e) {
-          this.callback(z({
-            transport: this.transport,
-            action: t
-          }, e));
-        }, t;
-      }(),
-      It = function () {
-        function t(t, e) {
-          this.timeline = t, this.options = e || {};
-        }
-        return t.prototype.send = function (t, e) {
-          this.timeline.isEmpty() || this.timeline.send(Se.TimelineTransport.getAgent(this, t), e);
-        }, t;
-      }(),
-      Dt = function () {
-        var _t6 = function t(e, n) {
-          return (_t6 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
-          }
-          _t6(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      Nt = function (t) {
-        function e(e, n) {
-          var r = t.call(this, function (t, n) {
-            Z.debug("No callbacks on " + e + " for " + t);
-          }) || this;
-          return r.name = e, r.pusher = n, r.subscribed = !1, r.subscriptionPending = !1, r.subscriptionCancelled = !1, r;
-        }
-        return Dt(e, t), e.prototype.authorize = function (t, e) {
-          return e(null, {
-            auth: ""
+          t.finish(n, {
+            error: r
           });
-        }, e.prototype.trigger = function (t, e) {
-          if (0 !== t.indexOf("client-")) throw new d("Event '" + t + "' does not start with 'client-'");
-          if (!this.subscribed) {
-            var n = p("triggeringClientEvents");
-            Z.warn("Client event triggered before channel 'subscription_succeeded' event . " + n);
+        }, this.transport.bind("message", this.onMessage), this.transport.bind("closed", this.onClosed);
+      }, t.prototype.unbindListeners = function () {
+        this.transport.unbind("message", this.onMessage), this.transport.unbind("closed", this.onClosed);
+      }, t.prototype.finish = function (t, e) {
+        this.callback(z({
+          transport: this.transport,
+          action: t
+        }, e));
+      }, t;
+    }(),
+        It = function () {
+      function t(t, e) {
+        this.timeline = t, this.options = e || {};
+      }
+
+      return t.prototype.send = function (t, e) {
+        this.timeline.isEmpty() || this.timeline.send(Se.TimelineTransport.getAgent(this, t), e);
+      }, t;
+    }(),
+        Dt = function () {
+      var _t6 = function t(e, n) {
+        return (_t6 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
           }
-          return this.pusher.send_event(t, e, this.name);
-        }, e.prototype.disconnect = function () {
-          this.subscribed = !1, this.subscriptionPending = !1;
-        }, e.prototype.handleEvent = function (t) {
-          var e = t.event,
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
+        }
+
+        _t6(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        Nt = function (t) {
+      function e(e, n) {
+        var r = t.call(this, function (t, n) {
+          Z.debug("No callbacks on " + e + " for " + t);
+        }) || this;
+        return r.name = e, r.pusher = n, r.subscribed = !1, r.subscriptionPending = !1, r.subscriptionCancelled = !1, r;
+      }
+
+      return Dt(e, t), e.prototype.authorize = function (t, e) {
+        return e(null, {
+          auth: ""
+        });
+      }, e.prototype.trigger = function (t, e) {
+        if (0 !== t.indexOf("client-")) throw new d("Event '" + t + "' does not start with 'client-'");
+
+        if (!this.subscribed) {
+          var n = p("triggeringClientEvents");
+          Z.warn("Client event triggered before channel 'subscription_succeeded' event . " + n);
+        }
+
+        return this.pusher.send_event(t, e, this.name);
+      }, e.prototype.disconnect = function () {
+        this.subscribed = !1, this.subscriptionPending = !1;
+      }, e.prototype.handleEvent = function (t) {
+        var e = t.event,
             n = t.data;
-          if ("pusher_internal:subscription_succeeded" === e) this.handleSubscriptionSucceededEvent(t);else if ("pusher_internal:subscription_count" === e) this.handleSubscriptionCountEvent(t);else if (0 !== e.indexOf("pusher_internal:")) {
-            this.emit(e, n, {});
-          }
-        }, e.prototype.handleSubscriptionSucceededEvent = function (t) {
-          this.subscriptionPending = !1, this.subscribed = !0, this.subscriptionCancelled ? this.pusher.unsubscribe(this.name) : this.emit("pusher:subscription_succeeded", t.data);
-        }, e.prototype.handleSubscriptionCountEvent = function (t) {
-          t.data.subscription_count && (this.subscriptionCount = t.data.subscription_count), this.emit("pusher:subscription_count", t.data);
-        }, e.prototype.subscribe = function () {
-          var t = this;
-          this.subscribed || (this.subscriptionPending = !0, this.subscriptionCancelled = !1, this.authorize(this.pusher.connection.socket_id, function (e, n) {
-            e ? (t.subscriptionPending = !1, Z.error(e.toString()), t.emit("pusher:subscription_error", Object.assign({}, {
-              type: "AuthError",
-              error: e.message
-            }, e instanceof S ? {
-              status: e.status
-            } : {}))) : t.pusher.send_event("pusher:subscribe", {
-              auth: n.auth,
-              channel_data: n.channel_data,
-              channel: t.name
-            });
-          }));
-        }, e.prototype.unsubscribe = function () {
-          this.subscribed = !1, this.pusher.send_event("pusher:unsubscribe", {
-            channel: this.name
-          });
-        }, e.prototype.cancelSubscription = function () {
-          this.subscriptionCancelled = !0;
-        }, e.prototype.reinstateSubscription = function () {
-          this.subscriptionCancelled = !1;
-        }, e;
-      }(pt),
-      Ht = function () {
-        var _t7 = function t(e, n) {
-          return (_t7 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
-          }
-          _t7(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      Mt = function (t) {
-        function e() {
-          return null !== t && t.apply(this, arguments) || this;
+        if ("pusher_internal:subscription_succeeded" === e) this.handleSubscriptionSucceededEvent(t);else if ("pusher_internal:subscription_count" === e) this.handleSubscriptionCountEvent(t);else if (0 !== e.indexOf("pusher_internal:")) {
+          this.emit(e, n, {});
         }
-        return Ht(e, t), e.prototype.authorize = function (t, e) {
-          return this.pusher.config.channelAuthorizer({
-            channelName: this.name,
-            socketId: t
-          }, e);
-        }, e;
-      }(Nt),
-      Ut = function () {
-        function t() {
-          this.reset();
-        }
-        return t.prototype.get = function (t) {
-          return Object.prototype.hasOwnProperty.call(this.members, t) ? {
-            id: t,
-            info: this.members[t]
-          } : null;
-        }, t.prototype.each = function (t) {
-          var e = this;
-          F(this.members, function (n, r) {
-            t(e.get(r));
+      }, e.prototype.handleSubscriptionSucceededEvent = function (t) {
+        this.subscriptionPending = !1, this.subscribed = !0, this.subscriptionCancelled ? this.pusher.unsubscribe(this.name) : this.emit("pusher:subscription_succeeded", t.data);
+      }, e.prototype.handleSubscriptionCountEvent = function (t) {
+        t.data.subscription_count && (this.subscriptionCount = t.data.subscription_count), this.emit("pusher:subscription_count", t.data);
+      }, e.prototype.subscribe = function () {
+        var t = this;
+        this.subscribed || (this.subscriptionPending = !0, this.subscriptionCancelled = !1, this.authorize(this.pusher.connection.socket_id, function (e, n) {
+          e ? (t.subscriptionPending = !1, Z.error(e.toString()), t.emit("pusher:subscription_error", Object.assign({}, {
+            type: "AuthError",
+            error: e.message
+          }, e instanceof S ? {
+            status: e.status
+          } : {}))) : t.pusher.send_event("pusher:subscribe", {
+            auth: n.auth,
+            channel_data: n.channel_data,
+            channel: t.name
           });
-        }, t.prototype.setMyID = function (t) {
-          this.myID = t;
-        }, t.prototype.onSubscription = function (t) {
-          this.members = t.presence.hash, this.count = t.presence.count, this.me = this.get(this.myID);
-        }, t.prototype.addMember = function (t) {
-          return null === this.get(t.user_id) && this.count++, this.members[t.user_id] = t.user_info, this.get(t.user_id);
-        }, t.prototype.removeMember = function (t) {
-          var e = this.get(t.user_id);
-          return e && (delete this.members[t.user_id], this.count--), e;
-        }, t.prototype.reset = function () {
-          this.members = {}, this.count = 0, this.myID = null, this.me = null;
-        }, t;
-      }(),
-      zt = function () {
-        var _t8 = function t(e, n) {
-          return (_t8 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
+        }));
+      }, e.prototype.unsubscribe = function () {
+        this.subscribed = !1, this.pusher.send_event("pusher:unsubscribe", {
+          channel: this.name
+        });
+      }, e.prototype.cancelSubscription = function () {
+        this.subscriptionCancelled = !0;
+      }, e.prototype.reinstateSubscription = function () {
+        this.subscriptionCancelled = !1;
+      }, e;
+    }(pt),
+        Ht = function () {
+      var _t7 = function t(e, n) {
+        return (_t7 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
           }
-          _t8(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      qt = function (t) {
-        function e(e, n) {
-          var r = t.call(this, e, n) || this;
-          return r.members = new Ut(), r;
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
         }
-        return zt(e, t), e.prototype.authorize = function (e, n) {
-          var r = this;
-          t.prototype.authorize.call(this, e, function (t, e) {
-            if (!t) {
-              if (void 0 === (e = e).channel_data) {
-                var o = p("authenticationEndpoint");
-                return Z.error("Invalid auth response for channel '" + r.name + "',expected 'channel_data' field. " + o), void n("Invalid auth response");
-              }
-              var i = JSON.parse(e.channel_data);
-              r.members.setMyID(i.user_id);
+
+        _t7(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        Mt = function (t) {
+      function e() {
+        return null !== t && t.apply(this, arguments) || this;
+      }
+
+      return Ht(e, t), e.prototype.authorize = function (t, e) {
+        return this.pusher.config.channelAuthorizer({
+          channelName: this.name,
+          socketId: t
+        }, e);
+      }, e;
+    }(Nt),
+        Ut = function () {
+      function t() {
+        this.reset();
+      }
+
+      return t.prototype.get = function (t) {
+        return Object.prototype.hasOwnProperty.call(this.members, t) ? {
+          id: t,
+          info: this.members[t]
+        } : null;
+      }, t.prototype.each = function (t) {
+        var e = this;
+        F(this.members, function (n, r) {
+          t(e.get(r));
+        });
+      }, t.prototype.setMyID = function (t) {
+        this.myID = t;
+      }, t.prototype.onSubscription = function (t) {
+        this.members = t.presence.hash, this.count = t.presence.count, this.me = this.get(this.myID);
+      }, t.prototype.addMember = function (t) {
+        return null === this.get(t.user_id) && this.count++, this.members[t.user_id] = t.user_info, this.get(t.user_id);
+      }, t.prototype.removeMember = function (t) {
+        var e = this.get(t.user_id);
+        return e && (delete this.members[t.user_id], this.count--), e;
+      }, t.prototype.reset = function () {
+        this.members = {}, this.count = 0, this.myID = null, this.me = null;
+      }, t;
+    }(),
+        zt = function () {
+      var _t8 = function t(e, n) {
+        return (_t8 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
+          }
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
+        }
+
+        _t8(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        qt = function (t) {
+      function e(e, n) {
+        var r = t.call(this, e, n) || this;
+        return r.members = new Ut(), r;
+      }
+
+      return zt(e, t), e.prototype.authorize = function (e, n) {
+        var r = this;
+        t.prototype.authorize.call(this, e, function (t, e) {
+          if (!t) {
+            if (void 0 === (e = e).channel_data) {
+              var o = p("authenticationEndpoint");
+              return Z.error("Invalid auth response for channel '" + r.name + "',expected 'channel_data' field. " + o), void n("Invalid auth response");
             }
-            n(t, e);
-          });
-        }, e.prototype.handleEvent = function (t) {
-          var e = t.event;
-          if (0 === e.indexOf("pusher_internal:")) this.handleInternalEvent(t);else {
-            var n = t.data,
+
+            var i = JSON.parse(e.channel_data);
+            r.members.setMyID(i.user_id);
+          }
+
+          n(t, e);
+        });
+      }, e.prototype.handleEvent = function (t) {
+        var e = t.event;
+        if (0 === e.indexOf("pusher_internal:")) this.handleInternalEvent(t);else {
+          var n = t.data,
               r = {};
           t.user_id && (r.user_id = t.user_id), this.emit(e, n, r);
         }
       }, e.prototype.handleInternalEvent = function (t) {
         var e = t.event,
             n = t.data;
-          switch (e) {
-            case "pusher_internal:subscription_succeeded":
-              this.handleSubscriptionSucceededEvent(t);
-              break;
-            case "pusher_internal:subscription_count":
-              this.handleSubscriptionCountEvent(t);
-              break;
-            case "pusher_internal:member_added":
-              var r = this.members.addMember(n);
-              this.emit("pusher:member_added", r);
-              break;
-            case "pusher_internal:member_removed":
-              var o = this.members.removeMember(n);
-              o && this.emit("pusher:member_removed", o);
-          }
-        }, e.prototype.handleSubscriptionSucceededEvent = function (t) {
-          this.subscriptionPending = !1, this.subscribed = !0, this.subscriptionCancelled ? this.pusher.unsubscribe(this.name) : (this.members.onSubscription(t.data), this.emit("pusher:subscription_succeeded", this.members));
-        }, e.prototype.disconnect = function () {
-          this.members.reset(), t.prototype.disconnect.call(this);
-        }, e;
-      }(Mt),
-      Bt = n(1),
-      Ft = n(0),
-      Xt = function () {
-        var _t9 = function t(e, n) {
-          return (_t9 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
-          }
-          _t9(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      Jt = function (t) {
-        function e(e, n, r) {
-          var o = t.call(this, e, n) || this;
-          return o.key = null, o.nacl = r, o;
+
+        switch (e) {
+          case "pusher_internal:subscription_succeeded":
+            this.handleSubscriptionSucceededEvent(t);
+            break;
+
+          case "pusher_internal:subscription_count":
+            this.handleSubscriptionCountEvent(t);
+            break;
+
+          case "pusher_internal:member_added":
+            var r = this.members.addMember(n);
+            this.emit("pusher:member_added", r);
+            break;
+
+          case "pusher_internal:member_removed":
+            var o = this.members.removeMember(n);
+            o && this.emit("pusher:member_removed", o);
         }
-        return Xt(e, t), e.prototype.authorize = function (e, n) {
-          var r = this;
-          t.prototype.authorize.call(this, e, function (t, e) {
-            if (t) n(t, e);else {
-              var o = e.shared_secret;
-              o ? (r.key = Object(Ft.decode)(o), delete e.shared_secret, n(null, e)) : n(new Error("No shared_secret key in auth payload for encrypted channel: " + r.name), null);
-            }
-          });
-        }, e.prototype.trigger = function (t, e) {
-          throw new m("Client events are not currently supported for encrypted channels");
-        }, e.prototype.handleEvent = function (e) {
-          var n = e.event,
+      }, e.prototype.handleSubscriptionSucceededEvent = function (t) {
+        this.subscriptionPending = !1, this.subscribed = !0, this.subscriptionCancelled ? this.pusher.unsubscribe(this.name) : (this.members.onSubscription(t.data), this.emit("pusher:subscription_succeeded", this.members));
+      }, e.prototype.disconnect = function () {
+        this.members.reset(), t.prototype.disconnect.call(this);
+      }, e;
+    }(Mt),
+        Bt = n(1),
+        Ft = n(0),
+        Xt = function () {
+      var _t9 = function t(e, n) {
+        return (_t9 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
+          }
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
+        }
+
+        _t9(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        Jt = function (t) {
+      function e(e, n, r) {
+        var o = t.call(this, e, n) || this;
+        return o.key = null, o.nacl = r, o;
+      }
+
+      return Xt(e, t), e.prototype.authorize = function (e, n) {
+        var r = this;
+        t.prototype.authorize.call(this, e, function (t, e) {
+          if (t) n(t, e);else {
+            var o = e.shared_secret;
+            o ? (r.key = Object(Ft.decode)(o), delete e.shared_secret, n(null, e)) : n(new Error("No shared_secret key in auth payload for encrypted channel: " + r.name), null);
+          }
+        });
+      }, e.prototype.trigger = function (t, e) {
+        throw new m("Client events are not currently supported for encrypted channels");
+      }, e.prototype.handleEvent = function (e) {
+        var n = e.event,
             r = e.data;
-          0 !== n.indexOf("pusher_internal:") && 0 !== n.indexOf("pusher:") ? this.handleEncryptedEvent(n, r) : t.prototype.handleEvent.call(this, e);
-        }, e.prototype.handleEncryptedEvent = function (t, e) {
-          var n = this;
-          if (this.key) {
-            if (e.ciphertext && e.nonce) {
-              var r = Object(Ft.decode)(e.ciphertext);
-              if (r.length < this.nacl.secretbox.overheadLength) Z.error("Expected encrypted event ciphertext length to be " + this.nacl.secretbox.overheadLength + ", got: " + r.length);else {
-                var o = Object(Ft.decode)(e.nonce);
-                if (o.length < this.nacl.secretbox.nonceLength) Z.error("Expected encrypted event nonce length to be " + this.nacl.secretbox.nonceLength + ", got: " + o.length);else {
-                  var i = this.nacl.secretbox.open(r, o, this.key);
-                  if (null === i) return Z.debug("Failed to decrypt an event, probably because it was encrypted with a different key. Fetching a new key from the authEndpoint..."), void this.authorize(this.pusher.connection.socket_id, function (e, s) {
-                    e ? Z.error("Failed to make a request to the authEndpoint: " + s + ". Unable to fetch new key, so dropping encrypted event") : null !== (i = n.nacl.secretbox.open(r, o, n.key)) ? n.emit(t, n.getDataToEmit(i)) : Z.error("Failed to decrypt event with new key. Dropping encrypted event");
-                  });
-                  this.emit(t, this.getDataToEmit(i));
-                }
+        0 !== n.indexOf("pusher_internal:") && 0 !== n.indexOf("pusher:") ? this.handleEncryptedEvent(n, r) : t.prototype.handleEvent.call(this, e);
+      }, e.prototype.handleEncryptedEvent = function (t, e) {
+        var n = this;
+        if (this.key) {
+          if (e.ciphertext && e.nonce) {
+            var r = Object(Ft.decode)(e.ciphertext);
+            if (r.length < this.nacl.secretbox.overheadLength) Z.error("Expected encrypted event ciphertext length to be " + this.nacl.secretbox.overheadLength + ", got: " + r.length);else {
+              var o = Object(Ft.decode)(e.nonce);
+              if (o.length < this.nacl.secretbox.nonceLength) Z.error("Expected encrypted event nonce length to be " + this.nacl.secretbox.nonceLength + ", got: " + o.length);else {
+                var i = this.nacl.secretbox.open(r, o, this.key);
+                if (null === i) return Z.debug("Failed to decrypt an event, probably because it was encrypted with a different key. Fetching a new key from the authEndpoint..."), void this.authorize(this.pusher.connection.socket_id, function (e, s) {
+                  e ? Z.error("Failed to make a request to the authEndpoint: " + s + ". Unable to fetch new key, so dropping encrypted event") : null !== (i = n.nacl.secretbox.open(r, o, n.key)) ? n.emit(t, n.getDataToEmit(i)) : Z.error("Failed to decrypt event with new key. Dropping encrypted event");
+                });
+                this.emit(t, this.getDataToEmit(i));
               }
-            } else Z.error("Unexpected format for encrypted event, expected object with `ciphertext` and `nonce` fields, got: " + e);
-          } else Z.debug("Received encrypted event before key has been retrieved from the authEndpoint");
-        }, e.prototype.getDataToEmit = function (t) {
-          var e = Object(Bt.decode)(t);
-          try {
-            return JSON.parse(e);
-          } catch (t) {
-            return e;
-          }
-        }, e;
-      }(Mt),
-      Wt = function () {
-        var _t10 = function t(e, n) {
-          return (_t10 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
             }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
-          }
-          _t10(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      Gt = function (t) {
-        function e(e, n) {
-          var r = t.call(this) || this;
-          r.state = "initialized", r.connection = null, r.key = e, r.options = n, r.timeline = r.options.timeline, r.usingTLS = r.options.useTLS, r.errorCallbacks = r.buildErrorCallbacks(), r.connectionCallbacks = r.buildConnectionCallbacks(r.errorCallbacks), r.handshakeCallbacks = r.buildHandshakeCallbacks(r.errorCallbacks);
-          var o = Se.getNetwork();
-          return o.bind("online", function () {
-            r.timeline.info({
-              netinfo: "online"
-            }), "connecting" !== r.state && "unavailable" !== r.state || r.retryIn(0);
-          }), o.bind("offline", function () {
-            r.timeline.info({
-              netinfo: "offline"
-            }), r.connection && r.sendActivityCheck();
-          }), r.updateStrategy(), r;
+          } else Z.error("Unexpected format for encrypted event, expected object with `ciphertext` and `nonce` fields, got: " + e);
+        } else Z.debug("Received encrypted event before key has been retrieved from the authEndpoint");
+      }, e.prototype.getDataToEmit = function (t) {
+        var e = Object(Bt.decode)(t);
+
+        try {
+          return JSON.parse(e);
+        } catch (t) {
+          return e;
         }
-        return Wt(e, t), e.prototype.connect = function () {
-          this.connection || this.runner || (this.strategy.isSupported() ? (this.updateState("connecting"), this.startConnecting(), this.setUnavailableTimer()) : this.updateState("failed"));
-        }, e.prototype.send = function (t) {
-          return !!this.connection && this.connection.send(t);
-        }, e.prototype.send_event = function (t, e, n) {
-          return !!this.connection && this.connection.send_event(t, e, n);
-        }, e.prototype.disconnect = function () {
-          this.disconnectInternally(), this.updateState("disconnected");
-        }, e.prototype.isUsingTLS = function () {
-          return this.usingTLS;
-        }, e.prototype.startConnecting = function () {
-          var t = this,
+      }, e;
+    }(Mt),
+        Wt = function () {
+      var _t10 = function t(e, n) {
+        return (_t10 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
+          }
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
+        }
+
+        _t10(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        Gt = function (t) {
+      function e(e, n) {
+        var r = t.call(this) || this;
+        r.state = "initialized", r.connection = null, r.key = e, r.options = n, r.timeline = r.options.timeline, r.usingTLS = r.options.useTLS, r.errorCallbacks = r.buildErrorCallbacks(), r.connectionCallbacks = r.buildConnectionCallbacks(r.errorCallbacks), r.handshakeCallbacks = r.buildHandshakeCallbacks(r.errorCallbacks);
+        var o = Se.getNetwork();
+        return o.bind("online", function () {
+          r.timeline.info({
+            netinfo: "online"
+          }), "connecting" !== r.state && "unavailable" !== r.state || r.retryIn(0);
+        }), o.bind("offline", function () {
+          r.timeline.info({
+            netinfo: "offline"
+          }), r.connection && r.sendActivityCheck();
+        }), r.updateStrategy(), r;
+      }
+
+      return Wt(e, t), e.prototype.connect = function () {
+        this.connection || this.runner || (this.strategy.isSupported() ? (this.updateState("connecting"), this.startConnecting(), this.setUnavailableTimer()) : this.updateState("failed"));
+      }, e.prototype.send = function (t) {
+        return !!this.connection && this.connection.send(t);
+      }, e.prototype.send_event = function (t, e, n) {
+        return !!this.connection && this.connection.send_event(t, e, n);
+      }, e.prototype.disconnect = function () {
+        this.disconnectInternally(), this.updateState("disconnected");
+      }, e.prototype.isUsingTLS = function () {
+        return this.usingTLS;
+      }, e.prototype.startConnecting = function () {
+        var t = this,
             e = function e(n, r) {
           n ? t.runner = t.strategy.connect(0, e) : "error" === r.action ? (t.emit("error", {
             type: "HandshakeError",
@@ -11835,90 +11957,97 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }, e.prototype.buildErrorCallbacks = function () {
         var t = this,
             e = function e(_e2) {
-              return function (n) {
-                n.error && t.emit("error", {
-                  type: "WebSocketError",
-                  error: n.error
-                }), _e2(n);
-              };
-            };
-          return {
-            tls_only: e(function () {
-              t.usingTLS = !0, t.updateStrategy(), t.retryIn(0);
-            }),
-            refused: e(function () {
-              t.disconnect();
-            }),
-            backoff: e(function () {
-              t.retryIn(1e3);
-            }),
-            retry: e(function () {
-              t.retryIn(0);
-            })
+          return function (n) {
+            n.error && t.emit("error", {
+              type: "WebSocketError",
+              error: n.error
+            }), _e2(n);
           };
-        }, e.prototype.setConnection = function (t) {
-          for (var e in this.connection = t, this.connectionCallbacks) {
-            this.connection.bind(e, this.connectionCallbacks[e]);
-          }
-          this.resetActivityCheck();
-        }, e.prototype.abandonConnection = function () {
-          if (this.connection) {
-            for (var t in this.stopActivityCheck(), this.connectionCallbacks) {
-              this.connection.unbind(t, this.connectionCallbacks[t]);
-            }
-            var e = this.connection;
-            return this.connection = null, e;
-          }
-        }, e.prototype.updateState = function (t, e) {
-          var n = this.state;
-          if (this.state = t, n !== t) {
-            var r = t;
-            "connected" === r && (r += " with new socket ID " + e.socket_id), Z.debug("State changed", n + " -> " + r), this.timeline.info({
-              state: t,
-              params: e
-            }), this.emit("state_change", {
-              previous: n,
-              current: t
-            }), this.emit(t, e);
-          }
-        }, e.prototype.shouldRetry = function () {
-          return "connecting" === this.state || "connected" === this.state;
-        }, e;
-      }(pt),
-      Vt = function () {
-        function t() {
-          this.channels = {};
-        }
-        return t.prototype.add = function (t, e) {
-          return this.channels[t] || (this.channels[t] = function (t, e) {
-            if (0 === t.indexOf("private-encrypted-")) {
-              if (e.config.nacl) return Qt.createEncryptedChannel(t, e, e.config.nacl);
-              var n = p("encryptedChannelSupport");
-              throw new m("Tried to subscribe to a private-encrypted- channel but no nacl implementation available. " + n);
-            }
-            if (0 === t.indexOf("private-")) return Qt.createPrivateChannel(t, e);
-            if (0 === t.indexOf("presence-")) return Qt.createPresenceChannel(t, e);
-            if (0 === t.indexOf("#")) throw new y('Cannot create a channel with name "' + t + '".');
-            return Qt.createChannel(t, e);
-          }(t, e)), this.channels[t];
-        }, t.prototype.all = function () {
-          return function (t) {
-            var e = [];
-            return F(t, function (t) {
-              e.push(t);
-            }), e;
-          }(this.channels);
-        }, t.prototype.find = function (t) {
-          return this.channels[t];
-        }, t.prototype.remove = function (t) {
-          var e = this.channels[t];
-          return delete this.channels[t], e;
-        }, t.prototype.disconnect = function () {
-          F(this.channels, function (t) {
+        };
+
+        return {
+          tls_only: e(function () {
+            t.usingTLS = !0, t.updateStrategy(), t.retryIn(0);
+          }),
+          refused: e(function () {
             t.disconnect();
-          });
-        }, t;
-      }();
+          }),
+          backoff: e(function () {
+            t.retryIn(1e3);
+          }),
+          retry: e(function () {
+            t.retryIn(0);
+          })
+        };
+      }, e.prototype.setConnection = function (t) {
+        for (var e in this.connection = t, this.connectionCallbacks) {
+          this.connection.bind(e, this.connectionCallbacks[e]);
+        }
+
+        this.resetActivityCheck();
+      }, e.prototype.abandonConnection = function () {
+        if (this.connection) {
+          for (var t in this.stopActivityCheck(), this.connectionCallbacks) {
+            this.connection.unbind(t, this.connectionCallbacks[t]);
+          }
+
+          var e = this.connection;
+          return this.connection = null, e;
+        }
+      }, e.prototype.updateState = function (t, e) {
+        var n = this.state;
+
+        if (this.state = t, n !== t) {
+          var r = t;
+          "connected" === r && (r += " with new socket ID " + e.socket_id), Z.debug("State changed", n + " -> " + r), this.timeline.info({
+            state: t,
+            params: e
+          }), this.emit("state_change", {
+            previous: n,
+            current: t
+          }), this.emit(t, e);
+        }
+      }, e.prototype.shouldRetry = function () {
+        return "connecting" === this.state || "connected" === this.state;
+      }, e;
+    }(pt),
+        Vt = function () {
+      function t() {
+        this.channels = {};
+      }
+
+      return t.prototype.add = function (t, e) {
+        return this.channels[t] || (this.channels[t] = function (t, e) {
+          if (0 === t.indexOf("private-encrypted-")) {
+            if (e.config.nacl) return Qt.createEncryptedChannel(t, e, e.config.nacl);
+            var n = p("encryptedChannelSupport");
+            throw new m("Tried to subscribe to a private-encrypted- channel but no nacl implementation available. " + n);
+          }
+
+          if (0 === t.indexOf("private-")) return Qt.createPrivateChannel(t, e);
+          if (0 === t.indexOf("presence-")) return Qt.createPresenceChannel(t, e);
+          if (0 === t.indexOf("#")) throw new y('Cannot create a channel with name "' + t + '".');
+          return Qt.createChannel(t, e);
+        }(t, e)), this.channels[t];
+      }, t.prototype.all = function () {
+        return function (t) {
+          var e = [];
+          return F(t, function (t) {
+            e.push(t);
+          }), e;
+        }(this.channels);
+      }, t.prototype.find = function (t) {
+        return this.channels[t];
+      }, t.prototype.remove = function (t) {
+        var e = this.channels[t];
+        return delete this.channels[t], e;
+      }, t.prototype.disconnect = function () {
+        F(this.channels, function (t) {
+          t.disconnect();
+        });
+      }, t;
+    }();
+
     var Qt = {
       createChannels: function createChannels() {
         return new Vt();
@@ -11998,59 +12127,62 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }, t.prototype.tryStrategy = function (t, e, n, r) {
         var o = null,
             i = null;
-          return n.timeout > 0 && (o = new H(n.timeout, function () {
-            i.abort(), r(!0);
-          })), i = t.connect(e, function (t, e) {
-            t && o && o.isRunning() && !n.failFast || (o && o.ensureAborted(), r(t, e));
-          }), {
+        return n.timeout > 0 && (o = new H(n.timeout, function () {
+          i.abort(), r(!0);
+        })), i = t.connect(e, function (t, e) {
+          t && o && o.isRunning() && !n.failFast || (o && o.ensureAborted(), r(t, e));
+        }), {
+          abort: function abort() {
+            o && o.ensureAborted(), i.abort();
+          },
+          forceMinPriority: function forceMinPriority(t) {
+            i.forceMinPriority(t);
+          }
+        };
+      }, t;
+    }(),
+        Kt = function () {
+      function t(t) {
+        this.strategies = t;
+      }
+
+      return t.prototype.isSupported = function () {
+        return Q(this.strategies, U.method("isSupported"));
+      }, t.prototype.connect = function (t, e) {
+        return function (t, e, n) {
+          var r = W(t, function (t, r, o, i) {
+            return t.connect(e, n(r, i));
+          });
+          return {
             abort: function abort() {
-              o && o.ensureAborted(), i.abort();
+              J(r, Zt);
             },
             forceMinPriority: function forceMinPriority(t) {
-              i.forceMinPriority(t);
+              J(r, function (e) {
+                e.forceMinPriority(t);
+              });
             }
           };
-        }, t;
-      }(),
-      Kt = function () {
-        function t(t) {
-          this.strategies = t;
-        }
-        return t.prototype.isSupported = function () {
-          return Q(this.strategies, U.method("isSupported"));
-        }, t.prototype.connect = function (t, e) {
-          return function (t, e, n) {
-            var r = W(t, function (t, r, o, i) {
-              return t.connect(e, n(r, i));
-            });
-            return {
-              abort: function abort() {
-                J(r, Zt);
-              },
-              forceMinPriority: function forceMinPriority(t) {
-                J(r, function (e) {
-                  e.forceMinPriority(t);
-                });
-              }
-            };
-          }(this.strategies, t, function (t, n) {
-            return function (r, o) {
-              n[t].error = r, r ? function (t) {
-                return function (t, e) {
-                  for (var n = 0; n < t.length; n++) {
-                    if (!e(t[n], n, t)) return !1;
-                  }
-                  return !0;
-                }(t, function (t) {
-                  return Boolean(t.error);
-                });
-              }(n) && e(!0) : (J(n, function (t) {
-                t.forceMinPriority(o.transport.priority);
-              }), e(null, o));
-            };
-          });
-        }, t;
-      }();
+        }(this.strategies, t, function (t, n) {
+          return function (r, o) {
+            n[t].error = r, r ? function (t) {
+              return function (t, e) {
+                for (var n = 0; n < t.length; n++) {
+                  if (!e(t[n], n, t)) return !1;
+                }
+
+                return !0;
+              }(t, function (t) {
+                return Boolean(t.error);
+              });
+            }(n) && e(!0) : (J(n, function (t) {
+              t.forceMinPriority(o.transport.priority);
+            }), e(null, o));
+          };
+        });
+      }, t;
+    }();
+
     function Zt(t) {
       t.error || t.aborted || (t.abort(), t.aborted = !0);
     }
@@ -12235,78 +12367,83 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         delay: 4e3
       })]), k)], u),
           T = new oe(se(C), C, w);
-        return i = e.useTLS ? new Kt([m, new re(T, {
-          delay: 2e3
-        })]) : new Kt([m, new re(_, {
-          delay: 2e3
-        }), new re(T, {
-          delay: 5e3
-        })]), new te(new ie(new oe(se(l), i, T)), r, {
-          ttl: 18e5,
-          timeline: e.timeline,
-          useTLS: e.useTLS
-        });
+
+      return i = e.useTLS ? new Kt([m, new re(T, {
+        delay: 2e3
+      })]) : new Kt([m, new re(_, {
+        delay: 2e3
+      }), new re(T, {
+        delay: 5e3
+      })]), new te(new ie(new oe(se(l), i, T)), r, {
+        ttl: 18e5,
+        timeline: e.timeline,
+        useTLS: e.useTLS
+      });
+    },
+        ue = {
+      getRequest: function getRequest(t) {
+        var e = new window.XDomainRequest();
+        return e.ontimeout = function () {
+          t.emit("error", new g()), t.close();
+        }, e.onerror = function (e) {
+          t.emit("error", e), t.close();
+        }, e.onprogress = function () {
+          e.responseText && e.responseText.length > 0 && t.onChunk(200, e.responseText);
+        }, e.onload = function () {
+          e.responseText && e.responseText.length > 0 && t.onChunk(200, e.responseText), t.emit("finished", 200), t.close();
+        }, e;
       },
-      ue = {
-        getRequest: function getRequest(t) {
-          var e = new window.XDomainRequest();
-          return e.ontimeout = function () {
-            t.emit("error", new g()), t.close();
-          }, e.onerror = function (e) {
-            t.emit("error", e), t.close();
-          }, e.onprogress = function () {
-            e.responseText && e.responseText.length > 0 && t.onChunk(200, e.responseText);
-          }, e.onload = function () {
-            e.responseText && e.responseText.length > 0 && t.onChunk(200, e.responseText), t.emit("finished", 200), t.close();
-          }, e;
-        },
-        abortRequest: function abortRequest(t) {
-          t.ontimeout = t.onerror = t.onprogress = t.onload = null, t.abort();
-        }
-      },
-      he = function () {
-        var _t11 = function t(e, n) {
-          return (_t11 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
+      abortRequest: function abortRequest(t) {
+        t.ontimeout = t.onerror = t.onprogress = t.onload = null, t.abort();
+      }
+    },
+        he = function () {
+      var _t11 = function t(e, n) {
+        return (_t11 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
           }
-          _t11(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      pe = function (t) {
-        function e(e, n, r) {
-          var o = t.call(this) || this;
-          return o.hooks = e, o.method = n, o.url = r, o;
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
         }
-        return he(e, t), e.prototype.start = function (t) {
-          var e = this;
-          this.position = 0, this.xhr = this.hooks.getRequest(this), this.unloader = function () {
-            e.close();
-          }, Se.addUnloadListener(this.unloader), this.xhr.open(this.method, this.url, !0), this.xhr.setRequestHeader && this.xhr.setRequestHeader("Content-Type", "application/json"), this.xhr.send(t);
-        }, e.prototype.close = function () {
-          this.unloader && (Se.removeUnloadListener(this.unloader), this.unloader = null), this.xhr && (this.hooks.abortRequest(this.xhr), this.xhr = null);
-        }, e.prototype.onChunk = function (t, e) {
-          for (;;) {
-            var n = this.advanceBuffer(e);
-            if (!n) break;
-            this.emit("chunk", {
-              status: t,
-              data: n
-            });
-          }
-          this.isBufferTooLong(e) && this.emit("buffer_too_long");
-        }, e.prototype.advanceBuffer = function (t) {
-          var e = t.slice(this.position),
+
+        _t11(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        pe = function (t) {
+      function e(e, n, r) {
+        var o = t.call(this) || this;
+        return o.hooks = e, o.method = n, o.url = r, o;
+      }
+
+      return he(e, t), e.prototype.start = function (t) {
+        var e = this;
+        this.position = 0, this.xhr = this.hooks.getRequest(this), this.unloader = function () {
+          e.close();
+        }, Se.addUnloadListener(this.unloader), this.xhr.open(this.method, this.url, !0), this.xhr.setRequestHeader && this.xhr.setRequestHeader("Content-Type", "application/json"), this.xhr.send(t);
+      }, e.prototype.close = function () {
+        this.unloader && (Se.removeUnloadListener(this.unloader), this.unloader = null), this.xhr && (this.hooks.abortRequest(this.xhr), this.xhr = null);
+      }, e.prototype.onChunk = function (t, e) {
+        for (;;) {
+          var n = this.advanceBuffer(e);
+          if (!n) break;
+          this.emit("chunk", {
+            status: t,
+            data: n
+          });
+        }
+
+        this.isBufferTooLong(e) && this.emit("buffer_too_long");
+      }, e.prototype.advanceBuffer = function (t) {
+        var e = t.slice(this.position),
             n = e.indexOf("\n");
         return -1 !== n ? (this.position += n + 1, e.slice(0, n)) : null;
       }, e.prototype.isBufferTooLong = function (t) {
@@ -12330,248 +12467,262 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     var ge,
-      ve = function () {
-        function t(t, e) {
-          this.hooks = t, this.session = ye(1e3) + "/" + function (t) {
-            for (var e = [], n = 0; n < t; n++) {
-              e.push(ye(32).toString(32));
-            }
-            return e.join("");
-          }(8), this.location = function (t) {
-            var e = /([^\?]*)\/*(\??.*)/.exec(t);
-            return {
-              base: e[1],
-              queryString: e[2]
-            };
-          }(e), this.readyState = le.CONNECTING, this.openStream();
-        }
-        return t.prototype.send = function (t) {
-          return this.sendRaw(JSON.stringify([t]));
-        }, t.prototype.ping = function () {
-          this.hooks.sendHeartbeat(this);
-        }, t.prototype.close = function (t, e) {
-          this.onClose(t, e, !0);
-        }, t.prototype.sendRaw = function (t) {
-          if (this.readyState !== le.OPEN) return !1;
-          try {
-            return Se.createSocketRequest("POST", de((e = this.location, n = this.session, e.base + "/" + n + "/xhr_send"))).start(t), !0;
-          } catch (t) {
-            return !1;
+        ve = function () {
+      function t(t, e) {
+        this.hooks = t, this.session = ye(1e3) + "/" + function (t) {
+          for (var e = [], n = 0; n < t; n++) {
+            e.push(ye(32).toString(32));
           }
-          var e, n;
-        }, t.prototype.reconnect = function () {
-          this.closeStream(), this.openStream();
-        }, t.prototype.onClose = function (t, e, n) {
-          this.closeStream(), this.readyState = le.CLOSED, this.onclose && this.onclose({
-            code: t,
-            reason: e,
-            wasClean: n
-          });
-        }, t.prototype.onChunk = function (t) {
-          var e;
-          if (200 === t.status) switch (this.readyState === le.OPEN && this.onActivity(), t.data.slice(0, 1)) {
-            case "o":
-              e = JSON.parse(t.data.slice(1) || "{}"), this.onOpen(e);
-              break;
-            case "a":
-              e = JSON.parse(t.data.slice(1) || "[]");
-              for (var n = 0; n < e.length; n++) {
-                this.onEvent(e[n]);
-              }
-              break;
-            case "m":
-              e = JSON.parse(t.data.slice(1) || "null"), this.onEvent(e);
-              break;
-            case "h":
-              this.hooks.onHeartbeat(this);
-              break;
-            case "c":
-              e = JSON.parse(t.data.slice(1) || "[]"), this.onClose(e[0], e[1], !0);
-          }
-        }, t.prototype.onOpen = function (t) {
-          var e, n, r;
-          this.readyState === le.CONNECTING ? (t && t.hostname && (this.location.base = (e = this.location.base, n = t.hostname, (r = /(https?:\/\/)([^\/:]+)((\/|:)?.*)/.exec(e))[1] + n + r[3])), this.readyState = le.OPEN, this.onopen && this.onopen()) : this.onClose(1006, "Server lost session", !0);
-        }, t.prototype.onEvent = function (t) {
-          this.readyState === le.OPEN && this.onmessage && this.onmessage({
-            data: t
-          });
-        }, t.prototype.onActivity = function () {
-          this.onactivity && this.onactivity();
-        }, t.prototype.onError = function (t) {
-          this.onerror && this.onerror(t);
-        }, t.prototype.openStream = function () {
-          var t = this;
-          this.stream = Se.createSocketRequest("POST", de(this.hooks.getReceiveURL(this.location, this.session))), this.stream.bind("chunk", function (e) {
-            t.onChunk(e);
-          }), this.stream.bind("finished", function (e) {
-            t.hooks.onFinished(t, e);
-          }), this.stream.bind("buffer_too_long", function () {
-            t.reconnect();
-          });
-          try {
-            this.stream.start();
-          } catch (e) {
-            U.defer(function () {
-              t.onError(e), t.onClose(1006, "Could not start streaming", !1);
-            });
-          }
-        }, t.prototype.closeStream = function () {
-          this.stream && (this.stream.unbind_all(), this.stream.close(), this.stream = null);
-        }, t;
-      }(),
-      be = {
-        getReceiveURL: function getReceiveURL(t, e) {
-          return t.base + "/" + e + "/xhr_streaming" + t.queryString;
-        },
-        onHeartbeat: function onHeartbeat(t) {
-          t.sendRaw("[]");
-        },
-        sendHeartbeat: function sendHeartbeat(t) {
-          t.sendRaw("[]");
-        },
-        onFinished: function onFinished(t, e) {
-          t.onClose(1006, "Connection interrupted (" + e + ")", !1);
-        }
-      },
-      me = {
-        getReceiveURL: function getReceiveURL(t, e) {
-          return t.base + "/" + e + "/xhr" + t.queryString;
-        },
-        onHeartbeat: function onHeartbeat() {},
-        sendHeartbeat: function sendHeartbeat(t) {
-          t.sendRaw("[]");
-        },
-        onFinished: function onFinished(t, e) {
-          200 === e ? t.reconnect() : t.onClose(1006, "Connection interrupted (" + e + ")", !1);
-        }
-      },
-      _e = {
-        getRequest: function getRequest(t) {
-          var e = new (Se.getXHRAPI())();
-          return e.onreadystatechange = e.onprogress = function () {
-            switch (e.readyState) {
-              case 3:
-                e.responseText && e.responseText.length > 0 && t.onChunk(e.status, e.responseText);
-                break;
-              case 4:
-                e.responseText && e.responseText.length > 0 && t.onChunk(e.status, e.responseText), t.emit("finished", e.status), t.close();
-            }
-          }, e;
-        },
-        abortRequest: function abortRequest(t) {
-          t.onreadystatechange = null, t.abort();
-        }
-      },
-      we = {
-        createStreamingSocket: function createStreamingSocket(t) {
-          return this.createSocket(be, t);
-        },
-        createPollingSocket: function createPollingSocket(t) {
-          return this.createSocket(me, t);
-        },
-        createSocket: function createSocket(t, e) {
-          return new ve(t, e);
-        },
-        createXHR: function createXHR(t, e) {
-          return this.createRequest(_e, t, e);
-        },
-        createRequest: function createRequest(t, e, n) {
-          return new pe(t, e, n);
-        },
-        createXDR: function createXDR(t, e) {
-          return this.createRequest(ue, t, e);
-        }
-      },
-      Se = {
-        nextAuthCallbackID: 1,
-        auth_callbacks: {},
-        ScriptReceivers: i,
-        DependenciesReceivers: a,
-        getDefaultStrategy: ae,
-        Transports: Tt,
-        transportConnectionInitializer: function transportConnectionInitializer() {
-          var t = this;
-          t.timeline.info(t.buildTimelineMessage({
-            transport: t.name + (t.options.useTLS ? "s" : "")
-          })), t.hooks.isInitialized() ? t.changeState("initialized") : t.hooks.file ? (t.changeState("initializing"), u.load(t.hooks.file, {
-            useTLS: t.options.useTLS
-          }, function (e, n) {
-            t.hooks.isInitialized() ? (t.changeState("initialized"), n(!0)) : (e && t.onError(e), t.onClose(), n(!1));
-          })) : t.onClose();
-        },
-        HTTPFactory: we,
-        TimelineTransport: rt,
-        getXHRAPI: function getXHRAPI() {
-          return window.XMLHttpRequest;
-        },
-        getWebSocketAPI: function getWebSocketAPI() {
-          return window.WebSocket || window.MozWebSocket;
-        },
-        setup: function setup(t) {
-          var e = this;
-          window.Pusher = t;
-          var n = function n() {
-            e.onDocumentBody(t.ready);
-          };
-          window.JSON ? n() : u.load("json2", {}, n);
-        },
-        getDocument: function getDocument() {
-          return document;
-        },
-        getProtocol: function getProtocol() {
-          return this.getDocument().location.protocol;
-        },
-        getAuthorizers: function getAuthorizers() {
+
+          return e.join("");
+        }(8), this.location = function (t) {
+          var e = /([^\?]*)\/*(\??.*)/.exec(t);
           return {
-            ajax: k,
-            jsonp: tt
+            base: e[1],
+            queryString: e[2]
           };
-        },
-        onDocumentBody: function onDocumentBody(t) {
-          var e = this;
-          document.body ? t() : setTimeout(function () {
-            e.onDocumentBody(t);
-          }, 0);
-        },
-        createJSONPRequest: function createJSONPRequest(t, e) {
-          return new nt(t, e);
-        },
-        createScriptRequest: function createScriptRequest(t) {
-          return new et(t);
-        },
-        getLocalStorage: function getLocalStorage() {
-          try {
-            return window.localStorage;
-          } catch (t) {
-            return;
+        }(e), this.readyState = le.CONNECTING, this.openStream();
+      }
+
+      return t.prototype.send = function (t) {
+        return this.sendRaw(JSON.stringify([t]));
+      }, t.prototype.ping = function () {
+        this.hooks.sendHeartbeat(this);
+      }, t.prototype.close = function (t, e) {
+        this.onClose(t, e, !0);
+      }, t.prototype.sendRaw = function (t) {
+        if (this.readyState !== le.OPEN) return !1;
+
+        try {
+          return Se.createSocketRequest("POST", de((e = this.location, n = this.session, e.base + "/" + n + "/xhr_send"))).start(t), !0;
+        } catch (t) {
+          return !1;
+        }
+
+        var e, n;
+      }, t.prototype.reconnect = function () {
+        this.closeStream(), this.openStream();
+      }, t.prototype.onClose = function (t, e, n) {
+        this.closeStream(), this.readyState = le.CLOSED, this.onclose && this.onclose({
+          code: t,
+          reason: e,
+          wasClean: n
+        });
+      }, t.prototype.onChunk = function (t) {
+        var e;
+        if (200 === t.status) switch (this.readyState === le.OPEN && this.onActivity(), t.data.slice(0, 1)) {
+          case "o":
+            e = JSON.parse(t.data.slice(1) || "{}"), this.onOpen(e);
+            break;
+
+          case "a":
+            e = JSON.parse(t.data.slice(1) || "[]");
+
+            for (var n = 0; n < e.length; n++) {
+              this.onEvent(e[n]);
+            }
+
+            break;
+
+          case "m":
+            e = JSON.parse(t.data.slice(1) || "null"), this.onEvent(e);
+            break;
+
+          case "h":
+            this.hooks.onHeartbeat(this);
+            break;
+
+          case "c":
+            e = JSON.parse(t.data.slice(1) || "[]"), this.onClose(e[0], e[1], !0);
+        }
+      }, t.prototype.onOpen = function (t) {
+        var e, n, r;
+        this.readyState === le.CONNECTING ? (t && t.hostname && (this.location.base = (e = this.location.base, n = t.hostname, (r = /(https?:\/\/)([^\/:]+)((\/|:)?.*)/.exec(e))[1] + n + r[3])), this.readyState = le.OPEN, this.onopen && this.onopen()) : this.onClose(1006, "Server lost session", !0);
+      }, t.prototype.onEvent = function (t) {
+        this.readyState === le.OPEN && this.onmessage && this.onmessage({
+          data: t
+        });
+      }, t.prototype.onActivity = function () {
+        this.onactivity && this.onactivity();
+      }, t.prototype.onError = function (t) {
+        this.onerror && this.onerror(t);
+      }, t.prototype.openStream = function () {
+        var t = this;
+        this.stream = Se.createSocketRequest("POST", de(this.hooks.getReceiveURL(this.location, this.session))), this.stream.bind("chunk", function (e) {
+          t.onChunk(e);
+        }), this.stream.bind("finished", function (e) {
+          t.hooks.onFinished(t, e);
+        }), this.stream.bind("buffer_too_long", function () {
+          t.reconnect();
+        });
+
+        try {
+          this.stream.start();
+        } catch (e) {
+          U.defer(function () {
+            t.onError(e), t.onClose(1006, "Could not start streaming", !1);
+          });
+        }
+      }, t.prototype.closeStream = function () {
+        this.stream && (this.stream.unbind_all(), this.stream.close(), this.stream = null);
+      }, t;
+    }(),
+        be = {
+      getReceiveURL: function getReceiveURL(t, e) {
+        return t.base + "/" + e + "/xhr_streaming" + t.queryString;
+      },
+      onHeartbeat: function onHeartbeat(t) {
+        t.sendRaw("[]");
+      },
+      sendHeartbeat: function sendHeartbeat(t) {
+        t.sendRaw("[]");
+      },
+      onFinished: function onFinished(t, e) {
+        t.onClose(1006, "Connection interrupted (" + e + ")", !1);
+      }
+    },
+        me = {
+      getReceiveURL: function getReceiveURL(t, e) {
+        return t.base + "/" + e + "/xhr" + t.queryString;
+      },
+      onHeartbeat: function onHeartbeat() {},
+      sendHeartbeat: function sendHeartbeat(t) {
+        t.sendRaw("[]");
+      },
+      onFinished: function onFinished(t, e) {
+        200 === e ? t.reconnect() : t.onClose(1006, "Connection interrupted (" + e + ")", !1);
+      }
+    },
+        _e = {
+      getRequest: function getRequest(t) {
+        var e = new (Se.getXHRAPI())();
+        return e.onreadystatechange = e.onprogress = function () {
+          switch (e.readyState) {
+            case 3:
+              e.responseText && e.responseText.length > 0 && t.onChunk(e.status, e.responseText);
+              break;
+
+            case 4:
+              e.responseText && e.responseText.length > 0 && t.onChunk(e.status, e.responseText), t.emit("finished", e.status), t.close();
           }
-        },
-        createXHR: function createXHR() {
-          return this.getXHRAPI() ? this.createXMLHttpRequest() : this.createMicrosoftXHR();
-        },
-        createXMLHttpRequest: function createXMLHttpRequest() {
-          return new (this.getXHRAPI())();
-        },
-        createMicrosoftXHR: function createMicrosoftXHR() {
-          return new ActiveXObject("Microsoft.XMLHTTP");
-        },
-        getNetwork: function getNetwork() {
-          return Ot;
-        },
-        createWebSocket: function createWebSocket(t) {
-          return new (this.getWebSocketAPI())(t);
-        },
-        createSocketRequest: function createSocketRequest(t, e) {
-          if (this.isXHRSupported()) return this.HTTPFactory.createXHR(t, e);
-          if (this.isXDRSupported(0 === e.indexOf("https:"))) return this.HTTPFactory.createXDR(t, e);
-          throw "Cross-origin HTTP requests are not supported";
-        },
-        isXHRSupported: function isXHRSupported() {
-          var t = this.getXHRAPI();
-          return Boolean(t) && void 0 !== new t().withCredentials;
-        },
-        isXDRSupported: function isXDRSupported(t) {
-          var e = t ? "https:" : "http:",
+        }, e;
+      },
+      abortRequest: function abortRequest(t) {
+        t.onreadystatechange = null, t.abort();
+      }
+    },
+        we = {
+      createStreamingSocket: function createStreamingSocket(t) {
+        return this.createSocket(be, t);
+      },
+      createPollingSocket: function createPollingSocket(t) {
+        return this.createSocket(me, t);
+      },
+      createSocket: function createSocket(t, e) {
+        return new ve(t, e);
+      },
+      createXHR: function createXHR(t, e) {
+        return this.createRequest(_e, t, e);
+      },
+      createRequest: function createRequest(t, e, n) {
+        return new pe(t, e, n);
+      },
+      createXDR: function createXDR(t, e) {
+        return this.createRequest(ue, t, e);
+      }
+    },
+        Se = {
+      nextAuthCallbackID: 1,
+      auth_callbacks: {},
+      ScriptReceivers: i,
+      DependenciesReceivers: a,
+      getDefaultStrategy: ae,
+      Transports: Tt,
+      transportConnectionInitializer: function transportConnectionInitializer() {
+        var t = this;
+        t.timeline.info(t.buildTimelineMessage({
+          transport: t.name + (t.options.useTLS ? "s" : "")
+        })), t.hooks.isInitialized() ? t.changeState("initialized") : t.hooks.file ? (t.changeState("initializing"), u.load(t.hooks.file, {
+          useTLS: t.options.useTLS
+        }, function (e, n) {
+          t.hooks.isInitialized() ? (t.changeState("initialized"), n(!0)) : (e && t.onError(e), t.onClose(), n(!1));
+        })) : t.onClose();
+      },
+      HTTPFactory: we,
+      TimelineTransport: rt,
+      getXHRAPI: function getXHRAPI() {
+        return window.XMLHttpRequest;
+      },
+      getWebSocketAPI: function getWebSocketAPI() {
+        return window.WebSocket || window.MozWebSocket;
+      },
+      setup: function setup(t) {
+        var e = this;
+        window.Pusher = t;
+
+        var n = function n() {
+          e.onDocumentBody(t.ready);
+        };
+
+        window.JSON ? n() : u.load("json2", {}, n);
+      },
+      getDocument: function getDocument() {
+        return document;
+      },
+      getProtocol: function getProtocol() {
+        return this.getDocument().location.protocol;
+      },
+      getAuthorizers: function getAuthorizers() {
+        return {
+          ajax: k,
+          jsonp: tt
+        };
+      },
+      onDocumentBody: function onDocumentBody(t) {
+        var e = this;
+        document.body ? t() : setTimeout(function () {
+          e.onDocumentBody(t);
+        }, 0);
+      },
+      createJSONPRequest: function createJSONPRequest(t, e) {
+        return new nt(t, e);
+      },
+      createScriptRequest: function createScriptRequest(t) {
+        return new et(t);
+      },
+      getLocalStorage: function getLocalStorage() {
+        try {
+          return window.localStorage;
+        } catch (t) {
+          return;
+        }
+      },
+      createXHR: function createXHR() {
+        return this.getXHRAPI() ? this.createXMLHttpRequest() : this.createMicrosoftXHR();
+      },
+      createXMLHttpRequest: function createXMLHttpRequest() {
+        return new (this.getXHRAPI())();
+      },
+      createMicrosoftXHR: function createMicrosoftXHR() {
+        return new ActiveXObject("Microsoft.XMLHTTP");
+      },
+      getNetwork: function getNetwork() {
+        return Ot;
+      },
+      createWebSocket: function createWebSocket(t) {
+        return new (this.getWebSocketAPI())(t);
+      },
+      createSocketRequest: function createSocketRequest(t, e) {
+        if (this.isXHRSupported()) return this.HTTPFactory.createXHR(t, e);
+        if (this.isXDRSupported(0 === e.indexOf("https:"))) return this.HTTPFactory.createXDR(t, e);
+        throw "Cross-origin HTTP requests are not supported";
+      },
+      isXHRSupported: function isXHRSupported() {
+        var t = this.getXHRAPI();
+        return Boolean(t) && void 0 !== new t().withCredentials;
+      },
+      isXDRSupported: function isXDRSupported(t) {
+        var e = t ? "https:" : "http:",
             n = this.getProtocol();
         return Boolean(window.XDomainRequest) && n === e;
       },
@@ -12684,63 +12835,71 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         Ee = function Ee(t, e, n, r, o, i) {
       var s,
           c = Oe[n];
-        if (!c) throw new _(n);
-        return !(t.enabledTransports && -1 === B(t.enabledTransports, e) || t.disabledTransports && -1 !== B(t.disabledTransports, e)) ? (o = Object.assign({
-          ignoreNullOrigin: t.ignoreNullOrigin
-        }, o), s = new Te(e, r, i ? i.getAssistant(c) : c, o)) : s = Ae, s;
+      if (!c) throw new _(n);
+      return !(t.enabledTransports && -1 === B(t.enabledTransports, e) || t.disabledTransports && -1 !== B(t.disabledTransports, e)) ? (o = Object.assign({
+        ignoreNullOrigin: t.ignoreNullOrigin
+      }, o), s = new Te(e, r, i ? i.getAssistant(c) : c, o)) : s = Ae, s;
+    },
+        Ae = {
+      isSupported: function isSupported() {
+        return !1;
       },
-      Ae = {
-        isSupported: function isSupported() {
-          return !1;
-        },
-        connect: function connect(t, e) {
-          var n = U.defer(function () {
-            e(new w());
-          });
-          return {
-            abort: function abort() {
-              n.ensureAborted();
-            },
-            forceMinPriority: function forceMinPriority() {}
-          };
-        }
-      },
-      Le = function Le(t) {
-        if (void 0 === Se.getAuthorizers()[t.transport]) throw "'" + t.transport + "' is not a recognized auth transport";
-        return function (e, n) {
-          var o = function (t, e) {
-            var n = "socket_id=" + encodeURIComponent(t.socketId);
-            for (var r in e.params) {
-              n += "&" + encodeURIComponent(r) + "=" + encodeURIComponent(e.params[r]);
-            }
-            return n;
-          }(e, t);
-          Se.getAuthorizers()[t.transport](Se, o, t, r.UserAuthentication, n);
+      connect: function connect(t, e) {
+        var n = U.defer(function () {
+          e(new w());
+        });
+        return {
+          abort: function abort() {
+            n.ensureAborted();
+          },
+          forceMinPriority: function forceMinPriority() {}
         };
-      },
-      xe = function xe(t) {
-        if (void 0 === Se.getAuthorizers()[t.transport]) throw "'" + t.transport + "' is not a recognized auth transport";
-        return function (e, n) {
-          var o = function (t, e) {
-            var n = "socket_id=" + encodeURIComponent(t.socketId);
-            for (var r in n += "&channel_name=" + encodeURIComponent(t.channelName), e.params) {
-              n += "&" + encodeURIComponent(r) + "=" + encodeURIComponent(e.params[r]);
-            }
-            return n;
-          }(e, t);
-          Se.getAuthorizers()[t.transport](Se, o, t, r.ChannelAuthorization, n);
-        };
-      },
-      _Re = function Re() {
-        return (_Re = Object.assign || function (t) {
-          for (var e, n = 1, r = arguments.length; n < r; n++) {
-            for (var o in e = arguments[n]) {
-              Object.prototype.hasOwnProperty.call(e, o) && (t[o] = e[o]);
-            }
+      }
+    },
+        Le = function Le(t) {
+      if (void 0 === Se.getAuthorizers()[t.transport]) throw "'" + t.transport + "' is not a recognized auth transport";
+      return function (e, n) {
+        var o = function (t, e) {
+          var n = "socket_id=" + encodeURIComponent(t.socketId);
+
+          for (var r in e.params) {
+            n += "&" + encodeURIComponent(r) + "=" + encodeURIComponent(e.params[r]);
           }
-          return t;
-        }).apply(this, arguments);
+
+          return n;
+        }(e, t);
+
+        Se.getAuthorizers()[t.transport](Se, o, t, r.UserAuthentication, n);
       };
+    },
+        xe = function xe(t) {
+      if (void 0 === Se.getAuthorizers()[t.transport]) throw "'" + t.transport + "' is not a recognized auth transport";
+      return function (e, n) {
+        var o = function (t, e) {
+          var n = "socket_id=" + encodeURIComponent(t.socketId);
+
+          for (var r in n += "&channel_name=" + encodeURIComponent(t.channelName), e.params) {
+            n += "&" + encodeURIComponent(r) + "=" + encodeURIComponent(e.params[r]);
+          }
+
+          return n;
+        }(e, t);
+
+        Se.getAuthorizers()[t.transport](Se, o, t, r.ChannelAuthorization, n);
+      };
+    },
+        _Re = function Re() {
+      return (_Re = Object.assign || function (t) {
+        for (var e, n = 1, r = arguments.length; n < r; n++) {
+          for (var o in e = arguments[n]) {
+            Object.prototype.hasOwnProperty.call(e, o) && (t[o] = e[o]);
+          }
+        }
+
+        return t;
+      }).apply(this, arguments);
+    };
+
     function je(t) {
       return t.httpHost ? t.httpHost : t.cluster ? "sockjs-" + t.cluster + ".pusher.com" : s.httpHost;
     }
@@ -12793,62 +12952,67 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     var ze = function () {
-        var _t12 = function t(e, n) {
-          return (_t12 = Object.setPrototypeOf || {
-            __proto__: []
-          } instanceof Array && function (t, e) {
-            t.__proto__ = e;
-          } || function (t, e) {
-            for (var n in e) {
-              e.hasOwnProperty(n) && (t[n] = e[n]);
-            }
-          })(e, n);
-        };
-        return function (e, n) {
-          function r() {
-            this.constructor = e;
+      var _t12 = function t(e, n) {
+        return (_t12 = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function (t, e) {
+          t.__proto__ = e;
+        } || function (t, e) {
+          for (var n in e) {
+            e.hasOwnProperty(n) && (t[n] = e[n]);
           }
-          _t12(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
-        };
-      }(),
-      qe = function (t) {
-        function e(e) {
-          var n = t.call(this, function (t, e) {
-            Z.debug("No callbacks on user for " + t);
-          }) || this;
-          return n.signin_requested = !1, n.user_data = null, n.serverToUserChannel = null, n.pusher = e, n.pusher.connection.bind("connected", function () {
-            n._signin();
-          }), n.pusher.connection.bind("connecting", function () {
-            n._disconnect();
-          }), n.pusher.connection.bind("disconnected", function () {
-            n._disconnect();
-          }), n.pusher.connection.bind("message", function (t) {
-            "pusher:signin_success" === t.event && n._onSigninSuccess(t.data), n.serverToUserChannel && n.serverToUserChannel.name === t.channel && n.serverToUserChannel.handleEvent(t);
-          }), n;
+        })(e, n);
+      };
+
+      return function (e, n) {
+        function r() {
+          this.constructor = e;
         }
-        return ze(e, t), e.prototype.signin = function () {
-          this.signin_requested || (this.signin_requested = !0, this._signin());
-        }, e.prototype._signin = function () {
-          var t = this;
-          if (this.signin_requested && "connected" === this.pusher.connection.state) {
-            this.pusher.config.userAuthenticator({
-              socketId: this.pusher.connection.socket_id
-            }, function (e, n) {
-              e ? Z.warn("Error during signin: " + e) : t.pusher.send_event("pusher:signin", {
-                auth: n.auth,
-                user_data: n.user_data
-              });
+
+        _t12(e, n), e.prototype = null === n ? Object.create(n) : (r.prototype = n.prototype, new r());
+      };
+    }(),
+        qe = function (t) {
+      function e(e) {
+        var n = t.call(this, function (t, e) {
+          Z.debug("No callbacks on user for " + t);
+        }) || this;
+        return n.signin_requested = !1, n.user_data = null, n.serverToUserChannel = null, n.pusher = e, n.pusher.connection.bind("connected", function () {
+          n._signin();
+        }), n.pusher.connection.bind("connecting", function () {
+          n._disconnect();
+        }), n.pusher.connection.bind("disconnected", function () {
+          n._disconnect();
+        }), n.pusher.connection.bind("message", function (t) {
+          "pusher:signin_success" === t.event && n._onSigninSuccess(t.data), n.serverToUserChannel && n.serverToUserChannel.name === t.channel && n.serverToUserChannel.handleEvent(t);
+        }), n;
+      }
+
+      return ze(e, t), e.prototype.signin = function () {
+        this.signin_requested || (this.signin_requested = !0, this._signin());
+      }, e.prototype._signin = function () {
+        var t = this;
+
+        if (this.signin_requested && "connected" === this.pusher.connection.state) {
+          this.pusher.config.userAuthenticator({
+            socketId: this.pusher.connection.socket_id
+          }, function (e, n) {
+            e ? Z.warn("Error during signin: " + e) : t.pusher.send_event("pusher:signin", {
+              auth: n.auth,
+              user_data: n.user_data
             });
-          }
-        }, e.prototype._onSigninSuccess = function (t) {
-          try {
-            this.user_data = JSON.parse(t.user_data);
-          } catch (e) {
-            return void Z.error("Failed parsing user data after signin: " + t.user_data);
-          }
-          "string" == typeof this.user_data.id && "" !== this.user_data.id ? this._subscribeChannels() : Z.error("user_data doesn't contain an id. user_data: " + this.user_data);
-        }, e.prototype._subscribeChannels = function () {
-          var t,
+          });
+        }
+      }, e.prototype._onSigninSuccess = function (t) {
+        try {
+          this.user_data = JSON.parse(t.user_data);
+        } catch (e) {
+          return void Z.error("Failed parsing user data after signin: " + t.user_data);
+        }
+
+        "string" == typeof this.user_data.id && "" !== this.user_data.id ? this._subscribeChannels() : Z.error("user_data doesn't contain an id. user_data: " + this.user_data);
+      }, e.prototype._subscribeChannels = function () {
+        var t,
             e = this;
         this.serverToUserChannel = new Nt("#server-to-user-" + this.user_data.id, this.pusher), this.serverToUserChannel.bind_global(function (t, n) {
           0 !== t.indexOf("pusher_internal:") && 0 !== t.indexOf("pusher:") && e.emit(t, n);
@@ -12863,124 +13027,132 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             o,
             i,
             c = this;
-          if (function (t) {
-            if (null == t) throw "You must pass your app key when you instantiate Pusher.";
-          }(e), !(n = n || {}).cluster && !n.wsHost && !n.httpHost) {
-            var a = p("javascriptQuickStart");
-            Z.warn("You should always specify a cluster when connecting. " + a);
-          }
-          "disableStats" in n && Z.warn("The disableStats option is deprecated in favor of enableStats"), this.key = e, this.config = (o = this, i = {
-            activityTimeout: (r = n).activityTimeout || s.activityTimeout,
-            cluster: r.cluster || s.cluster,
-            httpPath: r.httpPath || s.httpPath,
-            httpPort: r.httpPort || s.httpPort,
-            httpsPort: r.httpsPort || s.httpsPort,
-            pongTimeout: r.pongTimeout || s.pongTimeout,
-            statsHost: r.statsHost || s.stats_host,
-            unavailableTimeout: r.unavailableTimeout || s.unavailableTimeout,
-            wsPath: r.wsPath || s.wsPath,
-            wsPort: r.wsPort || s.wsPort,
-            wssPort: r.wssPort || s.wssPort,
-            enableStats: He(r),
-            httpHost: je(r),
-            useTLS: Ne(r),
-            wsHost: Ie(r),
-            userAuthenticator: Me(r),
-            channelAuthorizer: Ue(r, o)
-          }, "disabledTransports" in r && (i.disabledTransports = r.disabledTransports), "enabledTransports" in r && (i.enabledTransports = r.enabledTransports), "ignoreNullOrigin" in r && (i.ignoreNullOrigin = r.ignoreNullOrigin), "timelineParams" in r && (i.timelineParams = r.timelineParams), "nacl" in r && (i.nacl = r.nacl), i), this.channels = Qt.createChannels(), this.global_emitter = new pt(), this.sessionID = Math.floor(1e9 * Math.random()), this.timeline = new Ce(this.key, this.sessionID, {
-            cluster: this.config.cluster,
-            features: t.getClientFeatures(),
-            params: this.config.timelineParams || {},
-            limit: 50,
-            level: ke.INFO,
-            version: s.VERSION
-          }), this.config.enableStats && (this.timelineSender = Qt.createTimelineSender(this.timeline, {
-            host: this.config.statsHost,
-            path: "/timeline/v2/" + Se.TimelineTransport.name
-          }));
-          this.connection = Qt.createConnectionManager(this.key, {
-            getStrategy: function getStrategy(t) {
-              return Se.getDefaultStrategy(c.config, t, Ee);
-            },
-            timeline: this.timeline,
-            activityTimeout: this.config.activityTimeout,
-            pongTimeout: this.config.pongTimeout,
-            unavailableTimeout: this.config.unavailableTimeout,
-            useTLS: Boolean(this.config.useTLS)
-          }), this.connection.bind("connected", function () {
-            c.subscribeAll(), c.timelineSender && c.timelineSender.send(c.connection.isUsingTLS());
-          }), this.connection.bind("message", function (t) {
-            var e = 0 === t.event.indexOf("pusher_internal:");
-            if (t.channel) {
-              var n = c.channel(t.channel);
-              n && n.handleEvent(t);
-            }
-            e || c.global_emitter.emit(t.event, t.data);
-          }), this.connection.bind("connecting", function () {
-            c.channels.disconnect();
-          }), this.connection.bind("disconnected", function () {
-            c.channels.disconnect();
-          }), this.connection.bind("error", function (t) {
-            Z.warn(t);
-          }), t.instances.push(this), this.timeline.info({
-            instances: t.instances.length
-          }), this.user = new qe(this), t.isReady && this.connect();
+
+        if (function (t) {
+          if (null == t) throw "You must pass your app key when you instantiate Pusher.";
+        }(e), !(n = n || {}).cluster && !n.wsHost && !n.httpHost) {
+          var a = p("javascriptQuickStart");
+          Z.warn("You should always specify a cluster when connecting. " + a);
         }
-        return t.ready = function () {
-          t.isReady = !0;
-          for (var e = 0, n = t.instances.length; e < n; e++) {
-            t.instances[e].connect();
+
+        "disableStats" in n && Z.warn("The disableStats option is deprecated in favor of enableStats"), this.key = e, this.config = (o = this, i = {
+          activityTimeout: (r = n).activityTimeout || s.activityTimeout,
+          cluster: r.cluster || s.cluster,
+          httpPath: r.httpPath || s.httpPath,
+          httpPort: r.httpPort || s.httpPort,
+          httpsPort: r.httpsPort || s.httpsPort,
+          pongTimeout: r.pongTimeout || s.pongTimeout,
+          statsHost: r.statsHost || s.stats_host,
+          unavailableTimeout: r.unavailableTimeout || s.unavailableTimeout,
+          wsPath: r.wsPath || s.wsPath,
+          wsPort: r.wsPort || s.wsPort,
+          wssPort: r.wssPort || s.wssPort,
+          enableStats: He(r),
+          httpHost: je(r),
+          useTLS: Ne(r),
+          wsHost: Ie(r),
+          userAuthenticator: Me(r),
+          channelAuthorizer: Ue(r, o)
+        }, "disabledTransports" in r && (i.disabledTransports = r.disabledTransports), "enabledTransports" in r && (i.enabledTransports = r.enabledTransports), "ignoreNullOrigin" in r && (i.ignoreNullOrigin = r.ignoreNullOrigin), "timelineParams" in r && (i.timelineParams = r.timelineParams), "nacl" in r && (i.nacl = r.nacl), i), this.channels = Qt.createChannels(), this.global_emitter = new pt(), this.sessionID = Math.floor(1e9 * Math.random()), this.timeline = new Ce(this.key, this.sessionID, {
+          cluster: this.config.cluster,
+          features: t.getClientFeatures(),
+          params: this.config.timelineParams || {},
+          limit: 50,
+          level: ke.INFO,
+          version: s.VERSION
+        }), this.config.enableStats && (this.timelineSender = Qt.createTimelineSender(this.timeline, {
+          host: this.config.statsHost,
+          path: "/timeline/v2/" + Se.TimelineTransport.name
+        }));
+        this.connection = Qt.createConnectionManager(this.key, {
+          getStrategy: function getStrategy(t) {
+            return Se.getDefaultStrategy(c.config, t, Ee);
+          },
+          timeline: this.timeline,
+          activityTimeout: this.config.activityTimeout,
+          pongTimeout: this.config.pongTimeout,
+          unavailableTimeout: this.config.unavailableTimeout,
+          useTLS: Boolean(this.config.useTLS)
+        }), this.connection.bind("connected", function () {
+          c.subscribeAll(), c.timelineSender && c.timelineSender.send(c.connection.isUsingTLS());
+        }), this.connection.bind("message", function (t) {
+          var e = 0 === t.event.indexOf("pusher_internal:");
+
+          if (t.channel) {
+            var n = c.channel(t.channel);
+            n && n.handleEvent(t);
           }
-        }, t.getClientFeatures = function () {
-          return X(V({
-            ws: Se.Transports.ws
-          }, function (t) {
-            return t.isSupported({});
-          }));
-        }, t.prototype.channel = function (t) {
-          return this.channels.find(t);
-        }, t.prototype.allChannels = function () {
-          return this.channels.all();
-        }, t.prototype.connect = function () {
-          if (this.connection.connect(), this.timelineSender && !this.timelineSenderTimer) {
-            var t = this.connection.isUsingTLS(),
+
+          e || c.global_emitter.emit(t.event, t.data);
+        }), this.connection.bind("connecting", function () {
+          c.channels.disconnect();
+        }), this.connection.bind("disconnected", function () {
+          c.channels.disconnect();
+        }), this.connection.bind("error", function (t) {
+          Z.warn(t);
+        }), t.instances.push(this), this.timeline.info({
+          instances: t.instances.length
+        }), this.user = new qe(this), t.isReady && this.connect();
+      }
+
+      return t.ready = function () {
+        t.isReady = !0;
+
+        for (var e = 0, n = t.instances.length; e < n; e++) {
+          t.instances[e].connect();
+        }
+      }, t.getClientFeatures = function () {
+        return X(V({
+          ws: Se.Transports.ws
+        }, function (t) {
+          return t.isSupported({});
+        }));
+      }, t.prototype.channel = function (t) {
+        return this.channels.find(t);
+      }, t.prototype.allChannels = function () {
+        return this.channels.all();
+      }, t.prototype.connect = function () {
+        if (this.connection.connect(), this.timelineSender && !this.timelineSenderTimer) {
+          var t = this.connection.isUsingTLS(),
               e = this.timelineSender;
-            this.timelineSenderTimer = new M(6e4, function () {
-              e.send(t);
-            });
-          }
-        }, t.prototype.disconnect = function () {
-          this.connection.disconnect(), this.timelineSenderTimer && (this.timelineSenderTimer.ensureAborted(), this.timelineSenderTimer = null);
-        }, t.prototype.bind = function (t, e, n) {
-          return this.global_emitter.bind(t, e, n), this;
-        }, t.prototype.unbind = function (t, e, n) {
-          return this.global_emitter.unbind(t, e, n), this;
-        }, t.prototype.bind_global = function (t) {
-          return this.global_emitter.bind_global(t), this;
-        }, t.prototype.unbind_global = function (t) {
-          return this.global_emitter.unbind_global(t), this;
-        }, t.prototype.unbind_all = function (t) {
-          return this.global_emitter.unbind_all(), this;
-        }, t.prototype.subscribeAll = function () {
-          var t;
-          for (t in this.channels.channels) {
-            this.channels.channels.hasOwnProperty(t) && this.subscribe(t);
-          }
-        }, t.prototype.subscribe = function (t) {
-          var e = this.channels.add(t, this);
-          return e.subscriptionPending && e.subscriptionCancelled ? e.reinstateSubscription() : e.subscriptionPending || "connected" !== this.connection.state || e.subscribe(), e;
-        }, t.prototype.unsubscribe = function (t) {
-          var e = this.channels.find(t);
-          e && e.subscriptionPending ? e.cancelSubscription() : (e = this.channels.remove(t)) && e.subscribed && e.unsubscribe();
-        }, t.prototype.send_event = function (t, e, n) {
-          return this.connection.send_event(t, e, n);
-        }, t.prototype.shouldUseTLS = function () {
-          return this.config.useTLS;
-        }, t.prototype.signin = function () {
-          this.user.signin();
-        }, t.instances = [], t.isReady = !1, t.logToConsole = !1, t.Runtime = Se, t.ScriptReceivers = Se.ScriptReceivers, t.DependenciesReceivers = Se.DependenciesReceivers, t.auth_callbacks = Se.auth_callbacks, t;
-      }(),
-      Fe = e["default"] = Be;
+          this.timelineSenderTimer = new M(6e4, function () {
+            e.send(t);
+          });
+        }
+      }, t.prototype.disconnect = function () {
+        this.connection.disconnect(), this.timelineSenderTimer && (this.timelineSenderTimer.ensureAborted(), this.timelineSenderTimer = null);
+      }, t.prototype.bind = function (t, e, n) {
+        return this.global_emitter.bind(t, e, n), this;
+      }, t.prototype.unbind = function (t, e, n) {
+        return this.global_emitter.unbind(t, e, n), this;
+      }, t.prototype.bind_global = function (t) {
+        return this.global_emitter.bind_global(t), this;
+      }, t.prototype.unbind_global = function (t) {
+        return this.global_emitter.unbind_global(t), this;
+      }, t.prototype.unbind_all = function (t) {
+        return this.global_emitter.unbind_all(), this;
+      }, t.prototype.subscribeAll = function () {
+        var t;
+
+        for (t in this.channels.channels) {
+          this.channels.channels.hasOwnProperty(t) && this.subscribe(t);
+        }
+      }, t.prototype.subscribe = function (t) {
+        var e = this.channels.add(t, this);
+        return e.subscriptionPending && e.subscriptionCancelled ? e.reinstateSubscription() : e.subscriptionPending || "connected" !== this.connection.state || e.subscribe(), e;
+      }, t.prototype.unsubscribe = function (t) {
+        var e = this.channels.find(t);
+        e && e.subscriptionPending ? e.cancelSubscription() : (e = this.channels.remove(t)) && e.subscribed && e.unsubscribe();
+      }, t.prototype.send_event = function (t, e, n) {
+        return this.connection.send_event(t, e, n);
+      }, t.prototype.shouldUseTLS = function () {
+        return this.config.useTLS;
+      }, t.prototype.signin = function () {
+        this.user.signin();
+      }, t.instances = [], t.isReady = !1, t.logToConsole = !1, t.Runtime = Se, t.ScriptReceivers = Se.ScriptReceivers, t.DependenciesReceivers = Se.DependenciesReceivers, t.auth_callbacks = Se.auth_callbacks, t;
+    }(),
+        Fe = e["default"] = Be;
+
     Se.setup(Be);
   }]);
 });
@@ -13372,7 +13544,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _popperjs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @popperjs/core */ "./node_modules/@popperjs/core/lib/index.js");
 /* harmony import */ var _popperjs_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @popperjs/core */ "./node_modules/@popperjs/core/lib/popper.js");
 /*!
-  * Bootstrap v5.2.2 (https://getbootstrap.com/)
+  * Bootstrap v5.2.0 (https://getbootstrap.com/)
   * Copyright 2011-2022 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
@@ -13380,7 +13552,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/index.js
+ * Bootstrap (v5.2.0): util/index.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -13695,7 +13867,7 @@ const getNextActiveElement = (list, activeElement, shouldGetNext, isCycleAllowed
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dom/event-handler.js
+ * Bootstrap (v5.2.0): dom/event-handler.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -13964,7 +14136,7 @@ function hydrateObj(obj, meta) {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dom/data.js
+ * Bootstrap (v5.2.0): dom/data.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14016,7 +14188,7 @@ const Data = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dom/manipulator.js
+ * Bootstrap (v5.2.0): dom/manipulator.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14086,7 +14258,7 @@ const Manipulator = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/config.js
+ * Bootstrap (v5.2.0): util/config.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14147,7 +14319,7 @@ class Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): base-component.js
+ * Bootstrap (v5.2.0): base-component.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14155,7 +14327,7 @@ class Config {
  * Constants
  */
 
-const VERSION = '5.2.2';
+const VERSION = '5.2.0';
 /**
  * Class definition
  */
@@ -14226,7 +14398,7 @@ class BaseComponent extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/component-functions.js
+ * Bootstrap (v5.2.0): util/component-functions.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14252,7 +14424,7 @@ const enableDismissTrigger = (component, method = 'hide') => {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): alert.js
+ * Bootstrap (v5.2.0): alert.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14332,7 +14504,7 @@ defineJQueryPlugin(Alert);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): button.js
+ * Bootstrap (v5.2.0): button.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14394,7 +14566,7 @@ defineJQueryPlugin(Button);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dom/selector-engine.js
+ * Bootstrap (v5.2.0): dom/selector-engine.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14465,7 +14637,7 @@ const SelectorEngine = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/swipe.js
+ * Bootstrap (v5.2.0): util/swipe.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14601,7 +14773,7 @@ class Swipe extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): carousel.js
+ * Bootstrap (v5.2.0): carousel.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -15049,7 +15221,7 @@ defineJQueryPlugin(Carousel);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): collapse.js
+ * Bootstrap (v5.2.0): collapse.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -15339,7 +15511,7 @@ defineJQueryPlugin(Collapse);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): dropdown.js
+ * Bootstrap (v5.2.0): dropdown.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -15769,7 +15941,7 @@ defineJQueryPlugin(Dropdown);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/scrollBar.js
+ * Bootstrap (v5.2.0): util/scrollBar.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -15888,7 +16060,7 @@ class ScrollBarHelper {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/backdrop.js
+ * Bootstrap (v5.2.0): util/backdrop.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16034,7 +16206,7 @@ class Backdrop extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/focustrap.js
+ * Bootstrap (v5.2.0): util/focustrap.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16143,7 +16315,7 @@ class FocusTrap extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): modal.js
+ * Bootstrap (v5.2.0): modal.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16516,7 +16688,7 @@ defineJQueryPlugin(Modal);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): offcanvas.js
+ * Bootstrap (v5.2.0): offcanvas.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16790,7 +16962,7 @@ defineJQueryPlugin(Offcanvas);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/sanitizer.js
+ * Bootstrap (v5.2.0): util/sanitizer.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16895,7 +17067,7 @@ function sanitizeHtml(unsafeHtml, allowList, sanitizeFunction) {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): util/template-factory.js
+ * Bootstrap (v5.2.0): util/template-factory.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -17053,7 +17225,7 @@ class TemplateFactory extends Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): tooltip.js
+ * Bootstrap (v5.2.0): tooltip.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -17215,10 +17387,6 @@ class Tooltip extends BaseComponent {
       this.tip.remove();
     }
 
-    if (this._element.getAttribute('data-bs-original-title')) {
-      this._element.setAttribute('title', this._element.getAttribute('data-bs-original-title'));
-    }
-
     this._disposePopper();
 
     super.dispose();
@@ -17243,7 +17411,10 @@ class Tooltip extends BaseComponent {
     } // todo v6 remove this OR make it optional
 
 
-    this._disposePopper();
+    if (this.tip) {
+      this.tip.remove();
+      this.tip = null;
+    }
 
     const tip = this._getTipElement();
 
@@ -17258,7 +17429,12 @@ class Tooltip extends BaseComponent {
       EventHandler.trigger(this._element, this.constructor.eventName(EVENT_INSERTED));
     }
 
-    this._popper = this._createPopper(tip);
+    if (this._popper) {
+      this._popper.update();
+    } else {
+      this._popper = this._createPopper(tip);
+    }
+
     tip.classList.add(CLASS_NAME_SHOW$2); // If this is a touch-enabled device we add extra
     // empty mouseover listeners to the body's immediate children;
     // only needed because of broken event delegation on iOS
@@ -17316,12 +17492,14 @@ class Tooltip extends BaseComponent {
       }
 
       if (!this._isHovered) {
-        this._disposePopper();
+        tip.remove();
       }
 
       this._element.removeAttribute('aria-describedby');
 
       EventHandler.trigger(this._element, this.constructor.eventName(EVENT_HIDDEN$2));
+
+      this._disposePopper();
     };
 
     this._queueCallback(complete, this.tip, this._isAnimated());
@@ -17640,11 +17818,6 @@ class Tooltip extends BaseComponent {
 
       this._popper = null;
     }
-
-    if (this.tip) {
-      this.tip.remove();
-      this.tip = null;
-    }
   } // Static
 
 
@@ -17674,7 +17847,7 @@ defineJQueryPlugin(Tooltip);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): popover.js
+ * Bootstrap (v5.2.0): popover.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -17757,7 +17930,7 @@ defineJQueryPlugin(Popover);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): scrollspy.js
+ * Bootstrap (v5.2.0): scrollspy.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -18044,7 +18217,7 @@ defineJQueryPlugin(ScrollSpy);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): tab.js
+ * Bootstrap (v5.2.0): tab.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -18357,7 +18530,7 @@ defineJQueryPlugin(Tab);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): toast.js
+ * Bootstrap (v5.2.0): toast.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -19881,7 +20054,7 @@ module.exports = function (exec) {
 
 // TODO: Remove from `core-js@4` since it's moved to entry points
 __webpack_require__(/*! ../modules/es.regexp.exec */ "./node_modules/core-js/modules/es.regexp.exec.js");
-var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this-clause */ "./node_modules/core-js/internals/function-uncurry-this-clause.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
 var defineBuiltIn = __webpack_require__(/*! ../internals/define-built-in */ "./node_modules/core-js/internals/define-built-in.js");
 var regexpExec = __webpack_require__(/*! ../internals/regexp-exec */ "./node_modules/core-js/internals/regexp-exec.js");
 var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
@@ -19998,7 +20171,7 @@ module.exports = typeof Reflect == 'object' && Reflect.apply || (NATIVE_BIND ? c
   \*****************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this-clause */ "./node_modules/core-js/internals/function-uncurry-this-clause.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
 var aCallable = __webpack_require__(/*! ../internals/a-callable */ "./node_modules/core-js/internals/a-callable.js");
 var NATIVE_BIND = __webpack_require__(/*! ../internals/function-bind-native */ "./node_modules/core-js/internals/function-bind-native.js");
 
@@ -20077,42 +20250,25 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/function-uncurry-this-raw.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/core-js/internals/function-uncurry-this-raw.js ***!
-  \*********************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var classofRaw = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
-var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
-
-var FunctionPrototype = Function.prototype;
-var call = FunctionPrototype.call;
-var uncurryThisWithBind = NATIVE_BIND && FunctionPrototype.bind.bind(call, call);
-
-module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
-  return function () {
-    return call.apply(fn, arguments);
-  };
-};
-
-
-/***/ }),
-
 /***/ "./node_modules/core-js/internals/function-uncurry-this.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/core-js/internals/function-uncurry-this.js ***!
   \*****************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var classofRaw = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
-var uncurryThisRaw = __webpack_require__(/*! ../internals/function-uncurry-this-raw */ "./node_modules/core-js/internals/function-uncurry-this-raw.js");
+var NATIVE_BIND = __webpack_require__(/*! ../internals/function-bind-native */ "./node_modules/core-js/internals/function-bind-native.js");
 
-module.exports = function (fn) {
-  // Nashorn bug:
-  //   https://github.com/zloirock/core-js/issues/1128
-  //   https://github.com/zloirock/core-js/issues/1130
-  if (classofRaw(fn) === 'Function') return uncurryThisRaw(fn);
+var FunctionPrototype = Function.prototype;
+var bind = FunctionPrototype.bind;
+var call = FunctionPrototype.call;
+var uncurryThis = NATIVE_BIND && bind.bind(call, call);
+
+module.exports = NATIVE_BIND ? function (fn) {
+  return fn && uncurryThis(fn);
+} : function (fn) {
+  return fn && function () {
+    return call.apply(fn, arguments);
+  };
 };
 
 
@@ -22216,10 +22372,10 @@ var store = __webpack_require__(/*! ../internals/shared-store */ "./node_modules
 (module.exports = function (key, value) {
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.26.0',
+  version: '3.25.0',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2014-2022 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.26.0/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.25.0/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
@@ -23327,7 +23483,7 @@ handlePrototype(DOMTokenListPrototype, 'DOMTokenList');
 /***/ (function(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery JavaScript Library v3.6.3
+ * jQuery JavaScript Library v3.6.1
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -23337,7 +23493,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2022-12-20T21:28Z
+ * Date: 2022-08-26T17:52Z
  */
 ( function( global, factory ) {
 
@@ -23479,7 +23635,7 @@ function toType( obj ) {
 
 
 var
-	version = "3.6.3",
+	version = "3.6.1",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -23850,14 +24006,14 @@ function isArrayLike( obj ) {
 }
 var Sizzle =
 /*!
- * Sizzle CSS Selector Engine v2.3.9
+ * Sizzle CSS Selector Engine v2.3.6
  * https://sizzlejs.com/
  *
  * Copyright JS Foundation and other contributors
  * Released under the MIT license
  * https://js.foundation/
  *
- * Date: 2022-12-19
+ * Date: 2021-02-16
  */
 ( function( window ) {
 var i,
@@ -24207,27 +24363,6 @@ function Sizzle( selector, context, results, seed ) {
 				}
 
 				try {
-
-					// `qSA` may not throw for unrecognized parts using forgiving parsing:
-					// https://drafts.csswg.org/selectors/#forgiving-selector
-					// like the `:has()` pseudo-class:
-					// https://drafts.csswg.org/selectors/#relational
-					// `CSS.supports` is still expected to return `false` then:
-					// https://drafts.csswg.org/css-conditional-4/#typedef-supports-selector-fn
-					// https://drafts.csswg.org/css-conditional-4/#dfn-support-selector
-					if ( support.cssSupportsSelector &&
-
-						// eslint-disable-next-line no-undef
-						!CSS.supports( "selector(:is(" + newSelector + "))" ) ) {
-
-						// Support: IE 11+
-						// Throw to get to the same code path as an error directly in qSA.
-						// Note: once we only support browser supporting
-						// `CSS.supports('selector(...)')`, we can most likely drop
-						// the `try-catch`. IE doesn't implement the API.
-						throw new Error();
-					}
-
 					push.apply( results,
 						newContext.querySelectorAll( newSelector )
 					);
@@ -24523,31 +24658,6 @@ setDocument = Sizzle.setDocument = function( node ) {
 			!el.querySelectorAll( ":scope fieldset div" ).length;
 	} );
 
-	// Support: Chrome 105+, Firefox 104+, Safari 15.4+
-	// Make sure forgiving mode is not used in `CSS.supports( "selector(...)" )`.
-	//
-	// `:is()` uses a forgiving selector list as an argument and is widely
-	// implemented, so it's a good one to test against.
-	support.cssSupportsSelector = assert( function() {
-		/* eslint-disable no-undef */
-
-		return CSS.supports( "selector(*)" ) &&
-
-			// Support: Firefox 78-81 only
-			// In old Firefox, `:is()` didn't use forgiving parsing. In that case,
-			// fail this test as there's no selector to test against that.
-			// `CSS.supports` uses unforgiving parsing
-			document.querySelectorAll( ":is(:jqfake)" ) &&
-
-			// `*` is needed as Safari & newer Chrome implemented something in between
-			// for `:has()` - it throws in `qSA` if it only contains an unsupported
-			// argument but multiple ones, one of which is supported, are fine.
-			// We want to play safe in case `:is()` gets the same treatment.
-			!CSS.supports( "selector(:is(*,:jqfake))" );
-
-		/* eslint-enable */
-	} );
-
 	/* Attributes
 	---------------------------------------------------------------------- */
 
@@ -24814,17 +24924,6 @@ setDocument = Sizzle.setDocument = function( node ) {
 		} );
 	}
 
-	if ( !support.cssSupportsSelector ) {
-
-		// Support: Chrome 105+, Safari 15.4+
-		// `:has()` uses a forgiving selector list as an argument so our regular
-		// `try-catch` mechanism fails to catch `:has()` with arguments not supported
-		// natively like `:has(:contains("Foo"))`. Where supported & spec-compliant,
-		// we now use `CSS.supports("selector(:is(SELECTOR_TO_BE_TESTED))")`, but
-		// outside that we mark `:has` as buggy.
-		rbuggyQSA.push( ":has" );
-	}
-
 	rbuggyQSA = rbuggyQSA.length && new RegExp( rbuggyQSA.join( "|" ) );
 	rbuggyMatches = rbuggyMatches.length && new RegExp( rbuggyMatches.join( "|" ) );
 
@@ -24837,14 +24936,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 	// As in, an element does not contain itself
 	contains = hasCompare || rnative.test( docElem.contains ) ?
 		function( a, b ) {
-
-			// Support: IE <9 only
-			// IE doesn't have `contains` on `document` so we need to check for
-			// `documentElement` presence.
-			// We need to fall back to `a` when `documentElement` is missing
-			// as `ownerDocument` of elements within `<template/>` may have
-			// a null one - a default behavior of all modern browsers.
-			var adown = a.nodeType === 9 && a.documentElement || a,
+			var adown = a.nodeType === 9 ? a.documentElement : a,
 				bup = b && b.parentNode;
 			return a === bup || !!( bup && bup.nodeType === 1 && (
 				adown.contains ?
@@ -25634,7 +25726,7 @@ Expr = Sizzle.selectors = {
 			return elem.nodeName.toLowerCase() === "input" &&
 				elem.type === "text" &&
 
-				// Support: IE <10 only
+				// Support: IE<8
 				// New HTML5 attribute values (e.g., "search") appear with elem.type === "text"
 				( ( attr = elem.getAttribute( "type" ) ) == null ||
 					attr.toLowerCase() === "text" );
@@ -30000,37 +30092,17 @@ function curCSS( elem, name, computed ) {
 	//   .css('filter') (IE 9 only, trac-12537)
 	//   .css('--customProperty) (gh-3144)
 	if ( computed ) {
-
-		// Support: IE <=9 - 11+
-		// IE only supports `"float"` in `getPropertyValue`; in computed styles
-		// it's only available as `"cssFloat"`. We no longer modify properties
-		// sent to `.css()` apart from camelCasing, so we need to check both.
-		// Normally, this would create difference in behavior: if
-		// `getPropertyValue` returns an empty string, the value returned
-		// by `.css()` would be `undefined`. This is usually the case for
-		// disconnected elements. However, in IE even disconnected elements
-		// with no styles return `"none"` for `getPropertyValue( "float" )`
 		ret = computed.getPropertyValue( name ) || computed[ name ];
 
-		if ( isCustomProp && ret ) {
+		// trim whitespace for custom property (issue gh-4926)
+		if ( isCustomProp ) {
 
-			// Support: Firefox 105+, Chrome <=105+
-			// Spec requires trimming whitespace for custom properties (gh-4926).
-			// Firefox only trims leading whitespace. Chrome just collapses
-			// both leading & trailing whitespace to a single space.
-			//
-			// Fall back to `undefined` if empty string returned.
-			// This collapses a missing definition with property defined
-			// and set to an empty string but there's no standard API
-			// allowing us to differentiate them without a performance penalty
-			// and returning `undefined` aligns with older jQuery.
-			//
-			// rtrimCSS treats U+000D CARRIAGE RETURN and U+000C FORM FEED
+			// rtrim treats U+000D CARRIAGE RETURN and U+000C FORM FEED
 			// as whitespace while CSS does not, but this is not a problem
 			// because CSS preprocessing replaces them with U+000A LINE FEED
 			// (which *is* CSS whitespace)
 			// https://www.w3.org/TR/css-syntax-3/#input-preprocessing
-			ret = ret.replace( rtrimCSS, "$1" ) || undefined;
+			ret = ret.replace( rtrimCSS, "$1" );
 		}
 
 		if ( ret === "" && !isAttached( elem ) ) {
@@ -54307,7 +54379,7 @@ if ((can_use_dom__WEBPACK_IMPORTED_MODULE_2___default())) {
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -54321,17 +54393,17 @@ if ((can_use_dom__WEBPACK_IMPORTED_MODULE_2___default())) {
 /******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+/******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+/******/ 	
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -54344,7 +54416,7 @@ if ((can_use_dom__WEBPACK_IMPORTED_MODULE_2___default())) {
 /******/ 			return getter;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -54356,7 +54428,7 @@ if ((can_use_dom__WEBPACK_IMPORTED_MODULE_2___default())) {
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -54368,12 +54440,12 @@ if ((can_use_dom__WEBPACK_IMPORTED_MODULE_2___default())) {
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -54384,7 +54456,7 @@ if ((can_use_dom__WEBPACK_IMPORTED_MODULE_2___default())) {
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/node module decorator */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nmd = (module) => {
@@ -54393,9 +54465,9 @@ if ((can_use_dom__WEBPACK_IMPORTED_MODULE_2___default())) {
 /******/ 			return module;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /************************************************************************/
-/******/
+/******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	__webpack_require__("./resources/js/app.js");
@@ -54404,6 +54476,6 @@ if ((can_use_dom__WEBPACK_IMPORTED_MODULE_2___default())) {
 /******/ 	__webpack_require__("./resources/plugins/pusher/pusher.min.js");
 /******/ 	__webpack_require__("./resources/plugins/flatpickr/flatpickr.min.js");
 /******/ 	var __webpack_exports__ = __webpack_require__("./resources/plugins/flatpickr/l10n/ru.js");
-/******/
+/******/ 	
 /******/ })()
 ;
