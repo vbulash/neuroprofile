@@ -9,7 +9,7 @@
 @endpush
 
 @push('step_description')
-	Снимок будет сделан:
+	Снимок будет сделан через:
 @endpush
 
 @section('content')
@@ -17,13 +17,14 @@
 		Лицо должно быть размещено ровно, полностью видно с достаточным освещением.<br />
 		Если вы видите на экране зеленую сетку, значит лицо зафиксировано верно.<br />
 		В ином случае следуйте инструкциям, расположенным на данном экране ниже.<br />
-		Если зеленая сетка на лице зафиксируется в течение 3 секунд, то снимок лица выполнится автоматически и кнопка
+		Если зеленая сетка на лице зафиксируется в течение 5 секунд, то снимок лица выполнится автоматически и кнопка
 		&laquo;Начать тестирование&raquo; станет доступной - вы сможете продолжить тестирование.
 	</div>
 	<form method="get" action="{{ route('player.body2') }}">
 		@csrf
 		<div class="d-flex flex-column">
 			<div>
+				<p id="placeholder"><i class="fa-solid fa-camera"></i> Калибровка камеры...</p>
 				<canvas class="output_canvas"></canvas>
 			</div>
 			<p id="message" class="mt-2 mb-2"></p>
@@ -187,6 +188,7 @@ export default class FaceIllumination {
 		const videoElement = document.getElementsByClassName('input_video')[0];
 		const canvasElement = document.getElementsByClassName('output_canvas')[0];
 		const canvasCtx = canvasElement.getContext('2d', {willReadFrequently: true});
+		let placeHolder = document.getElementById('placeholder');
 		let stableIntervalId = null;
 		let frozen = false;
 		let saved = false;
@@ -218,6 +220,11 @@ export default class FaceIllumination {
 
 		function onResults(results) {
 			if (saved) return;
+
+			if (placeHolder != null) {
+				placeHolder.parentNode.removeChild(placeholder);
+				placeHolder = null;
+			}
 
 			let rect = {
 				x: 0,
