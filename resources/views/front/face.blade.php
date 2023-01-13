@@ -18,117 +18,346 @@
 	</div>
 	<form method="get" action="{{ route('player.body2') }}">
 		@csrf
-		{{-- <iframe src="https://faces.bulash.site?sid={{ session()->getId() }}&pkey={{ session('pkey') }}" width="80%" height="500px" frameborder="0" id="camera-frame"></iframe>
-		<div class="ms-2 mb-4"><strong><span id="message">&nbsp;</span></strong></div>
-		<button type="submit" class="btn btn-primary btn-lg" id="continue" disabled>Начать тестирование</button> --}}
 		<div class="d-flex flex-column">
-			<img src="" alt="Калибровка камеры..." id='image' class='img-fluid mb-4' style="max-width: 480;">
+			<canvas class="output_canvas"></canvas>
+			<p id="message" class="mt-2 mb-2"></p>
 			<div>
-				<button type="submit" class="btn btn-primary btn-lg" id="continue">Сделать снимок</button>
+				<button type="submit" class="btn btn-primary btn-lg mt-4" id="continue" disabled>Начать тестирование</button>
 			</div>
-			<div>
-				<video id="webcam" autoplay playsinline></video>
-			</div>
-			<canvas id="canvas" class="mb-4"></canvas>
 		</div>
+		<video class="input_video" style="visibility: hidden;"></video>
 	</form>
 @endsection
 
+@push('styles')
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+@endpush
+
 @push('scripts.injection')
-	<script src="{{ asset('js/webcam-easy.min.js') }}"></script>
-	<script>
-		// let face_channel = pusher.subscribe('face-channel-{!! session()->getId() !!}');
-		// face_channel.bind('face-event', (data) => {
-		// 	let message = data.message.length == 0 ? "&nbsp;" : data.message;
-		// 	document.getElementById('message').innerHTML = "<span style='color:red'>" + message + "</span>";
-		// });
+	<script type="inline-module" id="face_circle">
+export default class FaceCircle {
+	constructor (cx, cy, radius) {
+		this.cx = parseInt(cx);
+		this.cy = parseInt(cy);
+		this.radius = parseInt(radius);
+	}
 
-		// let face_save_channel = pusher.subscribe('face-save-channel-{!! session()->getId() !!}');
-		// face_save_channel.bind('face-save-event', (image) => {
-		// 	document.getElementById('message').innerHTML = "<span style='color:green'>" + "Снимок сделан и сохранён" +
-		// 		"</span>";
-		// 	document.getElementById('continue').disabled = false;
-		// });
-		let webCamElement = document.getElementById("webcam");
-		let canvasElement = document.getElementById("canvas");
-		let context = canvasElement.getContext('2d');
-		let image = document.getElementById('image');
-		let ratio = 1;
-		let webcam = null;
-		let timerId = null;
-		const CROP = 480;
+	inFace(landmark) {
+		return ((this.cx - this.cx * landmark.x * 2) ** 2 +
+				(this.cy - this.cy * landmark.y * 2) ** 2) < this.radius ** 2;
+	}
 
-		function syncDimensions() {
-			if (ratio == 1) return;
+	landmarksInFace(landmarks) {
+		for (let landmark of landmarks)
+			if (!this.inFace(landmark))
+				return false;
+		return true;
+	}
+}
+	</script>
+	<script type="inline-module" id="face_angle">
+export default class FaceAngle {
+	constructor(canvasElement) {
+		this.canvasElement = canvasElement;
+	}
 
-			webCamElement.width =
-				canvasElement.width =
-				image.width = Math.min(CROP, image.parentElement.clientWidth);
-			webCamElement.height =
-				canvasElement.height =
-				image.height = image.width * ratio;
+	xaxis(landmarks) {
+		let diff = 0;
+		let left = false;
+		for (const points of [
+			[6, 33, 263],	// Центральная точка переносицы / внешний угол левого глаза / внешний угол правого глаза
+			[13, 61, 291],	// Центральная точка рта / левый угол рта / правый угол рта
+			[1, 64, 294]	// Центральная точка носа / внешний угол левой ноздри / внешний угол правой ноздри
+		]) {
+			let x0 = landmarks[points[0]].x;		// Центральная точка для отсчета
+			let x1 = x0 - landmarks[points[1]].x;	// Левая точка
+			let x2 = landmarks[points[2]].x - x0;	// Правая точка
+			left = left || (x1 < x2);
+			diff = Math.max(diff, parseInt(Math.max(x1, x2) / (x1 + x2) * 100) - 50);
 		}
 
-		window.onresize = (event) => {
-			syncDimensions();
+		return diff > 10 ? 'Поверните голову ' + (left ? 'вправо' : 'влево') : '';
+	}
+
+	yaxis(landmarks) {
+		let diff = 0;
+		let up = false;
+
+		const z0 = landmarks[33].z;
+		const z1 = landmarks[263].z;
+		if (Math.sign(z0) == Math.sign(z1)) {
+			up = (Math.sign(z0) == 1);
+			if (Math.abs(z0 * 100) > 2.5 || Math.abs(z1 * 100) > 2.5)
+				return up ? 'Опустите голову вниз' : 'Поднимите голову вверх';
+		}
+		return '';
+	}
+
+	tilt(landmarks) {
+		let diff = 0;
+		let rightup = false;
+		for (const points of [
+			[33, 263],	// Внешний угол левого глаза / внешний угол правого глаза
+			[61, 291],	// Левый угол рта / правый угол рта
+			[64, 294]	// Внешний угол левой ноздри / внешний угол правой ноздри
+		]) {
+			let y1 = landmarks[points[0]].y * this.canvasElement.height;	// Левая точка
+			let y2 = landmarks[points[1]].y * this.canvasElement.height;	// Правая точка
+			rightup = rightup || (y1 > y2);
+			diff = Math.max(diff, parseInt(Math.max(y1, y2) / (y1 + y2) * 100) - 50);
+		}
+
+		return diff > 3 ? 'Наклоните голову ' + (rightup ? 'вправо' : 'влево') : '';
+	}
+}
+	</script>
+	<script type="inline-module" id="face_distance">
+export default class FaceDistance {
+	constructor(canvasElement, bound) {
+		this.canvasElement = canvasElement;
+		this.bound = bound;
+	}
+
+	measure(landmarks) {
+		let min = {
+			x: 1,
+			y: 1
 		};
+		let max = {
+			x: 0,
+			y: 0
+		};
+		landmarks.forEach((item) => {
+			if (item.x < min.x) min.x = item.x;
+			if (item.y < min.y) min.y = item.y;
+			if (item.x > max.x) max.x = item.x;
+			if (item.y > max.y) max.y = item.y;
+		});
+		min.x = parseInt(min.x * this.canvasElement.width);
+		min.y = parseInt(min.y * this.canvasElement.height);
+		max.x = parseInt(max.x * this.canvasElement.width);
+		max.y = parseInt(max.y * this.canvasElement.height);
+		if (max.x - min.x < this.bound * 0.7 || max.y - min.y < this.bound * 0.7)
+			return 'Придвиньтесь ближе - лицо слишко далеко от камеры';
+		return '';
+	}
+}
+	</script>
+	<script type="inline-module" id="face_illumination">
+export default class FaceIllumination {
+	constructor(context) {
+		this.context = context;
+	}
 
-		webCamElement.onplaying = function() {
-			ratio = webCamElement.videoHeight / webCamElement.videoWidth;
+	estimate(landmarks) {
+		let sum = 0;
+		for (let landmark of landmarks) {
+			const pixel = this.context.getImageData(landmark.x, landmark.y, 1, 1);
+			sum += pixel.data[0] + pixel.data[1] + pixel.data[2];	// RGB, A игнорируем
 		}
+		const mean = parseInt(sum / (landmarks.length * 3));
+		const OPTIMUM = 0.25;
+		const min = parseInt(255 * (1 - OPTIMUM) / 2);
+		const max = parseInt(min + 255 * OPTIMUM);
+		if (mean < min)
+			return 'Лицо недостаточно освещено - добавьте свет';
+		else if (mean > max)
+			return 'Слишком сильный источник света для лица - убавьте свет';
+		else
+			return '';
+	}
+}
+	</script>
+	<script src="{{ asset('js/inline-modules.js') }}" setup="false"></script>
+	<script type="module">
+		const FaceCircle = (await inlineImport('#face_circle')).default;
+		const FaceAngle = (await inlineImport('#face_angle')).default;
+		const FaceDistance = (await inlineImport('#face_distance')).default;
+		const FaceIllumination = (await inlineImport('#face_illumination')).default;
 
-		function showFrame() {
-			if (ratio == 1) return;
+		const videoElement = document.getElementsByClassName('input_video')[0];
+		const canvasElement = document.getElementsByClassName('output_canvas')[0];
+		const canvasCtx = canvasElement.getContext('2d', {willReadFrequently: true});
+		let stableIntervalId = null;
+		let frozen = false;
+		let saved = false;
+		const COUNTDOWN = 20;
+		let countdown = 0;
 
-			syncDimensions();
-			// context.drawImage(webCamElement, 0, 0, webCamElement.width, webCamElement.height);
-			let picture = webcam.snap();
+		function save(canvas) {
+			const uuid = '{{ $pkey }}';
+			const sex = 'M';
+			const picture = canvas.toDataURL();
 
-			// TODO обработать исходную картинку, наложить AR-элементы, вернуть как base64 в picture
-
-			image.src = picture;
-		}
-
-		document.getElementById('continue').onclick = () => {
-			let picture = webcam.snap();
-			// console.log(picture);
-			syncDimensions();
-			let sex = 'M';
-
-			// fetch не умеет работать с localhost ((
-			// let response = fetch("{{ route('neural.shot.done') }}", {
-			// 		method: 'POST',
-			// 		headers: {
-			// 			'Content-Type': 'application/json;charset=utf-8'
-			// 		},
-			// 		body: JSON.stringify({
-			// 			uuid: "{{ $pkey }}",
-			// 			sex: sex,
-			// 			photo: picture,
-			// 		})
-			// 	})
-			// 	.catch(error => console.log(error));
-			$.ajax({
+			// url: "{{ route('neural.shot.done') }}",
+			const response = fetch("https://research.personahuman.ru/api/shot.done", {
 				method: 'POST',
-				url: "{{ route('neural.shot.done') }}",
-				data: {
-					uuid: "{{ $pkey }}",
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8'
+				},
+				body: JSON.stringify({
+					uuid: uuid,
 					sex: sex,
 					photo: picture,
-				},
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				},
+				})
+			})
+				.catch(error => console.log(error))
+			.then((response) => {
+				document.getElementById('continue').disabled = false;
 			});
-		};
+		}
 
-		document.addEventListener("DOMContentLoaded", () => {
-			webcam = new Webcam(webCamElement, 'user', canvasElement, null);
-			webCamElement.style.visibility = 'hidden';
-			canvasElement.style.visibility = 'hidden';
-			webcam.start();
-			// window.dispatchEvent(new Event('resize'));
-			timerId = setInterval(showFrame, 0);
-		}, false);
+		function onResults(results) {
+			if (saved) return;
+
+			let rect = {
+				x: 0,
+				y: 0,
+				w: 0,
+				h: 0
+			}
+			if (videoElement.videoWidth > videoElement.videoHeight) {	// Горизонтальные пропорции камеры (ноутбук / десктоп)
+				rect.x = parseInt((videoElement.videoWidth - videoElement.videoHeight) / 2);
+				rect.w = videoElement.videoHeight;
+				rect.y = 0;
+				rect.h = videoElement.videoHeight;
+
+				// canvasElement.height = videoElement.videoHeight;
+				// canvasElement.width = videoElement.videoWidth;
+			}
+			canvasElement.height = videoElement.videoHeight;
+			canvasElement.width = videoElement.videoWidth;
+
+			const fc = new FaceCircle(canvasElement.width / 2, canvasElement.height / 2, Math.min(canvasElement.width, canvasElement.height) * 0.45);
+			canvasCtx.save();
+			canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+			canvasCtx.drawImage(
+				results.image, 0, 0, canvasElement.width, canvasElement.height);
+			if (results.multiFaceLandmarks) {
+				for (const landmarks of results.multiFaceLandmarks) {
+					let messages = [];
+					let message = '';
+					let circle_color = '';
+					let mesh_color = '';
+					// Лицо помещается или не помещается в круг
+					if (fc.landmarksInFace(landmarks)) {
+						circle_color = '#00FF00';
+						mesh_color = '#00FF00';
+					} else {
+						circle_color = '#FF0000';
+						mesh_color = '#FF0000';
+						messages.push('Поместите лицо в окружность');
+					}
+					// Лицо далеко / близко
+					const fd = new FaceDistance(canvasElement, fc.radius);
+					message = fd.measure(landmarks);
+					if (message) {
+						mesh_color = '#FF0000';
+						messages.push(message);
+					}
+					// Смещения / повороты лица по 3 осям
+					const fa = new FaceAngle(canvasElement);
+					// горизонтальное смещение
+					message = fa.xaxis(landmarks);
+					if (message) {
+						mesh_color = '#FF0000';
+						messages.push(message);
+					}
+					// вертикальное смещение
+					message = fa.yaxis(landmarks);
+					if (message) {
+						mesh_color = '#FF0000';
+						messages.push(message);
+					}
+					// Повороты головы влево и вправо
+					message = fa.tilt(landmarks);
+					if (message) {
+						mesh_color = '#FF0000';
+						messages.push(message);
+					}
+					// Освещение
+					const fi = new FaceIllumination(canvasCtx);
+					message = fi.estimate(landmarks);
+					if (message) {
+						mesh_color = '#FF0000';
+						messages.push(message);
+					}
+
+					//
+					canvasCtx.beginPath();
+					canvasCtx.arc(fc.cx, fc.cy, fc.radius, 0, 2 * Math.PI);
+					canvasCtx.strokeStyle = circle_color;
+					canvasCtx.stroke();
+
+					drawConnectors(canvasCtx, landmarks, FACEMESH_TESSELATION,
+						{color: mesh_color + '20', lineWidth: 1});
+					// drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYE, {color: '#FF3030'});
+					// drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYEBROW, {color: '#FF3030'});
+					// drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_IRIS, {color: '#FF3030'});
+					// drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYE, {color: '#30FF30'});
+					// drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYEBROW, {color: '#30FF30'});
+					// drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_IRIS, {color: '#30FF30'});
+					// drawConnectors(canvasCtx, landmarks, FACEMESH_FACE_OVAL, {color: '#E0E0E0'});
+					// drawConnectors(canvasCtx, landmarks, FACEMESH_LIPS, {color: '#E0E0E0'});
+
+					if (messages.length > 0) {
+						clearInterval(stableIntervalId);
+						stableIntervalId = null;
+						frozen = false;
+						document.getElementById('message').innerHTML = messages.join('<br/>');
+					} else if (frozen) {	// Идеальная картинка, только что сработал таймер
+						saved = true;
+						clearInterval(stableIntervalId);
+						stableIntervalId = null;
+						frozen = false;
+						save(results.image);	// Без AR-элементов
+						document.getElementById('message').innerHTML = 'Снимок сделан и сохранён';
+					} else {	// Идеальная картинка, запускаем 3-секундный таймер
+						document.getElementById('message').innerHTML = '';
+						if (stableIntervalId == null) {
+							countdown = COUNTDOWN;
+							stableIntervalId = setInterval(() => {
+								console.log('Снимок будет сделан через: ' + countdown.toString());
+								document.getElementById('message').innerHTML = 'Снимок будет сделан через: ' + countdown.toString();
+								if (countdown-- <= 0) {
+									clearInterval(stableIntervalId);
+									frozen = true;
+								}
+							}, 1000);
+						}
+					}
+				}
+			}
+			canvasCtx.restore();
+		}
+
+		const faceMesh = new FaceMesh({
+			locateFile: (file) => {
+				return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+			}
+		});
+		faceMesh.setOptions({
+			selfieMode: true,
+			maxNumFaces: 1,
+			refineLandmarks: true,
+			minDetectionConfidence: 0.5,
+			minTrackingConfidence: 0.5
+		});
+		faceMesh.onResults(onResults);
+
+		const camera = new Camera(videoElement, {
+			onFrame: async () => {
+				await faceMesh.send({image: videoElement});
+			},
+			// width: 1280,
+			// height: 720,
+		});
+		camera.start();
+
 	</script>
 @endpush

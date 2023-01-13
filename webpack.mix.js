@@ -38,7 +38,7 @@ mix
         'resources/plugins/pusher/pusher.min.js',
 		'resources/plugins/flatpickr/flatpickr.min.js',
 		'resources/plugins/flatpickr/l10n/ru.js',
-		// 'resources/plugins/select2/select2.min.js'
+		// 'resources/plugins/select2/select2.min.js',
     ], 'public/js/app.js')
     .copy([
         'resources/plugins/bootstrap/js/bootstrap.bundle.min.js.map',
@@ -47,6 +47,7 @@ mix
 		'resources/plugins/datatables/datatables.min.js',
 		'resources/plugins/ckeditor5/ckeditor.js',
 		'resources/plugins/ckeditor5/ckeditor.js.map',
+		'resources/plugins/inline-modules/inline-modules.js',
     ], 'public/js')
 	.copyDirectory([
 		'resources/js/dashmix/modules'
@@ -106,9 +107,6 @@ mix.copyDirectory('resources/assets/googlefonts', 'public/assets/front/fonts');
 
 mix.copy('resources/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map', 'public/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map');
 mix.copy('resources/assets/front/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css.map', 'public/assets/front/css/bootstrap-datepicker.css.map');
-
-// Webcam Easy
-mix.copy('resources/assets/front/plugins/webcam-easy/webcam-easy.min.js', 'public/js/webcam-easy.min.js')
 
 // Chart.js
 mix.copy('resources/plugins/chart.js/chart.min.js', 'public/js/chart.min.js');

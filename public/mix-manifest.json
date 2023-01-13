@@ -12,6 +12,7 @@
     "/js/datatables.min.js": "/js/datatables.min.js",
     "/js/ckeditor.js": "/js/ckeditor.js",
     "/js/ckeditor.js.map": "/js/ckeditor.js.map",
+    "/js/inline-modules.js": "/js/inline-modules.js",
     "/js/modules/helpers.js": "/js/modules/helpers.js",
     "/js/modules/template.js": "/js/modules/template.js",
     "/js/pickr.min.js": "/js/pickr.min.js",
@@ -412,7 +413,6 @@
     "/assets/front/fonts/url.txt": "/assets/front/fonts/url.txt",
     "/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map": "/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map",
     "/assets/front/css/bootstrap-datepicker.css.map": "/assets/front/css/bootstrap-datepicker.css.map",
-    "/js/webcam-easy.min.js": "/js/webcam-easy.min.js",
     "/js/chart.min.js": "/js/chart.min.js",
     "/assets/front/js/toastr.js.map": "/assets/front/js/toastr.js.map"
 }
