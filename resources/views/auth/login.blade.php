@@ -23,7 +23,7 @@
                                 <!-- END Header -->
 
                                 <form method="POST" action="{{ route('login') }}">
-                                    @csrf
+									@csrf
 									<div class="form-floating mb-4">
 										<input type="email" class="form-control" id="email" name="email"
 											   placeholder="Электронная почта">

@@ -89,6 +89,8 @@ class NeuralController extends Controller {
 			], $status);
 		}
 
+		return '';
+
 		// Параллельное выполнение цикла тестирования респондентом и работы нейросети
 		$content = (object) [
 			'uuid' => $uuid,
