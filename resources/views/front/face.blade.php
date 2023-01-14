@@ -13,18 +13,22 @@
 @endpush
 
 @section('content')
-	<div class="mt-4 mb-4">
-		Лицо должно быть размещено ровно, полностью видно с достаточным освещением.<br />
-		Если вы видите на экране зеленую сетку, значит лицо зафиксировано верно.<br />
-		В ином случае следуйте инструкциям, расположенным на данном экране ниже.<br />
-		Если зеленая сетка на лице зафиксируется в течение 5 секунд, то снимок лица выполнится автоматически и кнопка
-		&laquo;Начать тестирование&raquo; станет доступной - вы сможете продолжить тестирование.
+	<div class="mt-4 mb-4" id="placeholder">
+		<p>
+			Лицо должно быть размещено ровно, полностью видно с достаточным освещением.<br />
+			Если вы видите на экране зеленую сетку, значит лицо зафиксировано верно.<br />
+			В ином случае следуйте инструкциям, расположенным на данном экране ниже.<br />
+			Если зеленая сетка на лице зафиксируется в течение 5 секунд, то снимок лица выполнится автоматически и кнопка
+			&laquo;Начать тестирование&raquo; станет доступной - вы сможете продолжить тестирование.
+		</p>
+		<p>
+			<i class="fa-solid fa-camera"></i> Калибровка камеры...
+		</p>
 	</div>
 	<form method="get" action="{{ route('player.body2') }}">
 		@csrf
 		<div class="d-flex flex-column">
 			<div>
-				<p id="placeholder"><i class="fa-solid fa-camera"></i> Калибровка камеры...</p>
 				<canvas class="output_canvas"></canvas>
 			</div>
 			<p id="message" class="mt-2 mb-2"></p>
@@ -33,6 +37,7 @@
 			</div>
 		</div>
 		<video class="input_video" style="visibility: hidden;"></video>
+		{{-- <video class="input_video"></video> --}}
 	</form>
 @endsection
 
@@ -194,6 +199,7 @@ export default class FaceIllumination {
 		let saved = false;
 		const COUNTDOWN = 5;
 		let countdown = 0;
+		let ratio = 1;
 
 		function save(canvas) {
 			const uuid = '{{ $pkey }}';
@@ -224,6 +230,11 @@ export default class FaceIllumination {
 			if (placeHolder != null) {
 				placeHolder.parentNode.removeChild(placeholder);
 				placeHolder = null;
+				ratio = videoElement.videoWidth / videoElement.videoHeight;
+				if (videoElement.videoWidth > window.innerWidth - 20) {
+					videoElement.videoWidth = window.innerWidth - 20;
+					videoElement.videoHeight = parseInt(videoElement.videoWidth * ratio);
+				}
 			}
 
 			let rect = {
@@ -375,8 +386,12 @@ export default class FaceIllumination {
 			},
 			// width: 1280,
 			// height: 720,
+			// width: Math.min(1280, window.innerWidth),
 		});
 		camera.start();
 
+		document.addEventListener("DOMContentLoaded", () => {
+
+		}, false);
 	</script>
 @endpush

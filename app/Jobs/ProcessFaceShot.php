@@ -28,6 +28,7 @@ class ProcessFaceShot implements ShouldQueue {
 		$photo = $this->content->photo;
 		$sex = $this->content->sex;
 
+		$res = null;
 		try {
 			$res = Http::post(env('NEURAL_URL'), [
 				'uuid' => $uuid,
@@ -35,9 +36,12 @@ class ProcessFaceShot implements ShouldQueue {
 				'sex' => $sex,
 			]);
 		} catch (Exception $exc) {
+			$message = 'Сервер нейросети недоступен, обработка нейросетью игнорируется';
+			Log::error($message);
 			$this->fail(
-				new Exception('Сервер нейросети недоступен, обработка нейросетью игнорируется', $exc->getCode(), $exc)
+				new Exception($message, $exc->getCode(), $exc)
 			);
+			return response($message, 500);
 		}
 
 		$body = $res->json();
