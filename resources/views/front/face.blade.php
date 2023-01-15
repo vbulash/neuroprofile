@@ -199,7 +199,6 @@ export default class FaceIllumination {
 		let saved = false;
 		const COUNTDOWN = 5;
 		let countdown = 0;
-		let ratio = 1;
 
 		function save(canvas) {
 			const uuid = '{{ $pkey }}';
@@ -230,10 +229,14 @@ export default class FaceIllumination {
 			if (placeHolder != null) {
 				placeHolder.parentNode.removeChild(placeholder);
 				placeHolder = null;
-				ratio = videoElement.videoWidth / videoElement.videoHeight;
-				if (videoElement.videoWidth > window.innerWidth - 20) {
-					videoElement.videoWidth = window.innerWidth - 20;
-					videoElement.videoHeight = parseInt(videoElement.videoWidth * ratio);
+				const ratio = videoElement.videoWidth / videoElement.videoHeight;
+				const parentNode = canvasElement.parentNode;
+				if (videoElement.videoWidth > parentNode.clientWidth) {
+					canvasElement.width = parentNode.clientWidth;
+					canvasElement.height = parseInt(canvasElement.width / ratio);
+				} else {
+					canvasElement.width = videoElement.videoWidth;
+					canvasElement.height = videoElement.videoHeight;
 				}
 			}
 
@@ -252,8 +255,6 @@ export default class FaceIllumination {
 				// canvasElement.height = videoElement.videoHeight;
 				// canvasElement.width = videoElement.videoWidth;
 			}
-			canvasElement.height = videoElement.videoHeight;
-			canvasElement.width = videoElement.videoWidth;
 
 			const fc = new FaceCircle(canvasElement.width / 2, canvasElement.height / 2, Math.min(canvasElement.width, canvasElement.height) * 0.45);
 			canvasCtx.save();
