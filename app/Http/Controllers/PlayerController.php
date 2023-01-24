@@ -30,13 +30,14 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 use DateTime;
+use Illuminate\Support\Facades\Session;
 
 class PlayerController extends Controller {
 	public function check(Request $request, string $mkey = null, string $test_key = null): bool {
-		//        Log::debug('mkey = ' . $mkey);
-//        Log::debug('test_key = ' . $test_key);
+		Log::info('check mkey = ' . $mkey);
 		if (!$mkey) {
 			if (!session()->has('mkey')) {
+				Log::info(print_r(Session::all(), true));
 				Log::debug('Внутренняя ошибка: потерян мастер-ключ');
 				session()->flash('error', 'Внутренняя ошибка: потерян мастер-ключ');
 				return false;
@@ -92,8 +93,10 @@ class PlayerController extends Controller {
 	}
 
 	public function play(Request $request, string $mkey = null, string $test = null): Factory|View|RedirectResponse|Application {
-		$mkey = $mkey ?: $request->{ 'mkey-modal'};
+		// Log::info('test = ' . $test);
+		$mkey = $mkey ?: $request->{'mkey-modal'};
 		$test = $test ?: $request->test;
+		Log::info('play mkey = ' . $mkey);
 		if (!$this->check($request, $mkey, $test)) {
 			//Log::debug('player.play: ' . __METHOD__ . ':' . __LINE__);
 			return redirect()->route('player.index');
@@ -122,6 +125,7 @@ class PlayerController extends Controller {
 	}
 
 	public function card(Request $request): View|Factory|bool|RedirectResponse|Application {
+		Log::debug('card request = ' . print_r($request->all(), true));
 		if (!$this->check($request)) {
 			//Log::debug('player.card: ' . __METHOD__ . ':' . __LINE__);
 			return redirect()->route('player.index');
@@ -170,7 +174,6 @@ class PlayerController extends Controller {
 		$test = session('test');
 		$this->lockLicense($test);
 		return view('front.face', [
-			'sid' => session()->getId(),
 			'pkey' => session('pkey'),
 			'test' => session('test')
 		]);
@@ -222,7 +225,8 @@ class PlayerController extends Controller {
 		$history->save();
 
 		foreach ($data as $answer => $value) {
-			if (!Str::startsWith($answer, 'answer-')) continue;
+			if (!Str::startsWith($answer, 'answer-'))
+				continue;
 			$parts = explode('-', $answer);
 			$key = $parts[1];
 
@@ -459,10 +463,14 @@ class PlayerController extends Controller {
 			// Найти и проверить лицензию по введенному персональному ключу
 			$license = License::where('pkey', session('pkey'))->first();
 			if (!$license) {
-				session()->put('error', 'Не найдена лицензия, соответствующая персональному ключу ' . session('pkey'));
+				$message = 'Не найдена лицензия, соответствующая персональному ключу ' . session('pkey');
+				Log::error($message);
+				session()->put('error', $message);
 				return redirect()->route('player.index');
 			} elseif ($license->status != License::FREE) {
-				session()->put('error', 'Лицензия, соответствующая персональному ключу ' . session('pkey') . ', уже использована. Запросите новый персональный ключ');
+				$message = 'Лицензия, соответствующая персональному ключу ' . session('pkey') . ', уже использована. Запросите новый персональный ключ';
+				Log::error($message);
+				session()->put('error', $message);
 				return redirect()->route('player.index');
 			}
 		} else { // Найти любую свободную лицензию
@@ -470,7 +478,9 @@ class PlayerController extends Controller {
 			if ($license) {
 				session()->put('pkey', $license->pkey);
 			} else {
-				session()->put('error', 'Свободные лицензии закончились, обратитесь в Persona');
+				$message = 'Свободные лицензии закончились, обратитесь в Persona';
+				Log::error($message);
+				session()->put('error', $message);
 				//Log::debug(__METHOD__ . ':' . __LINE__);
 				return redirect()->route('player.index');
 			}
