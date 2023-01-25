@@ -160,17 +160,24 @@ export default class FaceDistance {
 	</script>
 	<script type="inline-module" id="face_illumination">
 export default class FaceIllumination {
-	constructor(context) {
-		this.context = context;
+	constructor(canvasElement) {
+		this.canvasElement = canvasElement;
+		this.context = canvasElement.getContext('2d', {willReadFrequently: true});
 	}
 
 	estimate(landmarks) {
 		let sum = 0;
-		for (let landmark of landmarks) {
-			const pixel = this.context.getImageData(landmark.x, landmark.y, 1, 1);
-			sum += pixel.data[0] + pixel.data[1] + pixel.data[2];	// RGB, A игнорируем
+		const region = {
+			left: landmarks[234].x * this.canvasElement.width,
+			top: landmarks[10].y * this.canvasElement.height,
+			right: landmarks[454].x * this.canvasElement.width,
+			bottom: landmarks[152].y * this.canvasElement.height,
+		};
+		const points = this.context.getImageData(region.left, region.top, region.right - region.left + 1, region.bottom - region.top + 1);
+		for (let point of points) {
+			sum += point.data[0] + point.data[1] + point.data[2];	// RGB, A игнорируем
 		}
-		const mean = parseInt(sum / (landmarks.length * 3));
+		const mean = parseInt(sum / (points.length / 4 * 3));
 		const OPTIMUM = 0.25;
 		const min = parseInt(255 * (1 - OPTIMUM) / 2);
 		const max = parseInt(min + 255 * OPTIMUM);
@@ -304,7 +311,7 @@ export default class FaceIllumination {
 						messages.push(message);
 					}
 					// Освещение
-					const fi = new FaceIllumination(canvasCtx);
+					const fi = new FaceIllumination(canvasElement);
 					message = fi.estimate(landmarks);
 					if (message) {
 						mesh_color = '#FF0000';
