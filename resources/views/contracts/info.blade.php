@@ -60,7 +60,7 @@
 	  	                    "src=\"%s\"\n" .
 		                    "width=\"1000px\"\n" .
 		                    "height=\"700px\"\n" .
-		                    "allow=\"fullscreen\">\n" .
+		                    "allow=\"camera\"\n" .
 		                    "frameborder=\"0\">\n" .
 		                    "</iframe>",
 		                    route('player.play', [
