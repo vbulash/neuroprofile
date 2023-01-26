@@ -5,8 +5,9 @@
 @push('testname'){{ $test->name }}@endpush
 
 @section('content')
-    <form method="get" action="{{ route('player.full') }}">
+    <form method="get" action="{{ route('player.full', ['sid' => session()->getId()]) }}">
         @csrf
+		<input type="hidden" value="{{ $sid}}" name="sid">
         <h5 class="mb-4">Информация для анкеты тестируемого</h5>
         <p>Звездочкой (*) выделены поля, обязательные для заполнения</p>
         @php

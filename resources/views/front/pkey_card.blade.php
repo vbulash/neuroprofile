@@ -5,8 +5,9 @@
 @push('testname') Тест &laquo;{{ $test->name }}&raquo;@endpush
 
 @section('content')
-    <form method="get" action="{{ route('player.pkey') }}">
+    <form method="get" action="{{ route('player.pkey', ['sid' => session()->getId()]) }}">
         @csrf
+		<input type="hidden" value="{{ $sid}}" name="sid">
         <div class="form-group">
             <label for="pkey">Введите персональный ключ для начала тестирования</label>
             <input type="text" name="pkey" id="pkey"

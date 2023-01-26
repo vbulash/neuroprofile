@@ -19,7 +19,7 @@
 @endpush
 
 @section('content')
-	<form method="post" action="{{ route('player.body2.store') }}" enctype="multipart/form-data" name="play-form"
+	<form method="post" action="{{ route('player.body2.store', ['sid' => session()->getId()]) }}" enctype="multipart/form-data" name="play-form"
 		id="play-form">
 		@csrf
 
@@ -28,6 +28,7 @@
 		{{--            <h4 class="mt-4 text-center">Загрузка вопросов теста...</h4> --}}
 		{{--        </div> --}}
 
+		<input type="hidden" value="{{ $sid}}" name="sid">
 		<div>
 			@foreach ($questions as $question)
 				@php

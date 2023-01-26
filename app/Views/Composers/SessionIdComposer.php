@@ -15,6 +15,6 @@ class SessionIdComposer
      */
     public function compose(View $view)
     {
-        //$view->with('sid', session()->getId());
+        $view->with('sid', session()->getId());
     }
 }

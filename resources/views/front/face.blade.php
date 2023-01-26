@@ -25,8 +25,9 @@
 			<i class="fa-solid fa-camera"></i> Калибровка камеры...
 		</p>
 	</div>
-	<form method="get" action="{{ route('player.body2') }}">
+	<form method="get" action="{{ route('player.body2', ['sid' => session()->getId()]) }}">
 		@csrf
+		<input type="hidden" value="{{ $sid}}" name="sid">
 		<div class="d-flex flex-column">
 			<div>
 				<canvas class="output_canvas"></canvas>
@@ -173,10 +174,10 @@ export default class FaceIllumination {
 			right: landmarks[454].x * this.canvasElement.width,
 			bottom: landmarks[152].y * this.canvasElement.height,
 		};
-		const points = this.context.getImageData(region.left, region.top, region.right - region.left + 1, region.bottom - region.top + 1);
-		for (let point of points) {
+		const points = new Array(this.context.getImageData(region.left, region.top, region.right - region.left + 1, region.bottom - region.top + 1));
+		points.forEach((point) => {
 			sum += point.data[0] + point.data[1] + point.data[2];	// RGB, A игнорируем
-		}
+		});
 		const mean = parseInt(sum / (points.length / 4 * 3));
 		const OPTIMUM = 0.25;
 		const min = parseInt(255 * (1 - OPTIMUM) / 2);

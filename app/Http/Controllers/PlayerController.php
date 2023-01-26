@@ -34,7 +34,8 @@ use Illuminate\Support\Facades\Session;
 
 class PlayerController extends Controller {
 	public function check(Request $request, string $mkey = null, string $test_key = null): bool {
-		Log::info('check mkey = ' . $mkey);
+		// Log::info('check mkey = ' . $mkey);
+		Log::info('session id = ' . session()->getId());
 		if (!$mkey) {
 			if (!session()->has('mkey')) {
 				Log::info(print_r(Session::all(), true));
@@ -81,7 +82,7 @@ class PlayerController extends Controller {
 			} else {
 				session()->put('test', $test);
 				session()->put('mkey', $mkey);
-				//Log::debug('test and mkey saved');
+				// Log::debug('test and mkey saved');
 				return true;
 			}
 		}
@@ -99,7 +100,7 @@ class PlayerController extends Controller {
 		Log::info('play mkey = ' . $mkey);
 		if (!$this->check($request, $mkey, $test)) {
 			//Log::debug('player.play: ' . __METHOD__ . ':' . __LINE__);
-			return redirect()->route('player.index');
+			return redirect()->route('player.index', ['sid' => session()->getId()]);
 		} else {
 			$test = session('test');
 			$content = json_decode($test->content, true);
@@ -125,17 +126,17 @@ class PlayerController extends Controller {
 	}
 
 	public function card(Request $request): View|Factory|bool|RedirectResponse|Application {
-		Log::debug('card request = ' . print_r($request->all(), true));
+		// Log::debug('card request = ' . print_r($request->all(), true));
 		if (!$this->check($request)) {
 			//Log::debug('player.card: ' . __METHOD__ . ':' . __LINE__);
-			return redirect()->route('player.index');
+			return redirect()->route('player.index', ['sid' => session()->getId()]);
 		} else {
 			session()->forget('pkey');
 			$test = session('test');
 
 			if ($test->options & TestOptions::AUTH_GUEST->value) {
 				$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
-				return redirect()->route($route);
+				return redirect()->route($route, ['sid' => session()->getId()]);
 			} elseif ($test->options & (TestOptions::AUTH_FULL->value | TestOptions::AUTH_MIX->value)) {
 				$content = json_decode($test->content, true);
 				$card = $content['card'];
@@ -153,7 +154,7 @@ class PlayerController extends Controller {
 		session()->put('pkey', $request->pkey);
 		$test = session('test');
 		$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
-		return redirect()->route($route);
+		return redirect()->route($route, ['sid' => session()->getId()]);
 	}
 
 	public function store_full_card(Request $request) {
@@ -167,7 +168,7 @@ class PlayerController extends Controller {
 
 		$test = session('test');
 		$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
-		return redirect()->route($route);
+		return redirect()->route($route, ['sid' => session()->getId()]);
 	}
 
 	public function face(Request $request) {
@@ -182,7 +183,7 @@ class PlayerController extends Controller {
 	public function body2(Request $request) {
 		if (!$this->check($request)) {
 			$test = session('test');
-			return redirect()->route('player.index');
+			return redirect()->route('player.index', ['sid' => session()->getId()]);
 		}
 
 		$test = session('test');
@@ -252,7 +253,7 @@ class PlayerController extends Controller {
 		}
 		$history->update(['done' => new DateTime()]);
 
-		return redirect()->route('player.calculate', ['history_id' => $history->getKey()]);
+		return redirect()->route('player.calculate', ['history_id' => $history->getKey(), 'sid' => session()->getId()]);
 	}
 
 	public function calculate(
@@ -301,7 +302,7 @@ class PlayerController extends Controller {
 				if ($blocks)
 					return view('front.show', compact('card', 'blocks', 'profile', 'history'));
 			} else
-				return redirect()->route('player.index');
+				return redirect()->route('player.index', ['sid' => session()->getId()]);
 		}
 
 		return response(content: 'OK' . $history_id, status: 200);
@@ -466,12 +467,12 @@ class PlayerController extends Controller {
 				$message = 'Не найдена лицензия, соответствующая персональному ключу ' . session('pkey');
 				Log::error($message);
 				session()->put('error', $message);
-				return redirect()->route('player.index');
+				return redirect()->route('player.index', ['sid' => session()->getId()]);
 			} elseif ($license->status != License::FREE) {
 				$message = 'Лицензия, соответствующая персональному ключу ' . session('pkey') . ', уже использована. Запросите новый персональный ключ';
 				Log::error($message);
 				session()->put('error', $message);
-				return redirect()->route('player.index');
+				return redirect()->route('player.index', ['sid' => session()->getId()]);
 			}
 		} else { // Найти любую свободную лицензию
 			$license = $test->contract->licenses->where('status', License::FREE)->first();
@@ -482,7 +483,7 @@ class PlayerController extends Controller {
 				Log::error($message);
 				session()->put('error', $message);
 				//Log::debug(__METHOD__ . ':' . __LINE__);
-				return redirect()->route('player.index');
+				return redirect()->route('player.index', ['sid' => session()->getId()]);
 			}
 		}
 		$license->lock();

@@ -9,8 +9,9 @@
 @endpush
 
 @section('content')
-	<form role="form" method="get" action="{{ route('player.card') }}">
+	<form role="form" method="get" action="{{ route('player.card', ['sid' => session()->getId()]) }}">
 		@csrf
+		<input type="hidden" value="{{ $sid}}" name="sid">
 		<input type="hidden" name="nextblock" value="card">
 		<div id="safari" style="display: none">
 			<div id="mac" class="mb-4">

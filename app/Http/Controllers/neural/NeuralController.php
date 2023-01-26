@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
 
+use function Psy\debug;
+
 class NeuralController extends Controller {
 	public function run(Request $request) {
 
@@ -95,6 +97,75 @@ class NeuralController extends Controller {
 			'photo' => $clearPhoto,
 			'sex' => 'M',
 		];
-		ProcessFaceShot::dispatch($content);
+
+		$debug = true;
+		if (!$debug)
+			ProcessFaceShot::dispatch($content);
+		else {
+			$res = null;
+			try {
+				$res = Http::post(env('NEURAL_URL'), [
+					'uuid' => $content->uuid,
+					'photo' => $content->photo,
+					'sex' => $content->sex,
+				]);
+			} catch (Exception $exc) {
+				$message = 'Сервер нейросети недоступен, обработка нейросетью игнорируется';
+				Log::error($message);
+				$this->fail(
+					new Exception($message, $exc->getCode(), $exc)
+				);
+				return response($message, 500);
+			}
+
+			$body = $res->json();
+			// Декодировать запрос
+			$result = $body['result'];
+			$uuid = $body['uuid'];
+			// TODO при необходимости анализировать здесь или в вызывателе code (обычно 200)
+			// TODO разобрать $body['attention'] (base64) по готовности в теле возврата из нейросети
+			$codeMap = [
+				'A' => 'BD',
+				'B' => 'BH',
+				'C' => 'BO',
+				'D' => 'BP',
+				'F' => 'CI',
+				'G' => 'CO',
+				'H' => 'CS',
+				'K' => 'CV',
+				'L' => 'OA',
+				'M' => 'OI',
+				'N' => 'OO',
+				'O' => 'OV',
+				'P' => 'PA',
+				'Q' => 'PK',
+				'R' => 'PP',
+				'S' => 'PR',
+			];
+
+			$neural = [];
+			foreach ($result as $item)
+				$neural[] = [
+					'code' => $codeMap[$item['code']],
+					'average' => $item['average'],
+					'meansquare' => $item['mean-square'],
+				];
+
+			$license = License::where('pkey', $uuid)->first();
+			$history = $license->history;
+			if (isset($history)) { // История прохождения сохранена, можно добавлять результат работы нейросети
+				$card = json_decode($history->card, true);
+				$card['neural'] = $neural;
+				$history->update([
+					'card' => json_encode($card)
+				]);
+				Log::info('Результат работы нейросети: сохранён');
+			} else { // Новое прохождение, пока не сохранено, нужно будет добавить данные нейросети позже при сохранении
+				Redis::set($uuid, json_encode($neural));
+				Log::info('Результат работы нейросети: отложен до сохранения');
+			}
+
+			Log::info('Работа нейросети завершена');
+		}
 	}
 }

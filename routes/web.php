@@ -118,7 +118,7 @@ Route::get('/optimize-clear', function () {
 });
 
 // Плеер
-Route::group(['namespace' => 'App\Http\Controllers'], function () {
+Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.session'], function () {
 	// Проверка
 	Route::get('/player.iframe', 'PlayerController@iframe')->name('player.iframe');
 	//
