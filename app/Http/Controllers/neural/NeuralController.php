@@ -98,7 +98,7 @@ class NeuralController extends Controller {
 			'sex' => 'M',
 		];
 
-		$debug = true;
+		$debug = false;
 		if (!$debug)
 			ProcessFaceShot::dispatch($content);
 		else {
