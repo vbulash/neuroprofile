@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
         try {
             $request->authenticate();
             $request->session()->regenerate();
-			session()->put('success', "Вы успешно авторизовались");
+			// session()->put('success', "Вы успешно авторизовались");
 
 			// Valery Bulash - intended гибко, но ненадежно - сброс сессии в неожиданных местах
             // return redirect()->intended();

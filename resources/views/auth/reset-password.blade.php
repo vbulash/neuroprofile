@@ -15,7 +15,7 @@
 								class="block-content block-content-full px-lg-5 px-xl-6 py-4 py-md-5 py-lg-6 bg-body-extra-light">
 								<!-- Header -->
 								<div class="mb-2 text-center">
-									<a class="link-fx fw-bold fs-1" href="javascript:void(0)">
+									<a class="link-fx fw-bold fs-3" href="javascript:void(0)">
 										<span class="text-dark">{!! env('APP_NAME') !!}</span>
 									</a>
 									<p class="text-uppercase fw-bold fs-sm text-muted">Изменение пароля пользователя</p>

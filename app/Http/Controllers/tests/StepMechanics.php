@@ -23,10 +23,16 @@ class StepMechanics implements Step
 		$options = intval($heap['options'] ?? 0);
 		if (isset($data['face']))
 			$options |= TestOptions::FACE_NEURAL->value;
+		else
+			$options &= ~TestOptions::FACE_NEURAL->value;
 		if (isset($data['eye']))
 			$options |= TestOptions::EYE_TRACKING->value;
+		else
+			$options &= ~TestOptions::EYE_TRACKING->value;
 		if (isset($data['mouse']))
 			$options |= TestOptions::MOUSE_TRACKING->value;
+		else
+			$options &= ~TestOptions::MOUSE_TRACKING->value;
 		$heap['options'] = $options;
 		$heap['cue'] = $data['cue'];
 		session()->put('heap', $heap);

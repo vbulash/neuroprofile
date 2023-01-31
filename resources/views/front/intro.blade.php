@@ -9,10 +9,11 @@
 @endpush
 
 @section('content')
-	<form role="form" method="get" action="{{ route('player.card', ['sid' => session()->getId()]) }}">
+	<form role="form" method="get" action="{{ route('player.card', ['sid' => session()->getId()]) }}" id="intro-form">
 		@csrf
 		<input type="hidden" value="{{ $sid}}" name="sid">
 		<input type="hidden" name="nextblock" value="card">
+		<input type="hidden" name="agent" id="agent" value="">
 		<div id="safari" style="display: none">
 			<div id="mac" class="mb-4">
 				<p>Мы обнаружили, что вы запускаете тест на компьютере Mac в браузере Safari. Для прохождения теста без ошибки
@@ -93,6 +94,10 @@
 
 		document.getElementById('safari-cors').addEventListener('change', event => {
 			document.getElementById('start').disabled = !event.target.checked;
+		}, false);
+
+		document.getElementById('intro-form').addEventListener('submit', () => {
+			document.getElementById('agent').value = navigator.userAgent;
 		}, false);
 
 		document.addEventListener("DOMContentLoaded", () => {

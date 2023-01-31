@@ -133,6 +133,7 @@ class PlayerController extends Controller {
 		} else {
 			session()->forget('pkey');
 			$test = session('test');
+			session()->put('agent', $request->agent);
 
 			if ($test->options & TestOptions::AUTH_GUEST->value) {
 				$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
@@ -219,6 +220,12 @@ class PlayerController extends Controller {
 			$card['neural'] = json_decode($neural);
 			Redis::del(session('pkey'));
 		}
+		if (session()->has('agent')) {
+			$agent = session('agent');
+			if (!isset($card))
+				$card = [];
+			$card['agent'] = $agent;
+		}
 		$history->card = isset($card) ? json_encode($card) : null;
 		$history->paid = false;
 		$history->test()->associate($test);
@@ -260,13 +267,6 @@ class PlayerController extends Controller {
 		int $history_id, bool $repeat = false, bool $historyMode = false, bool $pay = false
 	) {
 		$history = History::findOrFail($history_id);
-		if (env('RESEARCH')) {
-			$test = $history->test;
-			return view('front.thanks', compact('test'));
-		}
-
-		if ($pay)
-			$history->update(['paid' => true]);
 
 		if (!$repeat) {
 			// Не переименовывать переменную - может использоваться в коде набора вопросов в eval()
@@ -277,6 +277,14 @@ class PlayerController extends Controller {
 			$history->update();
 			// Код нейропрофиля вычислен и сохранен
 		}
+
+		if (env('RESEARCH')) {
+			$test = $history->test;
+			return view('front.thanks', compact('test'));
+		}
+
+		if ($pay)
+			$history->update(['paid' => true]);
 
 		$content = json_decode($history->test->content);
 		$maildata = [];
