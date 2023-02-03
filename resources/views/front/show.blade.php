@@ -13,44 +13,37 @@
 @endpush
 
 @section('content')
-	{{--	@if(auth()->check())--}}
-	{{--		<h3>--}}
-	{{--			Проверка теста завершена, можете вернуться в Платформу--}}
-	{{--			<a href="{{ route('admin.index') }}" class="btn btn-primary">Возврат на главную страницу</a>--}}
-	{{--		</h3>--}}
-	{{--	@endif--}}
+	@auth
+		<a href="{{ route('dashboard') }}" class="btn btn-primary mt-4">Возврат на главную страницу</a>
+	@endauth
 
 	@php
-		if(session('branding')) {
-			$style = session('branding')['buttonstyle'];
-			$class = '';
+		if (session('branding')) {
+		    $style = session('branding')['buttonstyle'];
+		    $class = '';
 		} else {
-        	$style = '';
-			$class = 'btn-primary';
+		    $style = '';
+		    $class = 'btn-primary';
 		}
 	@endphp
-	@if($history->test->paid)
-		@if($history->paid == '0')
-			<h5 class="mt-4">Вы видите краткую бесплатную версию результатов тестирования.<br/>
-				Оплатите полный результат тестирования и получите его по электронной почте.<br/>
+	@if ($history->test->paid)
+		@if ($history->paid == '0')
+			<h5 class="mt-4">Вы видите краткую бесплатную версию результатов тестирования.<br />
+				Оплатите полный результат тестирования и получите его по электронной почте.<br />
 			</h5>
 			<p>Нажимая кнопку оплаты ниже и выполняя оплату, вы соглашаетесь с условиями <a
 					href="{{ route('player.policy', ['document' => 'oferta']) }}" target="_blank">публичного
 					договора-оферты</a></p>
-			<x-robokassa.frame
-				:history="$history"
-				description="Оплата полного результата нейротестирования"
-				class="{{ $class }}"
-				style="{{ $style }}"
-			>
+			<x-robokassa.frame :history="$history" description="Оплата полного результата нейротестирования"
+				class="{{ $class }}" style="{{ $style }}">
 				Оплата через Робокассу
 			</x-robokassa.frame>
 		@endif
 	@endif
 
 	<h1>
-		@if($history->test->paid)
-			@if($history->paid == '1')
+		@if ($history->test->paid)
+			@if ($history->paid == '1')
 				Полный результат вашего тестирования:
 			@else
 				Краткий результат вашего тестирования:
@@ -63,12 +56,12 @@
 
 	@forelse($blocks  as $block)
 		<h2>{{ $block->name }}</h2>
-		@if($history->test->paid)
+		@if ($history->test->paid)
 			<div style="margin-left: 20px;">
-				@if($block->short)
+				@if ($block->short)
 					{{ $block->short }}
 				@else
-					{{--                    Содержание краткого / бесплатного блока...--}}
+					{{--                    Содержание краткого / бесплатного блока... --}}
 					Информация доступна в полной версии
 				@endif
 			</div>
@@ -76,7 +69,7 @@
 			<div style="margin-left: 20px;">{!! $block->full !!}</div>
 		@endif
 	@empty
-		<h2>Настройка теста не завершена.<br/>
+		<h2>Настройка теста не завершена.<br />
 			Нет блоков описаний, соответствующих коду нейропрофиля &laquo;{{ $profile->code }}&raquo;</h2>
 	@endforelse
 @endsection

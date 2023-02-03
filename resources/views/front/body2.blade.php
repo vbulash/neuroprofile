@@ -55,11 +55,15 @@
 					<div class="d-flex flex-wrap">
 						@foreach ($question->parts as $part)
 							<div
-								class="col-xs-{{ $gridPhone }}
+								class="
+							col-{{ $gridPhone }}
+							col-xs-{{ $gridPhone }}
 							col-sm-{{ $gridPhone }}
 							col-md-{{ $gridPhone }}
 							col-lg-{{ $gridTablet }}
-							col-xl-{{ $gridDesktop }}">
+							col-xl-{{ $gridDesktop }}
+							p-1
+							">
 								<div class="mb-5 text-center">
 									<img src="/uploads/{{ $part->image }}" data-id="{{ $question->getKey() }}" data-idx="{{ $part->getKey() }}"
 										data-key="{{ $part->key }}" alt=""

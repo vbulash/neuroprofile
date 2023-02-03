@@ -21,7 +21,7 @@
                       id="start-player">
                     @csrf
                     <input type="hidden" name="mkey-modal" id="mkey-modal">
-                    <input type="hidden" name="test" id="test">
+                    <input type="hidden" name="test-modal" id="test-modal">
                     <button type="submit" id="play_btn" class="btn btn-primary" data-role="submit">Проверить</button>
                 </form>
             </div>
@@ -72,7 +72,7 @@
                 let mkey = $('#tests').find(':selected').data('mkey');
                 let test = $('#tests').find(':selected').data('test');
                 $('#mkey-modal').val(mkey);
-                $('#test').val(test);
+                $('#test-modal').val(test);
             });
         });
     </script>

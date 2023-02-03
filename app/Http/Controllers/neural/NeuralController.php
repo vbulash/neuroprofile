@@ -4,37 +4,39 @@ namespace App\Http\Controllers\neural;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessFaceShot;
+use App\Models\License;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
-
-use function Psy\debug;
+use Exception;
 
 class NeuralController extends Controller {
 	public function run(Request $request) {
 
 	}
 	private static array $imagetypes = [
-	IMAGETYPE_GIF => 'GIF',
-	IMAGETYPE_JPEG => 'JPEG',
-	IMAGETYPE_PNG => 'PNG',
-	IMAGETYPE_SWF => 'SWF',
-	IMAGETYPE_PSD => 'PSD',
-	IMAGETYPE_BMP => 'BMP',
-	IMAGETYPE_TIFF_II => 'TIFF II',
-	IMAGETYPE_TIFF_MM => 'TIFF_MM',
-	IMAGETYPE_JPC => 'JPC',
-	IMAGETYPE_JP2 => 'JP2',
-	IMAGETYPE_JPX => 'JPX',
-	IMAGETYPE_JB2 => 'JB2',
-	IMAGETYPE_SWC => 'SWC',
-	IMAGETYPE_IFF => 'IFF',
-	IMAGETYPE_WBMP => 'WBMP',
-	IMAGETYPE_XBM => 'XBM',
-	IMAGETYPE_ICO => 'ICO',
-	IMAGETYPE_WEBP => 'WEBP',
+		IMAGETYPE_GIF => 'GIF',
+		IMAGETYPE_JPEG => 'JPEG',
+		IMAGETYPE_PNG => 'PNG',
+		IMAGETYPE_SWF => 'SWF',
+		IMAGETYPE_PSD => 'PSD',
+		IMAGETYPE_BMP => 'BMP',
+		IMAGETYPE_TIFF_II => 'TIFF II',
+		IMAGETYPE_TIFF_MM => 'TIFF_MM',
+		IMAGETYPE_JPC => 'JPC',
+		IMAGETYPE_JP2 => 'JP2',
+		IMAGETYPE_JPX => 'JPX',
+		IMAGETYPE_JB2 => 'JB2',
+		IMAGETYPE_SWC => 'SWC',
+		IMAGETYPE_IFF => 'IFF',
+		IMAGETYPE_WBMP => 'WBMP',
+		IMAGETYPE_XBM => 'XBM',
+		IMAGETYPE_ICO => 'ICO',
+		IMAGETYPE_WEBP => 'WEBP',
 	];
 
 	private function getClearBase64(string $fullBase64): string {
@@ -48,6 +50,7 @@ class NeuralController extends Controller {
 	public function shotDone(Request $request) {
 		// Декодировать запрос
 		$uuid = $request->uuid;
+		$sex = $request->sex;
 		// Сохранить временную картинку .png для анализа формата
 		$tmpimage = 'tmp/' . Str::uuid() . '.png';
 		$clearPhoto = $this->getClearBase64($request->photo);
@@ -95,11 +98,11 @@ class NeuralController extends Controller {
 		$content = (object) [
 			'uuid' => $uuid,
 			'photo' => $clearPhoto,
-			'sex' => 'M',
+			'sex' => $sex,
 		];
 
-		$debug = false;
-		if (!$debug)
+		$local = env('APP_ENV') == 'local';
+		if (!$local)
 			ProcessFaceShot::dispatch($content);
 		else {
 			$res = null;
@@ -119,11 +122,12 @@ class NeuralController extends Controller {
 			}
 
 			$body = $res->json();
+			// Log::debug(print_r($body, true));
 			// Декодировать запрос
 			$result = $body['result'];
 			$uuid = $body['uuid'];
+			$attention = $body['attention'];
 			// TODO при необходимости анализировать здесь или в вызывателе code (обычно 200)
-			// TODO разобрать $body['attention'] (base64) по готовности в теле возврата из нейросети
 			$codeMap = [
 				'A' => 'BD',
 				'B' => 'BH',
@@ -155,13 +159,19 @@ class NeuralController extends Controller {
 			$history = $license->history;
 			if (isset($history)) { // История прохождения сохранена, можно добавлять результат работы нейросети
 				$card = json_decode($history->card, true);
-				$card['neural'] = $neural;
+				$card['neural'] = [
+					'result' => $neural,
+					'attention' => $attention,
+				];
 				$history->update([
 					'card' => json_encode($card)
 				]);
 				Log::info('Результат работы нейросети: сохранён');
 			} else { // Новое прохождение, пока не сохранено, нужно будет добавить данные нейросети позже при сохранении
-				Redis::set($uuid, json_encode($neural));
+				Redis::set($uuid, json_encode([
+					'result' => $neural,
+					'attention' => $attention,
+				]));
 				Log::info('Результат работы нейросети: отложен до сохранения');
 			}
 

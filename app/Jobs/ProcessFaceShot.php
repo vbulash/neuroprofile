@@ -45,9 +45,11 @@ class ProcessFaceShot implements ShouldQueue {
 		}
 
 		$body = $res->json();
+		// Log::debug(print_r($body, true));
 		// Декодировать запрос
 		$result = $body['result'];
 		$uuid = $body['uuid'];
+		$attention = $body['attention'];
 		// TODO при необходимости анализировать здесь или в вызывателе code (обычно 200)
 		// TODO разобрать $body['attention'] (base64) по готовности в теле возврата из нейросети
 		$codeMap = [
@@ -81,13 +83,19 @@ class ProcessFaceShot implements ShouldQueue {
 		$history = $license->history;
 		if (isset($history)) { // История прохождения сохранена, можно добавлять результат работы нейросети
 			$card = json_decode($history->card, true);
-			$card['neural'] = $neural;
+			$card['neural'] = [
+				'result' => $neural,
+				'attention' => $attention,
+			];
 			$history->update([
 				'card' => json_encode($card)
 			]);
 			Log::info('Результат работы нейросети: сохранён');
 		} else { // Новое прохождение, пока не сохранено, нужно будет добавить данные нейросети позже при сохранении
-			Redis::set($uuid, json_encode($neural));
+			Redis::set($uuid, json_encode([
+				'result' => $neural,
+				'attention' => $attention,
+			]));
 			Log::info('Результат работы нейросети: отложен до сохранения');
 		}
 

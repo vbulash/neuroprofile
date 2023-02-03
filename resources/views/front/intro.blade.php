@@ -11,7 +11,7 @@
 @section('content')
 	<form role="form" method="get" action="{{ route('player.card', ['sid' => session()->getId()]) }}" id="intro-form">
 		@csrf
-		<input type="hidden" value="{{ $sid}}" name="sid">
+		<input type="hidden" value="{{ $sid }}" name="sid">
 		<input type="hidden" name="nextblock" value="card">
 		<input type="hidden" name="agent" id="agent" value="">
 		<div id="safari" style="display: none">
@@ -45,10 +45,12 @@
 		@php
 			$branding = session('branding');
 			$label = ' ';
-			if ($test->options & \App\Models\TestOptions::FACE_NEURAL->value) {
-			    $label = 'Подготовка к тестированию: сделать снимок лица';
-			} elseif ($test->options & \App\Models\TestOptions::AUTH_GUEST->value) {
-			    $label = 'Начать тест';
+			if ($test->options & \App\Models\TestOptions::AUTH_GUEST->value) {
+			    if ($test->options & \App\Models\TestOptions::FACE_NEURAL->value) {
+			        $label = 'Подготовка к тестированию: сделать снимок лица';
+			    } else {
+			        $label = 'Начать тест';
+			    }
 			} elseif ($test->options & \App\Models\TestOptions::AUTH_FULL->value) {
 			    $label = 'Перейти к анкете';
 			} elseif ($test->options & \App\Models\TestOptions::AUTH_PKEY->value) {

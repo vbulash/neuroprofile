@@ -27,7 +27,8 @@
 	</div>
 	<form method="get" action="{{ route('player.body2', ['sid' => session()->getId()]) }}">
 		@csrf
-		<input type="hidden" value="{{ $sid}}" name="sid">
+		<input type="hidden" value="{{ $sid }}" name="sid">
+		<input type="hidden" value="{{ $sex }}" name="sex" id="sex">
 		<div class="d-flex flex-column">
 			<div>
 				<canvas class="output_canvas"></canvas>
@@ -210,25 +211,42 @@ export default class FaceIllumination {
 
 		function save(canvas) {
 			const uuid = '{{ $pkey }}';
-			const sex = 'M';
+			const sex = document.getElementById('sex').value;
 			const picture = canvas.toDataURL();
 
-			// url: "{{ route('neural.shot.done') }}",
-			const response = fetch("https://research.personahuman.ru/api/shot.done", {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json;charset=utf-8'
-				},
-				body: JSON.stringify({
-					uuid: uuid,
-					sex: sex,
-					photo: picture,
+			@if (env('APP_ENV') == 'local')
+				$.post({
+					url: "{{ route('neural.shot.done') }}",
+					data: {
+						uuid: uuid,
+						sex: sex,
+						photo: picture,
+					},
+					// headers: {
+					// 	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+					// 	'Content-Type': 'application/json;charset=utf-8'
+					// },
+					success: () => {
+						document.getElementById('continue').disabled = false;
+					}
+				});
+			@else
+				const response = fetch("{{ route('neural.shot.done') }}", {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json;charset=utf-8'
+					},
+					body: JSON.stringify({
+						uuid: uuid,
+						sex: sex,
+						photo: picture,
+					})
 				})
-			})
-				.catch(error => console.log(error))
-			.then((response) => {
-				document.getElementById('continue').disabled = false;
-			});
+					.catch(error => console.log(error))
+				.then((response) => {
+					document.getElementById('continue').disabled = false;
+				});
+			@endif
 		}
 
 		function onResults(results) {
@@ -312,12 +330,14 @@ export default class FaceIllumination {
 						messages.push(message);
 					}
 					// Освещение
+					@if (env('APP_ENV') != 'local')
 					const fi = new FaceIllumination(canvasElement);
 					message = fi.estimate(landmarks);
 					if (message) {
 						mesh_color = '#FF0000';
 						messages.push(message);
 					}
+					@endif
 
 					//
 					canvasCtx.beginPath();

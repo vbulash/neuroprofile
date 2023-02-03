@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-trait TestFields
-{
+trait TestFields {
 	public static array $fields = [
 		[
 			[
@@ -76,10 +75,10 @@ trait TestFields
 				"name" => "sex",
 				"label" => "Пол",
 				"type" => "select",
-				"value" => "Ж",
+				"value" => "F",
 				"cases" => [
-					["value" => "М", "label" => "Мужской"],
-					["value" => "Ж", "label" => "Женский"]
+					["value" => "M", "label" => "Мужской"],
+					["value" => "F", "label" => "Женский"]
 				]
 			]
 		],

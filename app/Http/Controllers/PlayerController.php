@@ -96,7 +96,7 @@ class PlayerController extends Controller {
 	public function play(Request $request, string $mkey = null, string $test = null): Factory|View|RedirectResponse|Application {
 		// Log::info('test = ' . $test);
 		$mkey = $mkey ?: $request->{'mkey-modal'};
-		$test = $test ?: $request->test;
+		$test = $test ?: $request->{'test-modal'};
 		Log::info('play mkey = ' . $mkey);
 		if (!$this->check($request, $mkey, $test)) {
 			//Log::debug('player.play: ' . __METHOD__ . ':' . __LINE__);
@@ -175,9 +175,12 @@ class PlayerController extends Controller {
 	public function face(Request $request) {
 		$test = session('test');
 		$this->lockLicense($test);
+
+		$card = session('card');
 		return view('front.face', [
 			'pkey' => session('pkey'),
-			'test' => session('test')
+			'test' => session('test'),
+			'sex' => (isset($card) ? $card['sex'] : 'M'),
 		]);
 	}
 
@@ -200,7 +203,7 @@ class PlayerController extends Controller {
 		event(new ToastEvent('info', '', "Анализ результатов тестирования..."));
 
 		$test = session('test');
-		$data = $request->except(['privacy_policy', 'privacy_personal', '_token']);
+		$data = $request->except(['privacy_policy', 'privacy_personal', '_token', 'sid']);
 
 		// Фиксация лицензии по завершению тестирования
 		$license = License::all()->where('pkey', session('pkey'))->first();
@@ -211,8 +214,18 @@ class PlayerController extends Controller {
 
 		$history = new History();
 		$card = null;
-		if (session()->has('card'))
+		if (session()->has('card')) {
 			$card = session('card');
+			unset($card['sid']);
+		}
+
+		if (session()->has('agent')) {
+			$agent = session('agent');
+			if (!isset($card))
+				$card = [];
+			$card['agent'] = $agent;
+		}
+
 		$neural = Redis::get(session('pkey'));
 		if (isset($neural)) {
 			if (!isset($card))
@@ -220,12 +233,7 @@ class PlayerController extends Controller {
 			$card['neural'] = json_decode($neural);
 			Redis::del(session('pkey'));
 		}
-		if (session()->has('agent')) {
-			$agent = session('agent');
-			if (!isset($card))
-				$card = [];
-			$card['agent'] = $agent;
-		}
+
 		$history->card = isset($card) ? json_encode($card) : null;
 		$history->paid = false;
 		$history->test()->associate($test);
@@ -406,7 +414,6 @@ class PlayerController extends Controller {
 	 * Результат оплаты в Робокасса
 	 */
 	public function paymentResult(Request $request) {
-		//		Log::debug('Robokassa result = ' . print_r($request->all(), true));
 		$history_id = $request->InvId;
 		$session = $request->Shp_Session ?? null;
 		if ($session && $session != session()->getId()) {
@@ -418,7 +425,6 @@ class PlayerController extends Controller {
 	}
 
 	public function paymentSuccess(Request $request) {
-		//		Log::debug('Robokassa success = ' . print_r($request->all(), true));
 		$history_id = $request->InvId;
 		$session = $request->Shp_Session ?? null;
 		$history = History::findOrFail($history_id);
