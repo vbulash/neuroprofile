@@ -31,7 +31,7 @@
 	@php
 		$fields = [];
 		$fields[] = ['name' => 'name', 'title' => 'Наименование набора вопросов', 'required' => true, 'type' => 'text', 'value' => $set->name];
-		if (!env('RESEARCH')) {
+		if (env('EXEC_MODE') != 'research') {
 		    $fields[] = ['name' => 'code', 'title' => 'PHP-код вычисления кода нейропрофиля', 'required' => true, 'type' => 'editor', 'value' => $set->code];
 		}
 	@endphp
@@ -41,13 +41,13 @@
 	{{ form($set, $mode, 'close') }}
 @endsection
 
-@if (!env('RESEARCH'))
+@if (env('EXEC_MODE') != 'research')
 	@push('css_after')
 		<link rel="stylesheet" href="{{ asset('css/ckeditor.css') }}">
 	@endpush
 @endif
 
-@if (!env('RESEARCH'))
+@if (env('EXEC_MODE') != 'research')
 	@push('js_after')
 		<script src="{{ asset('js/ckeditor.js') }}"></script>
 		<script>
@@ -119,7 +119,7 @@
 					console.error('Oops, something went wrong!');
 					console.error(
 						'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:'
-						);
+					);
 					console.warn('Build id: bfknlbbh0ej1-27rpc1i5joqr');
 					console.error(error);
 				});

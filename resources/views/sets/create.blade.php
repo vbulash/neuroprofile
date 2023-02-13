@@ -27,7 +27,7 @@
 	@php
 		$fields = [];
 		$fields[] = ['name' => 'name', 'title' => 'Наименование набора вопросов', 'required' => true, 'type' => 'text'];
-		if (!env('RESEARCH')) {
+		if (env('EXEC_MODE') != 'research') {
 		    $fields[] = ['name' => 'code', 'title' => 'PHP-код вычисления кода нейропрофиля', 'required' => true, 'type' => 'editor'];
 		}
 	@endphp
@@ -37,13 +37,13 @@
 	{{ form(\App\Models\Set::class, $mode, 'close') }}
 @endsection
 
-@if (!env('RESEARCH'))
+@if (env('EXEC_MODE') != 'research')
 	@push('css_after')
 		<link rel="stylesheet" href="{{ asset('css/ckeditor.css') }}">
 	@endpush
 @endif
 
-@if (!env('RESEARCH'))
+@if (env('EXEC_MODE') != 'research')
 	@push('js_after')
 		<script src="{{ asset('js/ckeditor.js') }}"></script>
 		<script>

@@ -16,20 +16,18 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Exception;
 
-class SetController extends Controller
-{
+class SetController extends Controller {
 	/**
 	 * Process datatables ajax request.
 	 *
 	 * @return JsonResponse
 	 * @throws Exception
 	 */
-	public function getData(): JsonResponse
-	{
+	public function getData(): JsonResponse {
 		$sets = Set::all();
 
 		return Datatables::of($sets)
-			->editColumn('questions', function($set) {
+			->editColumn('questions', function ($set) {
 				$count = $set->questions->count();
 				switch ($count) {
 					case 0:
@@ -71,34 +69,31 @@ class SetController extends Controller
 			->make(true);
 	}
 
-	public function select(int $id)
-	{
+	public function select(int $id) {
 		session()->put('context', ['set' => $id]);
 		return redirect()->route('questions.index');
 	}
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Application|Factory|View
 	 */
-    public function index()
-    {
+	public function index() {
 		session()->forget('context');
 		$count = Set::all()->count();
 		return view('sets.index', compact('count'));
-    }
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Application|Factory|View
 	 */
-    public function create()
-    {
+	public function create() {
 		$mode = config('global.create');
-        return view('sets.create', compact('mode'));
-    }
+		return view('sets.create', compact('mode'));
+	}
 
 	/**
 	 * Store a newly created resource in storage.
@@ -106,61 +101,57 @@ class SetController extends Controller
 	 * @param StoreSetRequest $request
 	 * @return RedirectResponse
 	 */
-    public function store(StoreSetRequest $request)
-    {
+	public function store(StoreSetRequest $request) {
 		$set = new Set();
 		$set->name = $request->name;
-		$set->code = env('RESEARCH') ? '//' : $request->code;
+		$set->code = (env('EXEC_MODE') == 'research' ? '//' : $request->code);
 		$set->save();
 		$name = $set->name;
 
 		session()->put('success', "Набор вопросов \"{$name}\" создан");
 		return redirect()->route('sets.index');
-    }
+	}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Application|Factory|View
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Application|Factory|View
 	 */
-    public function show(int $id)
-    {
+	public function show(int $id) {
 		return $this->edit($id, true);
-    }
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Application|Factory|View
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Application|Factory|View
 	 */
-    public function edit(int $id, bool $show = false)
-    {
+	public function edit(int $id, bool $show = false) {
 		$mode = $show ? config('global.show') : config('global.edit');
 		$set = Set::findOrFail($id);
-        return view('sets.edit', compact('set', 'mode'));
-    }
+		return view('sets.edit', compact('set', 'mode'));
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param  int  $id
-     * @return RedirectResponse
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param Request $request
+	 * @param  int  $id
+	 * @return RedirectResponse
 	 */
-    public function update(UpdateSetRequest $request, int $id)
-    {
+	public function update(UpdateSetRequest $request, int $id) {
 		$set = Set::findOrFail($id);
 		$name = $set->name;
 		$set->update([
 			'name' => $request->name,
-			'code' => env('RESEARCH') ? '//' : $request->code
+			'code' => (env('EXEC_MODE') == 'research' ? '//' : $request->code)
 		]);
 
 		session()->put('success', "Набор вопросов \"{$name}\" обновлён");
 		return redirect()->route('sets.index');
-    }
+	}
 
 	/**
 	 * Remove the specified resource from storage.
@@ -169,11 +160,11 @@ class SetController extends Controller
 	 * @param int $set
 	 * @return bool
 	 */
-	public function destroy(Request $request, int $set)
-	{
+	public function destroy(Request $request, int $set) {
 		if ($set == 0) {
 			$id = $request->id;
-		} else $id = $set;
+		} else
+			$id = $set;
 
 		$set = Set::findOrFail($id);
 		$name = $set->name;

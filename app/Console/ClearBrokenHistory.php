@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class ClearBrokenHistory {
 	public function __invoke(): void {
-		if (env('RESEARCH'))
+		if (env('EXEC_MODE') == 'research')
 			return;
 
 		$histories = History::whereNull('code');

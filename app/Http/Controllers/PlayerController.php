@@ -286,7 +286,7 @@ class PlayerController extends Controller {
 			// Код нейропрофиля вычислен и сохранен
 		}
 
-		if (env('RESEARCH')) {
+		if (env('EXEC_MODE') == 'research') {
 			$test = $history->test;
 			return view('front.thanks', compact('test'));
 		}
@@ -299,12 +299,14 @@ class PlayerController extends Controller {
 		$maildata['show'] = $content->descriptions->show ?? false;
 		$maildata['mail'] = $content->descriptions->mail ?? false;
 		$maildata['client'] = $content->descriptions->client ?? false;
-		$maildata['$branding'] = $content->branding ?? false;
+		$maildata['branding'] = $content->branding ?? false;
 
-		if ($maildata['mail'])
-			$this->mailRespondent($history, $maildata, $historyMode);
-		if (!$pay && $maildata['client'])
-			$this->mailClient($history, $maildata, $historyMode);
+		if (env('EXEC_MODE') == 'full') {
+			if ($maildata['mail'])
+				$this->mailRespondent($history, $maildata, $historyMode);
+			if (!$pay && $maildata['client'])
+				$this->mailClient($history, $maildata, $historyMode);
+		}
 
 		$card = (new CardComposer($history))->getCard();
 		$composer = new BlocksComposer($history);

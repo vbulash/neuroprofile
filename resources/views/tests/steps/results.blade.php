@@ -22,11 +22,11 @@
 	@php
 		$heap = session('heap');
 		$options = intval($heap['options']);
-
+		
 		$fields = [];
 		if (!isset($heap['step-results']) && $mode == config('global.create')) {
-		    if (env('RESEARCH')) {
-		        $fields[] = ['title' => "В режиме исследовательской платформы результаты тестирования не отображаются / не пересылаются. Все поля ниже заблокированы и не могут быть изменены или использованы далее", 'type' => 'heading'];
+		    if (env('EXEC_MODE') == 'research') {
+		        $fields[] = ['title' => 'В режиме исследовательской платформы результаты тестирования не отображаются / не пересылаются. Все поля ниже заблокированы и не могут быть изменены или использованы далее', 'type' => 'heading'];
 		        $fields[] = ['title' => 'Показ результата тестирования на экране', 'type' => 'heading'];
 		        $fields[] = ['name' => 'show-option', 'title' => 'Показать результат тестирования', 'required' => false, 'type' => 'checkbox', 'disabled' => true];
 		        $fields[] = ['name' => 'show', 'title' => 'Будет использован тип описания', 'required' => false, 'type' => 'select', 'options' => $fmptypes, 'disabled' => true];
@@ -52,8 +52,8 @@
 		    $fields[] = ['name' => 'step-results', 'type' => 'hidden', 'value' => true];
 		} else {
 		    $fields[] = ['title' => 'Показ результата тестирования на экране', 'type' => 'heading'];
-		    if (env('RESEARCH')) {
-		        $fields[] = ['title' => "В режиме исследовательской платформы результаты тестирования не отображаются / не пересылаются. Все поля ниже заблокированы и не могут быть изменены или использованы далее", 'type' => 'heading'];
+		    if (env('EXEC_MODE') == 'research') {
+		        $fields[] = ['title' => 'В режиме исследовательской платформы результаты тестирования не отображаются / не пересылаются. Все поля ниже заблокированы и не могут быть изменены или использованы далее', 'type' => 'heading'];
 		        $fields[] = ['name' => 'show-option', 'title' => 'Показать результат тестирования', 'required' => false, 'type' => 'checkbox', 'value' => isset($heap['descriptions']['show']), 'disabled' => true];
 		        $fields[] = ['name' => 'show', 'title' => 'Будет использован тип описания', 'required' => false, 'type' => 'select', 'options' => $fmptypes, 'value' => $heap['descriptions']['show'] ?? 0, 'disabled' => true];
 		        $fields[] = ['title' => 'Письмо респонденту с результатом тестирования', 'type' => 'heading'];
