@@ -27,7 +27,7 @@
 						$type = $element['type'];
 						$value = $element['value'];
 						$required = $element['required'];
-
+						
 						$actual = key_exists($name, $test_content);
 					@endphp
 					@if (!$actual)
@@ -124,7 +124,9 @@
 		<button type="submit" id="start_test"
 			@if (isset($branding)) class="btn btn-lg mt-2" style="{{ $branding['buttonstyle'] }}" @else class="btn btn-primary btn-lg mt-2" @endif
 			disabled>
-			@if ($test->options & \App\Models\TestOptions::FACE_NEURAL->value)
+			@if ($test->options & \App\Models\TestOptions::EYE_TRACKING->value)
+				Подготовка к тестированию: выполнить калибровку зрачков
+			@elseif ($test->options & \App\Models\TestOptions::FACE_NEURAL->value)
 				Подготовка к тестированию: сделать снимок лица
 			@else
 				Начать тестирование

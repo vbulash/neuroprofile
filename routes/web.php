@@ -114,7 +114,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 // Служебные маршруты
 Route::get('/optimize-clear', function () {
 	$exitCode = Artisan::call('optimize:clear');
-	echo('Сделана полная оптимизация. Код завершения = '. $exitCode);
+	echo ('Сделана полная оптимизация. Код завершения = ' . $exitCode);
 });
 
 // Плеер
@@ -130,6 +130,8 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.se
 	Route::get('/player.full', 'PlayerController@store_full_card')->name('player.full');
 	// Фото лица
 	Route::get('/player.face', 'PlayerController@face')->name('player.face');
+	// Калибровка айтрекинга
+	Route::get('/player.eye', 'PlayerController@eye')->name('player.eye');
 
 	Route::get('/player.body2', 'PlayerController@body2')->name('player.body2');
 	Route::post('/player/body2.store', 'PlayerController@body2_store')->name('player.body2.store');
@@ -139,4 +141,4 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.se
 	Route::get('/player.policy/{document}/{mail?}', 'PlayerController@showDocument')->name('player.policy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

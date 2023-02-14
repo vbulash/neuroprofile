@@ -9,43 +9,32 @@
 @endpush
 
 @push('step_description')
-	Снимок будет сделан через:
+	Калибровка зрачков начнётся через:
 @endpush
 
 @section('content')
-	@php
-		if ($test->options & \App\Models\TestOptions::EYE_TRACKING->value) {
-		    $button = 'Подготовка к тестированию: сделать снимок лица';
-		    $route = 'player.eye';
-		} else {
-		    $button = 'Начать тестирование';
-		    $route = 'player.body2';
-		}
-		
-	@endphp
 	<div class="mt-4 mb-4" id="placeholder">
 		<p>
 			Лицо должно быть размещено ровно, полностью видно с достаточным освещением.<br />
 			Если вы видите на экране зеленую сетку, значит лицо зафиксировано верно.<br />
 			В ином случае следуйте инструкциям, расположенным на данном экране ниже.<br />
-			Если зеленая сетка на лице зафиксируется в течение 5 секунд, то снимок лица выполнится автоматически и кнопка
-			&laquo;{{ $button }}&raquo; станет доступной - вы сможете продолжить тестирование.
+			Если зеленая сетка на лице зафиксируется в течение 3 секунд, то кнопка
+			&laquo;Начать калибровку зрачков&raquo; станет доступной - вы сможете продолжить тестирование.
 		</p>
 		<p>
 			<i class="fa-solid fa-camera"></i> Калибровка камеры...
 		</p>
 	</div>
-	<form method="get" action="{{ route($route, ['sid' => session()->getId()]) }}">
+	<form method="get" action="{{ route('player.body2', ['sid' => session()->getId()]) }}">
 		@csrf
 		<input type="hidden" value="{{ $sid }}" name="sid">
-		<input type="hidden" value="{{ $sex }}" name="sex" id="sex">
 		<div class="d-flex flex-column">
 			<div>
 				<canvas class="output_canvas"></canvas>
 			</div>
 			<p id="message" class="mt-2 mb-2"></p>
 			<div>
-				<button type="submit" class="btn btn-primary btn-lg mt-4" id="continue" disabled>Начать тестирование</button>
+				<button type="submit" class="btn btn-primary btn-lg mt-4" id="continue" disabled>Начать калибровку зрачков</button>
 			</div>
 		</div>
 		<video class="input_video" style="visibility: hidden;"></video>
@@ -216,47 +205,11 @@ export default class FaceIllumination {
 		let stableIntervalId = null;
 		let frozen = false;
 		let saved = false;
-		const COUNTDOWN = 5;
+		const COUNTDOWN = 3;
 		let countdown = 0;
 
-		function save(canvas) {
-			const uuid = '{{ $pkey }}';
-			const sex = document.getElementById('sex').value;
-			const picture = canvas.toDataURL();
-
-			@if (env('APP_ENV') == 'local')
-				$.post({
-					url: "{{ route('neural.shot.done') }}",
-					data: {
-						uuid: uuid,
-						sex: sex,
-						photo: picture,
-					},
-					// headers: {
-					// 	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-					// 	'Content-Type': 'application/json;charset=utf-8'
-					// },
-					success: () => {
-						document.getElementById('continue').disabled = false;
-					}
-				});
-			@else
-				const response = fetch("{{ route('neural.shot.done') }}", {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json;charset=utf-8'
-					},
-					body: JSON.stringify({
-						uuid: uuid,
-						sex: sex,
-						photo: picture,
-					})
-				})
-					.catch(error => console.log(error))
-				.then((response) => {
-					document.getElementById('continue').disabled = false;
-				});
-			@endif
+		function save() {
+			document.getElementById('continue').disabled = false;
 		}
 
 		function onResults(results) {
@@ -287,9 +240,6 @@ export default class FaceIllumination {
 				rect.w = videoElement.videoHeight;
 				rect.y = 0;
 				rect.h = videoElement.videoHeight;
-
-				// canvasElement.height = videoElement.videoHeight;
-				// canvasElement.width = videoElement.videoWidth;
 			}
 
 			const fc = new FaceCircle(canvasElement.width / 2, canvasElement.height / 2, Math.min(canvasElement.width, canvasElement.height) * 0.45);
@@ -379,8 +329,7 @@ export default class FaceIllumination {
 						clearInterval(stableIntervalId);
 						stableIntervalId = null;
 						frozen = false;
-						save(results.image);	// Без AR-элементов
-						document.getElementById('message').innerHTML = 'Снимок сделан и сохранён';
+						save();
 						document.querySelectorAll('.step-countdown').forEach((counter) => {
 							counter.innerText = '-';
 						});
@@ -392,7 +341,6 @@ export default class FaceIllumination {
 								document.querySelectorAll('.step-countdown').forEach((counter) => {
 									counter.innerText = countdown;
 								});
-								document.getElementById('message').innerHTML = 'Снимок будет сделан через: ' + countdown.toString();
 								if (countdown-- <= 0) {
 									clearInterval(stableIntervalId);
 									frozen = true;

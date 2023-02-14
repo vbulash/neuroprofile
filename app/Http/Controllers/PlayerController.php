@@ -136,7 +136,11 @@ class PlayerController extends Controller {
 			session()->put('agent', $request->agent);
 
 			if ($test->options & TestOptions::AUTH_GUEST->value) {
-				$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
+				$route = 'player.body2';
+				if ($test->options & TestOptions::FACE_NEURAL->value)
+					$route = 'player.face';
+				elseif ($test->options & TestOptions::EYE_TRACKING->value)
+					$route = 'player.eye';
 				return redirect()->route($route, ['sid' => session()->getId()]);
 			} elseif ($test->options & (TestOptions::AUTH_FULL->value | TestOptions::AUTH_MIX->value)) {
 				$content = json_decode($test->content, true);
@@ -154,7 +158,11 @@ class PlayerController extends Controller {
 		session()->forget('pkey');
 		session()->put('pkey', $request->pkey);
 		$test = session('test');
-		$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
+		$route = 'player.body2';
+		if ($test->options & TestOptions::FACE_NEURAL->value)
+			$route = 'player.face';
+		elseif ($test->options & TestOptions::EYE_TRACKING->value)
+			$route = 'player.eye';
 		return redirect()->route($route, ['sid' => session()->getId()]);
 	}
 
@@ -168,7 +176,11 @@ class PlayerController extends Controller {
 		session()->put('card', $data);
 
 		$test = session('test');
-		$route = $test->options & TestOptions::FACE_NEURAL->value ? 'player.face' : 'player.body2';
+		$route = 'player.body2';
+		if ($test->options & TestOptions::FACE_NEURAL->value)
+			$route = 'player.face';
+		elseif ($test->options & TestOptions::EYE_TRACKING->value)
+			$route = 'player.eye';
 		return redirect()->route($route, ['sid' => session()->getId()]);
 	}
 
@@ -182,6 +194,11 @@ class PlayerController extends Controller {
 			'test' => session('test'),
 			'sex' => (isset($card) ? $card['sex'] : 'M'),
 		]);
+	}
+
+	public function eye(Request $request) {
+		$test = session('test');
+		return view('front.eye', compact('test'));
 	}
 
 	public function body2(Request $request) {
