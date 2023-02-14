@@ -414,5 +414,15 @@
     "/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map": "/assets/front/plugins/bootstrap/js/bootstrap.bundle.min.js.map",
     "/assets/front/css/bootstrap-datepicker.css.map": "/assets/front/css/bootstrap-datepicker.css.map",
     "/js/chart.min.js": "/js/chart.min.js",
-    "/assets/front/js/toastr.js.map": "/assets/front/js/toastr.js.map"
+    "/assets/front/js/toastr.js.map": "/assets/front/js/toastr.js.map",
+    "/css/webgazer/main.css": "/css/webgazer/main.css",
+    "/css/webgazer/webgazer.css": "/css/webgazer/webgazer.css",
+    "/js/webgazer/calibration.js": "/js/webgazer/calibration.js",
+    "/js/webgazer/collision.js": "/js/webgazer/collision.js",
+    "/js/webgazer/main.js": "/js/webgazer/main.js",
+    "/js/webgazer/precision_calculation.js": "/js/webgazer/precision_calculation.js",
+    "/js/webgazer/precision_store_points.js": "/js/webgazer/precision_store_points.js",
+    "/js/webgazer/resize_canvas.js": "/js/webgazer/resize_canvas.js",
+    "/js/webgazer/sweetalert.min.js": "/js/webgazer/sweetalert.min.js",
+    "/js/webgazer/webgazer.js": "/js/webgazer/webgazer.js"
 }
