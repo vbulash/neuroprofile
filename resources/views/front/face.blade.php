@@ -15,7 +15,7 @@
 @section('content')
 	@php
 		if ($test->options & \App\Models\TestOptions::EYE_TRACKING->value) {
-		    $button = 'Подготовка к тестированию: сделать снимок лица';
+		    $button = 'Подготовка к тестированию: выполнить калибровку зрачков';
 		    $route = 'player.eye';
 		} else {
 		    $button = 'Начать тестирование';
@@ -45,7 +45,13 @@
 			</div>
 			<p id="message" class="mt-2 mb-2"></p>
 			<div>
-				<button type="submit" class="btn btn-primary btn-lg mt-4" id="continue" disabled>Начать тестирование</button>
+				<button type="submit" class="btn btn-primary btn-lg mt-4" id="continue" disabled>
+					@if ($test->options & \App\Models\TestOptions::EYE_TRACKING->value)
+						Подготовка к тестированию: выполнить калибровку зрачков
+					@else
+						Начать тестирование
+					@endif
+				</button>
 			</div>
 		</div>
 		<video class="input_video" style="visibility: hidden;"></video>
