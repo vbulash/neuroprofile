@@ -90,7 +90,11 @@ $(document).ready(function () {
 				// makes the variables true for 5 seconds & plots the points
 				$(document).ready(function () {
 
-					store_points_variable(); // start storing the prediction points
+					try {
+						store_points_variable(); // start storing the prediction points
+					} catch (exc) {
+						//
+					}
 
 					sleep(5000).then(() => {
 						stop_storing_points_variable(); // stop storing the prediction points
