@@ -1,6 +1,7 @@
 @php
 	use App\Models\TestOptions;
 	$mousetracking = intval($test->options) & TestOptions::MOUSE_TRACKING->value;
+	$eyetracking = intval($test->options) & TestOptions::EYE_TRACKING->value;
 	$neural = intval($test->options) & TestOptions::FACE_NEURAL->value;
 @endphp
 
@@ -19,8 +20,8 @@
 @endpush
 
 @section('content')
-	<form method="post" action="{{ route('player.body2.store', ['sid' => session()->getId()]) }}" enctype="multipart/form-data" name="play-form"
-		id="play-form">
+	<form method="post" action="{{ route('player.body2.store', ['sid' => session()->getId()]) }}"
+		enctype="multipart/form-data" name="play-form" id="play-form">
 		@csrf
 
 		<!-- Preloader -->
@@ -28,7 +29,7 @@
 		{{--            <h4 class="mt-4 text-center">Загрузка вопросов теста...</h4> --}}
 		{{--        </div> --}}
 
-		<input type="hidden" value="{{ $sid}}" name="sid">
+		<input type="hidden" value="{{ $sid }}" name="sid">
 		<div>
 			@foreach ($questions as $question)
 				@php
@@ -88,6 +89,12 @@
 		</div>
 	</form>
 @endsection
+
+@push('scripts')
+	@if ($eyetracking)
+		<script src="{{ asset('js/webgazer/webgazer.js') }}"></script>
+	@endif
+@endpush
 
 @push('scripts.injection')
 	<script>
