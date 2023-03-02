@@ -10,6 +10,7 @@ use App\Http\Requests\PKeyRequest;
 use App\Mail\TestClientResult;
 use App\Mail\TestResult;
 use App\Models\Contract;
+use App\Models\EyeMove;
 use App\Models\History;
 use App\Models\HistoryStep;
 use App\Models\License;
@@ -276,6 +277,18 @@ class PlayerController extends Controller {
 				$moves = json_decode($data[$movekey]);
 				foreach ($moves as $item) {
 					$move = new MouseMove();
+					$move->time = $item->timestamp;
+					$move->x = $item->x;
+					$move->y = $item->y;
+					$step->moves()->save($move);
+				}
+			}
+
+			$movekey = 'eyemove-' . $key;
+			if (isset($data[$movekey])) {
+				$moves = json_decode($data[$movekey]);
+				foreach ($moves as $item) {
+					$move = new EyeMove();
 					$move->time = $item->timestamp;
 					$move->x = $item->x;
 					$move->y = $item->y;

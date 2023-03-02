@@ -20,7 +20,7 @@
 @endpush
 
 @section('content')
-	<form method="post" action="{{ route('player.body2.store', ['sid' => session()->getId()]) }}"
+	window <form method="post" action="{{ route('player.body2.store', ['sid' => session()->getId()]) }}"
 		enctype="multipart/form-data" name="play-form" id="play-form">
 		@csrf
 
@@ -42,6 +42,9 @@
 				<input type="hidden" name="answer-{{ $question->getKey() }}" id="answer-{{ $question->getKey() }}">
 				@if ($mousetracking)
 					<input type="hidden" name="mousemove-{{ $question->getKey() }}" id="mousemove-{{ $question->getKey() }}">
+				@endif
+				@if ($eyetracking)
+					<input type="hidden" name="eyemove-{{ $question->getKey() }}" id="eyemove-{{ $question->getKey() }}">
 				@endif
 				<div id="div-{{ $question->getKey() }}" class="question-div" style="display: none">
 					<h4 class="mt-4 mb-4 text-center">
@@ -90,11 +93,11 @@
 	</form>
 @endsection
 
-@push('scripts')
-	@if ($eyetracking)
+@if ($eyetracking)
+	@push('scripts')
 		<script src="{{ asset('js/webgazer/webgazer.js') }}"></script>
-	@endif
-@endpush
+	@endpush
+@endif
 
 @push('scripts.injection')
 	<script>
@@ -112,8 +115,12 @@
 			window.pressed = true;
 
 			@if ($mousetracking)
-				document.getElementById('mousemove-' + id).value = JSON.stringify(window.moves);
-				window.moves = [];
+				document.getElementById('mousemove-' + id).value = JSON.stringify(window.mousemoves);
+				window.mousemoves = [];
+			@endif
+			@if ($eyetracking)
+				document.getElementById('eyemove-' + id).value = JSON.stringify(window.eyemoves);
+				window.eyemoves = [];
 			@endif
 			document.getElementById('answer-' + id).value = key;
 
@@ -344,7 +351,7 @@
 				let Y = Math.min(event.pageY / window.innerHeight, 1);
 				// console.log((new Date()).getTime().toString() + ' : ID вопроса = ' + window.slide.toString() + ' : X = ' +
 				// 	X.toString() + ' / Y = ' + Y.toString());
-				window.moves.push({
+				window.mousemoves.push({
 					"timestamp": (new Date()).getTime(),
 					"x": X,
 					"y": Y
@@ -354,9 +361,25 @@
 			document.addEventListener('mousemove', mouseListener, false);
 		@endif
 
+		@if ($eyetracking)
+			webgazer.setGazeListener((data, elapsedTime) => {
+				if (data == null) {
+					return;
+				}
+				window.eyemoves.push({
+					"timestamp": elapsedTime,
+					"x": data.x,
+					"y": data.y,
+				});
+			}).begin();
+		@endif
+
 		document.addEventListener("DOMContentLoaded", () => {
 			@if ($mousetracking)
-				window.moves = [];
+				window.mousemoves = [];
+			@endif
+			@if ($eyetracking)
+				window.eyemoves = [];
 			@endif
 			@if ($neural)
 				// netUp();
