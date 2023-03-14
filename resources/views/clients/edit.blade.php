@@ -1,19 +1,17 @@
 @extends('layouts.detail')
 
-@section('service')Работа с клиентами и контрактами@endsection
+@section('service')
+	Работа с клиентами и контрактами
+@endsection
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Клиент', 'active' => true, 'context' => 'client', 'link' => route('clients.index')],
-			['title' => 'Контракт', 'active' => false, 'context' => 'contract'],
-			['title' => 'Информация о контракте', 'active' => false, 'context' => 'info'],
-		];
+		$steps = [['title' => 'Клиент', 'active' => true, 'context' => 'client', 'link' => route('clients.index')], ['title' => 'Администраторы клиента<br/>Контракты', 'active' => false, 'context' => 'contract'], ['title' => 'Информация о контракте', 'active' => false, 'context' => 'info']];
 	@endphp
 @endsection
 
 @section('interior.header')
-	@if($mode == config('global.show'))
+	@if ($mode == config('global.show'))
 		Просмотр
 	@else
 		Редактирование
@@ -27,14 +25,7 @@
 
 @section('form.fields')
 	@php
-		$fields = [
-			['name' => 'name', 'title' => 'Наименование клиента', 'required' => true, 'type' => 'text', 'value' => $client->name],
-			['name' => 'inn', 'title' => 'ИНН клиента', 'required' => true, 'type' => 'text', 'value' => $client->inn],
-			['name' => 'ogrn', 'title' => 'ОГРН / ОГРНИП клиента', 'required' => true, 'type' => 'text', 'value' => $client->ogrn],
-			['name' => 'address', 'title' => 'Адрес', 'required' => true, 'type' => 'textarea', 'value' => $client->address],
-			['name' => 'phone', 'title' => 'Телефон', 'required' => false, 'type' => 'text', 'value' => $client->phone],
-			['name' => 'email', 'title' => 'Электронная почта', 'required' => true, 'type' => 'email', 'value' => $client->email],
-		];
+		$fields = [['name' => 'name', 'title' => 'Наименование клиента', 'required' => true, 'type' => 'text', 'value' => $client->name], ['name' => 'inn', 'title' => 'ИНН клиента', 'required' => true, 'type' => 'text', 'value' => $client->inn], ['name' => 'ogrn', 'title' => 'ОГРН / ОГРНИП клиента', 'required' => true, 'type' => 'text', 'value' => $client->ogrn], ['name' => 'address', 'title' => 'Адрес', 'required' => true, 'type' => 'textarea', 'value' => $client->address], ['name' => 'phone', 'title' => 'Телефон', 'required' => false, 'type' => 'text', 'value' => $client->phone], ['name' => 'email', 'title' => 'Электронная почта', 'required' => true, 'type' => 'email', 'value' => $client->email]];
 	@endphp
 @endsection
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClientAdminController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -17,13 +18,18 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'restore.session']], function () {
 	// Главная
 	Route::get('/', 'MainController@index')->name('dashboard');
-	// Пользователи
-	Route::resource('/users', 'UserController');
-	Route::get('/users.data', 'UserController@getData')->name('users.index.data');
+	// Администраторы
+	Route::resource('/admins', 'AdminController');
+	Route::get('/admins.data', 'AdminController@getData')->name('admins.index.data');
 	// Клиенты
 	Route::resource('/clients', 'ClientController');
 	Route::get('/clients.data', 'ClientController@getData')->name('clients.index.data');
-	Route::get('/clients.select/{client}', 'ClientController@select')->name('clients.select');
+	Route::get('/clients.select/{client}/{kind}', 'ClientController@select')->name('clients.select');
+	// Администраторы клиентов
+	Route::resource('/clients.users', 'ClientAdminController');
+	Route::get('/clients.users.data/{client}', 'ClientAdminController@getData')->name('clients.users.index.data');
+	Route::post('/clients.users.attach', [ClientAdminController::class, 'attach'])->name('clients.users.attach');
+	Route::post('/clients.users.detach', [ClientAdminController::class, 'detach'])->name('clients.users.detach');
 	// Контракты
 	Route::resource('/contracts', 'ContractController');
 	Route::get('/conntracts.data', 'ContractController@getData')->name('contracts.index.data');

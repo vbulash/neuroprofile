@@ -26,16 +26,14 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yajra\DataTables\DataTables;
 use Exception;
 
-class ContractController extends Controller
-{
+class ContractController extends Controller {
 	/**
 	 * Process datatables ajax request.
 	 *
 	 * @return JsonResponse
 	 * @throws Exception
 	 */
-	public function getData(): JsonResponse
-	{
+	public function getData(): JsonResponse {
 		$context = session('context');
 		$client = Client::findOrFail($context['client']);
 		$contracts = $client->contracts();
@@ -73,8 +71,7 @@ class ContractController extends Controller
 			->make(true);
 	}
 
-	public function select(int $id): RedirectResponse
-	{
+	public function select(int $id): RedirectResponse {
 		$context = session('context');
 		unset($context['contract']);
 		$context['contract'] = $id;
@@ -83,8 +80,7 @@ class ContractController extends Controller
 		return redirect()->route('contracts.info');
 	}
 
-	public function info(): Factory|View|Application
-	{
+	public function info(): Factory|View|Application {
 		$context = session('context');
 		$contract = Contract::findOrFail($context['contract']);
 
@@ -104,15 +100,14 @@ class ContractController extends Controller
 	 *
 	 * @return Application|Factory|View|RedirectResponse
 	 */
-	public function index(): View|Factory|RedirectResponse|Application
-	{
+	public function index(): View|Factory|RedirectResponse|Application {
 		$context = session('context');
 		unset($context['contract']);
 		session()->put('context', $context);
 		$client = Client::findOrFail($context['client']);
 
 		$count = $client->contracts->count();
-		return view('contracts.index', compact('count'));
+		return view('contracts.index', compact('count', 'client'));
 	}
 
 	/**
@@ -120,16 +115,14 @@ class ContractController extends Controller
 	 *
 	 * @return Application|Factory|View
 	 */
-	public function create(): View|Factory|Application
-	{
+	public function create(): View|Factory|Application {
 		$mode = config('global.create');
 		$context = session('context');
 		$client = Client::findOrFail($context['client']);
 		return view('contracts.create', compact('client', 'mode'));
 	}
 
-	public function store(StoreContractRequest $request)
-	{
+	public function store(StoreContractRequest $request) {
 		$data = $request->all();
 		$data['mkey'] = Contract::generateKey($request->url);
 		$data['commercial'] = $request->has('commercial');
@@ -150,7 +143,8 @@ class ContractController extends Controller
 			if ($licenses) {
 				$licenses->each(function ($item, $key) {
 					$item->save();
-				});
+				}
+				);
 			}
 
 			$contract->updateStatus();
@@ -166,8 +160,7 @@ class ContractController extends Controller
 	 * @param int $id
 	 * @return Application|Factory|View
 	 */
-	public function show(int $id): View|Factory|Application
-	{
+	public function show(int $id): View|Factory|Application {
 		return $this->edit($id, true);
 	}
 
@@ -178,8 +171,7 @@ class ContractController extends Controller
 	 * @param bool $show
 	 * @return Application|Factory|View
 	 */
-	public function edit(int $id, bool $show = false): View|Factory|Application
-	{
+	public function edit(int $id, bool $show = false): View|Factory|Application {
 		$mode = $show ? config('global.show') : config('global.edit');
 		$contract = Contract::findOrFail($id);
 		return view('contracts.edit', compact('contract', 'mode'));
@@ -192,8 +184,7 @@ class ContractController extends Controller
 	 * @param int $id
 	 * @return RedirectResponse
 	 */
-	public function update(UpdateContractRequest $request, $id): RedirectResponse
-	{
+	public function update(UpdateContractRequest $request, $id): RedirectResponse {
 		$contract = Contract::findOrFail($id);
 		$count = 0;
 		$current = $contract->license_count;
@@ -214,7 +205,8 @@ class ContractController extends Controller
 				if ($licenses) {
 					$licenses->each(function ($item, $key) {
 						$item->save();
-					});
+					}
+					);
 				}
 			}
 
@@ -233,11 +225,11 @@ class ContractController extends Controller
 	 * @param int $contract
 	 * @return bool
 	 */
-	public function destroy(Request $request, int $contract): bool
-	{
+	public function destroy(Request $request, int $contract): bool {
 		if ($contract == 0) {
 			$id = $request->id;
-		} else $id = $contract;
+		} else
+			$id = $contract;
 
 		$contract = Contract::findOrFail($id);
 		$name = $contract->client->name;
@@ -248,8 +240,7 @@ class ContractController extends Controller
 		return true;
 	}
 
-	public function licensesExport(int $id)
-	{
+	public function licensesExport(int $id) {
 		event(new ToastEvent('info', '', "Формирование списка лицензий..."));
 
 		$contract = Contract::find($id);
@@ -276,7 +267,7 @@ class ContractController extends Controller
 		foreach ($licenses as $pkey => $status) {
 			$sheet->setCellValue('A' . (++$row), $pkey);
 			$statusText = '';
-			switch($status) {
+			switch ($status) {
 				case License::FREE:
 					$statusText = 'Свободная';
 					break;

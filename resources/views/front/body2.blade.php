@@ -20,7 +20,7 @@
 @endpush
 
 @section('content')
-	window <form method="post" action="{{ route('player.body2.store', ['sid' => session()->getId()]) }}"
+	<form method="post" action="{{ route('player.body2.store', ['sid' => session()->getId()]) }}"
 		enctype="multipart/form-data" name="play-form" id="play-form">
 		@csrf
 
@@ -363,6 +363,7 @@
 
 		@if ($eyetracking)
 			webgazer.setGazeListener((data, elapsedTime) => {
+				document.getElementById('webgazerVideoContainer').style.display = 'none';
 				if (data == null) {
 					return;
 				}

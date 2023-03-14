@@ -28,7 +28,7 @@
 		$menu[] = ['title' => 'История прохождения', 'icon' => 'fas fa-file-video', 'route' => 'history.index', 'pattern' => ['history.*']];
 		
 		$menu[] = ['title' => 'Настройки', 'heading' => true];
-		$menu[] = ['title' => 'Пользователи', 'icon' => 'fa fa-user-alt', 'route' => 'users.index', 'pattern' => 'users.*'];
+		$menu[] = ['title' => 'Администраторы платформы', 'icon' => 'fa fa-user-alt', 'route' => 'admins.index', 'pattern' => 'admins.*'];
 		$menu[] = ['title' => 'Типы вопросов', 'icon' => 'fa fa-question-circle', 'route' => 'kinds.index', 'pattern' => 'kinds.*'];
 	@endphp
 	<ul class="nav-main">

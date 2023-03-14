@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @method static findOrFail(mixed $client)
  */
-class Client extends Model implements FormTemplate, Titleable
-{
-    use HasFactory;
+class Client extends Model implements FormTemplate, Titleable {
+	use HasFactory;
 
 	protected $fillable = [
 		'name',
@@ -21,8 +21,7 @@ class Client extends Model implements FormTemplate, Titleable
 		'email'
 	];
 
-	public function getTitle(): string
-	{
+	public function getTitle(): string {
 		return $this->name;
 	}
 
@@ -30,8 +29,12 @@ class Client extends Model implements FormTemplate, Titleable
 		return $this->hasMany(Contract::class);
 	}
 
-	public static function createTemplate(): array
-	{
+	public function users(): BelongsToMany {
+		return $this->belongsToMany(ClientAdmin::class, 'users_clients', 'client_id', 'user_id')
+			->withTimestamps();
+	}
+
+	public static function createTemplate(): array {
 		return [
 			'id' => 'client-create',
 			'name' => 'client-create',
@@ -40,8 +43,7 @@ class Client extends Model implements FormTemplate, Titleable
 		];
 	}
 
-	public function editTemplate(): array
-	{
+	public function editTemplate(): array {
 		return [
 			'id' => 'client-edit',
 			'name' => 'client-edit',

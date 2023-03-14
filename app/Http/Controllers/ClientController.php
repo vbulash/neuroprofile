@@ -15,20 +15,18 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Exception;
 
-class ClientController extends Controller
-{
+class ClientController extends Controller {
 	/**
 	 * Process datatables ajax request.
 	 *
 	 * @return JsonResponse
 	 * @throws Exception
 	 */
-	public function getData(): JsonResponse
-	{
+	public function getData(): JsonResponse {
 		$clients = Client::all();
 
 		return Datatables::of($clients)
-			->addColumn('contracts', function($client) {
+			->addColumn('contracts', function ($client) {
 				$count = $client->contracts->count();
 				switch ($count) {
 					case 0:
@@ -41,41 +39,37 @@ class ClientController extends Controller
 			->addColumn('action', function ($client) {
 				$editRoute = route('clients.edit', ['client' => $client->getKey()]);
 				$showRoute = route('clients.show', ['client' => $client->getKey()]);
-				$selectRoute = route('clients.select', ['client' => $client->getKey()]);
-				$actions = '';
+				$selectRoute = route('clients.select', [
+					'client' => $client->getKey(),
+					'kind' => 'contracts',
+				]);
+				$usersRoute = route('clients.select', [
+					'client' => $client->getKey(),
+					'kind' => 'users',
+				]);
+				$items = [];
+				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-pencil-alt', 'title' => 'Редактирование'];
+				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
+				$items[] = ['type' => 'item', 'click' => "clickDelete({$client->getKey()}, '{$client->name}')", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
+				$items[] = ['type' => 'divider'];
+				$items[] = ['type' => 'item', 'link' => $usersRoute, 'icon' => 'fas fa-users', 'title' => 'Администраторы клиента'];
+				$items[] = ['type' => 'item', 'link' => $selectRoute, 'icon' => 'fas fa-file-contract', 'title' => 'Контракты клиента'];
 
-				$actions .=
-					"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
-					"<i class=\"fas fa-pencil-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
-					"<i class=\"fas fa-eye\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$client->getKey()}, '{$client->name}')\">\n" .
-					"<i class=\"fas fa-trash-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$selectRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выбор\">\n" .
-					"<i class=\"fas fa-check\"></i>\n" .
-					"</a>\n";
-
-				return $actions;
+				return createDropdown('Действия', $items);
 			})
 			->make(true);
 	}
 
-	public function select(int $id)
-	{
+	public function select(int $client, string $kind) {
 		session()->forget('context');
-		session()->put('context', ['client' => $id]);
+		session()->put('context', ['client' => $client]);
+		$view = '';
+		if ($kind == 'contracts')
+			$view = 'contracts.index';
+		else if ($kind == 'users')
+			$view = 'clients.users.index';
 
-		return redirect()->route('contracts.index');
+		return redirect()->route($view, ['client' => $client]);
 	}
 
 	/**
@@ -83,23 +77,21 @@ class ClientController extends Controller
 	 *
 	 * @return Application|Factory|View|RedirectResponse
 	 */
-	public function index()
-	{
+	public function index() {
 		session()->forget('context');
 		$count = Client::all()->count();
 		return view('clients.index', compact('count'));
 	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Application|Factory|View
 	 */
-    public function create()
-    {
+	public function create() {
 		$mode = config('global.create');
-        return view('clients.create', compact('mode'));
-    }
+		return view('clients.create', compact('mode'));
+	}
 
 	/**
 	 * Store a newly created resource in storage.
@@ -107,39 +99,36 @@ class ClientController extends Controller
 	 * @param StoreClientRequest $request
 	 * @return RedirectResponse
 	 */
-    public function store(StoreClientRequest $request)
-    {
+	public function store(StoreClientRequest $request) {
 		$client = Client::create($request->all());
 		$client->save();
 		$name = $client->name;
 
 		session()->put('success', "Клиент \"{$name}\" создан");
 		return redirect()->route('clients.index');
-    }
+	}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Application|Factory|View
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Application|Factory|View
 	 */
-    public function show(int $id)
-    {
-        return $this->edit($id, true);
-    }
+	public function show(int $id) {
+		return $this->edit($id, true);
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Application|Factory|View
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Application|Factory|View
 	 */
-    public function edit(int $id, bool $show = false)
-    {
+	public function edit(int $id, bool $show = false) {
 		$mode = $show ? config('global.show') : config('global.edit');
 		$client = Client::findOrFail($id);
-        return view('clients.edit', compact('client', 'mode'));
-    }
+		return view('clients.edit', compact('client', 'mode'));
+	}
 
 	/**
 	 * Update the specified resource in storage.
@@ -148,15 +137,14 @@ class ClientController extends Controller
 	 * @param int $id
 	 * @return RedirectResponse
 	 */
-    public function update(UpdateClientRequest $request, $id)
-    {
+	public function update(UpdateClientRequest $request, $id) {
 		$client = Client::findOrFail($id);
 		$name = $client->name;
 		$client->update($request->all());
 
 		session()->put('success', "Клиент \"{$name}\" обновлён");
 		return redirect()->route('clients.index');
-    }
+	}
 
 	/**
 	 * Remove the specified resource from storage.
@@ -165,11 +153,11 @@ class ClientController extends Controller
 	 * @param int $client
 	 * @return bool
 	 */
-	public function destroy(Request $request, int $client)
-	{
+	public function destroy(Request $request, int $client) {
 		if ($client == 0) {
 			$id = $request->id;
-		} else $id = $client;
+		} else
+			$id = $client;
 
 		$client = Client::findOrFail($id);
 		$name = $client->name;

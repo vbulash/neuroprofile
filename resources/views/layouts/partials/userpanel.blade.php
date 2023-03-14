@@ -10,7 +10,8 @@
 		aria-haspopup="true" aria-expanded="false">
 		<i class="fa fa-fw fa-user d-sm-none"></i>
 		<span class="d-none d-sm-inline-block">
-			{{ auth()->user()->name }} ({{ $roles }})
+			{{ auth()->user()->name }}
+			{{-- ({{ $roles }}) --}}
 		</span>
 		<i class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
 	</button>
@@ -18,13 +19,13 @@
 		<div class="bg-primary-dark rounded-top fw-semibold text-white p-3 d-sm-none">
 			<div class="d-flex flex-column">
 				<span>{{ auth()->user()->name }}</span>
-				<span class="role-name">{!! $roles !!}</span>
+				{{-- <span class="role-name">{!! $roles !!}</span> --}}
 			</div>
 		</div>
 		<div class="p-2">
 			<a class="dropdown-item"
-				href="{{ route('users.edit', [
-				    'user' => auth()->user()->getKey(),
+				href="{{ route('admins.edit', [
+				    'admin' => auth()->user()->getKey(),
 				    'profile' => true,
 				]) }}">
 				<i class="far fa-fw fa-user me-1"></i> Профиль
