@@ -70,6 +70,9 @@
 											@if ($field['type'] == 'number' && isset($field['min'])) min="{{ $field['min'] }}" @endif
 											@if ($field['type'] == 'number' && isset($field['max'])) max="{{ $field['max'] }}" @endif autocomplete="off"
 											value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
+											@isset($field['placeholder'])
+												placeholder="{{ $field['placeholder'] }}"
+											@endisset
 											@if ($mode == config('global.show') || isset($field['disabled'])) disabled @endif>
 									</div>
 								@break
@@ -119,15 +122,24 @@
 								@case('select')
 									<div class="col-sm-5">
 										<select class="form-control select2" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
-											@if ($mode == config('global.show') || isset($field['disabled'])) disabled @endif>
-											@foreach ($field['options'] as $key => $value)
-												<option value="{{ $key }}"
-													@if (isset($field['value'])) @if ($field['value'] == $key)
-															selected @endif
-													@endif
-													>
-													{{ $value }}</option>
-											@endforeach
+											@if ($mode == config('global.show') || isset($field['disabled'])) disabled @endif
+											@if (isset($field['multiple']) && $field['multiple']) multiple="multiple" @endif>
+											@if (isset($field['placeholder']))
+												<option disabled>{{ $field['placeholder'] }}</option>
+											@endif
+
+											@if (isset($field['options']))
+												@foreach ($field['options'] as $key => $value)
+													<option value="{{ $key }}"
+														@if (isset($field['value'])) @if (isset($field['multiple']) && $field['multiple'] && in_array($key, $field['value']))
+																selected
+															@elseif ($field['value'] == $key)
+																selected @endif
+														@endif>
+														{{ $value }}
+													</option>
+												@endforeach
+											@endif
 										</select>
 									</div>
 								@break

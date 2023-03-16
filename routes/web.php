@@ -21,6 +21,9 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	// Администраторы
 	Route::resource('/admins', 'AdminController');
 	Route::get('/admins.data', 'AdminController@getData')->name('admins.index.data');
+	// Администраторы клиентов
+	Route::resource('/adminclients', 'AdminClientController');
+	Route::get('/adminclients.data', 'AdminClientController@getData')->name('adminclients.index.data');
 	// Клиенты
 	Route::resource('/clients', 'ClientController');
 	Route::get('/clients.data', 'ClientController@getData')->name('clients.index.data');

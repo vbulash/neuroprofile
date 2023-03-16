@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Events\ToastEvent;
 use App\Http\Controllers\Auth\RoleName;
+use App\Http\Requests\UpdateAdminClientRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Admin;
+use App\Models\Client;
+use App\Models\ClientAdmin;
 use App\Models\Role;
 use App\Models\User;
 use App\Notifications\NewUser;
@@ -21,7 +24,7 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 
-class AdminController extends Controller {
+class AdminClientController extends Controller {
 	/**
 	 * Process datatables ajax request.
 	 *
@@ -29,12 +32,16 @@ class AdminController extends Controller {
 	 * @throws Exception
 	 */
 	public function getData(): JsonResponse {
-		$admins = User::whereHas("roles", fn($query) => $query->where("name", RoleName::ADMIN->value))->get();
+		$admins = ClientAdmin::whereHas("roles", fn($query) => $query->where("name", RoleName::CLIENT_ADMIN->value))->get();
 		return Datatables::of($admins)
-			->editColumn('role', fn($admin) => $admin->getRoleNames()->toArray())
+			->addColumn('clients', function ($admin) {
+				$clients = $admin->clients->pluck('name')->toArray();
+				return count($clients) == 0 ? null : json_encode($clients);
+			})
+			// ->editColumn('role', fn($admin) => $admin->getRoleNames()->toArray())
 			->addColumn('action', function ($admin) {
-				$editRoute = route('admins.edit', ['admin' => $admin->id]);
-				$showRoute = route('admins.show', ['admin' => $admin->id]);
+				$editRoute = route('adminclients.edit', ['adminclient' => $admin->id]);
+				$showRoute = route('adminclients.show', ['adminclient' => $admin->id]);
 				$items = [];
 				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-edit', 'title' => 'Редактирование'];
 				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
@@ -51,7 +58,7 @@ class AdminController extends Controller {
 	 */
 	public function index() {
 		$count = User::all()->count();
-		return view('admins.index', compact('count'));
+		return view('adminclients.index', compact('count'));
 	}
 
 	/**
@@ -61,30 +68,29 @@ class AdminController extends Controller {
 	 */
 	public function create() {
 		$mode = config('global.create');
-		return view('admins.create', compact('mode'));
+		return view('adminclients.create', compact('mode'));
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param UpdateUserRequest $request
-	 * @return RedirectResponse
-	 */
-	public function store(UpdateUserRequest $request) {
-		$admin = Admin::create([
+	public function store(UpdateAdminClientRequest $request) {
+		$admin = ClientAdmin::create([
 			'name' => $request->name,
 			'email' => $request->email,
 			'password' => Hash::make($request->password),
 		]);
-		$admin->assignRole(RoleName::ADMIN->value);
+
+		$admin->assignRole(RoleName::CLIENT_ADMIN->value);
+		if (isset($request->clients)) {
+			$clients = json_decode($request->clients);
+			$admin->clients()->sync($clients);
+		}
 
 		event(new Registered($admin));
 		$admin->notify(new NewUser());
 		$name = $admin->name;
 
 		session()->put('success',
-			"Зарегистрирован новый администратор \"{$name}\"");
-		return redirect()->route('admins.index');
+			"Зарегистрирован новый администратор клиента \"{$name}\"");
+		return redirect()->route('adminclients.index');
 	}
 
 	/**
@@ -95,8 +101,12 @@ class AdminController extends Controller {
 	 */
 	public function show($id) {
 		$mode = config('global.show');
-		$admin = Admin::findOrFail($id);
-		return view('admins.show', compact('admin', 'mode'));
+		$admin = ClientAdmin::findOrFail($id);
+		$clients = $admin->clients->pluck('id')->toArray();
+		$allclients = Client::all()
+			->sortBy('name')
+			->pluck('name', 'id')->toArray();
+		return view('adminclients.show', compact('admin', 'mode', 'clients', 'allclients'));
 	}
 
 	/**
@@ -108,32 +118,32 @@ class AdminController extends Controller {
 	 */
 	public function edit(Request $request, int $id) {
 		$mode = config('global.edit');
-		$admin = User::findOrFail($id);
-		$profile = $request->has('profile');
-		$roles = Role::all()->pluck('name')->toArray();
-		return view('admins.edit', compact('admin', 'profile', 'roles', 'mode'));
+		$admin = ClientAdmin::findOrFail($id);
+		$clients = $admin->clients->pluck('id')->toArray();
+		$allclients = Client::all()
+			->sortBy('name')
+			->pluck('name', 'id')->toArray();
+		return view('adminclients.edit', compact('admin', 'mode', 'allclients', 'clients'));
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param UpdateUserRequest $request
-	 * @param int $id
-	 * @return RedirectResponse
-	 */
-	public function update(UpdateUserRequest $request, $id) {
-		$admin = User::findOrFail($id);
+	public function update(UpdateAdminClientRequest $request, $id) {
+		$admin = ClientAdmin::findOrFail($id);
 		$name = $admin->name;
 		$draft = $request->except('_token');
 		if ($request->has('password'))
 			$draft['password'] = Hash::make($request->password);
 		$admin->update($draft);
-		$admin->save();
+
+		if (isset($request->clients)) {
+			$clients = json_decode($request->clients);
+			$admin->clients()->sync($clients);
+		}
+		// $admin->save();
 
 		session()->put('success',
-			"Администратор \"{$name}\" обновлён");
+			"Администратор клиента \"{$name}\" обновлён");
 
-		return redirect()->route('admins.index');
+		return redirect()->route('adminclients.index');
 	}
 
 	/**
@@ -149,11 +159,11 @@ class AdminController extends Controller {
 		} else
 			$id = $admin;
 
-		$admin = User::findOrFail($id);
+		$admin = ClientAdmin::findOrFail($id);
 		$name = $admin->name;
 		$admin->delete();
 
-		event(new ToastEvent('success', '', "Администратор '{$name}' удалён"));
+		event(new ToastEvent('success', '', "Администратор клиента '{$name}' удалён"));
 		return true;
 	}
 }

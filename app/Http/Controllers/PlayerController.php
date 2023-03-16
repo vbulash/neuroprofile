@@ -428,7 +428,7 @@ class PlayerController extends Controller {
 
 		$recipient = (object) [
 			'name' => $history->test->contract->client->name,
-			'email' => $history->test->contract->client->email
+			'email' => $history->test->contract->email ?? $history->test->contract->client->email
 		];
 
 		try {

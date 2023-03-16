@@ -11,7 +11,10 @@
 
 @section('interior')
 	<div class="block-header block-header-default">
-		<a href="{{ route('admins.create') }}" class="btn btn-primary">Добавить администратора платформы</a>
+		<div class="d-flex flex-column">
+			<h3 class="block-title fw-semibold mb-4">Администраторы платформы</h3>
+			<a href="{{ route('admins.create') }}" class="btn btn-primary">Добавить администратора платформы</a>
+		</div>
 	</div>
 	<div class="block-content p-4">
 		@if ($count > 0)
@@ -22,7 +25,7 @@
 							<th style="width: 30px">#</th>
 							<th>ФИО</th>
 							<th>Электронная почта</th>
-							<th>Действия</th>
+							<th>&nbsp;</th>
 						</tr>
 					</thead>
 				</table>
@@ -97,6 +100,23 @@
 							className: 'no-wrap dt-actions'
 						}
 					]
+				});
+
+				window.datatable.on('draw', function() {
+					$('.dropdown-toggle.actions').on('shown.bs.dropdown', (event) => {
+						const menu = event.target.parentElement.querySelector('.dropdown-menu');
+						let parent = menu.closest('.dataTables_wrapper');
+						const parentRect = parent.getBoundingClientRect();
+						parentRect.top = Math.abs(parentRect.top);
+						const menuRect = menu.getBoundingClientRect();
+						const buttonRect = event.target.getBoundingClientRect();
+						const menuTop = Math.abs(buttonRect.top) + buttonRect.height + 4;
+						if (menuTop + menuRect.height > parentRect.top + parentRect.height) {
+							const clientHeight = parentRect.height + menuTop + menuRect.height - (
+								parentRect.top + parentRect.height);
+							parent.style.height = clientHeight.toString() + 'px';
+						}
+					});
 				});
 			});
 		</script>

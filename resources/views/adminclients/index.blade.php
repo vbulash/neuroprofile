@@ -1,44 +1,38 @@
 @extends('layouts.chain')
 
-@section('service')
-	Работа с клиентами и контрактами
+@section('header')
 @endsection
 
 @section('steps')
 	@php
-		$steps = [['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index')], ['title' => 'Контракты', 'active' => true, 'context' => 'contract'], ['title' => 'Информация о контракте', 'active' => false, 'context' => 'info']];
+		$steps = [['title' => 'Администраторы клиентов', 'active' => true, 'context' => 'admin']];
 	@endphp
 @endsection
 
 @section('interior')
 	<div class="block-header block-header-default">
 		<div class="d-flex flex-column">
-			<div>
-				<a href="{{ route('contracts.create') }}" class="btn btn-primary mb-4">Добавить контракт</a>
-			</div>
-			<small>Отсюда вы также можете перейти на <a
-					href="{{ route('clients.users.index', ['client' => $client->getKey()]) }}">Администраторов текущего
-					клиента</a></small>
+			<h3 class="block-title fw-semibold mb-4">Администраторы клиентов</h3>
+			<a href="{{ route('adminclients.create') }}" class="btn btn-primary">Добавить администратора клиента</a>
 		</div>
 	</div>
 	<div class="block-content p-4">
-		@if ($count)
+		@if ($count > 0)
 			<div class="table-responsive">
-				<table class="table table-bordered table-hover text-nowrap" id="contracts_table" style="width: 100%;">
+				<table class="table table-bordered table-hover text-nowrap" id="admins_table" style="width: 100%;">
 					<thead>
 						<tr>
-							<th>Номер контракта</th>
-							<th>Дата начала</th>
-							<th>Дата завершения</th>
-							<th>Количество лицензий</th>
-							<th>Статус</th>
+							<th style="width: 30px">#</th>
+							<th>ФИО</th>
+							<th>Электронная почта</th>
+							<th>Управляет клиентами</th>
 							<th>&nbsp;</th>
 						</tr>
 					</thead>
 				</table>
 			</div>
 		@else
-			<p>Контрактов пока нет...</p>
+			<p>Администраторов клиентов пока нет...</p>
 		@endif
 	</div>
 @endsection
@@ -54,7 +48,7 @@
 			document.getElementById('confirm-yes').addEventListener('click', (event) => {
 				$.ajax({
 					method: 'DELETE',
-					url: "{{ route('contracts.destroy', ['contract' => '0']) }}",
+					url: "{{ route('adminclients.destroy', ['adminclient' => '0']) }}",
 					data: {
 						id: event.target.dataset.id,
 					},
@@ -69,45 +63,46 @@
 
 			function clickDelete(id, name) {
 				document.getElementById('confirm-title').innerText = "Подтвердите удаление";
-				document.getElementById('confirm-body').innerHTML = "Удалить контракт № " + name + " ?";
+				document.getElementById('confirm-body').innerHTML = "Удалить администратора клиента &laquo;" + name + "&raquo; ?";
 				document.getElementById('confirm-yes').dataset.id = id;
 				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
 				confirmDialog.show();
 			}
 
 			$(function() {
-				window.datatable = $('#contracts_table').DataTable({
+				window.datatable = $('#admins_table').DataTable({
 					language: {
 						"url": "{{ asset('lang/ru/datatables.json') }}"
 					},
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route('contracts.index.data') !!}',
+					ajax: '{!! route('adminclients.index.data') !!}',
 					responsive: true,
 					columns: [{
-							data: 'number',
-							name: 'number',
+							data: 'id',
+							name: 'id',
 							responsivePriority: 1
 						},
 						{
-							data: 'start',
-							name: 'start',
+							data: 'name',
+							name: 'name',
 							responsivePriority: 2
 						},
 						{
-							data: 'end',
-							name: 'end',
-							responsivePriority: 2
-						},
-						{
-							data: 'license_count',
-							name: 'license_count',
-							responsivePriority: 4
-						},
-						{
-							data: 'status',
-							name: 'status',
+							data: 'email',
+							name: 'email',
 							responsivePriority: 3
+						},
+						{
+							data: 'clients',
+							name: 'clients',
+							responsivePriority: 3,
+							render: (data) => {
+								if (data) {
+									let clients = JSON.parse(data.replace(/&quot;/g, '"'));
+									return clients.join("<br/>");
+								} else return '';
+							}
 						},
 						{
 							data: 'action',

@@ -28,7 +28,7 @@ class ClientAdminController extends Controller {
 					'user' => $user->getKey()
 				]);
 				$items = [];
-				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-pencil-alt', 'title' => 'Редактирование'];
+				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-edit', 'title' => 'Редактирование'];
 				$items[] = ['type' => 'item',
 					'click' => "clickDetach({$_client->getKey()}, {$user->getKey()}, '{$user->getTitle()}')", 'icon' => 'fas fa-cancel', 'title' => 'Отмена привязки'];
 
