@@ -11,56 +11,59 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class AuthenticatedSessionController extends Controller
-{
-    /**
-     * Display the login view.
-     *
-     * @return View
-     */
-    public function create(Request $request)
-    {
-        return view('auth.login');
-    }
+class AuthenticatedSessionController extends Controller {
+	/**
+	 * Display the login view.
+	 *
+	 * @return View
+	 */
+	public function create(Request $request) {
+		return view('auth.login');
+	}
 
-    /**
-     * Handle an incoming authentication request.
-     *
-     * @param LoginRequest $request
-     * @return RedirectResponse
-     */
-    public function store(LoginRequest $request)
-    {
-        try {
-            $request->authenticate();
-            $request->session()->regenerate();
+	/**
+	 * Handle an incoming authentication request.
+	 *
+	 * @param LoginRequest $request
+	 * @return RedirectResponse
+	 */
+	public function store(LoginRequest $request) {
+		try {
+			$request->authenticate();
+			$request->session()->regenerate();
 			// session()->put('success', "Вы успешно авторизовались");
+			// TODO Сделать интеллектуальную проверку допустимости входа в платформу
+			if (!auth()->user()->hasRole(RoleName::ADMIN->value)) {
+				auth()->logout();
+				$app = env('APP_NAME');
+				return redirect()->route('login')
+					->with('error', "У пользователя &laquo;{$request->email}&raquo; нет прав для входа в приложение &laquo;{$app}&raquo;");
+			}
 
 			// Valery Bulash - intended гибко, но ненадежно - сброс сессии в неожиданных местах
-            // return redirect()->intended();
+			// return redirect()->intended();
 			return redirect()->route('dashboard');
-        } catch(Exception $exc) {
+		} catch (Exception $exc) {
 			session()->put('error', $exc->getMessage());
-            event(new ToastEvent('error', '', $exc->getMessage()));
+			event(new ToastEvent('error', '', $exc->getMessage()));
 
-            return redirect()->route('login');
-        }
-    }
+			return redirect()->route('login');
+		}
+	}
 
-    /**
-     * Destroy an authenticated session.
-     *
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function destroy(Request $request)
-    {
-        Auth::guard('web')->logout();
+	/**
+	 * Destroy an authenticated session.
+	 *
+	 * @param Request $request
+	 * @return RedirectResponse
+	 */
+	public function destroy(Request $request) {
+		Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
+		$request->session()->invalidate();
 
-        $request->session()->regenerateToken();
+		$request->session()->regenerateToken();
 
-        return redirect()->route('login');
-    }
+		return redirect()->route('login');
+	}
 }

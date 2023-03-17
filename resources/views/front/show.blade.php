@@ -55,29 +55,53 @@
 	<h4>Наименование нейропрофиля: {{ $profile->name }}</h4>
 
 	@forelse($blocks  as $block)
-		<h2>{{ $block->name }}</h2>
-		@if ($history->test->paid)
-			<div style="margin-left: 20px;">
-				@if ($block->short)
-					{{ $block->short }}
-				@else
-					{{--                    Содержание краткого / бесплатного блока... --}}
-					Информация доступна в полной версии
-				@endif
-			</div>
+		@if ($block->type != \App\Models\BlockType::Image->value)
+			<h2>{{ $block->name }}</h2>
 		@else
-			<div style="margin-left: 20px;">{!! $block->full !!}</div>
+			@php
+				$image = url('/uploads/' . $block->full);
+			@endphp
 		@endif
-	@empty
-		<h2>Настройка теста не завершена.<br />
-			Нет блоков описаний, соответствующих коду нейропрофиля &laquo;{{ $profile->code }}&raquo;</h2>
-	@endforelse
-@endsection
 
-@push('scripts.injection')
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-			//
-		});
-	</script>
-@endpush
+		@switch($block->type)
+			@case(\App\Models\BlockType::Text->value)
+				@if ($history->test->paid)
+					@if ($history->paid == '1')
+						<div style="margin-left: 20px;">{!! $block->full !!}</div>
+					@else
+						<div style="margin-left: 20px;">
+							@if ($block->short)
+								{{ $block->short }}
+							@else
+								{{--                    Содержание краткого / бесплатного блока... --}}
+								Информация доступна в полной версии
+							@endif
+
+						</div>
+					@endif
+				@else
+					<div style="margin-left: 20px;">{!! $block->full !!}</div>
+				@endif
+			@break
+
+			@case(\App\Models\BlockType::Image->value)
+				<div style="margin-left: 20px;">
+					<img src="{{ $image }}" class="img-fluid" />
+				</div>
+			@break
+
+			@default
+		@endswitch
+		@empty
+			<h2>Настройка теста не завершена.<br />
+				Нет блоков описаний, соответствующих коду нейропрофиля &laquo;{{ $profile->code }}&raquo;</h2>
+		@endforelse
+	@endsection
+
+	@push('scripts.injection')
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				//
+			});
+		</script>
+	@endpush

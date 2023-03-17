@@ -8,6 +8,7 @@ use App\Models\FMPType;
 use App\Models\History;
 use App\Models\Profile;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Генератор коллекции блоков описания для отображения / писем

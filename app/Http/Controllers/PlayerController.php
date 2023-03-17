@@ -225,7 +225,6 @@ class PlayerController extends Controller {
 
 		// Фиксация лицензии по завершению тестирования
 		$license = License::all()->where('pkey', session('pkey'))->first();
-		// TODO временное выключение
 		$license->done();
 
 		// Зафиксировать историю теста и индивидуальные результаты прохождения вопросов
@@ -311,7 +310,8 @@ class PlayerController extends Controller {
 			$result = $history->steps()->pluck('key')->toArray();
 
 			$code = htmlspecialchars_decode(strip_tags($history->test->set->code));
-			$history->code = eval($code);
+			$out = eval($code);
+			$history->code = $out;
 			$history->update();
 			// Код нейропрофиля вычислен и сохранен
 		}

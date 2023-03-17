@@ -62,6 +62,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::resource('/fmptypes', 'FMPTypeController');
 	Route::get('/fmptypes.data', 'FMPTypeController@getData')->name('fmptypes.index.data');
 	Route::get('/fmptypes.select/{fmptype}', 'FMPTypeController@select')->name('fmptypes.select');
+	Route::get('/fmtypes.copy/{fmptype}', 'FMPTypeController@copy')->name('fmptypes.copy');
 	// Нейропрофили
 	Route::resource('/profiles', 'ProfileController');
 	Route::get('/profiles.data', 'ProfileController@getData')->name('profiles.index.data');
