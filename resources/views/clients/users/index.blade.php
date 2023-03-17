@@ -14,7 +14,7 @@
 		        'link' => route('clients.index'),
 		    ],
 		    [
-		        'title' => 'Администраторы клиента',
+		        'title' => 'Аккаунт менеджеры',
 		        'active' => true,
 		        'context' => '',
 		    ],
@@ -25,14 +25,14 @@
 @section('interior')
 	<div class="block-header block-header-default">
 		<div class="d-flex flex-column">
-			<h3 class="block-title fw-semibold mb-4">Администраторы клиента</h3>
+			<h3 class="block-title fw-semibold mb-4">Аккаунт менеджеры</h3>
 			<div class="d-flex">
 				<a href="{{ route('clients.users.create', ['client' => $client->getKey()]) }}"
 					class="btn btn-primary mb-4 me-4">Добавить
 					нового
-					администратора клиента</a>
+					аккаунт менеджера</a>
 				<button class="btn btn-primary mb-4" id="add-admin" data-bs-toggle="modal" data-bs-target="#admins-list">Выбрать
-					существующего администратора клиентов</button>
+					существующего аккаунт менеджера</button>
 			</div>
 			<small>Отсюда вы также можете перейти на <a href="{{ route('contracts.index') }}">Контракты текущего
 					клиента</a></small>
@@ -58,7 +58,7 @@
 		<div class="modal-dialog modal-lg modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Выбор существующего администратора клиентов</h5>
+					<h5 class="modal-title">Выбор существующего аккаунт менеджера</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
 				</div>
 				<div class="modal-body">
@@ -136,9 +136,9 @@
 		function clickDetach(client, user, name) {
 			document.getElementById('confirm-title').innerText = "Подтвердите отмену привязки";
 			document.getElementById('confirm-body').innerHTML =
-				"Отменить привязку администратора клиента &laquo;" + name +
+				"Отменить привязку аккаунт менеджера &laquo;" + name +
 				"&raquo; к клиенту ?<br/>" +
-				"Физическое удаление администратора клиента не произойдёт.";
+				"Физическое удаление аккаунт менеджера не произойдёт.";
 			document.getElementById('confirm-yes').dataset.client = client;
 			document.getElementById('confirm-yes').dataset.user = user;
 			let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));

@@ -19,85 +19,63 @@
 	data-editor="DecoupledDocumentEditor" data-collaboration="false"
 @endsection
 
-@section('interior.subheader') @endsection
+@section('interior.subheader')
+@endsection
 
 @section('form.fields')
 	@php
 		$heap = session('heap');
-		$fields = [
-			['name' => 'mode', 'type' => 'hidden', 'value' => $mode],
-			['name' => 'test', 'type' => 'hidden', 'value' => $test],
-			['name' => 'step-branding', 'type' => 'hidden', 'value' => true]
-		];
+		$fields = [['name' => 'mode', 'type' => 'hidden', 'value' => $mode], ['name' => 'test', 'type' => 'hidden', 'value' => $test], ['name' => 'step-branding', 'type' => 'hidden', 'value' => true]];
 	@endphp
 @endsection
 
-@section('form.method')method="post"@endsection
-@section('form.put')@endsection	{{-- Для финального шага = POST --}}
+@section('form.method')
+	method="post"
+@endsection
+@section('form.put')
+@endsection {{-- Для финального шага = POST --}}
 
 @section('form.before.content')
 	@php
 		$heap = session('heap');
 		$options = intval($heap['options'] ?? 0);
-        $defaultSignature = sprintf(<<<EOS
-<p style="margin-top: 40px;">
-    С уважением,<br/>
-    <a href="%s" target="_blank">%s</a>
-</p>
-EOS,
-			env('BRAND_URL'), env('BRAND_NAME'));
-        if (!isset($heap['step-branding']) && $mode == config('global.create')) {
-            $custom = false;
-            $logo = '';
-            $background = '#007bff';
-            $color = '#ffffff';
-            $company = env('APP_NAME');
-            $signature = $defaultSignature;
-        } else {
-            $custom = $options & \App\Models\TestOptions::CUSTOM_BRANDING->value;
-            $logo = isset($heap['branding']['logo']) ? '/uploads/' . $heap['branding']['logo'] : '';
-			$background = $heap['branding']['background'] ?? '#007bff';
-            $color = $heap['branding']['fontcolor'] ?? '#ffffff';
-            $company = $heap['branding']['company-name'] ?? env('APP_NAME');
-            $signature = $heap['branding']['signature'] ?? $defaultSignature;
-        }
+		$defaultSignature = sprintf("<p style='margin-top: 40px;'>\n" . "С уважением,<br/>\n" . "<a href=\"%s\" target=\"_blank\">%s</a>\n" . "</p>\n", env('BRAND_URL'), env('BRAND_NAME'));
+		if (!isset($heap['step-branding']) && $mode == config('global.create')) {
+		    $custom = false;
+		    $logo = '';
+		    $background = '#007bff';
+		    $color = '#ffffff';
+		    $company = env('APP_NAME');
+		    $signature = $defaultSignature;
+		} else {
+		    $custom = $options & \App\Models\TestOptions::CUSTOM_BRANDING->value;
+		    $logo = isset($heap['branding']['logo']) ? '/uploads/' . $heap['branding']['logo'] : '';
+		    $background = $heap['branding']['background'] ?? '#007bff';
+		    $color = $heap['branding']['fontcolor'] ?? '#ffffff';
+		    $company = $heap['branding']['company-name'] ?? env('APP_NAME');
+		    $signature = $heap['branding']['signature'] ?? $defaultSignature;
+		}
 	@endphp
 	<div class="col-sm-8 mb-4 p-4">
 		<div class="form-check form-switch">
-			<input class="form-check-input"
-				   type="checkbox"
-				   id="branding-option" name="branding-option"
-				   @if($custom)
-					   checked
-				   @endif
-				   @if($mode == config('global.show')) disabled @endif>
-			<label class="form-check-label" for="branding-option">Тест имеет самостоятельный брендинг, отличный от встроенного</label>
+			<input class="form-check-input" type="checkbox" id="branding-option" name="branding-option"
+				@if ($custom) checked @endif @if ($mode == config('global.show')) disabled @endif>
+			<label class="form-check-label" for="branding-option">Тест имеет самостоятельный брендинг, отличный от
+				встроенного</label>
 		</div>
 	</div>
 	<div class="p-4" id="branding-panel" style="display: none">
 		<div class="row mb-4">
 			<div class="col-md-6">
 				<div class="form-group">
-					<label
-						for="logo-file">Логотип:</label>
-					<input type="file" id="logo-file"
-						   name="logo-file"
-						   class="image-file mb-4 form-control"
-						   @if ($mode == config('global.show'))
-							   disabled
-						   @endif
-						   onchange="readLogoImage(this)">
-					<a href="javascript:void(0)" class="preview_anchor"
-					   data-toggle="lightbox"
-					   data-title="Логотип">
-						<img id="preview_logo-file"
-							 src="{{ $logo }}" alt=""
-							 class="col-sm-6 mb-2">
+					<label for="logo-file">Логотип:</label>
+					<input type="file" id="logo-file" name="logo-file" class="image-file mb-4 form-control"
+						@if ($mode == config('global.show')) disabled @endif onchange="readLogoImage(this)">
+					<a href="javascript:void(0)" class="preview_anchor" data-toggle="lightbox" data-title="Логотип">
+						<img id="preview_logo-file" src="{{ $logo }}" alt="" class="col-sm-6 mb-2">
 					</a>
-					<a href="javascript:void(0)"
-					   id="clear_logo-file"
-					   data-preview="preview_logo-file"
-					   class="btn btn-primary mb-4 col-sm-6">Очистить</a>
+					<a href="javascript:void(0)" id="clear_logo-file" data-preview="preview_logo-file"
+						class="btn btn-primary mb-4 col-sm-6">Очистить</a>
 				</div>
 			</div>
 		</div>
@@ -108,14 +86,14 @@ EOS,
 						<label for="background" class="form-control pl-0" style="border: none">Первичный цвет:</label>
 						<div class="input-group-append">
 							<div id="back-picker"></div>
-							<input type="hidden" name="background-input" id="background-input"/>
+							<input type="hidden" name="background-input" id="background-input" />
 						</div>
 					</div>
 					<div class="input-group pl-0">
 						<label for="font-color" class="form-control pl-0" style="border: none">Цвет шрифта:</label>
 						<div class="input-group-append">
 							<div id="font-picker"></div>
-							<input type="hidden" name="font-color-input" id="font-color-input"/>
+							<input type="hidden" name="font-color-input" id="font-color-input" />
 						</div>
 					</div>
 				</div>
@@ -138,33 +116,27 @@ EOS,
 
 		<div class="form-group">
 			<label for="company-name-changer">Организация / компания:</label>
-			<input type="text" name="company-name-changer" id="company-name-changer"
-				   class="form-control"
-				   @if ($mode == config('global.show'))
-					   disabled
-				   @endif
-				   value="{{ $company }}"
-			>
+			<input type="text" name="company-name-changer" id="company-name-changer" class="form-control"
+				@if ($mode == config('global.show')) disabled @endif value="{{ $company }}">
 		</div>
 
 		<div class="preview mt-5">
 			<div class="form-group">
 				<label for="preview_nav">Предпросмотр заголовка окна / фрейма:</label>
-				<nav class="navbar navbar-dark d-none d-lg-flex align-content-center custom-background mb-2"
-					 id="preview_nav">
-					<div class="navbar-brand custom-color">
+				<nav class="navbar navbar-dark d-none d-lg-flex align-content-center custom-background mb-2" id="preview_nav">
+					<div class="">
 						<span id="preview_logo" style="height: 20px;"></span>
 						<span id="company-name-demo">{{ $company }}</span>
 					</div>
-					<div class="navbar-text custom-color">
+					<div class="">
 						Наименование теста
 					</div>
 				</nav>
 			</div>
 
-			<label for="preview_button">Предпросмотр кнопки:</label><br/>
-			<a href="javascript:void(0)" class="btn ml-0 custom-background custom-color"
-			   id="preview_button">Начать тестирование</a>
+			<label for="preview_button">Предпросмотр кнопки:</label><br />
+			<a href="javascript:void(0)" class="btn ml-0 custom-background custom-color" id="preview_button">Начать
+				тестирование</a>
 		</div>
 	</div>
 @endsection
@@ -181,7 +153,7 @@ EOS,
 		function readLogoImage(input) {
 			if (input.files && input.files[0]) {
 				let reader = new FileReader();
-				reader.onload = function (event) {
+				reader.onload = function(event) {
 					document.getElementById('preview_logo-file').setAttribute('src', event.target.result);
 					document.getElementById('preview_logo-file').style.display = 'block';
 					document.getElementById('clear_logo-file').style.display = 'block';
@@ -379,9 +351,10 @@ EOS,
 				},
 				language: 'ru',
 				codeBlock: {
-					languages: [
-						{language: 'php', label: 'PHP'}
-					]
+					languages: [{
+						language: 'php',
+						label: 'PHP'
+					}]
 				},
 				table: {
 					contentToolbar: [
@@ -400,11 +373,13 @@ EOS,
 				document.querySelector('.ck-toolbar').classList.add('ck-reset_all');
 				@if ($mode == config('global.show'))
 					editor.isReadOnly = true;
-    			@endif
+				@endif
 			})
 			.catch(error => {
 				console.error('Oops, something went wrong!');
-				console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+				console.error(
+					'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:'
+				);
 				console.warn('Build id: bfknlbbh0ej1-27rpc1i5joqr');
 				console.error(error);
 			});

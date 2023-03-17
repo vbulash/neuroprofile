@@ -52,7 +52,7 @@ class ClientController extends Controller {
 				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
 				$items[] = ['type' => 'item', 'click' => "clickDelete({$client->getKey()}, '{$client->name}')", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
 				$items[] = ['type' => 'divider'];
-				$items[] = ['type' => 'item', 'link' => $usersRoute, 'icon' => 'fas fa-users', 'title' => 'Администраторы клиента'];
+				$items[] = ['type' => 'item', 'link' => $usersRoute, 'icon' => 'fas fa-users', 'title' => 'Аккаунт менеджеры'];
 				$items[] = ['type' => 'item', 'link' => $selectRoute, 'icon' => 'fas fa-file-contract', 'title' => 'Контракты клиента'];
 
 				return createDropdown('Действия', $items);

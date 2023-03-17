@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\results;
 
 use App\Models\Block;
+use App\Models\BlockType;
 use App\Models\FMPType;
 use App\Models\History;
 use App\Models\Profile;
@@ -11,18 +12,18 @@ use Illuminate\Database\Eloquent\Collection;
 /**
  * Генератор коллекции блоков описания для отображения / писем
  */
-class BlocksComposer
-{
+class BlocksComposer {
 	private History $history;
 	private array $area;
 
 	/**
 	 * @param int|History $history_id ID или объект записи истории
 	 */
-	public function __construct(int|History $history_id)
-	{
-		if ($history_id instanceof History) $this->history = $history_id;
-		else $this->history = History::findOrFail($history_id);
+	public function __construct(int|History $history_id) {
+		if ($history_id instanceof History)
+			$this->history = $history_id;
+		else
+			$this->history = History::findOrFail($history_id);
 
 		$test = $this->history->test;
 		$content = json_decode($test->content);
@@ -36,10 +37,10 @@ class BlocksComposer
 	/**
 	 * @param BlocksArea $area
 	 */
-	public function getProfile(BlocksArea $area): ?Profile
-	{
+	public function getProfile(BlocksArea $area): ?Profile {
 		$fmptype_id = $this->area[$area->value];
-		if (!isset($fmptype_id)) return null;
+		if (!isset($fmptype_id))
+			return null;
 
 		$fmptype = FMPType::findOrFail($fmptype_id);
 		return $fmptype->profiles
@@ -52,8 +53,13 @@ class BlocksComposer
 	 *
 	 * @return Collection|null Коллекция блоков
 	 */
-	public function getBlocks(Profile $profile): ?Collection
-	{
-		return $profile->blocks->sortBy(['sort_no', 'id']);
+	public function getBlocks(Profile $profile): ?Collection {
+		$result = new Collection();
+		foreach ($profile->blocks as $block) {
+			if ($block->type == BlockType::Alias->value)
+				$block = $block->parent;
+			$result->add($block);
+		}
+		return $result->sortBy(['sort_no', 'id']);
 	}
 }

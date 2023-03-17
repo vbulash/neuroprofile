@@ -63,7 +63,7 @@ trait TestFields {
 			],
 			[
 				"actual" => true,
-				"required" => false,
+				"required" => true,
 				"name" => "age",
 				"label" => "Возраст",
 				"type" => "number",

@@ -29,7 +29,7 @@
 		
 		$menu[] = ['title' => 'Настройки', 'heading' => true];
 		$menu[] = ['title' => 'Администраторы платформы', 'icon' => 'fa fa-user-alt', 'route' => 'admins.index', 'pattern' => 'admins.*'];
-		$menu[] = ['title' => 'Администраторы клиентов', 'icon' => 'fa fa-user-alt', 'route' => 'adminclients.index', 'pattern' => 'adminclients.*'];
+		$menu[] = ['title' => 'Аккаунт менеджеры', 'icon' => 'fa fa-user-alt', 'route' => 'adminclients.index', 'pattern' => 'adminclients.*'];
 		$menu[] = ['title' => 'Типы вопросов', 'icon' => 'fa fa-question-circle', 'route' => 'kinds.index', 'pattern' => 'kinds.*'];
 	@endphp
 	<ul class="nav-main">

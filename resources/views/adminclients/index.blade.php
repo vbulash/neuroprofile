@@ -5,15 +5,15 @@
 
 @section('steps')
 	@php
-		$steps = [['title' => 'Администраторы клиентов', 'active' => true, 'context' => 'admin']];
+		$steps = [['title' => 'Аккаунт менеджеры', 'active' => true, 'context' => 'admin']];
 	@endphp
 @endsection
 
 @section('interior')
 	<div class="block-header block-header-default">
 		<div class="d-flex flex-column">
-			<h3 class="block-title fw-semibold mb-4">Администраторы клиентов</h3>
-			<a href="{{ route('adminclients.create') }}" class="btn btn-primary">Добавить администратора клиента</a>
+			<h3 class="block-title fw-semibold mb-4">Аккаунт менеджеры</h3>
+			<a href="{{ route('adminclients.create') }}" class="btn btn-primary">Добавить аккаунт менеджера</a>
 		</div>
 	</div>
 	<div class="block-content p-4">
@@ -32,7 +32,7 @@
 				</table>
 			</div>
 		@else
-			<p>Администраторов клиентов пока нет...</p>
+			<p>Аккаунт менеджеров пока нет...</p>
 		@endif
 	</div>
 @endsection
@@ -63,7 +63,7 @@
 
 			function clickDelete(id, name) {
 				document.getElementById('confirm-title').innerText = "Подтвердите удаление";
-				document.getElementById('confirm-body').innerHTML = "Удалить администратора клиента &laquo;" + name + "&raquo; ?";
+				document.getElementById('confirm-body').innerHTML = "Удалить аккаунт менеджера &laquo;" + name + "&raquo; ?";
 				document.getElementById('confirm-yes').dataset.id = id;
 				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
 				confirmDialog.show();

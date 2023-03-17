@@ -14,7 +14,7 @@
 		        'link' => route('clients.index'),
 		    ],
 		    [
-		        'title' => 'Администратор клиента',
+		        'title' => 'Аккаунт менеджер',
 		        'active' => true,
 		        'context' => '',
 		        'link' => route('clients.users.index', ['client' => $client->getKey()]),
@@ -24,7 +24,7 @@
 @endsection
 
 @section('interior.header')
-	Редактирование анкеты администратора клиента &laquo;{{ $admin->name }}&raquo;
+	Редактирование анкеты аккаунт менеджера &laquo;{{ $admin->name }}&raquo;
 @endsection
 
 @section('form.params')

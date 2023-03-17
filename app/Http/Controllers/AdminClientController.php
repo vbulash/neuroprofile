@@ -141,7 +141,7 @@ class AdminClientController extends Controller {
 		// $admin->save();
 
 		session()->put('success',
-			"Администратор клиента \"{$name}\" обновлён");
+			"Аккаунт менеджер \"{$name}\" обновлён");
 
 		return redirect()->route('adminclients.index');
 	}
@@ -163,7 +163,7 @@ class AdminClientController extends Controller {
 		$name = $admin->name;
 		$admin->delete();
 
-		event(new ToastEvent('success', '', "Администратор клиента '{$name}' удалён"));
+		event(new ToastEvent('success', '', "Аккаунт менеджер '{$name}' удалён"));
 		return true;
 	}
 }

@@ -5,12 +5,12 @@
 
 @section('steps')
 	@php
-		$steps = [['title' => 'Администраторы платформы', 'active' => true, 'context' => 'admin', 'link' => route('admins.index')]];
+		$steps = [['title' => 'Аккаунт менеджеры', 'active' => true, 'context' => 'admin', 'link' => route('admins.index')]];
 	@endphp
 @endsection
 
 @section('interior.header')
-	Новый администратор
+	Новый аккаунт менеджер
 @endsection
 
 @section('form.params')

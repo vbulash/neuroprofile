@@ -393,7 +393,10 @@ class PlayerController extends Controller {
 			'email' => env('MAIL_FROM_ADDRESS')
 		];
 
-		$testResult = new TestResult($history, $blocks, $card, $profile, $maildata['branding'] ?? null);
+		$branding = null;
+		if (isset($maildata) && is_array($maildata) && isset($maildata['branding']) && !is_bool($maildata['branding']))
+			$branding = $maildata['branding'];
+		$testResult = new TestResult($history, $blocks, $card, $profile, $branding);
 		try {
 			if ($historyMode)
 				Mail::to($recipient)
@@ -432,8 +435,11 @@ class PlayerController extends Controller {
 		];
 
 		try {
+			$branding = null;
+			if (isset($maildata) && is_array($maildata) && isset($maildata['branding']) && !is_bool($maildata['branding']))
+				$branding = $maildata['branding'];
 			Mail::to($recipient)
-				->send(new TestClientResult($history, $blocks, $card, $profile, $maildata['branding'] ?? null));
+				->send(new TestClientResult($history, $blocks, $card, $profile, $branding));
 
 			//event(new ToastEvent('success', '', 'Вам отправлено письмо с результатами тестирования'));
 		} catch (Exception $exc) {

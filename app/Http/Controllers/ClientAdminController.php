@@ -78,7 +78,7 @@ class ClientAdminController extends Controller {
 		$name = $admin->name;
 
 		session()->put('success',
-			"Зарегистрирован новый администратор клиента \"{$name}\"");
+			"Зарегистрирован новый аккаунт менеджер \"{$name}\"");
 		return redirect()->route('clients.users.index', ['client' => $client]);
 	}
 
@@ -110,7 +110,7 @@ class ClientAdminController extends Controller {
 			$draft['password'] = Hash::make($request->password);
 		$admin->update($draft);
 
-		session()->put('success', "Администратор клиента \"{$name}\" обновлён");
+		session()->put('success', "Аккаунт менеджер \"{$name}\" обновлён");
 
 		return redirect()->route('clients.users.index', ['client' => $client->getKey()]);
 	}
@@ -125,7 +125,7 @@ class ClientAdminController extends Controller {
 		$name = $admin->name;
 		$admin->delete();
 
-		event(new ToastEvent('success', '', "Администратор клиента \"{$name}\" удалён"));
+		event(new ToastEvent('success', '', "Аккаунт менеджер \"{$name}\" удалён"));
 		return true;
 	}
 

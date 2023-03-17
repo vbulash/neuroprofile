@@ -6,7 +6,7 @@
 
 @section('steps')
 	@php
-		$steps = [['title' => 'Клиент', 'active' => true, 'context' => 'client'], ['title' => 'Администраторы клиентов<br/>Контракты', 'active' => false, 'context' => 'contract'], ['title' => 'Информация о контракте', 'active' => false, 'context' => 'info']];
+		$steps = [['title' => 'Клиент', 'active' => true, 'context' => 'client'], ['title' => 'Аккаунт менеджеры<br/>Контракты', 'active' => false, 'context' => 'contract'], ['title' => 'Информация о контракте', 'active' => false, 'context' => 'info']];
 	@endphp
 @endsection
 

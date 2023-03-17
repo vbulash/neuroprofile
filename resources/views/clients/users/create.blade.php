@@ -14,7 +14,7 @@
 		        'link' => route('clients.index'),
 		    ],
 		    [
-		        'title' => 'Администраторы клиента',
+		        'title' => 'Аккаунт менеджеры',
 		        'active' => true,
 		        'context' => '',
 		    ],
@@ -23,7 +23,7 @@
 @endsection
 
 @section('interior.header')
-	Новый администратор клиента
+	Новый аккаунт менеджер
 @endsection
 
 @section('form.params')

@@ -5,12 +5,12 @@
 
 @section('steps')
 	@php
-		$steps = [['title' => 'Администраторы клиентов', 'active' => true, 'context' => 'admin', 'link' => route('adminclients.index')]];
+		$steps = [['title' => 'Аккаунт менеджеры', 'active' => true, 'context' => 'admin', 'link' => route('adminclients.index')]];
 	@endphp
 @endsection
 
 @section('interior.header')
-	Просмотр анкеты администратора клиента &laquo;{{ $admin->name }}&raquo;
+	Просмотр анкеты аккаунт менеджера &laquo;{{ $admin->name }}&raquo;
 @endsection
 
 @section('form.params')

@@ -17,7 +17,7 @@
 				<a href="{{ route('contracts.create') }}" class="btn btn-primary mb-4">Добавить контракт</a>
 			</div>
 			<small>Отсюда вы также можете перейти на <a
-					href="{{ route('clients.users.index', ['client' => $client->getKey()]) }}">Администраторов текущего
+					href="{{ route('clients.users.index', ['client' => $client->getKey()]) }}">Аккаунт менеджеров текущего
 					клиента</a></small>
 		</div>
 	</div>
