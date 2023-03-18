@@ -6,42 +6,39 @@
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Набор вопросов', 'active' => false, 'context' => 'set', 'link' => route('sets.index')],
-			['title' => 'Вопросы', 'active' => true, 'context' => 'question'],
-			['title' => 'Изображения вопросов', 'active' => false, 'context' => 'part'],
-		];
+		$steps = [['title' => 'Набор вопросов', 'active' => false, 'context' => 'set', 'link' => route('sets.index')], ['title' => 'Вопросы', 'active' => true, 'context' => 'question'], ['title' => 'Изображения вопросов', 'active' => false, 'context' => 'part']];
 	@endphp
 @endsection
 
 @section('interior')
 	<div class="block-header block-header-default">
 		<div class="dropdown me-2">
-				<button class="btn btn-primary dropdown-toggle" type="button" id="question-create"
-						data-bs-toggle="dropdown" aria-expanded="false">
-					Добавить вопрос
-				</button>
-				<ul class="dropdown-menu" aria-labelledby="question-create">
-					@foreach($kinds as $kind)
-						<li><a class="dropdown-item" href="{{ route('questions.create', ['kind' => $kind->getKey()]) }}">{{ $kind->name }}</a></li>
-					@endforeach
-				</ul>
-			</div>
+			<button class="btn btn-primary dropdown-toggle" type="button" id="question-create" data-bs-toggle="dropdown"
+				aria-expanded="false">
+				Добавить вопрос
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="question-create">
+				@foreach ($kinds as $kind)
+					<li><a class="dropdown-item"
+							href="{{ route('questions.create', ['kind' => $kind->getKey()]) }}">{{ $kind->name }}</a></li>
+				@endforeach
+			</ul>
+		</div>
 	</div>
 	<div class="block-content p-4">
 		@if ($count)
 			<div class="table-responsive">
 				<table class="table table-bordered table-hover text-nowrap" id="questions_table" style="width: 100%;">
 					<thead>
-					<tr>
-						<th>№ п/п</th>
-						<th>Миниатюры изображений</th>
-						<th>Тип вопроса</th>
-						<th>Режим прохождения</th>
-						<th>Таймаут, секунд</th>
-						<th>Отдельная подсказка к вопросу</th>
-						<th>Действия</th>
-					</tr>
+						<tr>
+							<th>№ п/п</th>
+							<th>Миниатюры изображений</th>
+							<th>Тип вопроса</th>
+							<th>Режим прохождения</th>
+							<th>Таймаут, секунд</th>
+							<th>Отдельная подсказка к вопросу</th>
+							<th>&nbsp;</th>
+						</tr>
 					</thead>
 				</table>
 			</div>
@@ -65,7 +62,9 @@
 					data: {
 						id: id,
 					},
-					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
 					success: () => {
 						window.datatable.ajax.reload();
 					}
@@ -78,7 +77,9 @@
 					data: {
 						id: id,
 					},
-					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
 					success: () => {
 						window.datatable.ajax.reload();
 					}
@@ -91,7 +92,9 @@
 					data: {
 						id: id,
 					},
-					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
 					success: () => {
 						window.datatable.ajax.reload();
 					}
@@ -105,7 +108,9 @@
 					data: {
 						id: event.target.dataset.id,
 					},
-					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
 					success: () => {
 						window.datatable.ajax.reload();
 					}
@@ -120,45 +125,71 @@
 				confirmDialog.show();
 			}
 
-			$(function () {
+			$(function() {
 				window.datatable = $('#questions_table').DataTable({
 					language: {
 						"url": "{{ asset('lang/ru/datatables.json') }}"
 					},
 					ordering: false,
-					order: [[1, 'asc']],
+					order: [
+						[1, 'asc']
+					],
 					processing: true,
 					serverSide: true,
 					ajax: '{!! route('questions.index.data') !!}',
 					responsive: true,
 					pageLength: 100,
-					columns: [
-						{data: 'sort_no', name: 'sort_no', responsivePriority: 1},
+					columns: [{
+							data: 'sort_no',
+							name: 'sort_no',
+							responsivePriority: 1
+						},
 						{
-							data: 'preview', name: 'preview', responsivePriority: 3, render: (data) => {
+							data: 'preview',
+							name: 'preview',
+							responsivePriority: 3,
+							render: (data) => {
 								if (data) {
 									let thumbs = JSON.parse(data.replace(/&quot;/g, '"'));
 									let preview = '';
 									thumbs.forEach((thumb) => {
 										preview = preview +
-											"<img src=\"" + thumb + "\" alt=\"\" class=\"thumb-row\">\n";
+											"<img src=\"" + thumb +
+											"\" alt=\"\" class=\"thumb-row\">\n";
 									});
 									return preview;
 								} else return '';
 							}
 						},
-						{data: 'kind', name: 'kind', responsivePriority: 3},
-						{data: 'learning', name: 'learning', responsivePriority: 2},
-						{data: 'timeout', name: 'timeout', responsivePriority: 2},
-						{data: 'cue', name: 'cue', responsivePriority: 3, render: (data) => {
-							return data ? data : 'Нет';
-						}},
+						{
+							data: 'kind',
+							name: 'kind',
+							responsivePriority: 3
+						},
+						{
+							data: 'learning',
+							name: 'learning',
+							responsivePriority: 2
+						},
+						{
+							data: 'timeout',
+							name: 'timeout',
+							responsivePriority: 2
+						},
+						{
+							data: 'cue',
+							name: 'cue',
+							responsivePriority: 3,
+							render: (data) => {
+								return data ? data : 'Нет';
+							}
+						},
 						{
 							data: 'action',
 							name: 'action',
 							sortable: false,
 							responsivePriority: 1,
-							className: 'no-wrap dt-actions'
+							className: 'd-flex no-wrap dt-actions'
 						}
 					]
 				});

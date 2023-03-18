@@ -21,28 +21,16 @@ class PartController extends Controller {
 		return DataTables::of($parts)
 			->editColumn('preview', fn($part) => '/uploads/' . $part->image)
 			->addColumn('action', function ($part) {
-			    $editRoute = route('parts.edit', ['part' => $part->getKey()]);
-			    $showRoute = route('parts.show', ['part' => $part->getKey()]);
-			    $actions = '';
+				$editRoute = route('parts.edit', ['part' => $part->getKey()]);
+				$showRoute = route('parts.show', ['part' => $part->getKey()]);
 
-			    $actions .=
-			    	"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
-			    	"<i class=\"fas fa-pencil-alt\"></i>\n" .
-			    	"</a>\n";
-			    $actions .=
-			    	"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
-			    	"<i class=\"fas fa-eye\"></i>\n" .
-			    	"</a>\n";
-			    $actions .=
-			    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left\" " .
-			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$part->getKey()})\">\n" .
-			    	"<i class=\"fas fa-trash-alt\"></i>\n" .
-			    	"</a>\n";
+				$items = [];
+				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-pencil-alt', 'title' => 'Редактирование'];
+				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
+				$items[] = ['type' => 'item', 'click' => "clickDelete({$part->getKey()})", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
 
-			    return $actions;
-		    })
+				return createDropdown('Действия', $items);
+			})
 			->make(true);
 	}
 
@@ -62,8 +50,8 @@ class PartController extends Controller {
 		$temp = collect(explode(PHP_EOL, $question->kind->keys))
 			->each(function ($key) use (&$keys) {
 				$key = trim($key);
-			    $keys[$key] = $key;
-		    });
+				$keys[$key] = $key;
+			});
 
 		return view('parts.create', compact('mode', 'question', 'keys'));
 	}
@@ -94,9 +82,9 @@ class PartController extends Controller {
 		$keys = [];
 		$temp = collect(explode(PHP_EOL, $part->question->kind->keys))
 			->each(function ($key) use (&$keys) {
-			    $key = trim($key);
-			    $keys[$key] = $key;
-		    });
+				$key = trim($key);
+				$keys[$key] = $key;
+			});
 		return view('parts.edit', compact('mode', 'part', 'keys'));
 	}
 
