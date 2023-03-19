@@ -17,16 +17,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
-class ProfileController extends Controller
-{
+class ProfileController extends Controller {
 	/**
 	 * Process datatables ajax request.
 	 *
 	 * @return JsonResponse
 	 * @throws Exception
 	 */
-	public function getData(): JsonResponse
-	{
+	public function getData(): JsonResponse {
 		$context = session('context');
 		$fmptype = FMPType::findOrFail($context['fmptype']);
 		$profiles = $fmptype->profiles;
@@ -37,36 +35,20 @@ class ProfileController extends Controller
 				$editRoute = route('profiles.edit', ['profile' => $profile->getKey()]);
 				$showRoute = route('profiles.show', ['profile' => $profile->getKey()]);
 				$selectRoute = route('profiles.select', ['profile' => $profile->getKey()]);
-				$actions = '';
 
-				$actions .=
-					"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
-					"<i class=\"fas fa-pencil-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
-					"<i class=\"fas fa-eye\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$profile->getKey()}, '{$profile->name}')\">\n" .
-					"<i class=\"fas fa-trash-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$selectRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выбор\">\n" .
-					"<i class=\"fas fa-check\"></i>\n" .
-					"</a>\n";
+				$items = [];
+				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-pencil-alt', 'title' => 'Редактирование'];
+				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
+				$items[] = ['type' => 'item', 'click' => "clickDelete({$profile->getKey()}, '{$profile->name}')", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
+				$items[] = ['type' => 'divider'];
+				$items[] = ['type' => 'item', 'link' => $selectRoute, 'icon' => 'fas fa-check', 'title' => 'Блоки описания'];
 
-				return $actions;
+				return createDropdown('Действия', $items);
 			})
 			->make(true);
 	}
 
-	public function select(int $id)
-	{
+	public function select(int $id) {
 		$context = session('context');
 		$context['profile'] = $id;
 		session()->put('context', $context);
@@ -79,8 +61,7 @@ class ProfileController extends Controller
 	 *
 	 * @return Application|Factory|View
 	 */
-	public function index()
-	{
+	public function index() {
 		$context = session('context');
 		unset($context['profile']);
 		unset($context['block']);
@@ -97,8 +78,7 @@ class ProfileController extends Controller
 	 *
 	 * @return Application|Factory|View
 	 */
-	public function create()
-	{
+	public function create() {
 		$mode = config('global.create');
 		$context = session('context');
 		$fmptype = FMPType::findOrFail($context['fmptype']);
@@ -112,10 +92,9 @@ class ProfileController extends Controller
 	 * @param StoreProfileRequest $request
 	 * @return RedirectResponse
 	 */
-	public function store(StoreProfileRequest $request)
-	{
+	public function store(StoreProfileRequest $request) {
 		$name = '';
-		DB::transaction(function() use($request, &$name) {
+		DB::transaction(function () use ($request, &$name) {
 			$context = session('context');
 
 			$profile = Profile::create($request->except('_token'));
@@ -140,8 +119,7 @@ class ProfileController extends Controller
 	 * @param int $id
 	 * @return Application|Factory|View
 	 */
-	public function show($id)
-	{
+	public function show($id) {
 		return $this->edit($id, true);
 	}
 
@@ -152,8 +130,7 @@ class ProfileController extends Controller
 	 * @param bool $show
 	 * @return Application|Factory|View
 	 */
-	public function edit(int $id, bool $show = false)
-	{
+	public function edit(int $id, bool $show = false) {
 		$mode = $show ? config('global.show') : config('global.edit');
 		$profile = Profile::findOrFail($id);
 		$context = session('context');
@@ -168,8 +145,7 @@ class ProfileController extends Controller
 	 * @param int $id
 	 * @return RedirectResponse
 	 */
-	public function update(UpdateProfileRequest $request, $id)
-	{
+	public function update(UpdateProfileRequest $request, $id) {
 		$profile = Profile::findOrFail($id);
 		$name = $profile->name;
 		$profile->update($request->except('_token'));
@@ -184,21 +160,21 @@ class ProfileController extends Controller
 	 * @param int $profile
 	 * @return bool
 	 */
-	public function destroy(Request $request, int $profile)
-	{
+	public function destroy(Request $request, int $profile) {
 		if ($profile == 0) {
 			$id = $request->id;
-		} else $id = $profile;
+		} else
+			$id = $profile;
 
 		$name = '';
-		DB::transaction(function() use($id, &$name) {
+		DB::transaction(function () use ($id, &$name) {
 			$profile = Profile::findOrFail($id);
 			$name = $profile->name;
 			$profile->delete();
 
 			$context = session('context');
 			$fmptype = FMPType::findOrFail($context['fmptype']);
-			$count = $fmptype->profiles->count() - 1;	// -1 - в рамках транзакции $profile->delete() не срабатывает мгноваенно
+			$count = $fmptype->profiles->count() - 1; // -1 - в рамках транзакции $profile->delete() не срабатывает мгноваенно
 			$fmptype->update([
 				'active' => intval($fmptype->limit) == $count
 			]);

@@ -35,35 +35,17 @@ class FMPTypeController extends Controller {
 				$showRoute = route('fmptypes.show', ['fmptype' => $fmptype->getKey()]);
 				$selectRoute = route('fmptypes.select', ['fmptype' => $fmptype->getKey()]);
 				$copyRoute = route('fmptypes.copy', ['fmptype' => $fmptype->getKey()]);
-				$actions = '';
 
-				$actions .=
-					"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
-					"<i class=\"fas fa-pencil-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
-					"<i class=\"fas fa-eye\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$fmptype->getKey()}, '{$fmptype->name}')\">\n" .
-					"<i class=\"fas fa-trash-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$copyRoute}\" class=\"btn btn-primary btn-sm float-left me-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Дублирование\">\n" .
-					"<i class=\"fas fa-copy\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$selectRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выбор\">\n" .
-					"<i class=\"fas fa-check\"></i>\n" .
-					"</a>\n";
+				$items = [];
+				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-pencil-alt', 'title' => 'Редактирование'];
+				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
+				$items[] = ['type' => 'item', 'click' => "clickDelete({$fmptype->getKey()}, '{$fmptype->name}')", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
+				$items[] = ['type' => 'divider'];
+				$items[] = ['type' => 'item', 'link' => $copyRoute, 'icon' => 'fas fa-clone', 'title' => 'Дублирование'];
+				$items[] = ['type' => 'divider'];
+				$items[] = ['type' => 'item', 'link' => $selectRoute, 'icon' => 'fas fa-check', 'title' => 'Нейропрофили'];
 
-				return $actions;
+				return createDropdown('Действия', $items);
 			})
 			->make(true);
 	}

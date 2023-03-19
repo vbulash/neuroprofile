@@ -1,13 +1,20 @@
 @extends('layouts.detail')
 
-@section('service')Работа с клиентами и контрактами@endsection
+@section('service')
+	Работа с клиентами и контрактами
+@endsection
 
 @section('steps')
 	@php
 		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
-			['title' => 'Нейропрофиль', 'active' => true, 'context' => 'profile', 'link' => route('profiles.index')],
-			['title' => 'Блок описания', 'active' => false, 'context' => 'block'],
+		    [
+		        'title' => 'Тип описания',
+		        'active' => false,
+		        'context' => 'fmptype',
+		        'link' => route('fmptypes.index'),
+		    ],
+		    ['title' => 'Нейропрофили', 'active' => true, 'context' => 'profile', 'link' => route('profiles.index')],
+		    ['title' => 'Блоки описания', 'active' => false, 'context' => 'block'],
 		];
 	@endphp
 @endsection
@@ -23,11 +30,7 @@
 
 @section('form.fields')
 	@php
-		$fields = [
-			['name' => 'code', 'title' => 'Код нейропрофиля', 'required' => true, 'type' => 'select', 'options' => $codes],
-			['name' => 'name', 'title' => 'Название нейропрофиля', 'required' => true, 'type' => 'text'],
-			['name' => 'fmptype_id', 'type' => 'hidden', 'value' => $fmptype->getKey()],
-		];
+		$fields = [['name' => 'code', 'title' => 'Код нейропрофиля', 'required' => true, 'type' => 'select', 'options' => $codes], ['name' => 'name', 'title' => 'Название нейропрофиля', 'required' => true, 'type' => 'text'], ['name' => 'fmptype_id', 'type' => 'hidden', 'value' => $fmptype->getKey()]];
 	@endphp
 @endsection
 

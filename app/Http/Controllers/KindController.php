@@ -16,26 +16,16 @@ class KindController extends Controller {
 
 		return DataTables::of($kinds)
 			->addColumn('action', function ($kind) {
-			    $editRoute = route('kinds.edit', ['kind' => $kind->getKey()]);
-			    $showRoute = route('kinds.show', ['kind' => $kind->getKey()]);
+				$editRoute = route('kinds.edit', ['kind' => $kind->getKey()]);
+				$showRoute = route('kinds.show', ['kind' => $kind->getKey()]);
 
-			    $actions = "<a href=\"$editRoute\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
-			    	"<i class=\"fas fa-pencil-alt\"></i>\n" .
-			    	"</a>\n";
-			    $actions .=
-			    	"<a href=\"$showRoute\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
-			    	"<i class=\"fas fa-eye\"></i>\n" .
-			    	"</a>\n";
-			    $actions .=
-			    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left me-5\" " .
-			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete($kind->getKey(), '$kind->name')\">\n" .
-			    	"<i class=\"fas fa-trash-alt\"></i>\n" .
-			    	"</a>\n";
+				$items = [];
+				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-pencil-alt', 'title' => 'Редактирование'];
+				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
+				$items[] = ['type' => 'item', 'click' => "clickDelete($kind->getKey(), '$kind->name')", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
 
-			    return $actions;
-		    })
+				return createDropdown('Действия', $items);
+			})
 			->make(true);
 	}
 
@@ -92,11 +82,11 @@ class KindController extends Controller {
 		return redirect()->route('kinds.index');
 	}
 
-	public function destroy(Request $request, int $kind)
-	{
+	public function destroy(Request $request, int $kind) {
 		if ($kind == 0) {
 			$id = $request->id;
-		} else $id = $kind;
+		} else
+			$id = $kind;
 
 		$kind = Kind::findOrFail($id);
 		$name = $kind->name;

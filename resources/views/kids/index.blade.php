@@ -6,10 +6,7 @@
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Блок-предок', 'active' => false, 'context' => 'parent', 'link' => route('parents.index')],
-			['title' => 'Блок-потомок', 'active' => true, 'context' => 'profile'],
-		];
+		$steps = [['title' => 'Блок-предок', 'active' => false, 'context' => 'parent', 'link' => route('parents.index')], ['title' => 'Блок-потомок', 'active' => true, 'context' => 'kid']];
 	@endphp
 @endsection
 
@@ -25,13 +22,13 @@
 				<div class="table-responsive">
 					<table class="table table-bordered table-hover text-nowrap" id="blocks_table" style="width: 100%;">
 						<thead>
-						<tr>
-							<th style="width: 30px">#</th>
-							<th>Название блока</th>
-							<th>Тип описания</th>
-							<th>Нейропрофиль</th>
-							<th>Действия</th>
-						</tr>
+							<tr>
+								<th style="width: 30px">#</th>
+								<th>Название блока</th>
+								<th>Тип описания</th>
+								<th>Нейропрофиль</th>
+								<th>&nbsp;</th>
+							</tr>
 						</thead>
 					</table>
 				</div>
@@ -57,7 +54,9 @@
 					data: {
 						id: event.target.dataset.id,
 					},
-					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
 					success: () => {
 						window.datatable.ajax.reload();
 					}
@@ -66,13 +65,14 @@
 
 			function clickUnlink(id, name) {
 				document.getElementById('confirm-title').innerText = "Подтвердите разрыв связи";
-				document.getElementById('confirm-body').innerHTML = "Сделать блок &laquo;" + name + "&raquo; самостоятельным, не связанным с предком ?";
+				document.getElementById('confirm-body').innerHTML = "Сделать блок &laquo;" + name +
+					"&raquo; самостоятельным, не связанным с предком ?";
 				document.getElementById('confirm-yes').dataset.id = id;
 				let confirmDialog = new bootstrap.Modal(document.getElementById('modal-confirm'));
 				confirmDialog.show();
 			}
 
-			$(function () {
+			$(function() {
 				window.datatable = $('#blocks_table').DataTable({
 					language: {
 						"url": "{{ asset('lang/ru/datatables.json') }}"
@@ -83,11 +83,26 @@
 					ajax: '{!! route('kids.index.data') !!}',
 					responsive: true,
 					pageLength: 100,
-					columns: [
-						{data: 'id', name: 'id', responsivePriority: 1},
-						{data: 'name', name: 'name', responsivePriority: 1},
-						{data: 'fmptype', name: 'fmptype', responsivePriority: 2},
-						{data: 'profile', name: 'profile', responsivePriority: 3},
+					columns: [{
+							data: 'id',
+							name: 'id',
+							responsivePriority: 1
+						},
+						{
+							data: 'name',
+							name: 'name',
+							responsivePriority: 1
+						},
+						{
+							data: 'fmptype',
+							name: 'fmptype',
+							responsivePriority: 2
+						},
+						{
+							data: 'profile',
+							name: 'profile',
+							responsivePriority: 3
+						},
 						{
 							data: 'action',
 							name: 'action',
@@ -96,6 +111,23 @@
 							className: 'no-wrap dt-actions'
 						}
 					]
+				});
+
+				window.datatable.on('draw', function() {
+					$('.dropdown-toggle.actions').on('shown.bs.dropdown', (event) => {
+						const menu = event.target.parentElement.querySelector('.dropdown-menu');
+						let parent = menu.closest('.dataTables_wrapper');
+						const parentRect = parent.getBoundingClientRect();
+						parentRect.top = Math.abs(parentRect.top);
+						const menuRect = menu.getBoundingClientRect();
+						const buttonRect = event.target.getBoundingClientRect();
+						const menuTop = Math.abs(buttonRect.top) + buttonRect.height + 4;
+						if (menuTop + menuRect.height > parentRect.top + parentRect.height) {
+							const clientHeight = parentRect.height + menuTop + menuRect.height - (
+								parentRect.top + parentRect.height);
+							parent.style.height = clientHeight.toString() + 'px';
+						}
+					});
 				});
 			});
 		</script>

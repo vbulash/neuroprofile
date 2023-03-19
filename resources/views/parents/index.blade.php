@@ -6,10 +6,7 @@
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Блок-предок', 'active' => true, 'context' => 'parent'],
-			['title' => 'Блок-потомок', 'active' => false, 'context' => 'profile'],
-		];
+		$steps = [['title' => 'Блок-предок', 'active' => true, 'context' => 'parent'], ['title' => 'Блок-потомок', 'active' => false, 'context' => 'profile']];
 	@endphp
 @endsection
 
@@ -25,16 +22,16 @@
 				<div class="table-responsive">
 					<table class="table table-bordered table-hover text-nowrap" id="blocks_table" style="width: 100%;">
 						<thead>
-						<tr>
-							<th style="width: 30px">#</th>
-							<th>Название блока</th>
-							<th>Тип блока</th>
-							<th>Тип описания</th>
-							<th>Нейропрофиль</th>
-							<th>Дата создания</th>
-							<th>Дата изменения</th>
-							<th>Действия</th>
-						</tr>
+							<tr>
+								<th style="width: 30px">#</th>
+								<th>Название блока</th>
+								<th>Тип блока</th>
+								<th>Тип описания</th>
+								<th>Нейропрофиль</th>
+								<th>Дата создания</th>
+								<th>Дата изменения</th>
+								<th>&nbsp;</th>
+							</tr>
 						</thead>
 					</table>
 				</div>
@@ -53,7 +50,7 @@
 	@push('js_after')
 		<script src="{{ asset('js/datatables.js') }}"></script>
 		<script>
-			$(function () {
+			$(function() {
 				window.datatable = $('#blocks_table').DataTable({
 					language: {
 						"url": "{{ asset('lang/ru/datatables.json') }}"
@@ -64,14 +61,41 @@
 					ajax: '{!! route('parents.index.data') !!}',
 					responsive: true,
 					pageLength: 100,
-					columns: [
-						{data: 'id', name: 'id', responsivePriority: 1},
-						{data: 'name', name: 'name', responsivePriority: 1},
-						{data: 'type', name: 'type', responsivePriority: 2},
-						{data: 'fmptype', name: 'fmptype', responsivePriority: 2},
-						{data: 'profile', name: 'profile', responsivePriority: 3},
-						{data: 'created_at', name: 'created_at', responsivePriority: 4},
-						{data: 'updated_at', name: 'updated_at', responsivePriority: 4},
+					columns: [{
+							data: 'id',
+							name: 'id',
+							responsivePriority: 1
+						},
+						{
+							data: 'name',
+							name: 'name',
+							responsivePriority: 1
+						},
+						{
+							data: 'type',
+							name: 'type',
+							responsivePriority: 2
+						},
+						{
+							data: 'fmptype',
+							name: 'fmptype',
+							responsivePriority: 2
+						},
+						{
+							data: 'profile',
+							name: 'profile',
+							responsivePriority: 3
+						},
+						{
+							data: 'created_at',
+							name: 'created_at',
+							responsivePriority: 4
+						},
+						{
+							data: 'updated_at',
+							name: 'updated_at',
+							responsivePriority: 4
+						},
 						{
 							data: 'action',
 							name: 'action',
@@ -80,6 +104,23 @@
 							className: 'no-wrap dt-actions'
 						}
 					]
+				});
+
+				window.datatable.on('draw', function() {
+					$('.dropdown-toggle.actions').on('shown.bs.dropdown', (event) => {
+						const menu = event.target.parentElement.querySelector('.dropdown-menu');
+						let parent = menu.closest('.dataTables_wrapper');
+						const parentRect = parent.getBoundingClientRect();
+						parentRect.top = Math.abs(parentRect.top);
+						const menuRect = menu.getBoundingClientRect();
+						const buttonRect = event.target.getBoundingClientRect();
+						const menuTop = Math.abs(buttonRect.top) + buttonRect.height + 4;
+						if (menuTop + menuRect.height > parentRect.top + parentRect.height) {
+							const clientHeight = parentRect.height + menuTop + menuRect.height - (
+								parentRect.top + parentRect.height);
+							parent.style.height = clientHeight.toString() + 'px';
+						}
+					});
 				});
 			});
 		</script>

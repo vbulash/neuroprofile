@@ -17,16 +17,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
-class ParentController extends Controller
-{
+class ParentController extends Controller {
 	/**
 	 * Process datatables ajax request.
 	 *
 	 * @return JsonResponse
 	 * @throws Exception
 	 */
-	public function getData(): JsonResponse
-	{
+	public function getData(): JsonResponse {
 		$blocks = DB::select(<<<SQL
 SELECT
     blocks.id AS id,
@@ -49,10 +47,10 @@ SQL);
 		}
 
 		return Datatables::of($blocks)
-			->editColumn('profile', fn ($block) => $block->model->profile->getTitle())
+			->editColumn('profile', fn($block) => $block->model->profile->getTitle())
 			->addColumn('type', fn($block) => BlockType::getName($block->model->type))
-			->addColumn('created_at', fn ($block) => $block->model->created_at->format('d.m.Y H:i:s'))
-			->addColumn('updated_at', fn ($block) => $block->model->updated_at->format('d.m.Y H:i:s'))
+			->addColumn('created_at', fn($block) => $block->model->created_at->format('d.m.Y H:i:s'))
+			->addColumn('updated_at', fn($block) => $block->model->updated_at->format('d.m.Y H:i:s'))
 			->addColumn('action', function ($block) {
 				$editRoute = route('parents.edit', [
 					'parent' => $block->model->getKey()
@@ -63,31 +61,19 @@ SQL);
 				$selectRoute = route('parents.select', [
 					'parent' => $block->model->getKey()
 				]);
-				$actions = '';
 
-				$actions .=
-					"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left mr-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
-					"<i class=\"fas fa-pencil-alt\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
-					"<i class=\"fas fa-eye\"></i>\n" .
-					"</a>\n";
-				$actions .=
-					"<a href=\"{$selectRoute}\" class=\"btn btn-primary btn-sm float-left ms-5\" " .
-					"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Выбор\">\n" .
-					"<i class=\"fas fa-check\"></i>\n" .
-					"</a>\n";
+				$items = [];
+				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-pencil-alt', 'title' => 'Редактирование'];
+				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
+				$items[] = ['type' => 'divider'];
+				$items[] = ['type' => 'item', 'link' => $selectRoute, 'icon' => 'fas fa-check', 'title' => 'Блоки-потомки'];
 
-				return $actions;
+				return createDropdown('Действия', $items);
 			})
 			->make(true);
 	}
 
-	public function select(int $id)
-	{
+	public function select(int $id) {
 		session()->forget('context');
 		session()->put('context', ['parent' => $id]);
 
@@ -99,8 +85,7 @@ SQL);
 	 *
 	 * @return Application|Factory|View
 	 */
-	public function index()
-	{
+	public function index() {
 		session()->forget('context');
 		$count = Block::whereNull('block_id')->count();
 		return view('parents.index', compact('count'));
@@ -112,8 +97,7 @@ SQL);
 	 * @param int $id
 	 * @return RedirectResponse
 	 */
-	public function show(int $id)
-	{
+	public function show(int $id) {
 		$block = Block::findOrFail($id);
 		return redirect()->route('blocks.show', [
 			'block' => $block->getKey(),
@@ -128,8 +112,7 @@ SQL);
 	 * @param bool $show
 	 * @return RedirectResponse
 	 */
-	public function edit(int $id, bool $show = false)
-	{
+	public function edit(int $id, bool $show = false) {
 		$block = Block::findOrFail($id);
 		return redirect()->route('blocks.edit', [
 			'block' => $block->getKey(),

@@ -7,10 +7,15 @@
 @section('steps')
 	@php
 		$steps = [
-            ['title' => 'Блок-предок', 'active' => false, 'context' => 'parent', 'link' => route('parents.index')],
-			['title' => 'Блок-потомок', 'active' => true, 'context' => 'profile', 'link' => route('kids.index')],
+		    [
+		        'title' => 'Блок-предок',
+		        'active' => false,
+		        'context' => 'parent',
+		        'link' => route('parents.index'),
+		    ],
+		    ['title' => 'Блок-потомок', 'active' => true, 'context' => 'kid', 'link' => route('kids.index')],
 		];
-        $close = route('kids.index');
+		$close = route('kids.index');
 	@endphp
 @endsection
 
@@ -25,12 +30,7 @@
 
 @section('form.fields')
 	@php
-		$fields = [
-			['name' => 'name', 'title' => 'Название ссылочного блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
-			['name' => 'kind', 'type' => 'hidden', 'value' => $kind],
-			['name' => 'type', 'type' => 'hidden', 'value' => $block->type],
-			['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->profile->getKey()],
-		];
+		$fields = [['name' => 'name', 'title' => 'Название ссылочного блока', 'required' => true, 'type' => 'text', 'value' => $block->name], ['name' => 'kind', 'type' => 'hidden', 'value' => $kind], ['name' => 'type', 'type' => 'hidden', 'value' => $block->type], ['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->profile->getKey()]];
 	@endphp
 @endsection
 
@@ -85,9 +85,10 @@
 				},
 				language: 'ru',
 				codeBlock: {
-					languages: [
-						{language: 'php', label: 'PHP'}
-					]
+					languages: [{
+						language: 'php',
+						label: 'PHP'
+					}]
 				},
 				table: {
 					contentToolbar: [
@@ -104,21 +105,23 @@
 				window.editor = editor;
 				document.querySelector('.document-editor__toolbar').appendChild(editor.ui.view.toolbar.element);
 				document.querySelector('.ck-toolbar').classList.add('ck-reset_all');
-				@if($mode == config('global.show'))
+				@if ($mode == config('global.show'))
 					editor.isReadOnly = true;
 				@endif
 			})
 			.catch(error => {
 				console.error('Oops, something went wrong!');
-				console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+				console.error(
+					'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:'
+				);
 				console.warn('Build id: bfknlbbh0ej1-27rpc1i5joqr');
 				console.error(error);
 			});
 
-		@if($mode != config('global.show'))
-		document.getElementById('block-edit').addEventListener('submit', () => {
-			document.getElementById('full').value = editor.getData();
-		}, false);
+		@if ($mode != config('global.show'))
+			document.getElementById('block-edit').addEventListener('submit', () => {
+				document.getElementById('full').value = editor.getData();
+			}, false);
 		@endif
 	</script>
 @endpush
