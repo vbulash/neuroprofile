@@ -34,7 +34,8 @@
 				{{--            <a href="{{ route('admin.index') }}"> --}}
 				@if (isset($branding) && isset($branding['logo']))
 					<span id="preview_logo">
-						<img src="{{ '/uploads/' . $branding['logo'] }}" class="preview_logo" style="height: 20px;">
+						<img src="{{ '/uploads/' . $branding['logo'] }}" class="preview_logo"
+							style="height: 56px; margin-right: 1.25rem;">
 					</span>
 				@else
 					<i class="fas fa-home"></i>
