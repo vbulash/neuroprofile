@@ -77,8 +77,8 @@ class PlayerController extends Controller {
 			}
 
 			if (count($messages) > 0) {
-				session()->flash('error', implode('<br/>', $messages));
-				Log::debug('Сообщения об ошибках: <br/>' . implode('<br/>', $messages));
+				session()->put('error', implode('<br/>', $messages));
+				// Log::debug('Сообщения об ошибках: <br/>' . implode('<br/>', $messages));
 				return false;
 			} else {
 				session()->put('test', $test);
@@ -101,7 +101,10 @@ class PlayerController extends Controller {
 		Log::info('play mkey = ' . $mkey);
 		if (!$this->check($request, $mkey, $test)) {
 			//Log::debug('player.play: ' . __METHOD__ . ':' . __LINE__);
-			return redirect()->route('player.index', ['sid' => session()->getId()]);
+			return redirect()->route('player.index', [
+				'sid' => session()->getId(),
+				'message' => session()->has('error') ? session('error') : ''
+			]);
 		} else {
 			$test = session('test');
 			$content = json_decode($test->content, true);
@@ -130,7 +133,10 @@ class PlayerController extends Controller {
 		// Log::debug('card request = ' . print_r($request->all(), true));
 		if (!$this->check($request)) {
 			//Log::debug('player.card: ' . __METHOD__ . ':' . __LINE__);
-			return redirect()->route('player.index', ['sid' => session()->getId()]);
+			return redirect()->route('player.index', [
+				'sid' => session()->getId(),
+				'message' => session()->has('error') ? session('error') : ''
+			]);
 		} else {
 			session()->forget('pkey');
 			$test = session('test');
@@ -205,7 +211,10 @@ class PlayerController extends Controller {
 	public function body2(Request $request) {
 		if (!$this->check($request)) {
 			$test = session('test');
-			return redirect()->route('player.index', ['sid' => session()->getId()]);
+			return redirect()->route('player.index', [
+				'sid' => session()->getId(),
+				'message' => session()->has('error') ? session('error') : ''
+			]);
 		}
 
 		$test = session('test');
@@ -350,7 +359,10 @@ class PlayerController extends Controller {
 				if ($blocks)
 					return view('front.show', compact('card', 'blocks', 'profile', 'history'));
 			} else
-				return redirect()->route('player.index', ['sid' => session()->getId()]);
+				return redirect()->route('player.index', [
+					'sid' => session()->getId(),
+					'message' => session()->has('error') ? session('error') : ''
+				]);
 		}
 
 		return response(content: 'OK' . $history_id, status: 200);
@@ -517,14 +529,20 @@ class PlayerController extends Controller {
 			$license = License::where('pkey', session('pkey'))->first();
 			if (!$license) {
 				$message = 'Не найдена лицензия, соответствующая персональному ключу ' . session('pkey');
-				Log::error($message);
+				// Log::error($message);
 				session()->put('error', $message);
-				return redirect()->route('player.index', ['sid' => session()->getId()]);
+				return redirect()->route('player.index', [
+					'sid' => session()->getId(),
+					'message' => session()->has('error') ? session('error') : ''
+				]);
 			} elseif ($license->status != License::FREE) {
 				$message = 'Лицензия, соответствующая персональному ключу ' . session('pkey') . ', уже использована. Запросите новый персональный ключ';
 				Log::error($message);
 				session()->put('error', $message);
-				return redirect()->route('player.index', ['sid' => session()->getId()]);
+				return redirect()->route('player.index', [
+					'sid' => session()->getId(),
+					'message' => session()->has('error') ? session('error') : ''
+				]);
 			}
 		} else { // Найти любую свободную лицензию
 			$license = $test->contract->licenses->where('status', License::FREE)->first();
@@ -535,7 +553,10 @@ class PlayerController extends Controller {
 				Log::error($message);
 				session()->put('error', $message);
 				//Log::debug(__METHOD__ . ':' . __LINE__);
-				return redirect()->route('player.index', ['sid' => session()->getId()]);
+				return redirect()->route('player.index', [
+					'sid' => session()->getId(),
+					'message' => session()->has('error') ? session('error') : ''
+				]);
 			}
 		}
 		$license->lock();
