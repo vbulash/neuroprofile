@@ -5,10 +5,12 @@
 @endpush
 
 @push('testname')
-	Тест &laquo;{{ $test->name }}&raquo;
+	{{ $test->name }}
 @endpush
 
 @section('content')
 	<p>Обнаружены ошибки предварительной проверки:</p>
-	<p>{!! $message !!}</p>
+	@isset($message)
+		<p>{!! $message !!}</p>
+	@endisset
 @endsection

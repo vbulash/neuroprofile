@@ -5,7 +5,7 @@
 @endpush
 
 @push('testname')
-	Тест &laquo;{{ $history->test->name }}&raquo;
+	{{ $history->test->name }}
 @endpush
 
 @push('step_description')

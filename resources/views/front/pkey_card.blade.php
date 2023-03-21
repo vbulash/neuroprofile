@@ -5,7 +5,7 @@
 @endpush
 
 @push('testname')
-	Тест &laquo;{{ $test->name }}&raquo;
+	{{ $test->name }}
 @endpush
 
 @section('content')
@@ -24,7 +24,7 @@
 		@csrf
 		<input type="hidden" value="{{ $sid }}" name="sid">
 		<div class="form-group">
-			<label for="pkey">Введите персональный ключ для начала тестирования</label>
+			<label for="pkey">Введите персональный ключ:</label>
 			<input type="text" name="pkey" id="pkey"
 				class="form-control col-lg-4 col-md-4 @error('pkey') is-invalid @enderror mt-2">
 		</div>

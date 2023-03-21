@@ -5,7 +5,7 @@
 @endpush
 
 @push('testname')
-	Тест &laquo;{{ $test->name }}&raquo;
+	{{ $test->name }}
 @endpush
 
 @section('content')

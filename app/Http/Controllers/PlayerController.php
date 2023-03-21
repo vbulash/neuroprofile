@@ -358,11 +358,10 @@ class PlayerController extends Controller {
 				event(new ToastEvent('success', '', 'Результаты тестирования отображаются на экране'));
 				if ($blocks)
 					return view('front.show', compact('card', 'blocks', 'profile', 'history'));
-			} else
-				return redirect()->route('player.index', [
-					'sid' => session()->getId(),
-					'message' => session()->has('error') ? session('error') : ''
-				]);
+			} else {
+				$test = $history->test;
+				return view('front.thanks', compact('test'));
+			}
 		}
 
 		return response(content: 'OK' . $history_id, status: 200);

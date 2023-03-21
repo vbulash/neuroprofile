@@ -69,6 +69,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label for="logo-file">Логотип:</label>
+					<input type="hidden" name='clear-logo' id='clear-logo' value='false'>
 					<input type="file" id="logo-file" name="logo-file" class="image-file mb-4 form-control"
 						@if ($mode == config('global.show')) disabled @endif onchange="readLogoImage(this)">
 					<a href="javascript:void(0)" class="preview_anchor" data-toggle="lightbox" data-title="Логотип">
@@ -159,6 +160,7 @@
 					document.getElementById('clear_logo-file').style.display = 'block';
 					document.getElementById('preview_logo').innerHTML =
 						"<img src=\"" + event.target.result + "\" class=\"preview_logo\" style=\"height: 20px;\">";
+					document.getElementById('clear-logo').value = 'false';
 				};
 				reader.readAsDataURL(input.files[0]);
 			}
@@ -183,6 +185,7 @@
 				document.getElementById('clear_logo-file').style.display = 'none';
 				document.getElementById('font-color-input').value = fontColor;
 				document.getElementById('background-input').value = backgroundColor;
+				document.getElementById('clear-logo').value = 'false';
 				document.getElementById('company-name-changer').dispatchEvent(new Event('input'));
 			} else {
 				document.getElementById('branding-panel').style.display = 'none';
@@ -202,6 +205,7 @@
 			document.getElementById('preview_logo-file').style.display = 'none';
 			document.getElementById('clear_logo-file').style.display = 'none';
 			document.getElementById('preview_logo').innerHTML = "<i class=\"fas fa-home\"></i>";
+			document.getElementById('clear-logo').value = 'true';
 		});
 
 		document.addEventListener("DOMContentLoaded", () => {
