@@ -124,7 +124,15 @@ class PlayerController extends Controller {
 						$content['branding']['background'], $content['branding']['fontcolor'], $content['branding']['background'])
 				];
 			}
+			$texts = null;
+			if (isset($content['texts'])) {
+				$texts = [
+					'pretext' => $content['texts']['pretext'] ?? null,
+					'posttext' => $content['texts']['posttext'] ?? null,
+				];
+			}
 			session()->put('branding', $branding);
+			session()->put('texts', $texts);
 			return view('front.intro', compact('test'));
 		}
 	}

@@ -23,10 +23,11 @@
 	<form method="get" action="{{ route('player.pkey', ['sid' => session()->getId()]) }}">
 		@csrf
 		<input type="hidden" value="{{ $sid }}" name="sid">
-		<div class="form-group">
-			<label for="pkey">Введите персональный ключ:</label>
-			<input type="text" name="pkey" id="pkey"
-				class="form-control col-lg-4 col-md-4 @error('pkey') is-invalid @enderror mt-2">
+		<div class="form-group mb-2">
+			<div class="form-floating col-md-6">
+				<input type="text" name="pkey" id="pkey}" class="form-control mb-2 @error('pkey') is-invalid @enderror">
+				<label class="form-label" for="pkey">Введите персональный ключ</label>
+			</div>
 		</div>
 		<button type="submit"
 			@if (isset($branding)) class="btn btn-lg mt-2" style="{{ $branding }}" @else class="btn btn-primary btn-lg mt-2" @endif>

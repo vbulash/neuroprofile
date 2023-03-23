@@ -25,7 +25,15 @@
 @section('form.fields')
 	@php
 		$heap = session('heap');
-		$fields = [['name' => 'mode', 'type' => 'hidden', 'value' => $mode], ['name' => 'test', 'type' => 'hidden', 'value' => $test], ['name' => 'step-branding', 'type' => 'hidden', 'value' => true]];
+		$fields = [
+		    [
+		        'name' => 'mode',
+		        'type' => 'hidden',
+		        'value' => $mode,
+		    ],
+		    ['name' => 'test', 'type' => 'hidden', 'value' => $test],
+		    ['name' => 'step-branding', 'type' => 'hidden', 'value' => true],
+		];
 	@endphp
 @endsection
 

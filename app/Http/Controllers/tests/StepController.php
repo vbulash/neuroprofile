@@ -11,14 +11,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class StepController extends Controller
-{
+class StepController extends Controller {
 	public static array $steps = [
 		StepCore::class,
 		StepCard::class,
 		StepMechanics::class,
 		StepResults::class,
 		StepPayment::class,
+		StepTexts::class,
 		StepBranding::class,
 	];
 
@@ -29,8 +29,7 @@ class StepController extends Controller
 	 * @param int $test
 	 * @return Application|Factory|View
 	 */
-	public function play(Request $request, int $mode, int $test)
-	{
+	public function play(Request $request, int $mode, int $test) {
 		$stepClass = $this->getCurrentStepClass();
 		$step = new $stepClass();
 		$buttons = 0;
@@ -69,6 +68,8 @@ class StepController extends Controller
 				$heap['robokassa'] = $content['robokassa'];
 			if (isset($content['branding']))
 				$heap['branding'] = $content['branding'];
+			if (isset($content['texts']))
+				$heap['texts'] = $content['texts'];
 			//
 			session()->put('heap', $heap);
 		}
@@ -87,14 +88,13 @@ class StepController extends Controller
 	 * @param Request $request
 	 * @return RedirectResponse
 	 */
-	public function back(Request $request): RedirectResponse
-	{
+	public function back(Request $request): RedirectResponse {
 		if (self::getCurrentStep() > 0)
 			self::decrementCurrentStep();
 
 		$mode = $request->mode;
 		$test = $request->test == 0 ? 0 : Test::findOrFail($request->test)->getKey();
-//		session()->keep('heap');
+		//		session()->keep('heap');
 		return redirect()->route('steps.play', [
 			'mode' => $mode,
 			'test' => $test
@@ -107,8 +107,7 @@ class StepController extends Controller
 	 * @param Request $request
 	 * @return RedirectResponse
 	 */
-	public function next(Request $request): RedirectResponse
-	{
+	public function next(Request $request): RedirectResponse {
 		// При шаге вперед нужно сохранить результаты текущего шага
 		$stepClass = $this->getCurrentStepClass();
 		$step = new $stepClass();
@@ -117,16 +116,16 @@ class StepController extends Controller
 
 		if ($mode != config('global.show'))
 			Validator::make($request->all(),
-				rules: $step->getStoreRules(),
-				customAttributes: $step->getStoreAttributes()
+			rules: $step->getStoreRules(),
+			customAttributes: $step->getStoreAttributes()
 			)->validate();
 
-		$result = match($mode) {
+		$result = match ($mode) {
 			config('global.create') => $step->store($request),
 			config('global.edit') => $step->update($request),
 			config('global.show') => true,
 		};
-//		session()->keep('heap');
+		//		session()->keep('heap');
 		if (!$result)
 			return redirect()->route('steps.play', [
 				'mode' => $mode,
@@ -148,8 +147,7 @@ class StepController extends Controller
 	 * @param Request $request
 	 * @return RedirectResponse|null
 	 */
-	public function finish(Request $request)
-	{
+	public function finish(Request $request) {
 		// Сохранить информацию последнего шага
 		$stepClass = $this->getCurrentStepClass();
 		$step = new $stepClass();
@@ -158,11 +156,11 @@ class StepController extends Controller
 
 		if ($mode != config('global.show'))
 			Validator::make($request->all(),
-				rules: $step->getStoreRules(),
-				customAttributes: $step->getStoreAttributes()
+			rules: $step->getStoreRules(),
+			customAttributes: $step->getStoreAttributes()
 			)->validate();
 
-		$result = match($mode) {
+		$result = match ($mode) {
 			config('global.create') => $step->store($request),
 			config('global.edit') => $step->update($request),
 			config('global.show') => true,
@@ -192,6 +190,8 @@ class StepController extends Controller
 			$content['robokassa'] = $heap['robokassa'];
 		if (isset($heap['branding']))
 			$content['branding'] = $heap['branding'];
+		if (isset($heap['texts']))
+			$content['texts'] = $heap['texts'];
 		$data['content'] = json_encode($content);
 
 		switch ($mode) {
@@ -215,8 +215,7 @@ class StepController extends Controller
 		return redirect()->route('tests.index');
 	}
 
-	public function close(Request $request)
-	{
+	public function close(Request $request) {
 		self::clearCurrentStep();
 		session()->forget('heap');
 		return redirect()->route('tests.index');
@@ -225,8 +224,7 @@ class StepController extends Controller
 	/**
 	 * @return int
 	 */
-	public static function getCurrentStep(): int
-	{
+	public static function getCurrentStep(): int {
 		$currentStep = session('step');
 		if (!isset($currentStep)) {
 			$currentStep = 0;
@@ -238,28 +236,23 @@ class StepController extends Controller
 	/**
 	 * @param int $currentStep
 	 */
-	public static function setCurrentStep(int $currentStep): void
-	{
+	public static function setCurrentStep(int $currentStep): void {
 		session()->put('step', $currentStep);
 	}
 
-	public static function incrementCurrentStep(): int
-	{
+	public static function incrementCurrentStep(): int {
 		return session()->increment('step');
 	}
 
-	public static function decrementCurrentStep(): int
-	{
+	public static function decrementCurrentStep(): int {
 		return session()->decrement('step');
 	}
 
-	public static function clearCurrentStep(): void
-	{
+	public static function clearCurrentStep(): void {
 		session()->forget('step');
 	}
 
-	protected static function getCurrentStepClass(): string
-	{
+	protected static function getCurrentStepClass(): string {
 		return self::$steps[self::getCurrentStep()];
 	}
 }
