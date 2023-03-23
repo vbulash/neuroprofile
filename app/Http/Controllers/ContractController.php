@@ -275,8 +275,21 @@ class ContractController extends Controller {
 		try {
 			Storage::makeDirectory('tmp');
 			$writer->save(Storage::path($tmpsheet));
+			// Экспорт лицензий - Название клиента - Номер контракта
+			$tempFile = sprintf("Экспорт лицензий - %s - %s", $contract->client->name, $contract->number);
+			$tempFile = str_replace([
+				' ',
+				'.',
+				',',
+				'\"',
+				'\'',
+				'\\',
+				'/',
+				'«',
+				'»'
+			], '_', $tempFile);
 			return response()
-				->download(Storage::path($tmpsheet), env('APP_NAME') . ' - Экспорт лицензий.xlsx')
+				->download(Storage::path($tmpsheet), $tempFile . '.xlsx')
 				->deleteFileAfterSend();
 		} catch (SpreadsheetException $e) {
 		}
