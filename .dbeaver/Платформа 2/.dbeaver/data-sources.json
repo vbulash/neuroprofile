@@ -1,0 +1,39 @@
+{
+	"folders": {},
+	"connections": {
+		"mysql8-1870febadb8-77a8980c1828ec56": {
+			"provider": "mysql",
+			"driver": "mysql8",
+			"name": "БД разработки",
+			"save-password": true,
+			"virtual-model-id": "mysql8-1870fcdcb25-b70a71b18ae8be8",
+			"configuration": {
+				"host": "spl96.hosting.reg.ru",
+				"port": "3306",
+				"database": "u0311407_neurotest2",
+				"url": "jdbc:mysql://spl96.hosting.reg.ru:3306/u0311407_neurotest2",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-serverTimezone@": "Europe/Moscow"
+				},
+				"auth-model": "native"
+			},
+			"custom-properties": {
+				"database.meta.separate.connection": "NEVER",
+				"database.props.expensive": "true"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Разработка",
+			"color": "255,255,255",
+			"description": "База данных для разработки",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"auto-close-transactions": false
+		}
+	}
+}

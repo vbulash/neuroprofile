@@ -115,10 +115,21 @@ class TestController extends Controller {
 
 	public function list(Request $request) {
 		return json_encode(DB::select(<<<EOS
-SELECT t.id as id, t.name as name, c.mkey as mkey, t.`key` as test
-FROM tests as t, contracts as c
-WHERE t.contract_id = c.id
-ORDER BY t.name
+SELECT
+	tests.id as id,
+	tests.name as name,
+	clients.name as client,
+	contracts.mkey as mkey,
+	tests.`key` as test
+FROM
+	tests,
+	contracts,
+	clients
+WHERE
+	tests.contract_id = contracts.id
+	AND contracts.client_id = clients.id
+ORDER BY
+	tests.name
 EOS
 		));
 	}

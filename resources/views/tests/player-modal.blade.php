@@ -60,9 +60,9 @@
 						let html = '';
 						$.each(tests, function(key, value) {
 							html = html + String.format(
-								'<option {0} data-mkey="{1}" data-test="{2}" value="{3}">{4}</option>',
+								'<option {0} data-mkey="{1}" data-test="{2}" value="{3}">{4} ({5})</option>',
 								(first ? "selected " : ""), value.mkey, value.test, value.id,
-								value.name);
+								value.name, value.client);
 							if (first) first = false;
 						});
 						$('#tests').html(html);
