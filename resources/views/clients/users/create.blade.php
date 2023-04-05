@@ -27,9 +27,9 @@
 @endsection
 
 @section('form.params')
-	id="{{ form(\App\Models\ClientAdmin::class, $mode, 'id') }}"
-	name="{{ form(\App\Models\ClientAdmin::class, $mode, 'name') }}"
-	action="{{ form(\App\Models\ClientAdmin::class, $mode, 'action') }}"
+	id="clientadmin-create"
+	name="clientadmin-create"
+	action="{{ route('clients.users.store', ['client' => $client->getKey()]) }}"
 @endsection
 
 @section('form.fields')
@@ -39,7 +39,7 @@
 @endsection
 
 @section('form.close')
-	{{ form(\App\Models\ClientAdmin::class, $mode, 'close') }}
+	{{ route('clients.users.index', ['client' => $client->getKey()]) }}
 @endsection
 
 @push('js_after')

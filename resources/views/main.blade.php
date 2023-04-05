@@ -124,12 +124,15 @@
 				}
 			},
 			scales: {
-				xAxes: {
+				x: {
 					ticks: {
 						autoSkip: false,
 						maxRotation: 90,
 						minRotation: 0
 					}
+				},
+				y: {
+					beginAtZero: true
 				}
 			}
 		};
@@ -141,7 +144,6 @@
 			options: areaChartOptions
 		});
 
-		document.addEventListener("DOMContentLoaded", () => {
-		}, false);
+		document.addEventListener("DOMContentLoaded", () => {}, false);
 	</script>
 @endpush

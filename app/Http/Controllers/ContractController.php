@@ -281,9 +281,9 @@ class ContractController extends Controller {
 				' ',
 				'.',
 				',',
-				'\"',
-				'\'',
-				'\\',
+				"\"",
+				"\'",
+				"\\",
 				'/',
 				'«',
 				'»'

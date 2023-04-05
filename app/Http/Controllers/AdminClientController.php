@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Events\ToastEvent;
 use App\Http\Controllers\Auth\RoleName;
+use App\Http\Requests\StoreClientAdminRequest;
 use App\Http\Requests\UpdateAdminClientRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Admin;
 use App\Models\Client;
-use App\Models\ClientAdmin;
 use App\Models\Role;
 use App\Models\User;
 use App\Notifications\NewUser;
@@ -32,7 +32,7 @@ class AdminClientController extends Controller {
 	 * @throws Exception
 	 */
 	public function getData(): JsonResponse {
-		$admins = ClientAdmin::whereHas("roles", fn($query) => $query->where("name", RoleName::CLIENT_ADMIN->value))->get();
+		$admins = User::whereHas("roles", fn($query) => $query->where("name", RoleName::CLIENT_ADMIN->value))->get();
 		return Datatables::of($admins)
 			->addColumn('clients', function ($admin) {
 				$clients = $admin->clients->pluck('name')->toArray();
@@ -71,8 +71,8 @@ class AdminClientController extends Controller {
 		return view('adminclients.create', compact('mode'));
 	}
 
-	public function store(UpdateAdminClientRequest $request) {
-		$admin = ClientAdmin::create([
+	public function store(StoreClientAdminRequest $request) {
+		$admin = User::create([
 			'name' => $request->name,
 			'email' => $request->email,
 			'password' => Hash::make($request->password),
@@ -89,7 +89,7 @@ class AdminClientController extends Controller {
 		$name = $admin->name;
 
 		session()->put('success',
-			"Зарегистрирован новый администратор клиента \"{$name}\"");
+			"Зарегистрирован новый аккаунт менеджер \"{$name}\"");
 		return redirect()->route('adminclients.index');
 	}
 
@@ -101,7 +101,7 @@ class AdminClientController extends Controller {
 	 */
 	public function show($id) {
 		$mode = config('global.show');
-		$admin = ClientAdmin::findOrFail($id);
+		$admin = User::findOrFail($id);
 		$clients = $admin->clients->pluck('id')->toArray();
 		$allclients = Client::all()
 			->sortBy('name')
@@ -118,7 +118,7 @@ class AdminClientController extends Controller {
 	 */
 	public function edit(Request $request, int $id) {
 		$mode = config('global.edit');
-		$admin = ClientAdmin::findOrFail($id);
+		$admin = User::findOrFail($id);
 		$clients = $admin->clients->pluck('id')->toArray();
 		$allclients = Client::all()
 			->sortBy('name')
@@ -127,7 +127,7 @@ class AdminClientController extends Controller {
 	}
 
 	public function update(UpdateAdminClientRequest $request, $id) {
-		$admin = ClientAdmin::findOrFail($id);
+		$admin = User::findOrFail($id);
 		$name = $admin->name;
 		$draft = $request->except('_token');
 		if ($request->has('password'))
@@ -159,7 +159,7 @@ class AdminClientController extends Controller {
 		} else
 			$id = $admin;
 
-		$admin = ClientAdmin::findOrFail($id);
+		$admin = User::findOrFail($id);
 		$name = $admin->name;
 		$admin->delete();
 

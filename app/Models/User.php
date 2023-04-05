@@ -51,4 +51,9 @@ class User extends Authenticatable implements Titleable {
 	public function getTitle(): string {
 		return $this->name;
 	}
+
+	public function clients(): BelongsToMany {
+		return $this->belongsToMany(Client::class, 'users_clients')
+			->withTimestamps();
+	}
 }

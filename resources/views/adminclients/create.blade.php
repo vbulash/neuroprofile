@@ -14,8 +14,9 @@
 @endsection
 
 @section('form.params')
-	id="{{ form(\App\Models\Admin::class, $mode, 'id') }}" name="{{ form(\App\Models\Admin::class, $mode, 'name') }}"
-	action="{{ form(\App\Models\Admin::class, $mode, 'action') }}"
+	id="adminclient-create"
+	name="adminclient-create"
+	action="{{ route('adminclients.store') }}"
 @endsection
 
 @section('form.fields')
@@ -25,7 +26,7 @@
 @endsection
 
 @section('form.close')
-	{{ form(\App\Models\Admin::class, $mode, 'close') }}
+	{{ route('adminclients.index') }}
 @endsection
 
 @push('js_after')

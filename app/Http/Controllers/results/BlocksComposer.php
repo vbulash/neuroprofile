@@ -57,8 +57,11 @@ class BlocksComposer {
 	public function getBlocks(Profile $profile): ?Collection {
 		$result = new Collection();
 		foreach ($profile->blocks as $block) {
-			if ($block->type == BlockType::Alias->value)
+			if ($block->type == BlockType::Alias->value) {
+				$sort_no = $block->sort_no;
 				$block = $block->parent;
+				$block->sort_no = $sort_no;
+			}
 			$result->add($block);
 		}
 		return $result->sortBy(['sort_no', 'id']);

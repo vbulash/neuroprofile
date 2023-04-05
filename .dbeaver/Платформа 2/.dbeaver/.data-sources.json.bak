@@ -4,7 +4,7 @@
 		"mysql8-1870febadb8-77a8980c1828ec56": {
 			"provider": "mysql",
 			"driver": "mysql8",
-			"name": "u0311407_neurotest2",
+			"name": "БД разработки",
 			"save-password": true,
 			"virtual-model-id": "mysql8-1870fcdcb25-b70a71b18ae8be8",
 			"configuration": {

@@ -30,7 +30,7 @@ class Client extends Model implements FormTemplate, Titleable {
 	}
 
 	public function users(): BelongsToMany {
-		return $this->belongsToMany(ClientAdmin::class, 'users_clients', 'client_id', 'user_id')
+		return $this->belongsToMany(User::class, 'users_clients')
 			->withTimestamps();
 	}
 

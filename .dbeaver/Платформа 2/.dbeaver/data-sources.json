@@ -6,7 +6,6 @@
 			"driver": "mysql8",
 			"name": "БД разработки",
 			"save-password": true,
-			"virtual-model-id": "mysql8-1870fcdcb25-b70a71b18ae8be8",
 			"configuration": {
 				"host": "spl96.hosting.reg.ru",
 				"port": "3306",
@@ -22,6 +21,26 @@
 			"custom-properties": {
 				"database.meta.separate.connection": "NEVER",
 				"database.props.expensive": "true"
+			}
+		}
+	},
+	"network-profiles": {
+		"Сервер Persona": {
+			"name": "Сервер Persona",
+			"handlers": {
+				"ssh_tunnel": {
+					"type": "TUNNEL",
+					"enabled": true,
+					"save-password": true,
+					"properties": {
+						"host": "109.72.226.199",
+						"port": 822,
+						"authType": "PASSWORD",
+						"implementation": "sshj",
+						"localHost": "",
+						"remoteHost": ""
+					}
+				}
 			}
 		}
 	},

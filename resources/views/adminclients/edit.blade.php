@@ -14,7 +14,8 @@
 @endsection
 
 @section('form.params')
-	id="admin-edit" name="admin-edit"
+	id="adminclients-edit"
+	name="adminclients-edit"
 	action="{{ route('adminclients.update', ['adminclient' => $admin->getKey()]) }}"
 @endsection
 
@@ -84,7 +85,7 @@
 				});
 			});
 
-			$('#admin-edit').on('submit', () => {
+			$('#adminclients-edit').on('submit', () => {
 				if ($('#_clients').val().length == 0) $('#clients').val(null);
 				else $('#clients').val(JSON.stringify($('#_clients').val()));
 			});

@@ -7,13 +7,14 @@ use App\Http\Controllers\Auth\RoleName;
 use App\Http\Requests\StoreClientAdminRequest;
 use App\Http\Requests\UpdateClientAdminRequest;
 use App\Models\Client;
-use App\Models\ClientAdmin;
 use App\Models\User;
 use App\Notifications\NewUser;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class ClientAdminController extends Controller {
@@ -43,7 +44,7 @@ class ClientAdminController extends Controller {
 
 		$selected = $client->users->pluck('name', 'id')->toArray();
 		$enabled = [];
-		$admins = ClientAdmin::whereHas("roles", fn($query) => $query->where("name", RoleName::CLIENT_ADMIN->value))
+		$admins = User::whereHas("roles", fn($query) => $query->where("name", RoleName::CLIENT_ADMIN->value))
 			->get()
 			->each(function ($admin) use (&$enabled, $selected) {
 				$id = $admin->getKey();
@@ -64,14 +65,17 @@ class ClientAdminController extends Controller {
 
 	public function store(StoreClientAdminRequest $request, int $client) {
 		// $client = Client::findOrFail($client);
-		$admin = new ClientAdmin();
+		$admin = new User();
 		$admin->name = $request->name;
 		$admin->email = $request->email;
 		$admin->password = Hash::make($request->password);
 		$admin->save();
 		$admin->clients()->attach($client);
 		// $admin->save();
-		$admin->assignRole(RoleName::CLIENT_ADMIN->value);
+
+		$role = Role::findByName(RoleName::CLIENT_ADMIN->value);
+		$admin->assignRole($role);
+		$this->addPermissions($client, $admin);
 
 		event(new Registered($admin));
 		$admin->notify(new NewUser());
@@ -95,13 +99,13 @@ class ClientAdminController extends Controller {
 	public function edit(int $client, int $user) {
 		$mode = config('global.edit');
 		$client = Client::findOrFail($client);
-		$admin = ClientAdmin::findOrFail($user);
+		$admin = User::findOrFail($user);
 		return view('clients.users.edit', compact('client', 'admin', 'mode'));
 	}
 
 	public function update(UpdateClientAdminRequest $request, int $client, int $user) {
 		$client = Client::findOrFail($client);
-		$admin = ClientAdmin::findOrFail($user);
+		$admin = User::findOrFail($user);
 		$name = $admin->name;
 
 		$draft = [];
@@ -121,8 +125,9 @@ class ClientAdminController extends Controller {
 		} else
 			$id = $user;
 
-		$admin = ClientAdmin::findOrFail($id);
+		$admin = User::findOrFail($id);
 		$name = $admin->name;
+		$this->revokePermissions($client, $admin);
 		$admin->delete();
 
 		event(new ToastEvent('success', '', "Аккаунт менеджер \"{$name}\" удалён"));
@@ -131,13 +136,53 @@ class ClientAdminController extends Controller {
 
 	public function attach(Request $request) {
 		$client = Client::findOrFail($request->client);
-		$client->users()->attach($request->user);
+		$user = User::findOrFail($request->user);
+		$client->users()->attach($user);
+		$this->addPermissions($request->client, $user);
 		return true;
 	}
 
 	public function detach(Request $request) {
 		$client = Client::findOrFail($request->client);
-		$client->users()->detach($request->user);
+		$user = User::findOrFail($request->user);
+		$client->users()->detach($user);
+		$this->revokePermissions($request->client, $user);
 		return true;
+	}
+
+	private function addPermissions(int $client, User $admin) {
+		collect([
+			//
+			'clients.edit',
+			'clients.show',
+			//
+			'contracts.list',
+			'contracts.edit',
+			'contracts.show',
+			//
+			'test.results',
+			'respondent.info'
+		])->map(function ($item) use ($admin, $client) {
+			$permission = Permission::findOrCreate($item . '.' . $client, 'web');
+			$admin->givePermissionTo($permission);
+		});
+	}
+
+	private function revokePermissions(int $client, User $admin) {
+		collect([
+			//
+			'clients.edit',
+			'clients.show',
+			//
+			'contracts.list',
+			'contracts.edit',
+			'contracts.show',
+			//
+			'test.results',
+			'respondent.info'
+		])->map(function ($item) use ($admin, $client) {
+			$permission = Permission::findOrCreate($item . '.' . $client, 'web');
+			$admin->revokePermissionTo($permission);
+		});
 	}
 }
