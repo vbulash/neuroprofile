@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 use Yajra\DataTables\DataTables;
 
 class ClientAdminController extends Controller {
@@ -151,6 +152,8 @@ class ClientAdminController extends Controller {
 	}
 
 	private function addPermissions(int $client, User $admin) {
+		// Reset cached roles and permissions
+		app()[PermissionRegistrar::class]->forgetCachedPermissions();
 		collect([
 			//
 			'clients.edit',
@@ -169,6 +172,8 @@ class ClientAdminController extends Controller {
 	}
 
 	private function revokePermissions(int $client, User $admin) {
+		// Reset cached roles and permissions
+		app()[PermissionRegistrar::class]->forgetCachedPermissions();
 		collect([
 			//
 			'clients.edit',
@@ -183,6 +188,7 @@ class ClientAdminController extends Controller {
 		])->map(function ($item) use ($admin, $client) {
 			$permission = Permission::findOrCreate($item . '.' . $client, 'web');
 			$admin->revokePermissionTo($permission);
+			Permission::destroy($permission);
 		});
 	}
 }

@@ -32,7 +32,7 @@ class ReportDataController extends Controller {
 			case self::HISTORY_DYNAMIC:
 				$histstat = HistStat::limit(14)->get()->reverse();
 				self::$reportData[self::HISTORY_DYNAMIC_LABELS] = [];
-				self::$reportData[self::HISTORY_DYNAMIC_LABELS] = $histstat->pluck('DAY')->toArray();
+				self::$reportData[self::HISTORY_DYNAMIC_LABELS] = $histstat->pluck('day')->toArray();
 				self::$reportData[self::HISTORY_DYNAMIC_PAID_COUNT] = $histstat->pluck('paid')->toArray();
 				self::$reportData[self::HISTORY_DYNAMIC_ALL_COUNT] = $histstat->pluck('total')->toArray();
 				break;
