@@ -326,7 +326,12 @@ class PlayerController extends Controller {
 			// Не переименовывать переменную - может использоваться в коде набора вопросов в eval()
 			$result = $history->steps()->pluck('key')->toArray();
 
-			$code = htmlspecialchars_decode(strip_tags($history->test->set->code));
+			$code =
+				html_entity_decode(
+					htmlspecialchars_decode(
+						strip_tags($history->test->set->code)
+					)
+				);
 			$out = eval($code);
 			$history->code = $out;
 			$history->update();
