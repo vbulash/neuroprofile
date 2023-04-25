@@ -72,7 +72,7 @@ class ClientAdminController extends Controller {
 		$admin->password = Hash::make($request->password);
 		$admin->save();
 		$admin->clients()->attach($client);
-		// $admin->save();
+		$admin->save();
 
 		$role = Role::findByName(RoleName::CLIENT_ADMIN->value);
 		$admin->assignRole($role);
