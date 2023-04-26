@@ -48,7 +48,7 @@ class ContractController extends Controller {
 				$items = [];
 				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-edit', 'title' => 'Редактирование'];
 				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
-				$items[] = ['type' => 'item', 'click' => "clickDelete($contract->getKey(), '$contract->number')", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
+				$items[] = ['type' => 'item', 'click' => "clickDelete({$contract->getKey()}, '{$contract->number}')", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
 				$items[] = ['type' => 'divider'];
 				$items[] = ['type' => 'item', 'link' => $selectRoute, 'icon' => 'fas fa-info-circle', 'title' => 'Информация о контракте'];
 				return createDropdown('Действия', $items);
