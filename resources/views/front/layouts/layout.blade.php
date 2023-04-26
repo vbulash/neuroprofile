@@ -8,6 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	{{--    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> --}}
 	<link rel="stylesheet" href="{{ asset('assets/front/css/front.css') }}">
+	{{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 	{{--    https://realfavicongenerator.net/ --}}
 	<!-- favicon -->
 	<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
@@ -28,7 +29,7 @@
 			$branding = session('branding');
 			//dd($branding);
 		@endphp
-		<nav class="navbar navbar-dark bg-primary d-lg-flex"
+		<nav class="navbar navbar-dark bg-primary d-lg-flex p-1"
 			@if (isset($branding)) style="{{ $branding['navstyle'] }}" @endif>
 			<div class="navbar-brand" @if (isset($branding)) style="{{ $branding['textstyle'] }}" @endif>
 				{{--            <a href="{{ route('admin.index') }}"> --}}

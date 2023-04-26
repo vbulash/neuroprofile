@@ -12168,13 +12168,10 @@ img.step-image.multiple.active {
 
 }
 
-nav.navbar {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
 .navbar-brand {
-    padding-left: 2rem;
     padding-right: 2rem;
+	padding-top: 0;
+	padding-bottom: 0;
 	white-space: normal;
 }
 
@@ -12189,8 +12186,8 @@ nav.navbar {
 
 .navbar-text {
     color: white !important;
-    padding-left: 2rem;
-    padding-right: 2rem;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 #toast-container > div {
