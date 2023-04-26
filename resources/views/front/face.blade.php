@@ -8,10 +8,6 @@
 	{{ $test->name }}
 @endpush
 
-@push('step_description')
-	Снимок будет сделан через:
-@endpush
-
 @section('content')
 	@php
 		if ($test->options & \App\Models\TestOptions::EYE_TRACKING->value) {
@@ -372,13 +368,15 @@ export default class FaceIllumination {
 					// drawConnectors(canvasCtx, landmarks, FACEMESH_FACE_OVAL, {color: '#E0E0E0'});
 					// drawConnectors(canvasCtx, landmarks, FACEMESH_LIPS, {color: '#E0E0E0'});
 
+					let stripe = document.getElementById('progress-stripe');
 					if (messages.length > 0) {
 						clearInterval(stableIntervalId);
 						stableIntervalId = null;
 						frozen = false;
-						document.querySelectorAll('.step-countdown').forEach((counter) => {
-							counter.innerText = 'нет';
-						});
+						stripe.style.width = '0';
+						// document.querySelectorAll('.step-countdown').forEach((counter) => {
+						// 	counter.innerText = 'нет';
+						// });
 						document.getElementById('message').innerHTML = messages.join('<br/>');
 					} else if (frozen) {	// Идеальная картинка, только что сработал таймер
 						saved = true;
@@ -387,17 +385,19 @@ export default class FaceIllumination {
 						frozen = false;
 						save(results.image);	// Без AR-элементов
 						document.getElementById('message').innerHTML = 'Снимок сделан и сохранён';
-						document.querySelectorAll('.step-countdown').forEach((counter) => {
-							counter.innerText = '-';
-						});
+						stripe.style.width = '0';
+						// document.querySelectorAll('.step-countdown').forEach((counter) => {
+						// 	counter.innerText = '-';
+						// });
 					} else {	// Идеальная картинка, запускаем 3-секундный таймер
 						document.getElementById('message').innerHTML = '';
 						if (stableIntervalId == null) {
 							countdown = COUNTDOWN;
 							stableIntervalId = setInterval(() => {
-								document.querySelectorAll('.step-countdown').forEach((counter) => {
-									counter.innerText = countdown;
-								});
+								stripe.style.width = (countdown / COUNTDOWN) * 100 + '%';
+								// document.querySelectorAll('.step-countdown').forEach((counter) => {
+								// 	counter.innerText = countdown;
+								// });
 								document.getElementById('message').innerHTML = 'Снимок будет сделан через: ' + countdown.toString();
 								if (countdown-- <= 0) {
 									clearInterval(stableIntervalId);

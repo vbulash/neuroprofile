@@ -37,12 +37,9 @@ img.step-image.multiple.active {
 
 }
 
-nav.navbar {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
 .navbar-brand {
-    padding-left: 2rem;
+	padding-top: 0;
+	padding-bottom: 0;
     padding-right: 2rem;
 	white-space: normal;
 }
@@ -57,11 +54,15 @@ nav.navbar {
 }
 
 .navbar-text {
+	padding-top: 0;
+	padding-bottom: 0;
     color: white !important;
-    padding-left: 2rem;
-    padding-right: 2rem;
 }
 
 #toast-container > div {
     opacity: 1;
+}
+
+.progress {
+	background-color: transparent;
 }
