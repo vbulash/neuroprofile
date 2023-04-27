@@ -57,7 +57,9 @@
 
 		<div class="progress p-1" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0"
 			aria-valuemax="100" id='progress-bar'>
-			<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%" id='progress-stripe'></div>
+			<div class="progress-bar progress-bar-striped progress-bar-animated"
+				style="@if (isset($branding)) {{ $branding['navstyle'] }}; @endif width: 0;" id='progress-stripe'>
+			</div>
 		</div>
 
 		{{--    <div class="container-fluid mt-2"> --}}
