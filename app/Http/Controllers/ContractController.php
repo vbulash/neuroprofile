@@ -234,10 +234,10 @@ class ContractController extends Controller {
 		$spreadsheet = new Spreadsheet();
 		$sheet = $spreadsheet->getActiveSheet();
 
-		$sheet->setCellValue('A1', sprintf("Лицензии клиента \"%s\" по контракту № %s",
-			$contract->client->name, $contract->number));
-		$sheet->setCellValue('A2', 'Персональный ключ');
-		$sheet->setCellValue('B2', 'Статус лицензии');
+		// $sheet->setCellValue('A1', sprintf("Лицензии клиента \"%s\" по контракту № %s",
+		// 	$contract->client->name, $contract->number));
+		$sheet->setCellValue('A1', 'Персональный ключ');
+		$sheet->setCellValue('B1', 'Статус лицензии');
 		for ($row = 1; $row <= 2; $row++)
 			for ($column = 1; $column <= 2; $column++) {
 				$letter = Coordinate::stringFromColumnIndex($column);
@@ -246,7 +246,7 @@ class ContractController extends Controller {
 				$style->getFill()->setFillType(Fill::FILL_SOLID);
 				$style->getFill()->getStartColor()->setRGB('B0B3B2');
 			}
-		$sheet->freezePane('A3');
+		$sheet->freezePane('A2');
 
 		$row = 2;
 		foreach ($licenses as $pkey => $status) {
