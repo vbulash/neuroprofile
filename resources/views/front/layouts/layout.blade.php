@@ -23,8 +23,14 @@
 	@stack('styles')
 </head>
 
+@section('content_full')
+	<div class="col-md-8">
+		@yield('content')
+	</div>
+@endsection
+
 <body>
-	<div class="container-fluid main-header g-0 pl-4">
+	<div class="container-fluid main-header g-0">
 		@php
 			$branding = session('branding');
 			//dd($branding);
@@ -45,12 +51,14 @@
 				{{--            </a> --}}
 			</div>
 			<div class="navbar-text" @if (isset($branding)) style="{{ $branding['textstyle'] }}" @endif>
-				<p>@stack('testname')</p>
-				<div>
-					@stack('step_description') <span class="step-countdown"></span>
-				</div>
+				@stack('testname')
 			</div>
 		</nav>
+
+		<div class="progress p-1" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0"
+			aria-valuemax="100" id='progress-bar'>
+			<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%" id='progress-stripe'></div>
+		</div>
 
 		{{--    <div class="container-fluid mt-2"> --}}
 		{{-- Область отображения сообщений --}}
@@ -58,9 +66,7 @@
 			{{-- Область тестирования --}}
 			<div class="container">
 				<div class="row module-wrapper">
-					<div class="col-md-8">
-						@yield('content')
-					</div>
+					@yield('content_full')
 				</div>
 			</div>
 		</div>

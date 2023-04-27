@@ -38,6 +38,8 @@ img.step-image.multiple.active {
 }
 
 .navbar-brand {
+	padding-top: 0;
+	padding-bottom: 0;
     padding-right: 2rem;
 	padding-top: 0;
 	padding-bottom: 0;
@@ -54,11 +56,15 @@ img.step-image.multiple.active {
 }
 
 .navbar-text {
-    color: white !important;
 	padding-top: 0;
 	padding-bottom: 0;
+    color: white !important;
 }
 
 #toast-container > div {
     opacity: 1;
+}
+
+.progress {
+	background-color: transparent;
 }

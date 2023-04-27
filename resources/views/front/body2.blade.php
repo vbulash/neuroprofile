@@ -15,10 +15,6 @@
 	{{ $test->name }}
 @endpush
 
-@push('step_description')
-	Осталось секунд:
-@endpush
-
 @section('content')
 	<form method="post" action="{{ route('player.body2.store', ['sid' => session()->getId()]) }}"
 		enctype="multipart/form-data" name="play-form" id="play-form">
@@ -150,7 +146,7 @@
 						id: {{ $question->getKey() }},
 						sort_no: {{ $question->sort_no }},
 						learning: {{ $question->learning }},
-						timeout: {{ $question->timeout }},
+						timeout: {{ env('QUESTION_TIMEOUT') ? $question->timeout : 0 }},
 						answers: {{ $question->kind->answers }},
 					});
 				@endforeach
@@ -218,11 +214,12 @@
 
 		function startTimers() {
 			let element = questions.get();
-			let counter = document.getElementById('step-countdown');
+
+			window.timeout = element.timeout;
+			let stripe = document.getElementById('progress-stripe');
+
 			if (element.timeout === 0) {
-				document.querySelectorAll('.step-countdown').forEach((counter) => {
-					counter.innerText = 'таймаут выключен';
-				});
+				stripe.style.width = '0';
 				return;
 			}
 
@@ -237,16 +234,15 @@
 				} else window.submitted = true;
 			});
 
-			document.querySelectorAll('.step-countdown').forEach((counter) => {
-				counter.innerText = element.timeout;
-			});
 			window.counter = parseInt(element.timeout);
 
 			window.timer = setInterval(() => {
+
 				//console.log(window.counter);
-				document.querySelectorAll('.step-countdown').forEach((counter) => {
-					counter.innerText = window.counter;
-				});
+				stripe.style.width = (window.counter / window.timeout) * 100 + '%';
+				// document.querySelectorAll('.step-countdown').forEach((counter) => {
+				// 	counter.innerText = window.counter;
+				// });
 				window.counter--;
 				if (window.counter < 0) {
 					clearInterval(window.timer);
