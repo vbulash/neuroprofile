@@ -217,6 +217,7 @@
 
 			window.timeout = element.timeout;
 			let stripe = document.getElementById('progress-stripe');
+			document.getElementById('progress-text').innerHTML = 'Следующий вопрос, обратный отсчёт';
 
 			if (element.timeout === 0) {
 				stripe.style.width = '0';

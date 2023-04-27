@@ -66,5 +66,6 @@ img.step-image.multiple.active {
 }
 
 .progress {
-	background-color: transparent;
+	height: auto;
+	background-color: transparent !important;
 }

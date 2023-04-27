@@ -55,10 +55,13 @@
 			</div>
 		</nav>
 
-		<div class="progress p-1" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0"
-			aria-valuemax="100" id='progress-bar'>
-			<div class="progress-bar progress-bar-striped progress-bar-animated"
-				style="@if (isset($branding)) {{ $branding['navstyle'] }}; @endif width: 0;" id='progress-stripe'>
+		<div class='p-1 d-flex flex-col flex-md-row align-items-md-stretch'>
+			<div class="me-2" id="progress-text"></div>
+			<div class="progress flex-grow-1" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+				id='progress-bar'>
+				<div class="progress-bar progress-bar-striped progress-bar-animated"
+					style="@if (isset($branding)) {{ $branding['navstyle'] }}; @endif width: 0;" id='progress-stripe'>
+				</div>
 			</div>
 		</div>
 

@@ -394,6 +394,7 @@ export default class FaceIllumination {
 						if (stableIntervalId == null) {
 							countdown = COUNTDOWN;
 							stableIntervalId = setInterval(() => {
+								document.getElementById('progress-text').innerHTML = 'Снимок будет сделан, обратный отсчёт';
 								stripe.style.width = (countdown / COUNTDOWN) * 100 + '%';
 								// document.querySelectorAll('.step-countdown').forEach((counter) => {
 								// 	counter.innerText = countdown;
