@@ -27,7 +27,7 @@ class FMPTypeController extends Controller {
 		$fmptypes = FMPType::all();
 
 		return Datatables::of($fmptypes)
-			->editColumn('cluster', fn($fmptype) => $fmptype->cluster ? 'Нейропрофиль' : 'ФМП')
+			->editColumn('cluster', fn($fmptype) => $fmptype->cluster ? 'Нейрокластер' : 'Нейропрофиль')
 			->editColumn('active', fn($fmptype) => $fmptype->active ? 'Активный' : 'Неактивный')
 			->addColumn('fact', fn($fmptype) => $fmptype->profiles->count())
 			->addColumn('action', function ($fmptype) {

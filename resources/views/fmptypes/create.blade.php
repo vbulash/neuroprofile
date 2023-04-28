@@ -29,8 +29,8 @@
 		        'required' => true,
 		        'type' => 'radio',
 		        'options' => [
-		            0 => 'ФМП',
-		            1 => 'Нейропрофиль',
+		            0 => 'Нейропрофиль',
+		            1 => 'Нейрокластер',
 		        ],
 		    ],
 		    ['name' => 'active', 'title' => 'Статус типа описания', 'required' => false, 'type' => 'text', 'value' => 'Неактивный', 'disabled' => true],
