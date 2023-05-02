@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientAdminController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth', 'r
 	Route::resource('/profiles', 'ProfileController');
 	Route::get('/profiles.data', 'ProfileController@getData')->name('profiles.index.data');
 	Route::get('/profiles.select/{profile}', 'ProfileController@select')->name('profiles.select');
+	Route::post('/profiles.export', [ProfileController::class, 'export'])->name('profiles.export');
 	// Блоки
 	Route::resource('/blocks', 'BlockController');
 	Route::get('/blocks.data', 'BlockController@getData')->name('blocks.index.data');

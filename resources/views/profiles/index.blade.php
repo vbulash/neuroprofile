@@ -49,6 +49,10 @@
 			<p>Нейропрофилей пока нет...</p>
 		@endif
 	</div>
+	<form action="{{ route('profiles.export') }}" method="post" id="export">
+		@csrf
+		<input type="hidden" name="profile" id="profile" />
+	</form>
 @endsection
 
 @if ($count > 0)
@@ -59,6 +63,11 @@
 	@push('js_after')
 		<script src="{{ asset('js/datatables.js') }}"></script>
 		<script>
+			function clickExport(profile) {
+				document.getElementById('profile').value = profile
+				document.getElementById('export').submit()
+			}
+
 			document.getElementById('confirm-yes').addEventListener('click', (event) => {
 				$.ajax({
 					method: 'DELETE',
