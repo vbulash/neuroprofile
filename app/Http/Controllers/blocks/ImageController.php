@@ -62,7 +62,9 @@ class ImageController extends Controller {
 		$mode = $request->mode;
 		$block = Block::findOrFail($id);
 		$kind = $request->has('kind') ? $request->kind : BlockKind::Block->value;
-		return view('blocks.image.edit', compact('block', 'mode', 'kind'));
+		$prev = $request->prev;
+		$next = $request->next;
+		return view('blocks.image.edit', compact('block', 'mode', 'kind', 'prev', 'next'));
 	}
 
 	/**

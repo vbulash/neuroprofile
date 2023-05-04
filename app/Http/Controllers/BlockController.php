@@ -156,34 +156,46 @@ class BlockController extends Controller {
 	 */
 	public function edit(Request $request, int $id, bool $show = false) {
 		$mode = $show ? config('global.show') : config('global.edit');
+
+		$prev = $next = false;
 		$block = Block::findOrFail($id);
+		if ($mode == config('global.edit')) {
+			$blocks = $block->profile->blocks->sortBy('sort_no');
+			$keys = $blocks->keyBy('id')->keys()->all();
+			$current = array_search($block->getKey(), $keys);
+			if ($current > 0)
+				$prev = $keys[$current - 1];
+			if ($current < count($keys) - 1)
+				$next = $keys[$current + 1];
+		}
+
 		return match (intval($block->type)) {
 			BlockType::Text->value => redirect()->route('texts.edit', [
 				'text' => $block->getKey(),
 				'kind' => $request->has('kind') ? $request->kind : BlockKind::Block->value,
-				'mode' => $mode
+				'mode' => $mode,
+				'prev' => $prev,
+				'next' => $next,
 			]),
 			BlockType::Image->value => redirect()->route('images.edit', [
 				'image' => $block->getKey(),
 				'kind' => $request->has('kind') ? $request->kind : BlockKind::Block->value,
-				'mode' => $mode
+				'mode' => $mode,
+				'prev' => $prev,
+				'next' => $next,
 			]),
 			BlockType::Alias->value => redirect()->route('aliases.edit', [
 				'alias' => $block->getKey(),
 				'kind' => $request->has('kind') ? $request->kind : BlockKind::Block->value,
-				'mode' => $mode
+				'mode' => $mode,
+				'prev' => $prev,
+				'next' => $next,
 			]),
 		};
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param StoreBlockRequest $request
-	 * @param int $id
-	 * @return RedirectResponse
-	 */
 	public function update(Request $request, int $id) {
+		$then = $request->then;
 		$kind = $request->has('kind') ? $request->kind : BlockKind::Block->value;
 		$name = match (intval($request->type)) {
 			BlockType::Text->value => TextController::update($request->except('_token'), $id),
@@ -203,13 +215,16 @@ class BlockController extends Controller {
 			BlockType::getName($block->type) .
 			" &laquo;{$name}&raquo; обновлён.<br/>Блоки перенумерованы");
 
-		$route = match (strval($kind)) {
-			BlockKind::Block->value => 'blocks.index',
-			BlockKind::Parent->value => 'parents.index',
-			BlockKind::Kid->value => 'kids.index',
-			default => 'dashboard'
-		};
-		return redirect()->route($route);
+		if ($then == '0') {
+			$route = match (strval($kind)) {
+				BlockKind::Block->value => 'blocks.index',
+				BlockKind::Parent->value => 'parents.index',
+				BlockKind::Kid->value => 'kids.index',
+				default => 'dashboard'
+			};
+			return redirect()->route($route);
+		} else
+			return $this->edit($request, $then);
 	}
 
 	/**

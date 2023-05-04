@@ -16,16 +16,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
-class AliasController extends Controller
-{
+class AliasController extends Controller {
 	/**
 	 * Process datatables ajax request.
 	 *
 	 * @return JsonResponse
 	 * @throws Exception
 	 */
-	public function getData(): JsonResponse
-	{
+	public function getData(): JsonResponse {
 		$context = session('context');
 		$profile = Profile::findOrFail($context['profile']);
 		$blocks = DB::select(<<<SQL
@@ -48,8 +46,8 @@ SQL,
 		}
 
 		return Datatables::of($blocks)
-			->editColumn('profile', fn ($block) => $block->model->profile->getTitle())
-			->addColumn('linked', fn ($block) => $block->model->children->count())
+			->editColumn('profile', fn($block) => $block->model->profile->getTitle())
+			->addColumn('linked', fn($block) => $block->model->children->count())
 			->addColumn('action', function ($block) {
 				$showRoute = route('aliases.edit', [
 					'mode' => config('global.show'),
@@ -82,14 +80,13 @@ SQL,
 	 *
 	 * @return Application|Factory|View
 	 */
-	public function create(Request $request)
-	{
-		if($request->has('block_id')) {	// Создание ссылочного блока - предок уже выбран
+	public function create(Request $request) {
+		if ($request->has('block_id')) { // Создание ссылочного блока - предок уже выбран
 			$block_id = $request->block_id;
 			$context = session('context');
 			$profile_id = $context['profile'];
 			return view('blocks.alias.create', compact('block_id', 'profile_id'));
-		} else {	// Выбор предка для нового ссылочного блока
+		} else { // Выбор предка для нового ссылочного блока
 			$count = Block::whereNull('block_id')->count();
 			return view('blocks.alias.index', compact('count'));
 		}
@@ -100,8 +97,7 @@ SQL,
 	 *
 	 * @param Request $request
 	 */
-	public static function store(array $data): Block
-	{
+	public static function store(array $data): Block {
 		$block = Block::create($data);
 		$block->sort_no = config('global.mysql-int-max');
 		$block->save();
@@ -115,17 +111,18 @@ SQL,
 	 * @param int $id
 	 * @return Application|Factory|View
 	 */
-	public function edit(Request $request, int $id)
-	{
+	public function edit(Request $request, int $id) {
 		$mode = $request->mode;
 		$block = Block::findOrFail($id);
-		if ($block->block_id) {    // Редактирование / просмотр ссылочного блока
+		if ($block->block_id) { // Редактирование / просмотр ссылочного блока
 			$view = 'blocks.alias.edit';
-		} else {	// Просмотр предка
+		} else { // Просмотр предка
 			$view = 'blocks.alias.parent';
 		}
+		$prev = $request->prev;
+		$next = $request->next;
 		$kind = $request->has('kind') ? $request->kind : BlockKind::Block->value;
-		return view($view, compact('block', 'mode', 'kind'));
+		return view($view, compact('block', 'mode', 'kind', 'prev', 'next'));
 	}
 
 	/**
@@ -134,8 +131,7 @@ SQL,
 	 * @param array $params
 	 * @param int $id
 	 */
-	public static function update(array $params, int $id): string
-	{
+	public static function update(array $params, int $id): string {
 		$block = Block::findOrFail($id);
 		$name = $block->name;
 		$block->update([
@@ -150,8 +146,7 @@ SQL,
 	 * @param  int  $id
 	 * @return bool
 	 */
-	public static function destroy($id): bool
-	{
+	public static function destroy($id): bool {
 		$block = Block::findOrFail($id);
 		return $block->delete();
 	}

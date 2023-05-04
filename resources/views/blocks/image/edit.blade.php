@@ -1,4 +1,4 @@
-@extends('layouts.detail')
+@extends('blocks.edit', ['prev' => $prev, 'next' => $next, 'form' => form($block, $mode, 'name')])
 
 @section('service')
 	@switch($kind)
