@@ -93,7 +93,8 @@
 					codeBlock: {
 						languages: [{
 							language: 'php',
-							label: 'PHP'
+							label: 'PHP',
+							class: 'php-code'
 						}]
 					},
 					table: {
