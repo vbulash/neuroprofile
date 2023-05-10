@@ -44,6 +44,7 @@ class BlockController extends Controller {
 
 		return Datatables::of($blocks)
 			->addColumn('type', fn($block) => BlockType::getName($block->type))
+			->addColumn('show_title', fn($block) => $block->show_title ? 'Да' : 'Нет')
 			->addColumn('action', function ($block) use ($first, $last, $count) {
 				$editRoute = route('blocks.edit', ['block' => $block->getKey()]);
 				$showRoute = route('blocks.show', ['block' => $block->getKey()]);
@@ -197,10 +198,15 @@ class BlockController extends Controller {
 	public function update(Request $request, int $id) {
 		$then = $request->then;
 		$kind = $request->has('kind') ? $request->kind : BlockKind::Block->value;
+
+		$data = $request->except('_token');
+		$params = [
+			'show_title' => $request->has('show-name-option')
+		];
 		$name = match (intval($request->type)) {
-			BlockType::Text->value => TextController::update($request->except('_token'), $id),
-			BlockType::Image->value => ImageController::update($request, $id),
-			BlockType::Alias->value => AliasController::update($request->except('_token'), $id),
+			BlockType::Text->value => TextController::update(array_merge($data, $params), $id),
+			BlockType::Image->value => ImageController::update($request, $id, $params),
+			BlockType::Alias->value => AliasController::update(array_merge($data, $params), $id),
 			default => 'dashboard'
 		};
 		// Перенумеровать блоки

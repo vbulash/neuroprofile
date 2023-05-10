@@ -64,7 +64,8 @@
 						<thead>
 							<tr>
 								<th>Номер по порядку</th>
-								<th>Наименование блока</th>
+								<th>Название блока</th>
+								<th>Показать название в результатах</th>
 								<th>Тип блока</th>
 								<th>&nbsp;</th>
 							</tr>
@@ -181,6 +182,7 @@
 					serverSide: true,
 					ajax: '{!! route('blocks.index.data') !!}',
 					responsive: true,
+					pageLength: 25,
 					columns: [{
 							data: 'sort_no',
 							name: 'sort_no',
@@ -190,6 +192,12 @@
 							data: 'name',
 							name: 'name',
 							responsivePriority: 2,
+							sortable: false
+						},
+						{
+							data: 'show_title',
+							name: 'show_title',
+							responsivePriority: 3,
 							sortable: false
 						},
 						{

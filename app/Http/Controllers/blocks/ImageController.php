@@ -72,8 +72,9 @@ class ImageController extends Controller {
 	 *
 	 * @param Request $request
 	 * @param int $id
+	 * @param array $params
 	 */
-	public static function update(Request $request, int $id): string {
+	public static function update(Request $request, int $id, array $params = []): string {
 		$block = Block::findOrFail($id);
 		$name = $block->name;
 
@@ -86,6 +87,7 @@ class ImageController extends Controller {
 			$data['full'] = $mediaPath;
 		}
 
+		$data = array_merge($data, $params);
 		$block->update($data);
 		return $name;
 	}

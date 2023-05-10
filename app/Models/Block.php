@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $name
+ * @property bool $show_title
  */
-class Block extends Model implements FormTemplate, Titleable
-{
-    use HasFactory, UploadImage;
+class Block extends Model implements FormTemplate, Titleable {
+	use HasFactory, UploadImage;
 
 	protected $fillable = [
 		'sort_no',
@@ -21,16 +21,15 @@ class Block extends Model implements FormTemplate, Titleable
 		'full',
 		'short',
 		'block_id',
-		'profile_id'
+		'profile_id',
+		'show_title'
 	];
 
-	public function getTitle(): string
-	{
+	public function getTitle(): string {
 		return $this->name;
 	}
 
-	public static function createTemplate(): array
-	{
+	public static function createTemplate(): array {
 		return [
 			'id' => 'block-create',
 			'name' => 'block-create',
@@ -39,8 +38,7 @@ class Block extends Model implements FormTemplate, Titleable
 		];
 	}
 
-	public function editTemplate(): array
-	{
+	public function editTemplate(): array {
 		return [
 			'id' => 'block-edit',
 			'name' => 'block-edit',
@@ -49,18 +47,15 @@ class Block extends Model implements FormTemplate, Titleable
 		];
 	}
 
-	public function parent(): BelongsTo
-	{
+	public function parent(): BelongsTo {
 		return $this->belongsTo(Block::class, 'block_id');
 	}
 
-	public function children(): HasMany
-	{
+	public function children(): HasMany {
 		return $this->hasMany(Block::class);
 	}
 
-	public function profile(): BelongsTo
-	{
+	public function profile(): BelongsTo {
 		return $this->belongsTo(Profile::class);
 	}
 }

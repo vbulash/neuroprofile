@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
 	/**
@@ -12,10 +11,9 @@ return new class extends Migration {
 	 * @return void
 	 */
 	public function up() {
-		DB::statement(<<<'EOS'
-CREATE VIEW password_reset_tokens AS
-SELECT * FROM password_resets
-EOS);
+		Schema::table('blocks', function (Blueprint $table) {
+			$table->boolean('show_title')->default(true)->comment('Видимость заголовка блока');
+		});
 	}
 
 	/**
@@ -23,7 +21,9 @@ EOS);
 	 *
 	 * @return void
 	 */
-	public function down(): void {
-		DB::statement('DROP VIEW password_reset_tokens');
+	public function down() {
+		Schema::table('blocks', function (Blueprint $table) {
+			$table->dropColumn('show_title');
+		});
 	}
 };
