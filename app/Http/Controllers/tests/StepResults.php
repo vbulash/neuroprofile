@@ -8,15 +8,12 @@ use App\Models\Test;
 use App\Models\TestOptions;
 use Illuminate\Http\Request;
 
-class StepResults implements Step
-{
-    public function getTitle(): string
-    {
-        return 'Представление результатов тестирования';
-    }
+class StepResults implements Step {
+	public function getTitle(): string {
+		return 'Представление результатов тестирования';
+	}
 
-    public function store(Request $request): bool
-	{
+	public function store(Request $request): bool {
 		$data = $request->except(['_token', '_method', 'mode', 'test']);
 		$heap = session('heap') ?? [];
 		$heap['step-results'] = $data['step-results'];
@@ -38,6 +35,10 @@ class StepResults implements Step
 			$options |= TestOptions::RESULTS_CLIENT->value;
 			$client = $data['client'];
 		}
+		if (!isset($data['show-name-option'])) {
+			$results = true;
+			$options |= TestOptions::DONT_SHOW_TITLE->value;
+		}
 
 		if ($results) {
 			$heap['options'] = $options;
@@ -50,23 +51,20 @@ class StepResults implements Step
 				$heap['descriptions']['client'] = $client;
 		}
 		session()->put('heap', $heap);
-//		session()->keep('heap');
+		//		session()->keep('heap');
 
-        return true;
-    }
+		return true;
+	}
 
-    public function update(Request $request): bool
-    {
+	public function update(Request $request): bool {
 		return $this->store($request);
-    }
+	}
 
-	public function create(Request $request)
-	{
+	public function create(Request $request) {
 		return $this->edit($request);
 	}
 
-	public function edit(Request $request)
-	{
+	public function edit(Request $request) {
 		$mode = intval($request->mode);
 		$buttons = intval($request->buttons);
 		$test = intval($request->test);
@@ -80,13 +78,11 @@ class StepResults implements Step
 		return view('tests.steps.results', compact('mode', 'buttons', 'fmptypes', 'test'));
 	}
 
-	public function getStoreRules(): array
-	{
+	public function getStoreRules(): array {
 		return [];
 	}
 
-	public function getStoreAttributes(): array
-	{
+	public function getStoreAttributes(): array {
 		return [];
 	}
 }

@@ -68,8 +68,8 @@
 		<div class="form-check form-switch">
 			<input class="form-check-input" type="checkbox" id="branding-option" name="branding-option"
 				@if ($custom) checked @endif @if ($mode == config('global.show')) disabled @endif>
-			<label class="form-check-label" for="branding-option">Тест имеет самостоятельный брендинг, отличный от
-				встроенного</label>
+			<label class="form-check-label" for="branding-option" id="branding-option-label">Тест использует брендинг <strong>по
+					умолчанию</strong></label>
 		</div>
 	</div>
 	<div class="p-4" id="branding-panel" style="display: none">
@@ -189,6 +189,8 @@
 
 		document.getElementById('branding-option').addEventListener('change', (event) => {
 			if (event.target.checked) {
+				document.getElementById('branding-option-label').innerHTML =
+					"Тест использует <strong>собственный</strong> брендинг, отличный от встроенного";
 				document.getElementById('branding-panel').style.display = 'block';
 				document.getElementById('clear_logo-file').style.display = 'none';
 				document.getElementById('font-color-input').value = fontColor;
@@ -196,6 +198,8 @@
 				document.getElementById('clear-logo').value = 'false';
 				document.getElementById('company-name-changer').dispatchEvent(new Event('input'));
 			} else {
+				document.getElementById('branding-option-label').innerHTML =
+					"Тест использует брендинг <strong>по умолчанию</strong>";
 				document.getElementById('branding-panel').style.display = 'none';
 			}
 		}, false);

@@ -15,6 +15,9 @@
 	@endif
 @endsection
 
+@section('interior.subheader')
+@endsection
+
 @section('form.fields')
 	@php
 		$heap = session('heap');
@@ -68,7 +71,8 @@
 		<div class="form-check form-switch">
 			<input class="form-check-input" type="checkbox" id="texts-option" name="texts-option"
 				@if ($custom) checked @endif @if ($mode == config('global.show')) disabled @endif>
-			<label class="form-check-label" for="texts-option">Тест включает настраиваемые тексты на страницах</label>
+			<label class="form-check-label" for="texts-option" id="texts-option-label">Тест использует на страницах <strong>тексты по
+					умолчанию</strong></label>
 			{{-- {{ json_encode($heap) }}
 			{{ $mode == config('global.create') ? 'create' : 'edit' }} --}}
 		</div>
@@ -79,8 +83,12 @@
 	<script>
 		document.getElementById('texts-option').addEventListener('change', (event) => {
 			if (event.target.checked) {
+				document.getElementById('texts-option-label').innerHTML =
+					"Тест использует <strong>настраиваемые тексты</strong> на страницах";
 				document.getElementById('content').style.display = 'block';
 			} else {
+				document.getElementById('texts-option-label').innerHTML =
+					"Тест использует на страницах <strong>тексты по умолчанию</strong>";
 				document.getElementById('content').style.display = 'none';
 			}
 		}, false);
