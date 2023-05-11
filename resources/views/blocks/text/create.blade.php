@@ -1,6 +1,8 @@
 @extends('layouts.detail')
 
-@section('service')Работа с описаниями результатов тестирования@endsection
+@section('service')
+	Работа с описаниями результатов тестирования
+@endsection
 
 @section('body-params')
 	data-editor="DecoupledDocumentEditor" data-collaboration="false"
@@ -8,11 +10,7 @@
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
-			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')],
-			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index')],
-		];
+		$steps = [['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')], ['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')], ['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index')]];
 	@endphp
 @endsection
 
@@ -28,11 +26,17 @@
 @section('form.fields')
 	@php
 		$fields = [
-			['name' => 'name', 'title' => 'Название блока', 'required' => true, 'type' => 'text'],
-			['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea'],
-			['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'editor'],
-			['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Text->value],
-			['name' => 'profile_id', 'type' => 'hidden', 'value' => $profile->getKey()],
+		    [
+		        'name' => 'name',
+		        'title' => 'Название блока',
+		        'required' => true,
+		        'type' => 'text',
+		    ],
+		    ['name' => 'show-name-option', 'title' => '<strong>Показывать</strong> название блока в результатах тестирования', 'required' => false, 'type' => 'checkbox', 'value' => 'on'],
+		    ['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea'],
+		    ['name' => 'full', 'title' => 'Полный текст блока', 'required' => false, 'type' => 'editor'],
+		    ['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Text->value],
+		    ['name' => 'profile_id', 'type' => 'hidden', 'value' => $profile->getKey()],
 		];
 	@endphp
 @endsection
@@ -48,6 +52,12 @@
 @push('js_after')
 	<script src="{{ asset('js/ckeditor.js') }}"></script>
 	<script type="module">
+		document.getElementById('show-name-option').addEventListener('change', (event) => {
+			document.getElementById('show-name-option-label').innerHTML =
+				(event.target.checked ? "<strong>Показывать</strong> название блока в результатах тестирования" :
+					"<strong>Не показывать</strong> название блока в результатах тестирования");
+		});
+
 		DecoupledDocumentEditor
 			.create(document.querySelector('.editor'), {
 				toolbar: {

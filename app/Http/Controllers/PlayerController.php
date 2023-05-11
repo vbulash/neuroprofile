@@ -369,8 +369,10 @@ class PlayerController extends Controller {
 				$blocks = $composer->getBlocks($profile);
 
 				event(new ToastEvent('success', '', 'Результаты тестирования отображаются на экране'));
-				if ($blocks)
-					return view('front.show', compact('card', 'blocks', 'profile', 'history'));
+				if ($blocks) {
+					$test = $history->test;
+					return view('front.show', compact('card', 'blocks', 'profile', 'history', 'test'));
+				}
 			} else {
 				$test = $history->test;
 				return view('front.thanks', compact('test'));

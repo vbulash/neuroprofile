@@ -1,6 +1,8 @@
 @extends('layouts.detail')
 
-@section('service')Работа с описаниями результатов тестирования@endsection
+@section('service')
+	Работа с описаниями результатов тестирования
+@endsection
 
 @section('body-params')
 	data-editor="DecoupledDocumentEditor" data-collaboration="false"
@@ -9,11 +11,7 @@
 @section('steps')
 	@php
 		$mode = config('global.create');
-		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
-			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')],
-			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index')],
-		];
+		$steps = [['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')], ['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')], ['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index')]];
 	@endphp
 @endsection
 
@@ -30,15 +28,21 @@
 	@php
 		$parent = \App\Models\Block::findOrFail($block_id);
 		$fields = [
-			['name' => 'name', 'title' => 'Название ссылочного блока', 'required' => true, 'type' => 'text'],
-			['name' => 'block_id', 'type' => 'hidden', 'value' => $block_id],
-			['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Alias->value],
-			['name' => 'profile_id', 'type' => 'hidden', 'value' => $profile_id],
-			['type' => 'heading', 'title' => 'Данные блока-предка нового ссылочного блока'],
-			['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $parent->getKey(), 'disabled' => true],
-			['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $parent->name, 'disabled' => true],
-			['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $parent->short, 'disabled' => true],
-			['name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $parent->full, 'disabled' => true],
+		    [
+		        'name' => 'name',
+		        'title' => 'Название ссылочного блока',
+		        'required' => true,
+		        'type' => 'text',
+		    ],
+		    ['name' => 'show-name-option', 'title' => '<strong>Показывать</strong> название блока в результатах тестирования', 'required' => false, 'type' => 'checkbox', 'value' => 'on'],
+		    ['name' => 'block_id', 'type' => 'hidden', 'value' => $block_id],
+		    ['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Alias->value],
+		    ['name' => 'profile_id', 'type' => 'hidden', 'value' => $profile_id],
+		    ['type' => 'heading', 'title' => 'Данные блока-предка нового ссылочного блока'],
+		    ['name' => 'id', 'title' => 'ID блока-предка', 'required' => false, 'type' => 'text', 'value' => $parent->getKey(), 'disabled' => true],
+		    ['name' => 'pname', 'title' => 'Название блока-предка', 'required' => false, 'type' => 'text', 'value' => $parent->name, 'disabled' => true],
+		    ['name' => 'short', 'title' => 'Краткий текст блока-предка', 'required' => false, 'type' => 'textarea', 'value' => $parent->short, 'disabled' => true],
+		    ['name' => 'full', 'title' => 'Полный текст блока-предка', 'required' => false, 'type' => 'editor', 'value' => $parent->full, 'disabled' => true],
 		];
 	@endphp
 @endsection
@@ -54,6 +58,12 @@
 @push('js_after')
 	<script src="{{ asset('js/ckeditor.js') }}"></script>
 	<script>
+		document.getElementById('show-name-option').addEventListener('change', (event) => {
+			document.getElementById('show-name-option-label').innerHTML =
+				(event.target.checked ? "<strong>Показывать</strong> название блока в результатах тестирования" :
+					"<strong>Не показывать</strong> название блока в результатах тестирования");
+		});
+
 		DecoupledDocumentEditor
 			.create(document.querySelector('.editor'), {
 				toolbar: {
@@ -94,9 +104,10 @@
 				},
 				language: 'ru',
 				codeBlock: {
-					languages: [
-						{language: 'php', label: 'PHP'}
-					]
+					languages: [{
+						language: 'php',
+						label: 'PHP'
+					}]
 				},
 				table: {
 					contentToolbar: [
@@ -117,7 +128,9 @@
 			})
 			.catch(error => {
 				console.error('Oops, something went wrong!');
-				console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+				console.error(
+					'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:'
+				);
 				console.warn('Build id: bfknlbbh0ej1-27rpc1i5joqr');
 				console.error(error);
 			});

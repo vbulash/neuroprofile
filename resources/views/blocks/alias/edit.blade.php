@@ -38,7 +38,14 @@
 	@php
 		if ($kind == \App\Models\BlockKind::Block->value) {
 		    $fields = [
-		        ['name' => 'name', 'title' => 'Название ссылочного блока', 'required' => true, 'type' => 'text', 'value' => $block->name],
+		        [
+		            'name' => 'name',
+		            'title' => 'Название ссылочного блока',
+		            'required' => true,
+		            'type' => 'text',
+		            'value' => $block->name,
+		        ],
+		        ['name' => 'show-name-option', 'title' => 'Показывать название блока в результатах тестирования', 'required' => false, 'type' => 'checkbox', 'value' => $block->show_title ? 'on' : ''],
 		        ['name' => 'block_id', 'type' => 'hidden', 'value' => $block->getKey()],
 		        ['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Alias->value],
 		        ['name' => 'profile_id', 'type' => 'hidden', 'value' => $block->parent->getKey()],
@@ -85,6 +92,12 @@
 @push('js_after')
 	<script src="{{ asset('js/ckeditor.js') }}"></script>
 	<script>
+		document.getElementById('show-name-option').addEventListener('change', (event) => {
+			document.getElementById('show-name-option-label').innerHTML =
+				(event.target.checked ? "<strong>Показывать</strong> название блока в результатах тестирования" :
+					"<strong>Не показывать</strong> название блока в результатах тестирования");
+		});
+
 		DecoupledDocumentEditor
 			.create(document.querySelector('.editor'), {
 				toolbar: {
@@ -194,6 +207,7 @@
 
 		document.addEventListener("DOMContentLoaded", () => {
 			document.getElementById('clear_full').style.display = 'none';
+			document.getElementById('show-name-option').dispatchEvent(new Event('change'));
 		}, false);
 	</script>
 @endpush

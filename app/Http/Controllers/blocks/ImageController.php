@@ -36,13 +36,14 @@ class ImageController extends Controller {
 	 *
 	 * @param Request $request
 	 */
-	public static function store(Request $request): Block {
+	public static function store(Request $request, array $params = []): Block {
 		$data = $request->except('_token');
 
 		$mediaPath = Block::uploadImage($request, 'full');
 		if ($mediaPath)
 			FileLink::link($mediaPath);
 		$data['full'] = $mediaPath;
+		$data = array_merge($data, $params);
 
 		$block = Block::create($data);
 		$block->sort_no = config('global.mysql-int-max');

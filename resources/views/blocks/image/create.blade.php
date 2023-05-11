@@ -1,14 +1,12 @@
 @extends('layouts.detail')
 
-@section('service')Работа с описаниями результатов тестирования@endsection
+@section('service')
+	Работа с описаниями результатов тестирования
+@endsection
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')],
-			['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')],
-			['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index')],
-		];
+		$steps = [['title' => 'Тип описания', 'active' => false, 'context' => 'fmptype', 'link' => route('fmptypes.index')], ['title' => 'Нейропрофиль', 'active' => false, 'context' => 'profile', 'link' => route('profiles.index')], ['title' => 'Блок описания', 'active' => true, 'context' => 'block', 'link' => route('blocks.index')]];
 	@endphp
 @endsection
 
@@ -24,11 +22,17 @@
 @section('form.fields')
 	@php
 		$fields = [
-			['name' => 'name', 'title' => 'Название блока', 'required' => true, 'type' => 'text'],
-			['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea'],
-			['name' => 'full', 'title' => 'Изображение блока', 'required' => true, 'type' => 'image'],
-			['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Image->value],
-			['name' => 'profile_id', 'type' => 'hidden', 'value' => $profile->getKey()],
+		    [
+		        'name' => 'name',
+		        'title' => 'Название блока',
+		        'required' => true,
+		        'type' => 'text',
+		    ],
+		    ['name' => 'show-name-option', 'title' => '<strong>Не показывать</strong> название блока в результатах тестирования', 'required' => false, 'type' => 'checkbox', 'value' => ''],
+		    ['name' => 'short', 'title' => 'Краткий текст блока', 'required' => false, 'type' => 'textarea'],
+		    ['name' => 'full', 'title' => 'Изображение блока', 'required' => true, 'type' => 'image'],
+		    ['name' => 'type', 'type' => 'hidden', 'value' => \App\Models\BlockType::Image->value],
+		    ['name' => 'profile_id', 'type' => 'hidden', 'value' => $profile->getKey()],
 		];
 	@endphp
 @endsection
@@ -39,13 +43,19 @@
 
 @push('js_after')
 	<script>
+		document.getElementById('show-name-option').addEventListener('change', (event) => {
+			document.getElementById('show-name-option-label').innerHTML =
+				(event.target.checked ? "<strong>Показывать</strong> название блока в результатах тестирования" :
+					"<strong>Не показывать</strong> название блока в результатах тестирования");
+		});
+
 		function readImage(input) {
 			if (input.files && input.files[0]) {
 				window.preview = 'preview_full';
 				window.clear = 'clear_full';
 
 				let reader = new FileReader();
-				reader.onload = function (event) {
+				reader.onload = function(event) {
 					document.getElementById(window.preview).setAttribute('src', event.target.result);
 					document.getElementById(window.clear).style.display = 'block';
 				};

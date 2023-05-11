@@ -117,10 +117,15 @@ class BlockController extends Controller {
 	 * @return RedirectResponse
 	 */
 	public function store(StoreBlockRequest $request) {
+		$data = $request->except('_token');
+		$params = [
+			'show_title' => $request->has('show-name-option')
+		];
+
 		$block = match (intval($request->type)) {
-			BlockType::Text->value => TextController::store($request->except('_token')),
-			BlockType::Image->value => ImageController::store($request),
-			BlockType::Alias->value => AliasController::store($request->except('_token')),
+			BlockType::Text->value => TextController::store(array_merge($data, $params)),
+			BlockType::Image->value => ImageController::store($request, $params),
+			BlockType::Alias->value => AliasController::store(array_merge($data, $params)),
 		};
 		// Перенумеровать блоки
 		$blocks = $block->profile->blocks
