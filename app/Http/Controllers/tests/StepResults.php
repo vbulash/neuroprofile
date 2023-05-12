@@ -38,7 +38,8 @@ class StepResults implements Step {
 		if (!isset($data['show-name-option'])) {
 			$results = true;
 			$options |= TestOptions::DONT_SHOW_TITLE->value;
-		}
+		} else
+			$options &= !TestOptions::DONT_SHOW_TITLE->value;
 
 		if ($results) {
 			$heap['options'] = $options;

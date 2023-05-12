@@ -235,8 +235,12 @@
 			@endif
 			if (document.getElementById('branding-option').checked) {
 				document.getElementById('branding-panel').style.display = 'block';
+				document.getElementById('branding-option-label').innerHTML =
+					"Тест использует <strong>собственный</strong> брендинг, отличный от встроенного";
 				updateTextPreview(fontColor, backgroundColor);
 			} else {
+				document.getElementById('branding-option-label').innerHTML =
+					"Тест использует брендинг <strong>по умолчанию</strong>";
 				document.getElementById('branding-panel').style.display = 'none';
 			}
 

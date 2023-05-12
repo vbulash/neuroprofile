@@ -67,7 +67,7 @@
 		        $dont_show_title = $options & \App\Models\TestOptions::DONT_SHOW_TITLE->value;
 		        $fields[] = [
 		            'name' => 'show-name-option',
-		            'title' => $dont_show_title ? '<strong>Не показывать</strong> названия блоков в результатах тестирования' : '<strong>Показывать</strong> названия блоков в результатах тестирования',
+		            'title' => $dont_show_title ? '<strong>Не показывать</strong> названия блоков в результатах тестирования' : 'Показ названия блока в результатах тестирования зависит от <strong>индивидуальной настройки блока</strong>',
 		            'required' => false,
 		            'type' => 'checkbox',
 		            'value' => $dont_show_title ? '' : 'on',
@@ -134,7 +134,7 @@
 			document.getElementById('show-name-option').addEventListener('change', (event) => {
 				document.getElementById('show-name-option-label').innerHTML =
 					(event.target.checked ?
-						"<strong>Показывать</strong> названия блоков в результатах тестирования" :
+						"Показ названия блока в результатах тестирования зависит от <strong>индивидуальной настройки блока</strong>" :
 						"<strong>Не показывать</strong> названия блоков в результатах тестирования");
 			});
 

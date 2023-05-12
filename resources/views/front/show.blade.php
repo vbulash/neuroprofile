@@ -53,10 +53,13 @@
 
 		@forelse($blocks  as $block)
 			@if ($block->type != \App\Models\BlockType::Image->value)
-				@if (!($test->options & \App\Models\TestOptions::DONT_SHOW_TITLE->value))
+				@if (!($history->test->options & \App\Models\TestOptions::DONT_SHOW_TITLE->value))
+					<p><strong>Глобально включено</strong></p>
 					@if ($block->show_title)
 						<h2>{{ $block->name }}</h2>
 					@endif
+				@else
+					<p><strong>Глобально выключено</strong></p>
 				@endif
 			@else
 				@php
