@@ -11,7 +11,7 @@
 			Просмотр
 		@else
 			Редактирование
-		@endif теста &laquo;{{ $heap['name'] }}&raquo;
+		@endif теста &laquo;{{ $heap['name'] }}&raquo; ({{ $heap['client'] }})
 	@endif
 @endsection
 
@@ -22,7 +22,7 @@
 	@php
 		$heap = session('heap');
 		$options = intval($heap['options'] ?? 0);
-		
+
 		if (!isset($heap['step-payment']) && $mode == config('global.create')) {
 		    $custom = false;
 		    $fields = [['name' => 'merchant', 'title' => 'Магазин Robokassa', 'required' => true, 'type' => 'text'], ['name' => 'password', 'title' => 'Пароль магазина Robokassa', 'required' => true, 'type' => 'password'], ['name' => 'sum', 'title' => 'Сумма оплаты за платный результат тестирования Robokassa', 'required' => true, 'type' => 'number', 'min' => 1, 'value' => 500], ['name' => 'mode', 'type' => 'hidden', 'value' => $mode], ['name' => 'test', 'type' => 'hidden', 'value' => $test], ['name' => 'step-payment', 'type' => 'hidden', 'value' => true]];

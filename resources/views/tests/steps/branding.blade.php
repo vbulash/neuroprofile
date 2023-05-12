@@ -11,7 +11,7 @@
 			Просмотр
 		@else
 			Редактирование
-		@endif теста &laquo;{{ $heap['name'] }}&raquo;
+		@endif теста &laquo;{{ $heap['name'] }}&raquo; ({{ $heap['client'] }})
 	@endif
 @endsection
 

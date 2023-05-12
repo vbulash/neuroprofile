@@ -11,7 +11,7 @@
 			Просмотр
 		@else
 			Редактирование
-		@endif теста &laquo;{{ $heap['name'] }}&raquo;
+		@endif теста &laquo;{{ $heap['name'] }}&raquo; ({{ $heap['client'] }})
 	@endif
 @endsection
 
@@ -22,7 +22,7 @@
 	@php
 		$heap = session('heap');
 		$options = intval($heap['options']);
-		
+
 		$fields = [];
 		if (!isset($heap['step-results']) && $mode == config('global.create')) {
 		    if (env('EXEC_MODE') == 'research') {

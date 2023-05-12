@@ -11,7 +11,7 @@
 			Просмотр
 		@else
 			Редактирование
-		@endif теста &laquo;{{ $heap['name'] }}&raquo;
+		@endif теста &laquo;{{ $heap['name'] }}&raquo; ({{ $heap['client'] }})
 	@endif
 @endsection
 
@@ -24,7 +24,7 @@
 		    \App\Models\TestOptions::AUTH_MIX->value => 'Комбинация запросов анкеты респондента и персонального ключа',
 		];
 		$heap = session('heap');
-		
+
 		if (!isset($heap['step-core']) && $mode == config('global.create')) {
 		    $fields = [
 		        ['name' => 'name', 'title' => 'Название теста', 'required' => true, 'type' => 'text'],

@@ -52,6 +52,7 @@ class StepController extends Controller {
 			session()->forget('heap');
 			$heap = [
 				'name' => $test->name,
+				'client' => $test->contract->client->getTitle(),
 				'options' => $test->options,
 				'paid' => $test->paid,
 				'contract_id' => $test->contract_id,
@@ -116,8 +117,8 @@ class StepController extends Controller {
 
 		if ($mode != config('global.show'))
 			Validator::make($request->all(),
-			rules: $step->getStoreRules(),
-			customAttributes: $step->getStoreAttributes()
+				rules: $step->getStoreRules(),
+				customAttributes: $step->getStoreAttributes()
 			)->validate();
 
 		$result = match ($mode) {
@@ -156,8 +157,8 @@ class StepController extends Controller {
 
 		if ($mode != config('global.show'))
 			Validator::make($request->all(),
-			rules: $step->getStoreRules(),
-			customAttributes: $step->getStoreAttributes()
+				rules: $step->getStoreRules(),
+				customAttributes: $step->getStoreAttributes()
 			)->validate();
 
 		$result = match ($mode) {

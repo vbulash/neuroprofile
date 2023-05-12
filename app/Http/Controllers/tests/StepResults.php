@@ -39,7 +39,7 @@ class StepResults implements Step {
 			$results = true;
 			$options |= TestOptions::DONT_SHOW_TITLE->value;
 		} else {
-			// $options &= !TestOptions::DONT_SHOW_TITLE->value;
+			$options ^= TestOptions::DONT_SHOW_TITLE->value;
 		}
 
 		if ($results) {
