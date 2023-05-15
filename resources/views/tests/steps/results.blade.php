@@ -22,7 +22,7 @@
 	@php
 		$heap = session('heap');
 		$options = intval($heap['options']);
-
+		
 		$fields = [];
 		if (!isset($heap['step-results']) && $mode == config('global.create')) {
 		    if (env('EXEC_MODE') == 'research') {
@@ -37,7 +37,6 @@
 		        $fields[] = ['name' => 'client-option', 'title' => 'Переслать результат тестирования', 'required' => false, 'type' => 'checkbox', 'disabled' => true];
 		        $fields[] = ['name' => 'client', 'title' => 'Будет использован тип описания', 'required' => false, 'type' => 'select', 'options' => $fmptypes, 'disabled' => true];
 		    } else {
-		        $fields[] = ['name' => 'show-name-option', 'title' => '<strong>Показывать</strong> названия блоков в результатах тестирования', 'required' => false, 'type' => 'checkbox', 'value' => 'on'];
 		        $fields[] = ['title' => 'Показ результата тестирования на экране', 'type' => 'heading'];
 		        $fields[] = ['name' => 'show-option', 'title' => 'Показать результат тестирования', 'required' => false, 'type' => 'checkbox'];
 		        $fields[] = ['name' => 'show', 'title' => 'Будет использован тип описания', 'required' => false, 'type' => 'select', 'options' => $fmptypes];
@@ -64,14 +63,6 @@
 		        $fields[] = ['name' => 'client-option', 'title' => 'Переслать результат тестирования', 'required' => false, 'type' => 'checkbox', 'value' => isset($heap['descriptions']['client']), 'disabled' => true];
 		        $fields[] = ['name' => 'client', 'title' => 'Будет использован тип описания', 'required' => false, 'type' => 'select', 'options' => $fmptypes, 'value' => $heap['descriptions']['client'] ?? 0, 'disabled' => true];
 		    } else {
-		        $dont_show_title = $options & \App\Models\TestOptions::DONT_SHOW_TITLE->value;
-		        $fields[] = [
-		            'name' => 'show-name-option',
-		            'title' => $dont_show_title ? '<strong>Не показывать</strong> названия блоков в результатах тестирования' : 'Показ названия блока в результатах тестирования зависит от <strong>индивидуальной настройки блока</strong>',
-		            'required' => false,
-		            'type' => 'checkbox',
-		            'value' => $dont_show_title ? '' : 'on',
-		        ];
 		        $fields[] = ['title' => 'Показ результата тестирования на экране', 'type' => 'heading'];
 		        $fields[] = [
 		            'name' => 'show-option',
@@ -131,18 +122,10 @@
 						"<strong>Переслать</strong> результат тестирования клиенту" :
 						"<strong>Не пересылать</strong> результат тестирования клиенту");
 			});
-			document.getElementById('show-name-option').addEventListener('change', (event) => {
-				document.getElementById('show-name-option-label').innerHTML =
-					(event.target.checked ?
-						"Показ названия блока в результатах тестирования зависит от <strong>индивидуальной настройки блока</strong>" :
-						"<strong>Не показывать</strong> названия блоков в результатах тестирования");
-			});
-
 			document.addEventListener("DOMContentLoaded", () => {
 				document.getElementById('show').disabled = !document.getElementById('show-option').checked;
 				document.getElementById('mail').disabled = !document.getElementById('mail-option').checked;
 				document.getElementById('client').disabled = !document.getElementById('client-option').checked;
-				document.getElementById('show-name-option').dispatchEvent(new Event('change'));
 			}, false);
 		</script>
 	@endpush

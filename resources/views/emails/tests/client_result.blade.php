@@ -18,7 +18,7 @@
 		if (!isset($card['Фамилия'])) {
 		    $card['Фамилия'] = '';
 		}
-
+		
 		$greeting = match ($card['Пол']) {
 		    'М' => 'Уважаемый',
 		    'Ж' => 'Уважаемая',
@@ -61,10 +61,8 @@
 
 @forelse($blocks  as $block)
 	@if ($block->type != \App\Models\BlockType::Image->value)
-		@if (!($history->test->options & \App\Models\TestOptions::DONT_SHOW_TITLE->value))
-			@if ($block->show_title)
-				<h2>{{ $block->name }}</h2>
-			@endif
+		@if ($block->show_title)
+			<h2>{{ $block->name }}</h2>
 		@endif
 	@else
 		@php
