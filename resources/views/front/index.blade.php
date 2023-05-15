@@ -4,9 +4,14 @@
 	- Предварительные проверки вход в тестирование
 @endpush
 
-@push('testname')
-	{{ $test->name }}
-@endpush
+@if (strlen($test->name) == 1)
+	@section('testplace')
+	@endsection
+@else
+	@push('testname')
+		{{ $test->name }}
+	@endpush
+@endif
 
 @section('content')
 	<p>Обнаружены ошибки предварительной проверки:</p>

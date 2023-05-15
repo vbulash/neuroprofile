@@ -4,9 +4,14 @@
 	- Тест &laquo;{{ $test->name }}&raquo;
 @endpush
 
-@push('testname')
-	{{ $test->name }}
-@endpush
+@if (strlen($test->name) == 1)
+	@section('testplace')
+	@endsection
+@else
+	@push('testname')
+		{{ $test->name }}
+	@endpush
+@endif
 
 @section('content')
 	@if (session()->has('success'))

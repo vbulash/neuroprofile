@@ -4,9 +4,14 @@
 	- Тест &laquo;{{ $history->test->name }}&raquo;
 @endpush
 
-@push('testname')
-	{{ $history->test->name }}
-@endpush
+@if (strlen($test->name) == 1)
+	@section('testplace')
+	@endsection
+@else
+	@push('testname')
+		{{ $test->name }}
+	@endpush
+@endif
 
 @section('content_full')
 	<div class="col-md-12 p-2">

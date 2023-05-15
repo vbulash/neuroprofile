@@ -1,11 +1,12 @@
 <div class="content-side content-side-full">
 	@php
+		$admin = false;
 		if (
 		    auth()
 		        ->user()
-		        ->hasRole('Администратор')
+		        ->hasRole(App\Http\Controllers\Auth\RoleName::ADMIN->value)
 		) {
-		    $allowed = true; // TODO Разрешения в зависимости от роли пользователя
+		    $admin = true; // TODO Разрешения в зависимости от роли пользователя
 		}
 		
 		$menu = [];
@@ -31,6 +32,9 @@
 		$menu[] = ['title' => 'Администраторы платформы', 'icon' => 'fa fa-user-alt', 'route' => 'admins.index', 'pattern' => 'admins.*'];
 		$menu[] = ['title' => 'Аккаунт менеджеры', 'icon' => 'fa fa-user-alt', 'route' => 'adminclients.index', 'pattern' => 'adminclients.*'];
 		$menu[] = ['title' => 'Типы вопросов', 'icon' => 'fa fa-question-circle', 'route' => 'kinds.index', 'pattern' => 'kinds.*'];
+		if ($admin) {
+		    $menu[] = ['title' => 'Laravel Telescope', 'icon' => 'fas fa-gear', 'link' => '/telescope', 'pattern' => []];
+		}
 	@endphp
 	<ul class="nav-main">
 		@foreach ($menu as $item)
@@ -41,8 +45,10 @@
 					<a class="nav-main-link{{ request()->routeIs($item['pattern']) ? ' active' : '' }}"
 						@if (isset($item['modal'])) href="javascript:void(0)"
 						   data-bs-toggle="modal" data-bs-target="#{{ $item['modal'] }}"
-					   @else
-						   href="{{ route($item['route']) }}" @endif>
+					   	@elseif (isset($item['route']))
+						   href="{{ route($item['route']) }}"
+						@elseif (isset($item['link']))
+						   href="{{ $item['link'] }}" @endif>
 						<i class="nav-main-link-icon {{ $item['icon'] }}"></i>
 						<span class="nav-main-link-name">{{ $item['title'] }}</span>
 					</a>

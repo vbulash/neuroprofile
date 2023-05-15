@@ -1,3 +1,8 @@
+@php
+	$branding = session('branding');
+	//dd($branding);
+@endphp
+
 <!doctype html>
 <html lang="ru">
 
@@ -29,12 +34,14 @@
 	</div>
 @endsection
 
+@section('testplace')
+	<div class="navbar-text" @if (isset($branding)) style="{{ $branding['textstyle'] }}" @endif>
+		@stack('testname')
+	</div>
+@endsection
+
 <body>
 	<div class="container-fluid main-header g-0">
-		@php
-			$branding = session('branding');
-			//dd($branding);
-		@endphp
 		<nav class="navbar navbar-dark bg-primary d-lg-flex p-1"
 			@if (isset($branding)) style="{{ $branding['navstyle'] }}" @endif>
 			<div class="navbar-brand" @if (isset($branding)) style="{{ $branding['textstyle'] }}" @endif>
@@ -50,9 +57,8 @@
 				{{ isset($branding) ? $branding['company'] : env('APP_NAME') }}
 				{{--            </a> --}}
 			</div>
-			<div class="navbar-text" @if (isset($branding)) style="{{ $branding['textstyle'] }}" @endif>
-				@stack('testname')
-			</div>
+
+			@yield('testplace')
 		</nav>
 
 		<div class='p-1 d-flex flex-col flex-md-row align-items-md-stretch'>

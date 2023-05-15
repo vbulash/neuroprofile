@@ -15,6 +15,9 @@
 	@endif
 @endsection
 
+@section('interior.subheader')
+@endsection
+
 @section('form.fields')
 	@php
 		$auth = [
@@ -24,10 +27,10 @@
 		    \App\Models\TestOptions::AUTH_MIX->value => 'Комбинация запросов анкеты респондента и персонального ключа',
 		];
 		$heap = session('heap');
-
+		
 		if (!isset($heap['step-core']) && $mode == config('global.create')) {
 		    $fields = [
-		        ['name' => 'name', 'title' => 'Название теста', 'required' => true, 'type' => 'text'],
+		        ['name' => 'name', 'title' => 'Название теста', 'required' => false, 'type' => 'text'],
 		        ['name' => 'contract_id', 'title' => 'Контракт теста', 'required' => false, 'type' => 'select', 'options' => $contracts],
 		        ['name' => 'auth', 'title' => 'Анкетирование в начале теста', 'required' => false, 'type' => 'select', 'options' => $auth],
 		        [
@@ -50,7 +53,7 @@
 		        }
 		    }
 		    $fields = [
-		        ['name' => 'name', 'title' => 'Название теста', 'required' => true, 'type' => 'text', 'value' => $heap['name']],
+		        ['name' => 'name', 'title' => 'Название теста', 'required' => false, 'type' => 'text', 'value' => $heap['name']],
 		        ['name' => 'contract_id', 'title' => 'Контракт теста', 'required' => false, 'type' => 'select', 'options' => $contracts, 'value' => $heap['contract_id']],
 		        ['name' => 'auth', 'title' => 'Анкетирование в начале теста', 'required' => false, 'type' => 'select', 'options' => $auth, 'value' => $auth_current],
 		        [
@@ -80,7 +83,12 @@
 				(event.target.checked ?
 					"Результат тестирования <strong>имеет платную</strong> расширенную версию" :
 					"Результат тестирования <strong>не имеет платной</strong> расширенной версии");
-		});
+		}, false);
+
+		document.getElementById('core-create').addEventListener('submit', (event) => {
+			if (document.getElementById('name').value.length <= 1)
+				document.getElementById('name').value = ".";
+		}, false);
 
 		document.addEventListener("DOMContentLoaded", () => {
 			document.getElementById('paid').dispatchEvent(new Event('change'));
