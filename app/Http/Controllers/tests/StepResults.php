@@ -35,12 +35,6 @@ class StepResults implements Step {
 			$options |= TestOptions::RESULTS_CLIENT->value;
 			$client = $data['client'];
 		}
-		if (!isset($data['show-name-option'])) {
-			$results = true;
-			$options |= TestOptions::DONT_SHOW_TITLE->value;
-		} else {
-			$options ^= TestOptions::DONT_SHOW_TITLE->value;
-		}
 
 		if ($results) {
 			$heap['options'] = $options;
