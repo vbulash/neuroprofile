@@ -243,7 +243,7 @@ class ProfileController extends Controller {
 		// $section->addTitle('Выгрузка блоков:', 2);
 
 		foreach ($_profile->blocks->sortBy('sort_no') as $block) {
-			$section->addTitle($block->name, 3);
+			$section->addTitle(strlen($block->name) <= 1 ? ' ' : $block->name, 3);
 			if ($block->type == BlockType::Alias->value)
 				$block = $block->parent;
 			switch ($block->type) {
