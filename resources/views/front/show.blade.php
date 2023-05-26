@@ -59,7 +59,7 @@
 		@forelse($blocks  as $block)
 			@if ($block->type != \App\Models\BlockType::Image->value)
 				@if ($block->show_title)
-					<h2>{{ $block->name }}</h2>
+					<p><strong>{{ $block->name }}</strong></p>
 				@endif
 			@else
 				@php
