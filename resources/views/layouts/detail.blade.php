@@ -90,7 +90,7 @@
 
 								@case('password')
 									<div class="col-sm-5">
-										<input type="text" class="form-control" id="{{ $field['name'] }}" name="{{ $field['name'] }}"
+										<input type="password" class="form-control" id="{{ $field['name'] }}" name="{{ $field['name'] }}"
 											autocomplete="new-password"
 											value="{{ isset($field['value']) ? old($field['name'], $field['value']) : old($field['name']) }}"
 											@if ($mode == config('global.show') || isset($field['disabled'])) disabled @endif>
