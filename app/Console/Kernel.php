@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel {
 	protected function schedule(Schedule $schedule): void {
 		$schedule->call(new ClearBrokenHistory())->everyTenMinutes();
 		$schedule->call(new RestoreOrphanLicenses())->daily();
-		$schedule->call(new ProcessContracts())->hourly();
+		$schedule->call(new ProcessContracts())->everyMinute();
 	}
 
 	/**

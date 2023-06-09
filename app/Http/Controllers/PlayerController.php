@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Session;
 class PlayerController extends Controller {
 	public function check(Request $request, string $mkey = null, string $test_key = null): bool {
 		// Log::info('check mkey = ' . $mkey);
-		Log::info('session id = ' . session()->getId());
+		// Log::info('session id = ' . session()->getId());
 		if (!$mkey) {
 			if (!session()->has('mkey')) {
 				Log::info(print_r(Session::all(), true));
@@ -98,7 +98,7 @@ class PlayerController extends Controller {
 		// Log::info('test = ' . $test);
 		$mkey = $mkey ?: $request->{'mkey-modal'};
 		$test = $test ?: $request->{'test-modal'};
-		Log::info('play mkey = ' . $mkey);
+		// Log::info('play mkey = ' . $mkey);
 		if (!$this->check($request, $mkey, $test)) {
 			//Log::debug('player.play: ' . __METHOD__ . ':' . __LINE__);
 			return redirect()->route('player.index', [
