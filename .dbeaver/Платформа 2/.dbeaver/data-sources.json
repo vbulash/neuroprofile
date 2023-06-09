@@ -43,8 +43,22 @@
 				"provider-properties": {
 					"@dbeaver-serverTimezone@": "Europe/Moscow"
 				},
-				"auth-model": "native",
-				"handlers": {}
+				"auth-model": "native"
+			}
+		},
+		"mysql8-1889fbf10bb-6004821d17dcc39a": {
+			"provider": "mysql",
+			"driver": "mysql8",
+			"name": "Production.Neuroprofile.2",
+			"save-password": true,
+			"configuration": {
+				"host": "109.72.226.199",
+				"port": "3306",
+				"database": "neuroprofile",
+				"url": "jdbc:mysql://109.72.226.199:3306/neuroprofile",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"auth-model": "native"
 			}
 		}
 	},

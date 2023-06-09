@@ -22,6 +22,30 @@
 				"database.meta.separate.connection": "NEVER",
 				"database.props.expensive": "true"
 			}
+		},
+		"mysql8-188360eda21-23e663e88d561f4": {
+			"provider": "mysql",
+			"driver": "mysql8",
+			"name": "HR-Услуга 2",
+			"save-password": true,
+			"configuration": {
+				"host": "spl96.hosting.reg.ru",
+				"port": "3306",
+				"database": "u0311407_hru2",
+				"url": "jdbc:mysql://spl96.hosting.reg.ru:3306/u0311407_hru2",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"properties": {
+					"connectTimeout": "20000",
+					"rewriteBatchedStatements": "true",
+					"enabledTLSProtocols": "TLSv1,TLSv1.1,TLSv1.2"
+				},
+				"provider-properties": {
+					"@dbeaver-serverTimezone@": "Europe/Moscow"
+				},
+				"auth-model": "native",
+				"handlers": {}
+			}
 		}
 	},
 	"network-profiles": {
@@ -34,7 +58,7 @@
 					"save-password": true,
 					"properties": {
 						"host": "109.72.226.199",
-						"port": 822,
+						"port": 822.0,
 						"authType": "PASSWORD",
 						"implementation": "sshj",
 						"localHost": "",
