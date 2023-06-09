@@ -7,59 +7,59 @@ use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
 
-class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
-{
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        // Telescope::night();
+class TelescopeServiceProvider extends TelescopeApplicationServiceProvider {
+	/**
+	 * Register any application services.
+	 */
+	public function register(): void {
+		// Telescope::night();
 
-        $this->hideSensitiveRequestDetails();
+		$this->hideSensitiveRequestDetails();
 
-        Telescope::filter(function (IncomingEntry $entry) {
-            if ($this->app->environment('local')) {
-                return true;
-            }
+		Telescope::filter(function (IncomingEntry $entry) {
+			return true;
 
-            return $entry->isReportableException() ||
-                   $entry->isFailedRequest() ||
-                   $entry->isFailedJob() ||
-                   $entry->isScheduledTask() ||
-                   $entry->hasMonitoredTag();
-        });
-    }
+			// if ($this->app->environment('local')) {
+			// 	return true;
+			// }
 
-    /**
-     * Prevent sensitive request details from being logged by Telescope.
-     */
-    protected function hideSensitiveRequestDetails(): void
-    {
-        if ($this->app->environment('local')) {
-            return;
-        }
+			// return $entry->isReportableException() ||
+			// 	$entry->isFailedRequest() ||
+			// 	$entry->isFailedJob() ||
+			// 	$entry->isScheduledTask() ||
+			// 	$entry->hasMonitoredTag();
+		});
+	}
 
-        Telescope::hideRequestParameters(['_token']);
+	/**
+	 * Prevent sensitive request details from being logged by Telescope.
+	 */
+	protected function hideSensitiveRequestDetails(): void {
+		return;
 
-        Telescope::hideRequestHeaders([
-            'cookie',
-            'x-csrf-token',
-            'x-xsrf-token',
-        ]);
-    }
+		// if ($this->app->environment('local')) {
+		// 	return;
+		// }
 
-    /**
-     * Register the Telescope gate.
-     *
-     * This gate determines who can access Telescope in non-local environments.
-     */
-    protected function gate(): void
-    {
-        Gate::define('viewTelescope', function ($user) {
-            return in_array($user->email, [
-                //
-            ]);
-        });
-    }
+		// Telescope::hideRequestParameters(['_token']);
+
+		// Telescope::hideRequestHeaders([
+		// 	'cookie',
+		// 	'x-csrf-token',
+		// 	'x-xsrf-token',
+		// ]);
+	}
+
+	/**
+	 * Register the Telescope gate.
+	 *
+	 * This gate determines who can access Telescope in non-local environments.
+	 */
+	protected function gate(): void {
+		Gate::define('viewTelescope', function ($user) {
+			return in_array($user->email, [
+				//
+			]);
+		});
+	}
 }
