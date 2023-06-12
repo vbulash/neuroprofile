@@ -118,7 +118,7 @@ class StepController extends Controller {
 		if ($mode != config('global.show'))
 			Validator::make($request->all(),
 				rules: $step->getStoreRules(),
-				customAttributes: $step->getStoreAttributes()
+				attributes: $step->getStoreAttributes()
 			)->validate();
 
 		$result = match ($mode) {
@@ -158,7 +158,7 @@ class StepController extends Controller {
 		if ($mode != config('global.show'))
 			Validator::make($request->all(),
 				rules: $step->getStoreRules(),
-				customAttributes: $step->getStoreAttributes()
+				attributes: $step->getStoreAttributes()
 			)->validate();
 
 		$result = match ($mode) {
