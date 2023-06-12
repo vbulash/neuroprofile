@@ -242,7 +242,6 @@ class PlayerController extends Controller {
 
 		// Фиксация лицензии по завершению тестирования
 		$license = License::all()->where('pkey', session('pkey'))->first();
-		$license->done();
 
 		// Зафиксировать историю теста и индивидуальные результаты прохождения вопросов
 
@@ -268,11 +267,15 @@ class PlayerController extends Controller {
 			Redis::del(session('pkey'));
 		}
 
-		$history->card = isset($card) ? json_encode($card) : null;
-		$history->paid = false;
-		$history->test()->associate($test);
-		$history->license()->associate($license);
-		$history->save();
+		DB::transaction((function () use (&$history, $card, $test, &$license) {
+			$history->card = isset($card) ? json_encode($card) : null;
+			$history->paid = false;
+			$history->test()->associate($test);
+			$history->license()->associate($license);
+			$history->save();
+
+			$license->done();
+		}));
 
 		foreach ($data as $answer => $value) {
 			if (!Str::startsWith($answer, 'answer-'))
