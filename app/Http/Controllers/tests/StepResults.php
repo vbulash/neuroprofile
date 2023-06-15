@@ -24,20 +24,20 @@ class StepResults implements Step {
 			$results = true;
 			$options |= TestOptions::RESULTS_SHOW->value;
 			$show = $data['show'];
-		}
+		} else $options &= ~TestOptions::RESULTS_SHOW->value;
 		if (isset($data['mail-option'])) {
 			$results = true;
 			$options |= TestOptions::RESULTS_MAIL->value;
 			$mail = $data['mail'];
-		}
+		} else $options &= ~TestOptions::RESULTS_MAIL->value;
 		if (isset($data['client-option'])) {
 			$results = true;
 			$options |= TestOptions::RESULTS_CLIENT->value;
 			$client = $data['client'];
-		}
+		} else $options &= ~TestOptions::RESULTS_CLIENT->value;
 
+		$heap['options'] = $options;
 		if ($results) {
-			$heap['options'] = $options;
 			$heap['descriptions'] = [];
 			if ($show)
 				$heap['descriptions']['show'] = $show;

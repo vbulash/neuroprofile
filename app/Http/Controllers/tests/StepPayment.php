@@ -26,8 +26,11 @@ class StepPayment implements Step
 			$heap['robokassa']['merchant'] = $data['merchant'];
 			$heap['robokassa']['password'] = $data['password'];
 			$heap['robokassa']['sum'] = $data['sum'];
-			$heap['options'] = $options;
-		} else unset($heap['robokassa']);
+		} else {
+			$options &= ~TestOptions::CUSTOM_PAYMENT->value;
+			unset($heap['robokassa']);
+		}
+		$heap['options'] = $options;
 		session()->put('heap', $heap);
 //		session()->keep('heap');
 

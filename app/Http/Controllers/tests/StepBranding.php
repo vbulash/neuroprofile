@@ -35,9 +35,11 @@ class StepBranding implements Step {
 				$heap['branding']['fontcolor'] = $data['font-color-input'];
 			$heap['branding']['company-name'] = $data['company-name-changer'];
 			$heap['branding']['signature'] = $data['signature'];
-			$heap['options'] = $options;
-		} else
+		} else {
+			$options &= ~TestOptions::CUSTOM_BRANDING->value;
 			unset($heap['branding']);
+		}
+		$heap['options'] = $options;
 		session()->put('heap', $heap);
 		//		session()->keep('heap');
 

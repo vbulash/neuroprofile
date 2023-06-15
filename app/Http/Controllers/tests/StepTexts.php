@@ -23,9 +23,11 @@ class StepTexts implements Step {
 			$options |= TestOptions::CUSTOM_TEXTS->value;
 			$heap['texts']['pretext'] = $data['pretext'];
 			$heap['texts']['posttext'] = $data['posttext'];
-			$heap['options'] = $options;
-		} else
+		} else {
+			$options &= ~TestOptions::CUSTOM_TEXTS->value;
 			unset($heap['texts']);
+		}
+		$heap['options'] = $options;
 		session()->put('heap', $heap);
 
 		return true;
