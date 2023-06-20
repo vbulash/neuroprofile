@@ -13,6 +13,7 @@ npm-debug.log
 yarn-error.log
 /.vscode
 /database/*.sqlite
+/database/data
 /exportToHTML/
 **/.DS_Store
 composer.lock
