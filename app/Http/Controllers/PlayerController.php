@@ -96,10 +96,7 @@ class PlayerController extends Controller {
 
 	// Web-версия плеера (оригинальная; маршрут player.play)
 	public function play2(Request $request, string $mkey = null, string $test = null) {
-		return redirect()->route('player.play2', [
-			'mkey' => $mkey,
-			'test' => $test
-		]);
+		return $this->play($request, $mkey, $test);
 	}
 
 	// API-версия плеера (новая; маршрут player.play2)
@@ -160,7 +157,7 @@ class PlayerController extends Controller {
 			session()->put('agent', $request->agent);
 
 			if ($test->options & TestOptions::AUTH_GUEST->value) {
-				$route = 'player.body2';
+				$route = auth()->check() ? 'player.test.body2' : 'player.body2';
 				if ($test->options & TestOptions::FACE_NEURAL->value)
 					$route = 'player.face';
 				elseif ($test->options & TestOptions::EYE_TRACKING->value)
@@ -182,7 +179,7 @@ class PlayerController extends Controller {
 		session()->forget('pkey');
 		session()->put('pkey', $request->pkey);
 		$test = session('test');
-		$route = 'player.body2';
+		$route = auth()->check() ? 'player.test.body2' : 'player.body2';
 		if ($test->options & TestOptions::FACE_NEURAL->value)
 			$route = 'player.face';
 		elseif ($test->options & TestOptions::EYE_TRACKING->value)
@@ -200,7 +197,7 @@ class PlayerController extends Controller {
 		session()->put('card', $data);
 
 		$test = session('test');
-		$route = 'player.body2';
+		$route = auth()->check() ? 'player.test.body2' : 'player.body2';
 		if ($test->options & TestOptions::FACE_NEURAL->value)
 			$route = 'player.face';
 		elseif ($test->options & TestOptions::EYE_TRACKING->value)
@@ -326,7 +323,10 @@ class PlayerController extends Controller {
 		}
 		$history->update(['done' => new DateTime()]);
 
-		return redirect()->route('player.calculate', ['history_id' => $history->getKey(), 'sid' => session()->getId()]);
+		return redirect()->route(auth()->check() ? 'player.test.calculate' : 'player.calculate', [
+			'history_id' => $history->getKey(),
+			'sid' => session()->getId()
+		]);
 	}
 
 	public function calculate(

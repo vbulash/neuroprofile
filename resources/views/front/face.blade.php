@@ -20,9 +20,9 @@
 		    $route = 'player.eye';
 		} else {
 		    $button = 'Начать тестирование';
-		    $route = 'player.body2';
+		    $route = auth()->check() ? 'player.test.body2' : 'player.body2';
 		}
-		
+
 	@endphp
 	<div class="mt-4 mb-4" id="placeholder">
 		<p>

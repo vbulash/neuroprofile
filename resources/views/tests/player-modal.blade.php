@@ -18,7 +18,8 @@
 			</div>
 			<div class="modal-footer justify-content-between">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-				<form role="form" method="get" action="{{ route('player.play2') }}" id="start-player">
+				<form role="form" method="get" action="{{ route(auth()->check() ? 'player.play' : 'player.play2') }}"
+					id="start-player">
 					@csrf
 					<input type="hidden" name="mkey-modal" id="mkey-modal">
 					<input type="hidden" name="test-modal" id="test-modal">

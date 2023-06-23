@@ -72,7 +72,7 @@ EOS
 				if ($history->commercial)
 					$items[] = ['type' => 'item', 'click' => "clickDelete({$history->id})", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
 				$items[] = ['type' => 'divider'];
-				$items[] = ['type' => 'item', 'click' => "clickMail({$history->id})", 'icon' => 'fas fa-envelope', 'title' => 'Повтор письма респонденту'];
+				$items[] = ['type' => 'item', 'click' => "clickMail({$history->id})", 'icon' => 'fas fa-envelope', 'title' => 'Повтор всех писем тестирования'];
 
 				return createDropdown('Действия', $items);
 			})

@@ -142,6 +142,11 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.se
 	// Маршруты сохранения предварительной информации (из карточек)
 	Route::get('/player.pkey', 'PlayerController@store_pkey')->name('player.pkey');
 	Route::get('/player.full', 'PlayerController@store_full_card')->name('player.full');
+	// Маршруты для тестового плеера
+	Route::get('/player.test/body2', 'PlayerController@body2')->name('player.test.body2');
+	Route::post('/player.test/body2.store', 'PlayerController@body2_store')->name('player.test.body2.store');
+	Route::get('/player.test.calculate/{history_id}', 'PlayerController@calculate')->name('player.test.calculate');
+	Route::get('/player.test.mail/{history_id}', 'PlayerController@mail')->name('player.test.mail');
 	// Фото лица
 	Route::get('/player.face', 'PlayerController@face')->name('player.face');
 	// Калибровка айтрекинга

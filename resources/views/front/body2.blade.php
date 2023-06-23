@@ -21,7 +21,8 @@
 @endif
 
 @section('content')
-	<form method="post" action="{{ route('player.body2.store', ['sid' => session()->getId()]) }}"
+	<form method="post"
+		action="{{ route(auth()->check() ? 'player.test.body2.store' : 'player.body2.store', ['sid' => session()->getId()]) }}"
 		enctype="multipart/form-data" name="play-form" id="play-form">
 		@csrf
 

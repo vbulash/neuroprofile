@@ -29,7 +29,7 @@
 	</div>
 
 	<script>
-		window.forward = "{{ route('player.body2', ['sid' => session()->getId()]) }}"
+		window.forward = "{{ route(auth()->check() ? 'player.test.body2' : 'player.body2', ['sid' => session()->getId()]) }}"
 	</script>
 	<script src="{{ asset('assets/front/js/front.js') }}"></script>
 	<script src="{{ asset('js/webgazer/webgazer.js') }}"></script>

@@ -53,7 +53,7 @@
 					@php
 						$code = sprintf(
 						    "<iframe\n" . "src=\"%s\"\n" . "width=\"1000px\"\n" . "height=\"700px\"\n" . "allow=\"camera\"\n" . "frameborder=\"0\">\n" . '</iframe>',
-						    route('player.play', [
+						    route(auth()->check() ? 'player.play' : 'player.play2', [
 						        'mkey' => $contract->mkey,
 						        'test' => $test->key,
 						    ]),
