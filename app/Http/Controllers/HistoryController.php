@@ -64,34 +64,19 @@ EOS
 			->editColumn('commercial', fn($history) => $history->commercial ? 'Да' : 'Нет')
 			->editColumn('paid', fn($history) => $history->paid ? 'Да' : 'Нет')
 			->editColumn('action', function ($history) {
-			    $editRoute = route('history.edit', ['history' => $history->id]);
-			    $showRoute = route('history.show', ['history' => $history->id]);
+				$editRoute = route('history.edit', ['history' => $history->id]);
+				$showRoute = route('history.show', ['history' => $history->id]);
+				$items = [];
+				$items[] = ['type' => 'item', 'link' => $editRoute, 'icon' => 'fas fa-pencil-alt', 'title' => 'Редактирование'];
+				$items[] = ['type' => 'item', 'link' => $showRoute, 'icon' => 'fas fa-eye', 'title' => 'Просмотр'];
+				if ($history->commercial)
+					$items[] = ['type' => 'item', 'click' => "clickDelete({$history->id})", 'icon' => 'fas fa-trash-alt', 'title' => 'Удаление'];
+				$items[] = ['type' => 'divider'];
+				$items[] = ['type' => 'item', 'click' => "clickMail({$history->id})", 'icon' => 'fas fa-envelope', 'title' => 'Повтор письма респонденту'];
 
-			    $actions =
-			    	"<a href=\"{$editRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Редактирование\">\n" .
-			    	"<i class=\"fas fa-pencil-alt\"></i>\n" .
-			    	"</a>\n";
-			    $actions .=
-			    	"<a href=\"{$showRoute}\" class=\"btn btn-primary btn-sm float-left me-1\" " .
-			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Просмотр\">\n" .
-			    	"<i class=\"fas fa-eye\"></i>\n" .
-			    	"</a>\n";
-			    if ($history->commercial)
-				    $actions .=
-				    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left\" " .
-				    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Удаление\" onclick=\"clickDelete({$history->id})\">\n" .
-				    	"<i class=\"fas fa-trash-alt\"></i>\n" .
-				    	"</a>\n";
-			    $actions .=
-			    	"<a href=\"javascript:void(0)\" class=\"btn btn-primary btn-sm float-left ms-5\" " .
-			    	"data-toggle=\"tooltip\" data-placement=\"top\" title=\"Повтор письма\" onclick=\"clickMail({$history->id})\">\n" .
-			    	"<i class=\"fas fa-envelope\"></i>\n" .
-			    	"</a>\n";
-
-			    return $actions;
-		    })
-				//;
+				return createDropdown('Действия', $items);
+			})
+			//;
 			->make(true);
 	}
 
