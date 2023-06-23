@@ -38,6 +38,15 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	Route::get('/phpinfo', fn() => phpinfo())->name('api.phpinfo');
 });
 
+// Плеер
+Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.session'], function () {
+	Route::get('/player.play/{mkey?}/{test?}', 'PlayerController@play')->name('player.play2');
+	Route::get('/player.body2', 'PlayerController@body2')->name('player.body2');
+	Route::post('/player/body2.store', 'PlayerController@body2_store')->name('player.body2.store');
+	Route::get('/player.calculate/{history_id}', 'PlayerController@calculate')->name('player.calculate');
+	Route::get('/player.mail/{history_id}', 'PlayerController@mail')->name('player.mail');
+});
+
 // Нейросеть
 Route::group(['namespace' => 'App\Http\Controllers\neural'], function () {
 	Route::post('/shot.done', 'NeuralController@shotDone')->name('neural.shot.done');

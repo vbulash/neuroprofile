@@ -94,13 +94,22 @@ class PlayerController extends Controller {
 		return view('front.index', compact('test'));
 	}
 
+	// Web-версия плеера (оригинальная; маршрут player.play)
+	public function play2(Request $request, string $mkey = null, string $test = null) {
+		return redirect()->route('player.play2', [
+			'mkey' => $mkey,
+			'test' => $test
+		]);
+	}
+
+	// API-версия плеера (новая; маршрут player.play2)
 	public function play(Request $request, string $mkey = null, string $test = null): Factory|View|RedirectResponse|Application {
 		// Log::info('test = ' . $test);
 		$mkey = $mkey ?: $request->{'mkey-modal'};
 		$test = $test ?: $request->{'test-modal'};
 		// Log::info('play mkey = ' . $mkey);
 		if (!$this->check($request, $mkey, $test)) {
-			//Log::debug('player.play: ' . __METHOD__ . ':' . __LINE__);
+			//Log::debug('player.play2: ' . __METHOD__ . ':' . __LINE__);
 			return redirect()->route('player.index', [
 				'sid' => session()->getId(),
 				'message' => session()->has('error') ? session('error') : ''

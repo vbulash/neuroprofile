@@ -6,11 +6,7 @@
 
 @section('steps')
 	@php
-		$steps = [
-			['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index')],
-			['title' => 'Контракт', 'active' => false, 'context' => 'contract', 'link' => route('contracts.index')],
-			['title' => 'Информация о контракте', 'active' => true, 'context' => 'info'],
-		];
+		$steps = [['title' => 'Клиент', 'active' => false, 'context' => 'client', 'link' => route('clients.index')], ['title' => 'Контракт', 'active' => false, 'context' => 'contract', 'link' => route('contracts.index')], ['title' => 'Информация о контракте', 'active' => true, 'context' => 'info']];
 	@endphp
 @endsection
 
@@ -24,20 +20,20 @@
 			</div>
 			<div class="block-content p-4">
 				<table class="statistics mb-4">
-					@foreach($statistics as $key => $value)
+					@foreach ($statistics as $key => $value)
 						<tr>
 							<td class="key col-md-4">{{ $key }}:</td>
 							<td class="value col-md-4">{{ $value }}</td>
 						</tr>
 					@endforeach
 				</table>
-				<a href="{{ route('contracts.licenses.export', ['contract' => $contract->getKey()]) }}"
-				   type="button" class="btn btn-primary">Экспорт лицензий</a>
+				<a href="{{ route('contracts.licenses.export', ['contract' => $contract->getKey()]) }}" type="button"
+					class="btn btn-primary">Экспорт лицензий</a>
 			</div>
-			{{--			<div class="block-content block-content-full block-content-sm bg-body-light fs-sm">--}}
-			{{--				<div class="row">--}}
-			{{--				</div>--}}
-			{{--			</div>--}}
+			{{--			<div class="block-content block-content-full block-content-sm bg-body-light fs-sm"> --}}
+			{{--				<div class="row"> --}}
+			{{--				</div> --}}
+			{{--			</div> --}}
 		</div>
 	</div>
 
@@ -56,26 +52,21 @@
 				@forelse($contract->tests as $test)
 					@php
 						$code = sprintf(
-                            "<iframe\n" .
-	  	                    "src=\"%s\"\n" .
-		                    "width=\"1000px\"\n" .
-		                    "height=\"700px\"\n" .
-		                    "allow=\"camera\"\n" .
-		                    "frameborder=\"0\">\n" .
-		                    "</iframe>",
-		                    route('player.play', [
-                                'mkey' => $contract->mkey,
-                                'test' => $test->key,
-                            ]));
+						    "<iframe\n" . "src=\"%s\"\n" . "width=\"1000px\"\n" . "height=\"700px\"\n" . "allow=\"camera\"\n" . "frameborder=\"0\">\n" . '</iframe>',
+						    route('player.play', [
+						        'mkey' => $contract->mkey,
+						        'test' => $test->key,
+						    ]),
+						);
 					@endphp
 					<div class="form-group">
 						<label for="html-{{ $testNo }}">Тест # {{ $test->id }} &laquo;{{ $test->name }}&raquo;</label>
 						<div class="d-flex flex-row align-items-start mt-4 mb-4">
-							<textarea name="html-{{ $testNo }}" class="form-control me-2"
-									  id="html-{{ $testNo }}" cols="40" rows="7" readonly>{{ $code }}</textarea>
+							<textarea name="html-{{ $testNo }}" class="form-control me-2" id="html-{{ $testNo }}" cols="40"
+							 rows="7" readonly>{{ $code }}</textarea>
 							<a href="javascript:void(0)" class="btn btn-primary btn-sm float-left htmlcopy"
-							   data-code="html-{{ $testNo }}" data-test="{{ $test->name }}"
-							   data-toggle="tooltip" data-placement="top" title="Копировать код HTML">
+								data-code="html-{{ $testNo }}" data-test="{{ $test->name }}" data-toggle="tooltip" data-placement="top"
+								title="Копировать код HTML">
 								<i class="fas fa-copy" data-code="html-{{ $testNo }}" data-test="{{ $test->name }}"></i>
 							</a>
 						</div>
@@ -104,7 +95,8 @@
 				navigator.clipboard.writeText(copyText.value);
 				copyText.setSelectionRange(0, 0);
 
-				showToast('info', 'Код для HTML-фрейма с тестом "' + test + '" скопирован в буфер обмена', false);
+				showToast('info', 'Код для HTML-фрейма с тестом "' + test + '" скопирован в буфер обмена',
+					false);
 			}, false);
 		});
 	</script>

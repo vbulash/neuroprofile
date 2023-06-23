@@ -137,7 +137,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.se
 	Route::get('/player.iframe', 'PlayerController@iframe')->name('player.iframe');
 	//
 	Route::get('/player.index', 'PlayerController@index')->name('player.index');
-	Route::get('/player.play/{mkey?}/{test?}', 'PlayerController@play')->name('player.play');
+	Route::get('/player.play/{mkey?}/{test?}', 'PlayerController@play2')->name('player.play');
 	Route::get('/player.card', 'PlayerController@card')->name('player.card');
 	// Маршруты сохранения предварительной информации (из карточек)
 	Route::get('/player.pkey', 'PlayerController@store_pkey')->name('player.pkey');
@@ -146,11 +146,6 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'restore.se
 	Route::get('/player.face', 'PlayerController@face')->name('player.face');
 	// Калибровка айтрекинга
 	Route::get('/player.eye', 'PlayerController@eye')->name('player.eye');
-
-	Route::get('/player.body2', 'PlayerController@body2')->name('player.body2');
-	Route::post('/player/body2.store', 'PlayerController@body2_store')->name('player.body2.store');
-	Route::get('/player.calculate/{history_id}', 'PlayerController@calculate')->name('player.calculate');
-	Route::get('/player.mail/{history_id}', 'PlayerController@mail')->name('player.mail');
 
 	Route::get('/player.policy/{document}/{mail?}', 'PlayerController@showDocument')->name('player.policy');
 });
