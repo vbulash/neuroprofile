@@ -235,7 +235,11 @@ class PlayerController extends Controller {
 		$questions = $test->set->questions->sortBy('sort_no');
 
 		if (!($test->options & TestOptions::FACE_NEURAL->value))
-			$this->lockLicense($test);
+			if (!$this->lockLicense($test))
+				return redirect()->route('player.index', [
+					'sid' => session()->getId(),
+					'message' => session()->has('error') ? session('error') : ''
+				]);
 
 		return view('front.body2', compact('test', 'questions'));
 	}
@@ -554,37 +558,22 @@ class PlayerController extends Controller {
 			// Найти и проверить лицензию по введенному персональному ключу
 			$license = License::where('pkey', session('pkey'))->first();
 			if (!$license) {
-				$message = 'Не найдена лицензия, соответствующая персональному ключу ' . session('pkey');
-				// Log::error($message);
-				session()->put('error', $message);
-				return redirect()->route('player.index', [
-					'sid' => session()->getId(),
-					'message' => session()->has('error') ? session('error') : ''
-				]);
+				session()->put('error', 'Не найдена лицензия, соответствующая персональному ключу ' . session('pkey'));
+				return false;
 			} elseif ($license->status != License::FREE) {
-				$message = 'Лицензия, соответствующая персональному ключу ' . session('pkey') . ', уже использована. Запросите новый персональный ключ';
-				Log::error($message);
-				session()->put('error', $message);
-				return redirect()->route('player.index', [
-					'sid' => session()->getId(),
-					'message' => session()->has('error') ? session('error') : ''
-				]);
+				session()->put('error', 'Лицензия, соответствующая персональному ключу ' . session('pkey') . ', уже использована. Запросите новый персональный ключ');
+				return false;
 			}
 		} else { // Найти любую свободную лицензию
 			$license = $test->contract->licenses->where('status', License::FREE)->first();
 			if ($license) {
 				session()->put('pkey', $license->pkey);
 			} else {
-				$message = 'Свободные лицензии закончились, обратитесь в Persona';
-				Log::error($message);
-				session()->put('error', $message);
-				//Log::debug(__METHOD__ . ':' . __LINE__);
-				return redirect()->route('player.index', [
-					'sid' => session()->getId(),
-					'message' => session()->has('error') ? session('error') : ''
-				]);
+				session()->put('error', 'Свободные лицензии закончились, обратитесь в Persona');
+				return false;
 			}
 		}
 		$license->lock();
+		return true;
 	}
 }
